@@ -9,6 +9,7 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
 {
 
     public event Action OnJumpKeyPress;
+    public event Action OnInteractionKeyPress;
 
     private PlayerInput playerInput;
 
@@ -58,6 +59,18 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
     {
 
         MoveVecter = context.ReadValue<Vector2>();
+
+    }
+
+    public void OnInteraction(InputAction.CallbackContext context)
+    {
+
+        if (context.performed)
+        {
+
+            OnInteractionKeyPress?.Invoke();
+
+        }
 
     }
 

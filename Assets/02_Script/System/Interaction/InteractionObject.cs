@@ -10,7 +10,7 @@ public abstract class InteractionObject : NetworkBehaviour
 
     protected abstract void DoInteraction();
 
-    public void Interaction()
+    public virtual void Interaction()
     {
 
         InteractionServerRPC();
@@ -18,7 +18,7 @@ public abstract class InteractionObject : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void InteractionServerRPC()
+    protected virtual void InteractionServerRPC()
     {
 
         InteractionClientRPC();
@@ -26,7 +26,7 @@ public abstract class InteractionObject : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void InteractionClientRPC()
+    protected virtual void InteractionClientRPC()
     {
 
         DoInteraction();

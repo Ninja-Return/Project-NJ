@@ -6,8 +6,13 @@ using UnityEngine;
 public class PlayerDataSO : ScriptableObject
 {
 
-    [field:SerializeField] public Stats MoveSpeed { get; private set; }
-    [field:SerializeField] public Stats JumpPower { get; private set; }
-    [field:SerializeField] public Stats LookSensitive { get; private set; }
+    [field:SerializeField] public Stat MoveSpeed { get; private set; }
+    [field:SerializeField] public Stat JumpPower { get; private set; }
+    [field:SerializeField] public Stat LookSensitive { get; private set; }
+
+    [field:Space]
+    [field:Header("Interaction")]
+    [field:SerializeField] public Stat InteractionRange { get; private set; }
+    [field:SerializeField] public LayerMask InteractionLayer { get; private set; }
 
 }

@@ -22,6 +22,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     [field:SerializeField] public PlayerInputDataSO Input { get; private set; }
 
     private CinemachineVirtualCamera cvcam;
+    private Canvas interactionCanvas;
 
     protected override void Awake()
     {
@@ -29,13 +30,15 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         base.Awake();
 
         cvcam = GetComponentInChildren<CinemachineVirtualCamera>();
+        interactionCanvas = GetComponentInChildren<Canvas>();
 
     }
 
     private void Start()
     {
 
-        cvcam.Priority = IsOwner ? 10 : 0;
+        cvcam.Priority = IsOwner || debug ? 10 : 0;
+        interactionCanvas.gameObject.SetActive(IsOwner || debug);
 
         if(!IsOwner && !debug) return;
 
@@ -53,6 +56,9 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
         var jump = new PlayerJump(this);
         AddState(jump, EnumPlayerState.Move);
+
+        var interaction = new PlayerInteraction(this);
+        AddState(interaction, EnumPlayerState.Move);
 
         ChangeState(startState);
 
