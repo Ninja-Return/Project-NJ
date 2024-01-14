@@ -22,7 +22,6 @@ public class TestUIController : MonoBehaviour
     public async void JoinRoom()
     {
 
-
         await AppController.Instance.StartClientAsync("asdfasdf", roomCodeField.text);
 
     }

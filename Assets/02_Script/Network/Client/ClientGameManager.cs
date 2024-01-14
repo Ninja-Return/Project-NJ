@@ -33,6 +33,8 @@ public class ClientGameManager
 
         }
 
+        NetworkController.Instance.Dispose();
+
     }
 
     public async Task StartClientAsync(string joinCode, UserData data)
@@ -61,6 +63,8 @@ public class ClientGameManager
 
         NetworkManager.Singleton.NetworkConfig.ConnectionData = Encoding.UTF8.GetBytes(json);
         NetworkManager.Singleton.StartClient();
+
+        NetworkController.Init(joinCode);
 
     }
 

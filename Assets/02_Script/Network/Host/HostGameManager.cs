@@ -70,6 +70,8 @@ public class HostGameManager : IDisposable
             NetworkManager.Singleton.NetworkConfig.ConnectionData = Encoding.UTF8.GetBytes(userJson);
             NetworkManager.Singleton.StartHost();
 
+            NetworkController.Init(joinCode);
+
             Debug.Log(joinCode);
 
             return true;
@@ -98,6 +100,7 @@ public class HostGameManager : IDisposable
         OnPlayerDisconnect?.Invoke(authId, clientId);
 
     }
+
     public void Dispose()
     {
 
@@ -130,6 +133,8 @@ public class HostGameManager : IDisposable
         NetServer.OnClientJoinEvent -= HandleClientJoin;
         lobbyId = string.Empty;
         NetServer?.Dispose();
+
+        NetworkController.Instance.Dispose();
 
     }
 

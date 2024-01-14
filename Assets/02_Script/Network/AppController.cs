@@ -7,6 +7,7 @@ using Unity.Services.Lobbies.Models;
 using Unity.Services.Lobbies;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.Services.Vivox;
 
 public class AppController : MonoBehaviour
 {
@@ -39,6 +40,8 @@ public class AppController : MonoBehaviour
             return;
 
         }
+
+        await VivoxService.Instance.InitializeAsync();
 
         HostSingle host = Instantiate(hostPrefab, transform);
         host.CreateHost();

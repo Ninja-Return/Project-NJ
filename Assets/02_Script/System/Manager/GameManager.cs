@@ -33,11 +33,7 @@ public class GameManager : NetworkBehaviour
     private void HandlePlayerConnect(string authId, ulong clientId)
     {
 
-        var pl = Instantiate(player);
-
-        pl.transform.position = new Vector3(Random.Range(-10f, 10f), 1f, Random.Range(-10f, 10f));
-
-        pl.SpawnWithOwnership(clientId, true);
+        SpawnPlayer(clientId);
 
     }
 
@@ -47,11 +43,7 @@ public class GameManager : NetworkBehaviour
         foreach(var id in NetworkManager.ConnectedClientsIds)
         {
 
-            var pl = Instantiate(player);
-
-            pl.transform.position = new Vector3(Random.Range(-10f, 10f), 1f, Random.Range(-10f, 10f));
-
-            pl.SpawnWithOwnership(id, true);
+            SpawnPlayer(id);
 
         }
 
@@ -63,6 +55,15 @@ public class GameManager : NetworkBehaviour
         base.OnDestroy();
 
         Instance = null;
+
+    }
+
+    public void SpawnPlayer(ulong clientId)
+    {
+
+        var pl = Instantiate(player);
+        pl.transform.position = new Vector3(Random.Range(-10f, 10f), 1f, Random.Range(-10f, 10f));
+        pl.SpawnWithOwnership(clientId, true);
 
     }
 

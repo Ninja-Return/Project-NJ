@@ -39,4 +39,11 @@ public class HostSingle : MonoBehaviour
 
     }
 
+    private void OnDestroy()
+    {
+        
+        GameManager.Dispose();
+
+    }
+
 }

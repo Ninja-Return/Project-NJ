@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FSM_System.Netcode;
 using Cinemachine;
+using Unity.VisualScripting;
 
 public enum EnumPlayerState
 {
@@ -42,6 +43,11 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
         if(!IsOwner && !debug) return;
 
+        Camera.main.transform.AddComponent<AudioListener>();
+
+        NetworkController.Instance.vivox.Join3DChannel();
+        StartCoroutine(Update3DPosCo());
+
         Input = Input.Init();
         Data = Instantiate(Data);
 
@@ -70,6 +76,22 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         if (!IsOwner && !debug) return;
 
         base.Update();
+
+    }
+
+    private IEnumerator Update3DPosCo()
+    {
+
+        var sec = new WaitForSecondsRealtime(0.1f);
+
+        while (true)
+        {
+
+            NetworkController.Instance.vivox.UpdateChannelPos(gameObject);
+
+            yield return sec;
+
+        }
 
     }
 
