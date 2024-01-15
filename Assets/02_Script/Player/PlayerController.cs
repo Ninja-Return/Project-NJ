@@ -4,6 +4,7 @@ using UnityEngine;
 using FSM_System.Netcode;
 using Cinemachine;
 using Unity.VisualScripting;
+using DG.Tweening;
 
 public enum EnumPlayerState
 {
