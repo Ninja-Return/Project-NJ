@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 public class SlotUI : MonoBehaviour, IPointerEnterHandler
 {
-    [HideInInspector] public SlotData slotData { get; set; }
+    [HideInInspector] public SlotData slotData { get; private set; }
     [HideInInspector] public int slotIndex { get; set; } //이건 인벤토리에서 부여
 
     private Inventory inventory;

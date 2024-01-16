@@ -13,7 +13,23 @@ public class Inventory : MonoBehaviour
     [HideInInspector] public bool isHold;
     private int slotIdx;
 
-    public void HoldItem(GameObject itemObj, int idx)
+    public void ObtainItem(SlotData data)
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i].slotData == null)
+            {
+                slots[i].InsertSlot(data);
+                Destroy(data); //이후에 pop으로 바꿔줍시다.
+                break;
+            }
+        }
+
+        //여기서는 뭔가 안먹어진다는걸 알려줄수도 있고
+        return;
+    }
+
+        public void HoldItem(GameObject itemObj, int idx)
     {
         isHold = true;
         slotIdx = idx;
