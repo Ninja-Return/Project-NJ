@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "~~SlotData", menuName = "Item/SlotData")]
+[CreateAssetMenu(fileName = "~~SlotData", menuName = "SO/Item/SlotData")]
 public class SlotData : ScriptableObject
 {
     public ItemType slotType;

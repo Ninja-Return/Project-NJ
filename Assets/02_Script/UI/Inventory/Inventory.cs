@@ -2,16 +2,43 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 using EnumList;
 
 public class Inventory : MonoBehaviour
 {
+    public static Inventory Instance;
     public event Action<GameObject> OnSlotClickEvt;
 
+    [SerializeField] private GameObject inventoryPanel;
+    [SerializeField] private TextMeshProUGUI slotExpText;
     private SlotUI[] slots;
-
-    [HideInInspector] public bool isHold;
     private int slotIdx;
+
+    [HideInInspector] public bool isShow = false;
+    [HideInInspector] public bool isHold = false;
+
+    private void Awake()
+    {
+        Instance = this; //나중에 모노싱글톤 있겠지?
+
+        slots = GetComponentsInChildren<SlotUI>();
+        for (int i = 0; i < slots.Length; i++) //손에 든 아이템 쓸때 비워야 하니까
+        {
+            slots[i].slotIndex = i;
+        }
+    }
+
+    private void SetActiveInventoryUI()
+    {
+        isShow = !isShow;
+        inventoryPanel.SetActive(isShow);
+    }
+
+    public void PopItemText(string ex)
+    {
+        slotExpText.text = $"\"{ex}\"";
+    }
 
     public void ObtainItem(SlotData data)
     {
@@ -20,7 +47,7 @@ public class Inventory : MonoBehaviour
             if (slots[i].slotData == null)
             {
                 slots[i].InsertSlot(data);
-                Destroy(data); //이후에 pop으로 바꿔줍시다.
+                //slots[i].TouchSlot(); //먹자마자 들고있을라면 이걸로
                 break;
             }
         }
@@ -29,7 +56,7 @@ public class Inventory : MonoBehaviour
         return;
     }
 
-        public void HoldItem(GameObject itemObj, int idx)
+    public void HoldItem(GameObject itemObj, int idx)
     {
         isHold = true;
         slotIdx = idx;
