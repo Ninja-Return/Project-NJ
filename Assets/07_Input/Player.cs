@@ -62,6 +62,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MoveObject"",
+                    ""type"": ""Button"",
+                    ""id"": ""696244d7-345e-4a88-a5bd-9042d38c630a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -152,6 +161,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Interaction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""172809ca-12df-480d-a085-2586feca378d"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveObject"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -181,6 +201,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_PlayerMovement_Jump = m_PlayerMovement.FindAction("Jump", throwIfNotFound: true);
         m_PlayerMovement_Camera = m_PlayerMovement.FindAction("Camera", throwIfNotFound: true);
         m_PlayerMovement_Interaction = m_PlayerMovement.FindAction("Interaction", throwIfNotFound: true);
+        m_PlayerMovement_MoveObject = m_PlayerMovement.FindAction("MoveObject", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -246,6 +267,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_Jump;
     private readonly InputAction m_PlayerMovement_Camera;
     private readonly InputAction m_PlayerMovement_Interaction;
+    private readonly InputAction m_PlayerMovement_MoveObject;
     public struct PlayerMovementActions
     {
         private @PlayerInput m_Wrapper;
@@ -254,6 +276,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_PlayerMovement_Jump;
         public InputAction @Camera => m_Wrapper.m_PlayerMovement_Camera;
         public InputAction @Interaction => m_Wrapper.m_PlayerMovement_Interaction;
+        public InputAction @MoveObject => m_Wrapper.m_PlayerMovement_MoveObject;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -275,6 +298,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Interaction.started += instance.OnInteraction;
             @Interaction.performed += instance.OnInteraction;
             @Interaction.canceled += instance.OnInteraction;
+            @MoveObject.started += instance.OnMoveObject;
+            @MoveObject.performed += instance.OnMoveObject;
+            @MoveObject.canceled += instance.OnMoveObject;
         }
 
         private void UnregisterCallbacks(IPlayerMovementActions instance)
@@ -291,6 +317,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Interaction.started -= instance.OnInteraction;
             @Interaction.performed -= instance.OnInteraction;
             @Interaction.canceled -= instance.OnInteraction;
+            @MoveObject.started -= instance.OnMoveObject;
+            @MoveObject.performed -= instance.OnMoveObject;
+            @MoveObject.canceled -= instance.OnMoveObject;
         }
 
         public void RemoveCallbacks(IPlayerMovementActions instance)
@@ -323,5 +352,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnCamera(InputAction.CallbackContext context);
         void OnInteraction(InputAction.CallbackContext context);
+        void OnMoveObject(InputAction.CallbackContext context);
     }
 }

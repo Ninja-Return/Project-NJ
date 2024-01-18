@@ -10,12 +10,17 @@ public class PlayerInteraction : PlayerStateRoot
     private TMP_Text interactionText;
     private Transform cameraTrm;
     private InteractionObject interactionObject;
+    private Transform moveObjectTrm;
+
+    private int originLayer;
+    private bool isObjectMove;
 
     public PlayerInteraction(PlayerController controller) : base(controller)
     {
 
         interactionText = transform.Find("InteractionCanvas").GetComponentInChildren<TMP_Text>();
         cameraTrm = transform.Find("PlayerCamera");
+        moveObjectTrm = transform.Find("MoveObject");
         interactionText.text = string.Empty;
 
     }
@@ -24,15 +29,53 @@ public class PlayerInteraction : PlayerStateRoot
     {
 
         input.OnInteractionKeyPress += HandleInteractionKeyPress;
+        input.OnObjectMoveKeyPress += HandleObjectMoveKeyPress;
+        input.OnObjectMoveKeyUp += HandleObjectMoveKeyRelease;
 
     }
+
+
 
     protected override void ExitState()
     {
 
         input.OnInteractionKeyPress -= HandleInteractionKeyPress;
+        input.OnObjectMoveKeyPress -= HandleObjectMoveKeyPress;
+        input.OnObjectMoveKeyUp -= HandleObjectMoveKeyRelease;
 
     }
+
+    private void HandleObjectMoveKeyPress()
+    {
+
+        Debug.Log(123);
+
+        if(interactionObject != null && interactionObject.objectType == ObjectType.Dynamic) 
+        { 
+            
+            isObjectMove = true;
+            originLayer = interactionObject.gameObject.layer;
+            interactionObject.gameObject.layer = LayerMask.NameToLayer("NotCasting");
+            interactionText.text = string.Empty;
+        
+        }
+
+    }
+
+    private void HandleObjectMoveKeyRelease()
+    {
+
+        isObjectMove = false;
+
+        if(interactionObject != null)
+        {
+
+            interactionObject.gameObject.layer = originLayer;
+
+        }
+
+    }
+
 
     private void HandleInteractionKeyPress()
     {
@@ -49,14 +92,37 @@ public class PlayerInteraction : PlayerStateRoot
     protected override void UpdateState()
     {
 
+        CheckInteraction();
+        SetMoveObjectPos();
+        MovementObject();
+
+    }
+
+    private void MovementObject()
+    {
+
+        if (isObjectMove)
+        {
+
+            interactionObject.transform.position = moveObjectTrm.position;
+
+        }
+
+    }
+
+    private void CheckInteraction()
+    {
+
+        if (isObjectMove) return;
+
         var hit = Physics.Raycast(cameraTrm.position, cameraTrm.forward, out var info, data.InteractionRange.Value, data.InteractionLayer);
 
-        if(hit)
+        if (hit)
         {
 
             interactionObject = info.transform.GetComponent<InteractionObject>();
 
-            if(interactionObject != null)
+            if (interactionObject != null)
             {
 
                 interactionText.text = interactionObject.interactionText;
@@ -77,6 +143,25 @@ public class PlayerInteraction : PlayerStateRoot
 
         }
 
+    }
+
+    private void SetMoveObjectPos()
+    {
+
+        var hit = Physics.Raycast(cameraTrm.position, cameraTrm.forward, out var info, data.InteractionRange.Value, ~LayerMask.GetMask("NotCasting", "Player"));
+
+        if (hit)
+        {
+
+            moveObjectTrm.position = info.point - cameraTrm.forward / 1.5f;
+
+        }
+        else
+        {
+
+            moveObjectTrm.position = cameraTrm.position + cameraTrm.forward * (data.InteractionRange.Value / 1.5f);
+
+        }
 
     }
 
