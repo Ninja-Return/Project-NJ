@@ -5,19 +5,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class SlotUI : MonoBehaviour, IPointerEnterHandler
+public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [HideInInspector] public SlotData slotData { get; private set; }
     [HideInInspector] public int slotIndex { get; set; } //이건 인벤토리에서 부여
+    [HideInInspector] public bool onCursor { get; private set; } //얘도 참조할 일이 있지 않을까
 
-    private Button slotBtn;
     private Image slotImage;
 
     private void Awake()
     {
-        slotBtn = GetComponent<Button>();
-        slotBtn.onClick.AddListener(TouchSlot);
-
         slotImage = GetComponent<Image>();
     }
 
@@ -27,13 +24,22 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler
         slotImage.sprite = slotData.slotSprite;
     }
 
-    public void TouchSlot() //아이템 왼클릭 시(손에 들게하기)
+    public void UseSlot() //왼클릭 시(손에 들게하기)
     {
         if (slotData == null) return;
 
         //풀링 만들기 전까진 Resources에서 가져오자
         GameObject itemObj = Resources.Load<GameObject>($"ItemObj/{slotData.poolingName}");
         Inventory.Instance.HoldItem(itemObj, slotIndex);
+    }
+
+    public void RemoveSlot() //우클릭 시(아이템 밖으로 던지기)
+    {
+        if (slotData == null) return;
+
+        //풀링 만들기 전까진 Resources에서 가져오자
+        GameObject itemObj = Resources.Load<GameObject>($"ItemObj/{slotData.poolingName}");
+        Inventory.Instance.DropItem(itemObj, slotIndex);
     }
 
     public void ResetSlot() //아이템 소진시(슬롯 비우기)
@@ -46,6 +52,8 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler
 
     public void OnPointerEnter(PointerEventData eventData) //마우스포인터 닿으면 설명
     {
+        onCursor = true;
+
         if (slotData == null)
         {
             Inventory.Instance.PopItemText("");
@@ -53,5 +61,13 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler
         }
 
         Inventory.Instance.PopItemText(slotData.slotExplanation);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        onCursor = false;
+
+        //나중에 텍스트 빼도 됨
+        //Inventory.Instance.PopItemText("");
     }
 }
