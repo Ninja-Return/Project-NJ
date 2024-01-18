@@ -49,7 +49,7 @@ public class AppController : MonoBehaviour
         ClientSingle client = Instantiate(clientPrefab, transform);
         client.CreateClient();
 
-        SceneManager.LoadScene("TestLobby");
+        SceneManager.LoadScene(SceneList.LobbySelectScene);
 
     }
 

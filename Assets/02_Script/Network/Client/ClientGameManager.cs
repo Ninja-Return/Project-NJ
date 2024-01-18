@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -20,6 +21,14 @@ public class ClientGameManager
 
     }
 
+    private void HandleClientDisconnect(bool obj)
+    {
+
+        networkManager.OnClientStopped -= HandleClientDisconnect;
+        Disconnect();
+
+    }
+
     private NetworkManager networkManager;
     private JoinAllocation allocation;
 
@@ -34,6 +43,8 @@ public class ClientGameManager
         }
 
         NetworkController.Instance.Dispose();
+
+        SceneManager.LoadScene(SceneList.LobbySelectScene);
 
     }
 
@@ -63,6 +74,8 @@ public class ClientGameManager
 
         NetworkManager.Singleton.NetworkConfig.ConnectionData = Encoding.UTF8.GetBytes(json);
         NetworkManager.Singleton.StartClient();
+
+        NetworkManager.Singleton.OnClientStopped += HandleClientDisconnect;
 
         NetworkController.Init(joinCode);
 
