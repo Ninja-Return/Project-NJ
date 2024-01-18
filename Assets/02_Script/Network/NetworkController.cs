@@ -10,12 +10,14 @@ public class NetworkController : IDisposable
     public static NetworkController Instance { get; private set; }
 
     public VivoxController vivox { get; private set; }
+    public string joinCode { get; private set; }
 
 
     public NetworkController(string code) 
     {
 
         vivox = new VivoxController(NetworkManager.Singleton.LocalClientId, code);
+        joinCode = code;
 
     }
 

@@ -18,7 +18,7 @@ public class HostGameManager : IDisposable
     private Allocation allocation;
     private string joinCode;
     private string lobbyId;
-    private const int MAX_CONNECTIONS = 2;
+    private const int MAX_CONNECTIONS = 10;
 
     public NetworkServer NetServer { get; private set; }
 
@@ -44,7 +44,7 @@ public class HostGameManager : IDisposable
 
                 {
 
-                    "JoinCode", new DataObject(visibility: DataObject.VisibilityOptions.Member, value: joinCode)
+                    "JoinCode", new DataObject(visibility: DataObject.VisibilityOptions.Public, value: joinCode)
 
                 },
 
@@ -135,6 +135,13 @@ public class HostGameManager : IDisposable
         NetServer?.Dispose();
 
         NetworkController.Instance.Dispose();
+
+    }
+
+    public void ChangeLobbyState(bool isLocked)
+    {
+
+        Lobbies.Instance.UpdateLobbyAsync(lobbyId, new UpdateLobbyOptions() { IsLocked = isLocked, IsPrivate = isLocked });
 
     }
 
