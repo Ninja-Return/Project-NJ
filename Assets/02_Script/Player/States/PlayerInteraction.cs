@@ -48,8 +48,6 @@ public class PlayerInteraction : PlayerStateRoot
     private void HandleObjectMoveKeyPress()
     {
 
-        Debug.Log(123);
-
         if(interactionObject != null && interactionObject.objectType == ObjectType.Dynamic) 
         { 
             
@@ -80,7 +78,7 @@ public class PlayerInteraction : PlayerStateRoot
     private void HandleInteractionKeyPress()
     {
 
-        if(interactionObject != null)
+        if(interactionObject != null && !isObjectMove)
         {
 
             interactionObject.Interaction();
@@ -140,6 +138,7 @@ public class PlayerInteraction : PlayerStateRoot
         {
 
             interactionText.text = string.Empty;
+            interactionObject = null;
 
         }
 
