@@ -17,7 +17,7 @@ public class CraftingTable : MonoBehaviour
         allCraftData = Resources.LoadAll<CraftData>("CraftData");
     }
 
-    private void CraftingItem() //버튼 누를때 호출
+    public void CraftingItem() //버튼 누를때 호출
     {
         //craftingCol에 붙어있는 아이템들 onTableItem에 넣기
         UpdateOnTableItems();
@@ -53,8 +53,13 @@ public class CraftingTable : MonoBehaviour
 
             if (isPossibleData)
             {
-                // 합성 가능한 아이템을 처리
+                // 합성 가능한 아이템을 생성
                 GameObject crateItem = Instantiate(craftData.crateItem, crateItmeSpawnTrs);
+                //올려둔 아이템 제거하고
+                foreach (SlotData onTableObj in onTableItem)
+                    Destroy(onTableObj);
+                //나가기
+                break;
             }
         }
     }

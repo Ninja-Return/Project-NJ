@@ -26,6 +26,7 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void UseSlot() //왼클릭 시(손에 들게하기)
     {
+        if (!onCursor) return;
         if (slotData == null) return;
 
         //풀링 만들기 전까진 Resources에서 가져오자
@@ -35,6 +36,7 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void RemoveSlot() //우클릭 시(아이템 밖으로 던지기)
     {
+        if (!onCursor) return;
         if (slotData == null) return;
 
         //풀링 만들기 전까진 Resources에서 가져오자
