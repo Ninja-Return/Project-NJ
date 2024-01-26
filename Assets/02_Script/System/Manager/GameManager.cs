@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+
+using Random = UnityEngine.Random;
 
 public class GameManager : NetworkBehaviour
 {
@@ -10,6 +13,8 @@ public class GameManager : NetworkBehaviour
 
     public static GameManager Instance;
 
+    public event Action OnGameStarted;
+
     private void Awake()
     {
         
@@ -17,8 +22,12 @@ public class GameManager : NetworkBehaviour
 
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
+
+        yield return new WaitForSeconds(1);
+
+        OnGameStarted?.Invoke();
 
         if (IsServer)
         {

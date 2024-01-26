@@ -10,6 +10,8 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
 
     public event Action OnJumpKeyPress;
     public event Action OnInteractionKeyPress;
+    public event Action OnObjectMoveKeyPress;
+    public event Action OnObjectMoveKeyUp;
 
     private PlayerInput playerInput;
 
@@ -71,6 +73,25 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
             OnInteractionKeyPress?.Invoke();
 
         }
+
+    }
+
+    public void OnMoveObject(InputAction.CallbackContext context)
+    {
+
+        if (context.performed)
+        {
+
+            OnObjectMoveKeyPress?.Invoke();
+
+        }
+        else if (context.canceled)
+        {
+
+            OnObjectMoveKeyUp?.Invoke();
+
+        }
+
 
     }
 

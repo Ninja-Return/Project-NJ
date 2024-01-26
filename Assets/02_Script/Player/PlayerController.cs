@@ -44,10 +44,16 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
         if(!IsOwner && !debug) return;
 
+        if (!debug)
+        {
+
+            NetworkController.Instance.vivox.Join3DChannel();
+            StartCoroutine(Update3DPosCo());
+
+        }
+
         Camera.main.transform.AddComponent<AudioListener>();
 
-        NetworkController.Instance.vivox.Join3DChannel();
-        StartCoroutine(Update3DPosCo());
 
         Input = Input.Init();
         Data = Instantiate(Data);
