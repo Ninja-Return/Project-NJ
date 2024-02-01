@@ -40,6 +40,14 @@ public class SoundManager : MonoBehaviour
 
     }
 
+    private void OnDestroy()
+    {
+
+        instance = null;
+        mainMixer = null;
+
+    }
+
     public static void Play2DSound(AudioClip clip, float volume, SoundType type = SoundType.SFX)
     {
 
@@ -96,6 +104,15 @@ public class SoundManager : MonoBehaviour
         source.minDistance = minDistance;
         source.maxDistance = maxDistance;
         source.rolloffMode = rolloffMode;
+
+        source.outputAudioMixerGroup = type switch
+        {
+
+            SoundType.SFX => instance.sfxMixer,
+            SoundType.BGM => instance.bgmMixer,
+            _ => null
+
+        };
 
 
 
