@@ -17,8 +17,6 @@ public class GroundSencer : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
 
-        Debug.Log(other.isTrigger);
-
         IsGround = !other.isTrigger;
 
     }
