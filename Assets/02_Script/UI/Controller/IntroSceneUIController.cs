@@ -7,6 +7,8 @@ using DG.Tweening;
 
 public class IntroSceneUIController : MonoBehaviour
 {
+    FullScreenMode screenMode = FullScreenMode.Windowed;
+
     public void GameobjectActiveTrue(GameObject obj)
     {
         obj.SetActive(true);
@@ -37,9 +39,26 @@ public class IntroSceneUIController : MonoBehaviour
 
     }
 
+    public void FullScreenSetting(GameObject iconObj)
+    {
+        bool nowFullScreen = screenMode == FullScreenMode.Windowed ? true : false;
+        screenMode = nowFullScreen == true ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+        iconObj.SetActive(nowFullScreen);
+
+        int width = Screen.width;
+        int height = Screen.height;
+        Screen.SetResolution(width, height, screenMode);
+    }
+
     public void ResolutionSetting(TMP_Dropdown dropdown)
     {
         int value = dropdown.value;
+        var optionText = dropdown.options[value].text;
+        var textOut = optionText.Split(" x ");
+        int width = int.Parse(textOut[0]);
+        int height = int.Parse(textOut[1]);
+
+        Screen.SetResolution(width, height, screenMode);
     }
 
     public void ScrollText(Scrollbar scrollbar)
