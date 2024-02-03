@@ -69,4 +69,18 @@ public class VivoxController
 
     }
 
+    public async void LeaveNormalChannel()
+    {
+
+        await VivoxService.Instance.LeaveChannelAsync(joinCode + "_Voice_Normal");
+
+    }
+
+    public async void Leave3DChannel()
+    {
+
+        await VivoxService.Instance.LeaveChannelAsync(joinCode + "_Voice_3D");
+
+    }
+
 }

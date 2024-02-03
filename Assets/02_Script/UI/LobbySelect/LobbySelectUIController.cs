@@ -18,6 +18,8 @@ public class LobbySelectUIController : MonoBehaviour
     {
 
         StartCoroutine(RefreshLobby());
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
     }
 
