@@ -7,6 +7,10 @@ using UnityEngine;
 public class MeetingSystem : NetworkBehaviour
 {
 
+    [SerializeField] private GameObject mettingUI;
+    [SerializeField] private Transform panelRoot;
+    [SerializeField] private MettingPanel panelPrefab;
+
     private void Start()
     {
 
@@ -20,7 +24,37 @@ public class MeetingSystem : NetworkBehaviour
     private void HandleMettingOpen()
     {
 
+        MettingOpenClientRPC();
 
+        foreach(var item in NetworkManager.ConnectedClientsIds)
+        {
+
+            var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(item);
+
+            if(data != null)
+            {
+
+                SpawnPanelClientRPC(item, data.Value.nickName);
+
+            }
+
+        }
+
+    }
+
+    [ClientRpc]
+    private void MettingOpenClientRPC()
+    {
+
+        mettingUI.SetActive(true);
+
+    }
+
+    [ClientRpc]
+    private void SpawnPanelClientRPC(ulong clientId, string userName)
+    {
+
+        Instantiate(panelPrefab, panelRoot).Setting(clientId, userName);
 
     }
 
