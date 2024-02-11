@@ -9,7 +9,7 @@ public class MeetingSystem : NetworkBehaviour
 
     [SerializeField] private GameObject mettingUI;
     [SerializeField] private Transform panelRoot;
-    [SerializeField] private MettingPanel panelPrefab;
+    [SerializeField] private MeetingPanel panelPrefab;
 
     private void Start()
     {
@@ -46,6 +46,7 @@ public class MeetingSystem : NetworkBehaviour
     private void MettingOpenClientRPC()
     {
 
+        DayManager.instance.TimeSetting(true);
         mettingUI.SetActive(true);
 
     }
@@ -54,7 +55,7 @@ public class MeetingSystem : NetworkBehaviour
     private void SpawnPanelClientRPC(ulong clientId, string userName)
     {
 
-        Instantiate(panelPrefab, panelRoot).Setting(clientId, userName);
+        Instantiate(panelPrefab, panelRoot).Setting(clientId, userName, clientId == NetworkManager.LocalClientId);
 
     }
 

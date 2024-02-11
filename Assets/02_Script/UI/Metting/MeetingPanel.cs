@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class MettingPanel : MonoBehaviour
+public class MeetingPanel : MonoBehaviour
 {
 
     private TMP_Text userNameText;
