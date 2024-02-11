@@ -7,7 +7,7 @@ public class DayLight : MonoBehaviour
 
     [SerializeField] private Light lightTrm;
 
-    private bool isLight = true;
+    private bool isLight = false;
     private float angle;
 
     private void Start()
