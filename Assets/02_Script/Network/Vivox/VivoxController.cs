@@ -40,7 +40,7 @@ public class VivoxController
 
     }
 
-    public async void JoinNormalChannel()
+    public async Task JoinNormalChannel()
     {
 
         await Init();
@@ -69,7 +69,7 @@ public class VivoxController
 
     }
 
-    public async void LeaveNormalChannel()
+    public async Task LeaveNormalChannel()
     {
 
         await VivoxService.Instance.LeaveChannelAsync(joinCode + "_Voice_Normal");
@@ -78,7 +78,7 @@ public class VivoxController
 
     }
 
-    public async void Leave3DChannel()
+    public async Task Leave3DChannel()
     {
 
         await VivoxService.Instance.LeaveChannelAsync(joinCode + "_Voice_3D");

@@ -46,6 +46,8 @@ public class MeetingSystem : NetworkBehaviour
     private void MettingOpenClientRPC()
     {
 
+        JoinChannel();
+
         DayManager.instance.TimeSetting(true);
         mettingUI.SetActive(true);
 
@@ -56,6 +58,14 @@ public class MeetingSystem : NetworkBehaviour
     {
 
         Instantiate(panelPrefab, panelRoot).Setting(clientId, userName, clientId == NetworkManager.LocalClientId);
+
+    }
+
+    private async void JoinChannel()
+    {
+
+        await NetworkController.Instance.vivox.Leave3DChannel();
+        await NetworkController.Instance.vivox.JoinNormalChannel();
 
     }
 
