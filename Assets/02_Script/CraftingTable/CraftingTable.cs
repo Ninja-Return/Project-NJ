@@ -53,7 +53,7 @@ public class CraftingTable : MonoBehaviour
 
             if (isPossibleData)
             {
-                // 합성 가능한 아이템을 생성
+                //합성 가능한 아이템을 생성
                 GameObject crateItem = Instantiate(craftData.crateItem, crateItmeSpawnTrs);
                 //올려둔 아이템 제거하고
                 foreach (SlotData onTableObj in onTableItem)

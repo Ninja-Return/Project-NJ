@@ -8,4 +8,11 @@ namespace EnumList
     {
         Null,
     }
+
+    public enum DeadType
+    {
+        Mafia,
+        Monster,
+        Vote
+    }
 }
