@@ -36,7 +36,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     }
 
-    private void Start()
+    private async void Start()
     {
 
         cvcam.Priority = IsOwner || debug ? 10 : 0;
@@ -47,8 +47,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         if (!debug)
         {
 
-            NetworkController.Instance.vivox.Join3DChannel();
-            StartCoroutine(Update3DPosCo());
+            JoinChannel();
 
         }
 
@@ -77,10 +76,25 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     }
 
+    private async void JoinChannel()
+    {
+
+        await NetworkController.Instance.vivox.Join3DChannel();
+        StartCoroutine(Update3DPosCo());
+
+    }
+
     protected override void Update()
     {
 
         if (!IsOwner && !debug) return;
+
+        if(GameManager.Instance != null)
+        {
+
+            if (!GameManager.Instance.PlayerMoveable) return;
+
+        }
 
         base.Update();
 

@@ -14,6 +14,7 @@ public class GameManager : NetworkBehaviour
     public static GameManager Instance;
 
     public event Action OnGameStarted;
+    public bool PlayerMoveable { get; private set; } = true;
 
     private void Awake()
     {
@@ -73,6 +74,14 @@ public class GameManager : NetworkBehaviour
         var pl = Instantiate(player);
         pl.transform.position = new Vector3(Random.Range(-10f, 10f), 1f, Random.Range(-10f, 10f));
         pl.SpawnWithOwnership(clientId, true);
+
+    }
+
+    [ClientRpc]
+    public void PlayerMoveableChangeClientRPC(bool value)
+    {
+
+        PlayerMoveable = value;
 
     }
 

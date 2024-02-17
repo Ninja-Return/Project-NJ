@@ -50,7 +50,7 @@ public class VivoxController
 
     }
 
-    public async void Join3DChannel()
+    public async Task Join3DChannel()
     {
 
         await Init();
