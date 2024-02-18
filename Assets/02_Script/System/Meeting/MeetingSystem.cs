@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
@@ -17,8 +18,9 @@ public class MeetingSystem : NetworkBehaviour
 
     private NetworkVariable<FixedString32Bytes> phaseTextBase = new();
     private NetworkVariable<int> phaseCountBase = new();
+    private Dictionary<ulong, int> voteContainer = new();
 
-    private readonly int phaseTime = 3;
+    private readonly int phaseTime = 5;
 
     private void Start()
     {
@@ -29,14 +31,13 @@ public class MeetingSystem : NetworkBehaviour
         if (!IsServer) return;
 
         DayManager.instance.OnDayComming += HandleMettingOpen;
-        DayManager.instance.OnNightComming += HandleMettingOpen;
 
     }
 
     private void HandleCountChanged(int previousValue, int newValue)
     {
 
-        phaseCountText.text = newValue.ToString();
+        phaseCountText.text = newValue == 0 ? "" : newValue.ToString();
 
     }
 
@@ -46,8 +47,6 @@ public class MeetingSystem : NetworkBehaviour
         phaseText.text = newValue.ToString();
 
     }
-
-
 
     private void HandleMettingOpen()
     {
@@ -122,6 +121,63 @@ public class MeetingSystem : NetworkBehaviour
 
     }
 
+    private void PhaseEnd()
+    {
+
+        int maxVoteCount = int.MinValue;
+        List<ulong> maxVoteClient = new();
+
+        foreach(var item in voteContainer)
+        {
+
+            if(item.Value > maxVoteCount)
+            {
+
+                maxVoteClient.Clear();
+                maxVoteClient.Add(item.Key);
+
+                maxVoteCount = item.Value;
+
+            }
+            else if(item.Value == maxVoteCount)
+            {
+
+                maxVoteClient.Add(item.Key);
+
+            }
+
+        }
+
+        if(maxVoteClient.Count > 1)
+        {
+
+            Debug.Log("°ãÃÆ¾î ½Ã¹ß¾Æ");
+
+        }
+        else
+        {
+
+            Debug.Log(maxVoteClient[0]);
+
+        }
+
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void VoteServerRPC(ulong clientId)
+    {
+
+        if(!voteContainer.ContainsKey(clientId)) 
+        {
+
+            voteContainer.Add(clientId, 0);
+
+        }
+
+        voteContainer[clientId]++;
+
+    }
+
     private IEnumerator MeetingCountingCo()
     {
 
@@ -140,6 +196,9 @@ public class MeetingSystem : NetworkBehaviour
                 yield return new WaitForSeconds(1);
 
             }
+
+            phaseCountBase.Value = 0;
+            PhaseEnd();
 
             yield return new WaitForSeconds(1);
 

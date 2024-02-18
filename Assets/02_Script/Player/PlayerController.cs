@@ -36,7 +36,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     }
 
-    private async void Start()
+    private void Start()
     {
 
         cvcam.Priority = IsOwner || debug ? 10 : 0;
