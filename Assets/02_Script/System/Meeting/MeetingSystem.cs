@@ -19,6 +19,7 @@ public class MeetingSystem : NetworkBehaviour
     private NetworkVariable<FixedString32Bytes> phaseTextBase = new();
     private NetworkVariable<int> phaseCountBase = new();
     private Dictionary<ulong, int> voteContainer = new();
+    private bool isVote = false;
 
     private readonly int phaseTime = 5;
 
@@ -130,6 +131,14 @@ public class MeetingSystem : NetworkBehaviour
 
     }
 
+    [ClientRpc]
+    private void PhaseEndClientRPC()
+    {
+
+        isVote = false;
+
+    }
+
     private void PhaseEnd()
     {
 
@@ -170,10 +179,12 @@ public class MeetingSystem : NetworkBehaviour
 
         }
 
+        PhaseEndClientRPC();
+
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void VoteServerRPC(ulong clientId)
+    private void VoteServerRPC(ulong clientId)
     {
 
         if(!voteContainer.ContainsKey(clientId)) 
@@ -184,6 +195,17 @@ public class MeetingSystem : NetworkBehaviour
         }
 
         voteContainer[clientId]++;
+
+    }
+
+    public void Vote(ulong clientId)
+    {
+
+        if (clientId == NetworkManager.LocalClientId || isVote) return;
+
+        isVote = true;
+
+        VoteServerRPC(clientId);
 
     }
 
