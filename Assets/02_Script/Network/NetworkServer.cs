@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Unity.Netcode;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class NetworkServer : IDisposable
@@ -88,6 +89,23 @@ public class NetworkServer : IDisposable
         }
 
         return null;
+    }
+
+    public void SetUserDataByClientId(ulong clientId, UserData userData)
+    {
+
+        if (clientToAuthContainer.TryGetValue(clientId, out string authID))
+        {
+
+            if (authIdToUserDataContainer.ContainsKey(authID))
+            {
+
+                authIdToUserDataContainer[authID] = userData;
+
+            }
+
+        }
+
     }
 
     public void Dispose()
