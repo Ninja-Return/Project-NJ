@@ -31,7 +31,7 @@ public class MeetingPanel : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
 
-
+        MeetingSystem.Instance.VoteServerRPC(ownerClientId);
 
     }
 
