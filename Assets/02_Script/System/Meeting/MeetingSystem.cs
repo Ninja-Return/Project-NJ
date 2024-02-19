@@ -22,6 +22,15 @@ public class MeetingSystem : NetworkBehaviour
 
     private readonly int phaseTime = 5;
 
+    public static MeetingSystem Instance { get; private set; }
+
+    private void Awake()
+    {
+
+        Instance = this;
+
+    }
+
     private void Start()
     {
 

@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class MeetingPanel : MonoBehaviour
+public class MeetingPanel : MonoBehaviour, IPointerDownHandler
 {
 
     private TMP_Text userNameText;
@@ -23,6 +25,13 @@ public class MeetingPanel : MonoBehaviour
 
         userNameText.text = userName;
         userNameText.color = isOwner ? Color.yellow : Color.black;
+
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+
+
 
     }
 
