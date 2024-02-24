@@ -5,6 +5,7 @@ using FSM_System.Netcode;
 using Cinemachine;
 using Unity.VisualScripting;
 using DG.Tweening;
+using Unity.Netcode;
 
 public enum EnumPlayerState
 {
@@ -50,9 +51,6 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
             JoinChannel();
 
         }
-
-        Camera.main.transform.AddComponent<AudioListener>();
-
 
         Input = Input.Init();
         Data = Instantiate(Data);
@@ -113,6 +111,13 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
             yield return sec;
 
         }
+
+    }
+
+    public void PlayerDieOwnerRPC(ClientRpcParams clientParams = default)
+    {
+
+
 
     }
 

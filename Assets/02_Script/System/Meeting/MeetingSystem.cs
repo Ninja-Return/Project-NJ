@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
@@ -139,7 +137,7 @@ public class MeetingSystem : NetworkBehaviour
 
     }
 
-    private void PhaseEnd()
+    private void PhaseEnd(int phase)
     {
 
         int maxVoteCount = int.MinValue;
@@ -166,18 +164,39 @@ public class MeetingSystem : NetworkBehaviour
 
         }
 
-        if(maxVoteClient.Count > 1)
+        if (maxVoteClient.Count > 1)
         {
 
             Debug.Log("°ãÃÆ¾î ½Ã¹ß¾Æ");
 
         }
-        else
+        else if (maxVoteClient.Count == 1)
         {
 
             Debug.Log(maxVoteClient[0]);
 
+            if (phase == 1)
+            {
+
+                var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(maxVoteClient[0]);
+
+                foreach(var item in data.Value.attachedItem)
+                {
+
+                    Debug.Log(item);
+
+                }
+
+            }
+            else if (phase == 2)
+            {
+
+                GameManager.Instance.PlayerDie(maxVoteClient[0]);
+
+            }
+
         }
+
 
         PhaseEndClientRPC();
 
@@ -229,13 +248,14 @@ public class MeetingSystem : NetworkBehaviour
             }
 
             phaseCountBase.Value = 0;
-            PhaseEnd();
+            PhaseEnd(i + 1);
 
             yield return new WaitForSeconds(1);
 
         }
 
         GameManager.Instance.PlayerMoveableChangeClientRPC(true);
+        DayManager.instance.TimeSetting(false);
         MeetingEndClientRPC();
 
     }
