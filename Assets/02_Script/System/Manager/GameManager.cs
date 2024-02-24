@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
-
 using Random = UnityEngine.Random;
 
 public class GameManager : NetworkBehaviour
@@ -11,9 +10,13 @@ public class GameManager : NetworkBehaviour
 
     [SerializeField] private NetworkObject player;
 
+    private List<PlayerController> players = new();
+
     public static GameManager Instance;
 
     public event Action OnGameStarted;
+    public bool PlayerMoveable { get; private set; } = true;
+
 
     private void Awake()
     {
@@ -73,6 +76,44 @@ public class GameManager : NetworkBehaviour
         var pl = Instantiate(player);
         pl.transform.position = new Vector3(Random.Range(-10f, 10f), 1f, Random.Range(-10f, 10f));
         pl.SpawnWithOwnership(clientId, true);
+        players.Add(pl.GetComponent<PlayerController>());
+
+    }
+
+    [ClientRpc]
+    public void PlayerMoveableChangeClientRPC(bool value)
+    {
+
+        PlayerMoveable = value;
+
+    }
+
+    public void PlayerDie(ulong clientId)
+    {
+
+        players.Find(x => x.OwnerClientId == clientId).NetworkObject.Despawn();
+
+        var param = new ClientRpcParams
+        {
+
+            Send = new ClientRpcSendParams
+            {
+
+                TargetClientIds = new[] { clientId },
+
+            }
+
+        };
+
+        PlayerDieClientRPC(param);
+
+    }
+
+    [ClientRpc]
+    private void PlayerDieClientRPC(ClientRpcParams param)
+    {
+
+
 
     }
 

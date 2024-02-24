@@ -44,14 +44,6 @@ public class SoundManager : MonoBehaviour
 
     }
 
-    private void OnDestroy()
-    {
-
-        instance = null;
-        mainMixer = null;
-
-    }
-
     public static void Play2DSound(string clipName, SoundType type = SoundType.SFX)
     {
 

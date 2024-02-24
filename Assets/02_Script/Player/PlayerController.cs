@@ -5,6 +5,7 @@ using FSM_System.Netcode;
 using Cinemachine;
 using Unity.VisualScripting;
 using DG.Tweening;
+using Unity.Netcode;
 
 public enum EnumPlayerState
 {
@@ -47,13 +48,9 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         if (!debug)
         {
 
-            NetworkController.Instance.vivox.Join3DChannel();
-            StartCoroutine(Update3DPosCo());
+            JoinChannel();
 
         }
-
-        Camera.main.transform.AddComponent<AudioListener>();
-
 
         Input = Input.Init();
         Data = Instantiate(Data);
@@ -77,10 +74,25 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     }
 
+    private async void JoinChannel()
+    {
+
+        await NetworkController.Instance.vivox.Join3DChannel();
+        StartCoroutine(Update3DPosCo());
+
+    }
+
     protected override void Update()
     {
 
         if (!IsOwner && !debug) return;
+
+        if(GameManager.Instance != null)
+        {
+
+            if (!GameManager.Instance.PlayerMoveable) return;
+
+        }
 
         base.Update();
 
@@ -99,6 +111,13 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
             yield return sec;
 
         }
+
+    }
+
+    public void PlayerDieOwnerRPC(ClientRpcParams clientParams = default)
+    {
+
+
 
     }
 

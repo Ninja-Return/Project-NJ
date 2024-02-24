@@ -12,7 +12,7 @@ public class VivoxController
     private LoginOptions loginOptions;
     private string joinCode;
     private bool isInit;
-    private bool completeJoin;
+    private bool completeJoin3D, completeJoin2D;
 
     public VivoxController(ulong clientId, string code)
     {
@@ -40,46 +40,50 @@ public class VivoxController
 
     }
 
-    public async void JoinNormalChannel()
+    public async Task JoinNormalChannel()
     {
 
         await Init();
         await VivoxService.Instance.JoinGroupChannelAsync(joinCode + "_Voice_Normal", ChatCapability.AudioOnly);
 
-        completeJoin = true;
+        completeJoin2D = true;
 
     }
 
-    public async void Join3DChannel()
+    public async Task Join3DChannel()
     {
 
         await Init();
         await VivoxService.Instance.JoinPositionalChannelAsync(joinCode + "_Voice_3D", ChatCapability.AudioOnly, channel3DProperties);
 
-        completeJoin = true;
+        completeJoin3D = true;
 
     }
 
     public void UpdateChannelPos(GameObject speaker)
     {
 
-        if (!completeJoin) return;
+        if (!completeJoin3D) return;
 
         VivoxService.Instance.Set3DPosition(speaker, joinCode + "_Voice_3D");
 
     }
 
-    public async void LeaveNormalChannel()
+    public async Task LeaveNormalChannel()
     {
 
         await VivoxService.Instance.LeaveChannelAsync(joinCode + "_Voice_Normal");
 
+        completeJoin2D = false;
+
     }
 
-    public async void Leave3DChannel()
+    public async Task Leave3DChannel()
     {
 
         await VivoxService.Instance.LeaveChannelAsync(joinCode + "_Voice_3D");
+
+        completeJoin3D = false;
 
     }
 

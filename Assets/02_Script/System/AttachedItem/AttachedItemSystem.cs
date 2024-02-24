@@ -51,6 +51,10 @@ public class AttachedItemSystem : NetworkBehaviour
         foreach(var client in NetworkManager.ConnectedClientsIds)
         {
 
+            var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(client).Value;
+            data.attachedItem = randList[(int)client].ToList();
+
+            HostSingle.Instance.GameManager.NetServer.SetUserDataByClientId(client, data);
             SetAttachedItemClientRPC(string.Join(", ", randList[(int)client]), client);
 
         }
@@ -69,32 +73,46 @@ public class AttachedItemSystem : NetworkBehaviour
 
     private List<List<T>> GetCombinations<T>(List<T> list, int length)
     {
+
         if (length == 1) return list.Select(item => new List<T> { item }).ToList();
 
         var combinations = new List<List<T>>();
+
         for (int i = 0; i < list.Count; i++)
         {
             var remaining = GetCombinations(list.Skip(i + 1).ToList(), length - 1);
             foreach (var next in remaining)
             {
+
                 var combination = new List<T> { list[i] };
+
                 combination.AddRange(next);
                 combinations.Add(combination);
+
             }
         }
+
         return combinations;
+
     }
 
     private List<List<string>> FilterCombinations(List<List<string>> combinations)
     {
+
         var filteredCombinations = new List<List<string>>();
+
         foreach (var combination in combinations)
         {
+
             if (filteredCombinations.All(fc => fc.Intersect(combination).Count() <= 1))
             {
+
                 filteredCombinations.Add(combination);
+
             }
+
         }
+
         return filteredCombinations;
     }
 
