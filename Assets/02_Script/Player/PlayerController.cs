@@ -1,11 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using FSM_System.Netcode;
 using Cinemachine;
-using Unity.VisualScripting;
-using DG.Tweening;
-using Unity.Netcode;
+using System;
 
 public enum EnumPlayerState
 {
@@ -26,6 +23,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     private CinemachineVirtualCamera cvcam;
     private Canvas interactionCanvas;
+    private bool isStopped;
 
     protected override void Awake()
     {
@@ -44,6 +42,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         interactionCanvas.gameObject.SetActive(IsOwner || debug);
 
         if(!IsOwner && !debug) return;
+        if (isStopped) return;
 
         if (!debug)
         {
@@ -71,6 +70,16 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         AddState(interaction, EnumPlayerState.Move);
 
         ChangeState(startState);
+
+        Input.OnInventoryKeyPress += HandleInvenActive;
+
+    }
+
+    private void HandleInvenActive()
+    {
+
+        isStopped = !isStopped;
+        Inventory.Instance.SetActiveInventoryUI();
 
     }
 
@@ -114,10 +123,17 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     }
 
-    public void PlayerDieOwnerRPC(ClientRpcParams clientParams = default)
+    public override void OnDestroy()
     {
 
+        base.OnDestroy();
 
+        if(IsOwner && Inventory.Instance != null)
+        {
+
+            Input.OnInventoryKeyPress -= HandleInvenActive;
+
+        }
 
     }
 

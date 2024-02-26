@@ -8,14 +8,10 @@ using UnityEngine;
 public class MeetingSystem : NetworkBehaviour
 {
 
-    [SerializeField] private GameObject mettingUI;
-    [SerializeField] private Transform panelRoot;
-    [SerializeField] private MeetingPanel panelPrefab;
-    [SerializeField] private TMP_Text phaseText;
-    [SerializeField] private TMP_Text phaseCountText;
+    [SerializeField] private MeetingUIController meetingUI;
 
-    private NetworkVariable<FixedString32Bytes> phaseTextBase = new();
     private NetworkVariable<int> phaseCountBase = new();
+    private NetworkVariable<int> phaseTimeBase = new();
     private Dictionary<ulong, int> voteContainer = new();
     private bool isVote = false;
 
@@ -33,8 +29,8 @@ public class MeetingSystem : NetworkBehaviour
     private void Start()
     {
 
-        phaseTextBase.OnValueChanged += HandleTextChanged;
-        phaseCountBase.OnValueChanged += HandleCountChanged;
+        phaseCountBase.OnValueChanged += HandlePhaseChanged;
+        phaseTimeBase.OnValueChanged += HandleTimeChanged;
 
         if (!IsServer) return;
 
@@ -42,17 +38,17 @@ public class MeetingSystem : NetworkBehaviour
 
     }
 
-    private void HandleCountChanged(int previousValue, int newValue)
+    private void HandleTimeChanged(int previousValue, int newValue)
     {
 
-        phaseCountText.text = newValue == 0 ? "" : newValue.ToString();
+        meetingUI.UpdateTime(newValue);
 
     }
 
-    private void HandleTextChanged(FixedString32Bytes previousValue, FixedString32Bytes newValue)
+    private void HandlePhaseChanged(int previousValue, int newValue)
     {
 
-        phaseText.text = newValue.ToString();
+        meetingUI.PhaseChange(newValue);
 
     }
 
@@ -88,7 +84,8 @@ public class MeetingSystem : NetworkBehaviour
         JoinChannel();
 
         DayManager.instance.TimeSetting(true);
-        mettingUI.SetActive(true);
+        meetingUI.gameObject.SetActive(true);
+        meetingUI.MeetingStart();
 
     }
 
@@ -96,7 +93,7 @@ public class MeetingSystem : NetworkBehaviour
     private void SpawnPanelClientRPC(ulong clientId, string userName)
     {
 
-        Instantiate(panelPrefab, panelRoot).Setting(clientId, userName, clientId == NetworkManager.LocalClientId);
+        meetingUI.SpawnPanel(clientId, userName, clientId == NetworkManager.LocalClientId);
 
     }
 
@@ -125,7 +122,7 @@ public class MeetingSystem : NetworkBehaviour
 
         Join3DChannel();
 
-        mettingUI.gameObject.SetActive(false);
+        meetingUI.gameObject.SetActive(false);
 
     }
 
@@ -217,37 +214,36 @@ public class MeetingSystem : NetworkBehaviour
 
     }
 
-    public void Vote(ulong clientId)
+    public bool Vote(ulong clientId)
     {
 
-        if (clientId == NetworkManager.LocalClientId || isVote) return;
+        if (clientId == NetworkManager.LocalClientId || isVote) return false;
 
         isVote = true;
 
         VoteServerRPC(clientId);
+
+        return true;
 
     }
 
     private IEnumerator MeetingCountingCo()
     {
 
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 2; i++)
         {
 
-            phaseTextBase.Value = $"Phase{i + 1}";
+            phaseCountBase.Value = i;
 
             for(int j = phaseTime; j > 0; j--)
             {
 
-                phaseCountBase.Value = j;
+                phaseTimeBase.Value = j;
                 yield return new WaitForSeconds(1);
 
             }
 
-            phaseCountBase.Value = 0;
+            phaseTimeBase.Value = 0;
             PhaseEnd(i + 1);
 
             yield return new WaitForSeconds(1);

@@ -9,7 +9,7 @@ public class DayManager : NetworkBehaviour
 
     [field:SerializeField] public float timeSpeed;
 
-    private NetworkVariable<float> time = new NetworkVariable<float>();
+    private float time;
     private bool timeStop = false;
 
     public event Action<float> OnTimeUpdate;
@@ -35,15 +35,6 @@ public class DayManager : NetworkBehaviour
     private void HandleStartedGame()
     {
 
-
-        if (IsClient)
-        {
-
-            time.OnValueChanged += HandleTimeValueChanged;
-
-        }
-
-
         if (IsServer)
         {
 
@@ -53,7 +44,7 @@ public class DayManager : NetworkBehaviour
 
     }
 
-    private void HandleTimeValueChanged(float previousValue, float newValue)
+    private void HandleTimeValueChanged(float newValue)
     {
 
         OnTimeUpdate?.Invoke(newValue);
@@ -70,7 +61,8 @@ public class DayManager : NetworkBehaviour
         {
 
             yield return wait;
-            time.Value += Time.deltaTime / timeSpeed;
+            time += Time.deltaTime / timeSpeed;
+            HandleTimeValueChanged(time);
             yield return null;
 
         }
@@ -86,7 +78,8 @@ public class DayManager : NetworkBehaviour
 
     }
 
-    public void DayComming(bool timeStop)
+    [ClientRpc]
+    public void DayCommingClientRPC(bool timeStop)
     {
 
         TimeSetting(timeStop);
@@ -94,7 +87,8 @@ public class DayManager : NetworkBehaviour
 
     }
 
-    public void NightComming(bool timeStop)
+    [ClientRpc]
+    public void NightCommingClientRPC(bool timeStop)
     {
 
         TimeSetting(timeStop);

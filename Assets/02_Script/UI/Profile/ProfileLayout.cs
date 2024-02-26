@@ -8,13 +8,10 @@ public class ProfileLayout : MonoBehaviour
     public float semiMajorAxis; // 타원의 장축 반지름
     public float semiMinorAxis; // 타원의 단축 반지름
 
-    void Start()
-    {
-        ArrangeChildren();
-    }
 
-    void ArrangeChildren() //프로필 갯수에 이상이 있을때마다 호출
+    public void ArrangeChildren()
     {
+
         int childCount = transform.childCount;
         if (childCount == 0) return;
 

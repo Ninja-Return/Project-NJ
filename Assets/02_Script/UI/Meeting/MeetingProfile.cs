@@ -5,18 +5,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MeetingPanel : MonoBehaviour, IPointerDownHandler
+public class MeetingProfile : MonoBehaviour, IPointerDownHandler
 {
 
-    private TMP_Text userNameText;
+    [SerializeField] private TMP_Text userNameText;
+    [SerializeField] private GameObject chackMask;
+
     private ulong ownerClientId;
-
-    private void Awake()
-    {
-        
-        userNameText = GetComponentInChildren<TMP_Text>();
-
-    }
 
     public void Setting(ulong ownerClientId, string userName, bool isOwner)
     {
@@ -31,7 +26,12 @@ public class MeetingPanel : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
 
-        MeetingSystem.Instance.Vote(ownerClientId);
+        if(MeetingSystem.Instance.Vote(ownerClientId))
+        {
+
+            chackMask.SetActive(true);
+
+        }
 
     }
 

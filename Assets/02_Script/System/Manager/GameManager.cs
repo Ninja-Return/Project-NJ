@@ -113,7 +113,7 @@ public class GameManager : NetworkBehaviour
     private void PlayerDieClientRPC(ClientRpcParams param)
     {
 
-
+        Debug.Log("µÚÁü");
 
     }
 
