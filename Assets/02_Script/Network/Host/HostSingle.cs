@@ -31,11 +31,13 @@ public class HostSingle : MonoBehaviour
     }
 
     public HostGameManager GameManager { get; private set; }
+    public NetworkServer NetServer => GameManager.NetServer;
 
     public void CreateHost()
     {
 
         GameManager = new HostGameManager();
+
 
     }
 

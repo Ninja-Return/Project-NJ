@@ -64,7 +64,7 @@ public class MeetingSystem : NetworkBehaviour
 
             var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(item);
 
-            if(data != null)
+            if(data != null && data.Value.isDie == false)
             {
 
                 SpawnPanelClientRPC(item, data.Value.nickName);

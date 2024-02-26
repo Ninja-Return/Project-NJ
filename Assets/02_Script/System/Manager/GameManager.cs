@@ -93,6 +93,11 @@ public class GameManager : NetworkBehaviour
 
         players.Find(x => x.OwnerClientId == clientId).NetworkObject.Despawn();
 
+        var data = HostSingle.Instance.NetServer.GetUserDataByClientID(clientId).Value;
+        data.isDie = true;
+
+        HostSingle.Instance.NetServer.SetUserDataByClientId(clientId, data);
+
         var param = new ClientRpcParams
         {
 
