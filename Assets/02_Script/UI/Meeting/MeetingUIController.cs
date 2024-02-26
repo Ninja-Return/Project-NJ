@@ -9,7 +9,7 @@ public class MeetingUIController : MonoBehaviour
 
     [SerializeField] private TMP_Text phaseText;
     [SerializeField] private TMP_Text timeText;
-    [SerializeField] private GameObject chattingPanel;
+    [SerializeField] private MeetingChatUIController chattingPanel;
     [SerializeField] private MeetingProfile panelPrefab;
     [SerializeField] private Transform panelRoot;
 
@@ -48,6 +48,16 @@ public class MeetingUIController : MonoBehaviour
         var panel = Instantiate(panelPrefab, panelRoot);
 
         panel.Setting(clientId, userName, isOwner);
+
+    }
+
+    public void ChattingOpen()
+    {
+
+        bool active = !chattingPanel.gameObject.activeSelf;
+
+        chattingPanel.Init(active);
+        chattingPanel.gameObject.SetActive(active);
 
     }
 

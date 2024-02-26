@@ -437,6 +437,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 238738100}
     m_Modifications:
+    - target: {fileID: 2387932426055777579, guid: cfa49f2dc5845c848bcf7a4f137b8d75, type: 3}
+      propertyPath: chattingSystem
+      value: 
+      objectReference: {fileID: 555314208}
     - target: {fileID: 4990125939421938514, guid: cfa49f2dc5845c848bcf7a4f137b8d75, type: 3}
       propertyPath: m_Name
       value: MeetingUI
@@ -784,6 +788,7 @@ GameObject:
   - component: {fileID: 555314205}
   - component: {fileID: 555314206}
   - component: {fileID: 555314207}
+  - component: {fileID: 555314208}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -882,6 +887,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meetingUI: {fileID: 118858155}
+  chattingSystem: {fileID: 555314208}
+--- !u!114 &555314208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555314201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aaf133638a94fe4f848e0836ed751cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &796675523
 GameObject:
   m_ObjectHideFlags: 0

@@ -1252,6 +1252,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4321827826753286570}
+  - component: {fileID: 2387932426055777579}
   m_Layer: 5
   m_Name: Chatting
   m_TagString: Untagged
@@ -1281,6 +1282,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2387932426055777579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4670144657292847694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95f6b82049df52443a58d3de46650811, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chattingSystem: {fileID: 0}
+  chatInput: {fileID: 1621806419427059696}
+  clientPanel: {fileID: 4249321838098426051, guid: 43579709935a30b4ab22cfdee425db9e, type: 3}
+  ownerPanel: {fileID: 2131712108675460048, guid: 2372aa2439af68d4db4312b1844e2b42, type: 3}
+  chatPanelRoot: {fileID: 6797410372092723419}
 --- !u!1 &4868299688763951222
 GameObject:
   m_ObjectHideFlags: 0
@@ -1375,7 +1393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   phaseText: {fileID: 7813414431548196998}
   timeText: {fileID: 8417865448296991217}
-  chattingPanel: {fileID: 4670144657292847694}
+  chattingPanel: {fileID: 2387932426055777579}
   panelPrefab: {fileID: 8261299188015204174, guid: 667d1f14f370f454180256b35665d08f, type: 3}
   panelRoot: {fileID: 9084034026216042403}
 --- !u!1 &5127195622222331326
@@ -1985,7 +2003,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7170111035597981173}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5823234296678557522}
+        m_TargetAssemblyTypeName: MeetingUIController, Assembly-CSharp
+        m_MethodName: ChattingOpen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6895011836786586049
 GameObject:
   m_ObjectHideFlags: 0
@@ -1997,6 +2027,7 @@ GameObject:
   - component: {fileID: 2069431192636117877}
   - component: {fileID: 5465730094878115091}
   - component: {fileID: 6592848691282041621}
+  - component: {fileID: 6662623050945081409}
   m_Layer: 5
   m_Name: SentIcon
   m_TagString: Untagged
@@ -2061,6 +2092,62 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6662623050945081409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6895011836786586049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 6592848691282041621}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2387932426055777579}
+        m_TargetAssemblyTypeName: MeetingChatUIController, Assembly-CSharp
+        m_MethodName: SummitMessage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6910738116135467829
 GameObject:
   m_ObjectHideFlags: 0
@@ -2249,7 +2336,7 @@ RectTransform:
   m_Father: {fileID: 2724677480785097436}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0.99999535}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2642,7 +2729,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 6417145614583147328}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999595
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

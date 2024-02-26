@@ -9,6 +9,7 @@ public class MeetingSystem : NetworkBehaviour
 {
 
     [SerializeField] private MeetingUIController meetingUI;
+    [SerializeField] private ChattingSystem chattingSystem;
 
     private NetworkVariable<int> phaseCountBase = new();
     private NetworkVariable<int> phaseTimeBase = new();
@@ -56,6 +57,8 @@ public class MeetingSystem : NetworkBehaviour
     {
 
         GameManager.Instance.PlayerMoveableChangeClientRPC(false);
+
+        chattingSystem.ClearChatting();
 
         MettingOpenClientRPC();
 
@@ -253,6 +256,7 @@ public class MeetingSystem : NetworkBehaviour
         GameManager.Instance.PlayerMoveableChangeClientRPC(true);
         DayManager.instance.TimeSetting(false);
         MeetingEndClientRPC();
+        chattingSystem.ClearChatting();
 
     }
 
