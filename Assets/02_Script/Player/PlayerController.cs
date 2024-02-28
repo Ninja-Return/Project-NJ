@@ -25,12 +25,16 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     private Canvas interactionCanvas;
     private bool isStopped;
 
+    public CinemachineVirtualCamera watchCam { get; private set; }
+
     protected override void Awake()
     {
         
         base.Awake();
 
-        cvcam = GetComponentInChildren<CinemachineVirtualCamera>();
+        cvcam = transform.Find("PlayerCamera").GetComponent<CinemachineVirtualCamera>();
+        watchCam = cvcam.transform.Find("PlayerWatchingCam").GetComponent<CinemachineVirtualCamera>();
+
         interactionCanvas = GetComponentInChildren<Canvas>();
 
     }
@@ -39,6 +43,14 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     {
 
         cvcam.Priority = IsOwner || debug ? 10 : 0;
+
+        if (!IsOwner)
+        {
+
+            Destroy(cvcam);
+
+        }
+
         interactionCanvas.gameObject.SetActive(IsOwner || debug);
 
         if(!IsOwner && !debug) return;
