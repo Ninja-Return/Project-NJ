@@ -7,6 +7,7 @@ using UnityEngine;
 public class NotificationSystem : MonoBehaviour
 {
 
+    [SerializeField] private NotificationUIController notificationUIController;
 
     public static NotificationSystem Instance { get; private set; }
 
@@ -28,8 +29,8 @@ public class NotificationSystem : MonoBehaviour
     [ClientRpc]
     private void NotificationClientRPC(FixedString512Bytes message) 
     {
-    
-        
+
+        notificationUIController.Notification(message.ToString());
 
     }
 
