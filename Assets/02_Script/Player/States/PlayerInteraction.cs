@@ -90,8 +90,6 @@ public class PlayerInteraction : PlayerStateRoot
     protected override void UpdateState()
     {
 
-        Debug.Log(123);
-
         CheckInteraction();
         SetMoveObjectPos();
         MovementObject();
