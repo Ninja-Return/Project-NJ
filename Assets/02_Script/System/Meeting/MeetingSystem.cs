@@ -16,7 +16,7 @@ public class MeetingSystem : NetworkBehaviour
     private Dictionary<ulong, int> voteContainer = new();
     private bool isVote = false;
 
-    private readonly int phaseTime = 5;
+    private readonly int phaseTime = 3;
 
     public static MeetingSystem Instance { get; private set; }
 

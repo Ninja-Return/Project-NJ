@@ -49,7 +49,7 @@ public class ChattingSystem : NetworkBehaviour
     }
 
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void SummitMessageServerRPC(ChatData chatData)
     {
 

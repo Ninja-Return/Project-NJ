@@ -8,6 +8,8 @@ using UnityEngine;
 public class WatchingSystem : NetworkBehaviour
 {
 
+    [SerializeField] private WatchingUIController watchingUI;
+
     public static WatchingSystem Instance;
 
     private ulong currentWatching;
@@ -81,6 +83,9 @@ public class WatchingSystem : NetworkBehaviour
         alivePlayers = FindObjectsOfType<PlayerController>().ToList();
 
         Watching(alivePlayers[0].OwnerClientId);
+
+        watchingUI.gameObject.SetActive(true);
+        watchingUI.Init();
 
     }
 
