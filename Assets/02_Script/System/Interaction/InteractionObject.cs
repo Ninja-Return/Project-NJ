@@ -42,4 +42,19 @@ public abstract class InteractionObject : NetworkBehaviour
 
     }
 
+    protected void Despawn()
+    {
+
+        DespawnServerRPC();
+
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DespawnServerRPC()
+    {
+
+        NetworkObject.Despawn(true);
+
+    }
+
 }
