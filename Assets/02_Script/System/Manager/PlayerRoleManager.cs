@@ -10,7 +10,8 @@ public enum PlayerRole
 {
 
     Survivor,
-    Mafia
+    Mafia,
+    New // 나중에 이름 정하기
 
 }
 
@@ -19,8 +20,7 @@ public class PlayerRoleManager : NetworkBehaviour
 
     [SerializeField] private TMP_Text mafiaText;
     [SerializeField] private bool debug;
-
-    public ulong mafiaClientId { get; private set; }
+    [SerializeField, Range(0, 1)] private float newRolePercentage = 1;
 
     private void Start()
     {
@@ -49,32 +49,90 @@ public class PlayerRoleManager : NetworkBehaviour
     private void SettingMafia()
     {
         
-        var clients = NetworkManager.ConnectedClients.Keys.ToList();
+        var clients = NetworkManager.ConnectedClients.Keys.ToList().GetRandomList(100);
 
-        var idx = Random.Range(0, clients.Count);
+        {
 
-        SetMafiaClientRPC(clients[idx]);
+            var mafiaId = clients[0];
+
+            var param = new ClientRpcParams
+            {
+
+                Send = new ClientRpcSendParams
+                {
+
+                    TargetClientIds = new[] { mafiaId },
+
+                }
+
+            };
+
+            SetRoleClientRPC(PlayerRole.Mafia, param);
+
+            clients.Remove(mafiaId);
+
+        }
+
+        if(Random.value <= newRolePercentage && clients.Count > 0)
+        {
+
+            var id = clients[0];
+
+            var param = new ClientRpcParams
+            {
+
+                Send = new ClientRpcSendParams
+                {
+
+                    TargetClientIds = new[] { id },
+
+                }
+
+            };
+
+            SetRoleClientRPC(PlayerRole.New, param);
+
+            clients.Remove(id);
+
+        }
+
+        if(clients.Count  > 0)
+        {
+
+            var param = new ClientRpcParams
+            {
+
+                Send = new ClientRpcSendParams
+                {
+
+                    TargetClientIds = clients,
+
+                }
+
+            };
+
+            SetRoleClientRPC(PlayerRole.Survivor, param);
+
+        }
 
     }
 
     [ClientRpc]
-    public void SetMafiaClientRPC(ulong mafiaClientId)
+    public void SetRoleClientRPC(PlayerRole clientRole, ClientRpcParams rpcParams)
     {
 
-        if(NetworkManager.LocalClientId == mafiaClientId)
+        switch (clientRole)
         {
-
-            TextSetUp("당신의 역할은 마피아 입니다", Color.red);
-
+            case PlayerRole.Survivor:
+                TextSetUp("당신의 역할은 생존자 입니다", Color.blue);
+                break;
+            case PlayerRole.Mafia:
+                TextSetUp("당신의 역할은 마피아 입니다", Color.red);
+                break;
+            case PlayerRole.New:
+                TextSetUp("당신의 역할은 ??? 입니다", Color.green);
+                break;
         }
-        else
-        {
-
-            TextSetUp("당신의 역할은 생존자 입니다", Color.blue);
-
-        }
-
-        this.mafiaClientId = mafiaClientId;
 
     }
 

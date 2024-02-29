@@ -41,7 +41,7 @@ public class AttachedItemSystem : NetworkBehaviour
 
         if (!IsServer) return;
 
-        var ls = datas.GetRandomList();
+        var ls = datas.GetRandomListObject();
 
         var com = GetCombinations(ls.items, 2);
         var filterList = FilterCombinations(com);

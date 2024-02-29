@@ -26,6 +26,7 @@ public abstract class InteractionObject : NetworkBehaviour
 
     }
 
+
     [ServerRpc(RequireOwnership = false)]
     protected virtual void InteractionServerRPC()
     {
