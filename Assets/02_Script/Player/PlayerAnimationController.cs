@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerAnimationController : NetworkBehaviour
 {
@@ -10,6 +11,8 @@ public class PlayerAnimationController : NetworkBehaviour
     private readonly int HASH_IS_GROUND = Animator.StringToHash("IsGround");
     private readonly int HASH_X = Animator.StringToHash("X");
     private readonly int HASH_Y = Animator.StringToHash("Y");
+
+    [SerializeField] private bool debug;
 
     private NetworkVariable<float> xStateValue = 
         new NetworkVariable<float>(default, 
@@ -27,10 +30,25 @@ public class PlayerAnimationController : NetworkBehaviour
             NetworkVariableWritePermission.Owner);
 
     private PlayerController playerController;
-    private Animator controllAnimator;
+    private Animator controlAnimator;
+    private Rig controlRig;
     private GroundSencer groundSencer;
     private Vector2 oldInput;
     private bool oldIsGround;
+
+    private void Awake()
+    {
+
+        if (debug)
+        {
+
+            var serverObj = transform.Find("VisualServer");
+            groundSencer = GetComponentInChildren<GroundSencer>();
+            controlAnimator = serverObj.GetComponent<Animator>();
+
+        }
+
+    }
 
     public override void OnNetworkSpawn()
     {
@@ -44,19 +62,23 @@ public class PlayerAnimationController : NetworkBehaviour
         if (IsOwner)
         {
 
-            controllAnimator = clientObj.GetComponent<Animator>();
+            controlAnimator = clientObj.GetComponent<Animator>();
+            controlRig = clientObj.Find("Armature").Find("Rig 1").GetComponent<Rig>();
             playerController = GetComponent<PlayerController>();
             groundSencer = GetComponentInChildren<GroundSencer>();
+
 
         }
         else
         {
 
-            controllAnimator = serverObj.GetComponent<Animator>();
+            controlAnimator = serverObj.GetComponent<Animator>();
+            controlRig = serverObj.Find("Rig 1").GetComponent<Rig>();
 
             xStateValue.OnValueChanged += HandleXValueChanged;
             yStateValue.OnValueChanged += HandleYValueChanged;
             isGroundStateValue.OnValueChanged += HandleIsGroundChanged;
+
 
         }
 
@@ -65,16 +87,16 @@ public class PlayerAnimationController : NetworkBehaviour
     private void Update()
     {
 
-        if (!IsOwner) return;
+        if (!IsOwner && !debug) return;
 
-        if (oldInput != playerController.Input.MoveVecter)
+        if (!debug && oldInput != playerController.Input.MoveVecter)
         {
 
             xStateValue.Value = playerController.Input.MoveVecter.x;
             yStateValue.Value = playerController.Input.MoveVecter.y;
 
-            controllAnimator.SetFloat(HASH_X, xStateValue.Value);
-            controllAnimator.SetFloat(HASH_Y, yStateValue.Value);
+            controlAnimator.SetFloat(HASH_X, xStateValue.Value);
+            controlAnimator.SetFloat(HASH_Y, yStateValue.Value);
 
             oldInput = playerController.Input.MoveVecter;
 
@@ -83,7 +105,7 @@ public class PlayerAnimationController : NetworkBehaviour
         if(oldIsGround != groundSencer.IsGround)
         {
 
-            controllAnimator.SetBool(HASH_IS_GROUND, groundSencer.IsGround);
+            controlAnimator.SetBool(HASH_IS_GROUND, groundSencer.IsGround);
             oldIsGround = groundSencer.IsGround;
             isGroundStateValue.Value = groundSencer.IsGround;
 
@@ -94,21 +116,21 @@ public class PlayerAnimationController : NetworkBehaviour
     private void HandleXValueChanged(float previousValue, float newValue)
     {
 
-        controllAnimator.SetFloat(HASH_X, newValue);
+        controlAnimator.SetFloat(HASH_X, newValue);
 
     }
 
     private void HandleYValueChanged(float previousValue, float newValue)
     {
 
-        controllAnimator.SetFloat(HASH_Y, newValue);
+        controlAnimator.SetFloat(HASH_Y, newValue);
 
     }
 
     private void HandleIsGroundChanged(bool previousValue, bool newValue)
     {
 
-        controllAnimator.SetBool(HASH_IS_GROUND, newValue);
+        controlAnimator.SetBool(HASH_IS_GROUND, newValue);
 
     }
 

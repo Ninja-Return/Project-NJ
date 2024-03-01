@@ -13,7 +13,7 @@ public class PlayerKillState : PlayerStateRoot
     public PlayerKillState(PlayerController controller) : base(controller)
     {
 
-        interactionText = transform.Find("InteractionCanvas").Find("InteractionText").GetComponent<TMP_Text>();
+        interactionText = transform.Find("InteractionCanvas").Find("KillText").GetComponent<TMP_Text>();
         cameraTrm = transform.Find("PlayerCamera");
         interactionText.text = string.Empty;
 
