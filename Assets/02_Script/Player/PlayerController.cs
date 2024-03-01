@@ -3,6 +3,7 @@ using UnityEngine;
 using FSM_System.Netcode;
 using Cinemachine;
 using System;
+using Unity.Netcode;
 
 public enum EnumPlayerState
 {
@@ -146,6 +147,16 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
             Input.OnInventoryKeyPress -= HandleInvenActive;
 
         }
+
+    }
+
+    [ClientRpc]
+    public void SetMafiaClientRPC(ClientRpcParams param)
+    {
+
+        var state = new PlayerKillState(this);
+        AddState(state, EnumPlayerState.Move);
+        ChangeState(EnumPlayerState.Move);
 
     }
 

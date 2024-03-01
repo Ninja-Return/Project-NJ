@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -21,6 +22,17 @@ public class PlayerRoleManager : NetworkBehaviour
     [SerializeField] private TMP_Text mafiaText;
     [SerializeField] private bool debug;
     [SerializeField, Range(0, 1)] private float newRolePercentage = 1;
+
+    private Dictionary<ulong, PlayerRole> roleContainer = new();
+
+    public static PlayerRoleManager Instance { get; private set; }
+
+    private void Awake()
+    {
+
+        Instance = this;
+
+    }
 
     private void Start()
     {
@@ -71,6 +83,8 @@ public class PlayerRoleManager : NetworkBehaviour
 
             clients.Remove(mafiaId);
 
+            roleContainer.Add(mafiaId, PlayerRole.Mafia);
+
         }
 
         if(Random.value <= newRolePercentage && clients.Count > 0)
@@ -94,6 +108,8 @@ public class PlayerRoleManager : NetworkBehaviour
 
             clients.Remove(id);
 
+            roleContainer.Add(id, PlayerRole.New);
+
         }
 
         if(clients.Count  > 0)
@@ -112,6 +128,13 @@ public class PlayerRoleManager : NetworkBehaviour
             };
 
             SetRoleClientRPC(PlayerRole.Survivor, param);
+
+        }
+
+        foreach(var id in clients)
+        {
+
+            roleContainer.Add(id, PlayerRole.Survivor);
 
         }
 
@@ -145,6 +168,25 @@ public class PlayerRoleManager : NetworkBehaviour
         Sequence seq = DOTween.Sequence();
         seq.AppendInterval(1);
         seq.Append(mafiaText.DOFade(0, 1.5f));
+
+    }
+
+    public ulong FindMafiaId()
+    {
+
+        foreach(var item in roleContainer)
+        {
+
+            if(item.Value == PlayerRole.Mafia)
+            {
+
+                return item.Key;
+
+            }
+
+        }
+
+        return 0;
 
     }
 

@@ -10,20 +10,24 @@ public class GameManager : NetworkBehaviour
 
     [SerializeField] private NetworkObject player;
 
-    public NetworkList<ulong> alivePlayer { get; private set; } = new();
-    public NetworkList<ulong> diePlayer { get; private set; } = new();
+    public NetworkList<ulong> alivePlayer { get; private set; }
+    public NetworkList<ulong> diePlayer { get; private set; }
 
     private List<PlayerController> players = new();
 
     public static GameManager Instance;
 
     public event Action OnGameStarted;
+    public event Action OnGameStartCallEnd;
     public bool PlayerMoveable { get; private set; } = true;
 
 
     private void Awake()
     {
-        
+
+        alivePlayer = new();
+        diePlayer = new();
+
         Instance = this;
 
     }
@@ -35,14 +39,34 @@ public class GameManager : NetworkBehaviour
 
         OnGameStarted?.Invoke();
 
+        yield return null;
+
+        OnGameStartCallEnd?.Invoke();
+
+
         if (IsServer)
         {
 
             StartGame();
             HostSingle.Instance.GameManager.OnPlayerConnect += HandlePlayerConnect;
-
         }
 
+        yield return null;
+
+        var param = new ClientRpcParams
+        {
+
+            Send = new ClientRpcSendParams
+            {
+
+                TargetClientIds = new[] { PlayerRoleManager.Instance.FindMafiaId() },
+
+            }
+
+        };
+
+        players.Find(x => x.OwnerClientId == PlayerRoleManager.Instance.FindMafiaId()).SetMafiaClientRPC(param);
+        
     }
 
     private void HandlePlayerConnect(string authId, ulong clientId)
@@ -76,10 +100,13 @@ public class GameManager : NetworkBehaviour
     public void SpawnPlayer(ulong clientId)
     {
 
-        var pl = Instantiate(player);
+        var pl = Instantiate(player).GetComponent<PlayerController>();
         pl.transform.position = new Vector3(Random.Range(-10f, 10f), 1f, Random.Range(-10f, 10f));
-        pl.SpawnWithOwnership(clientId, true);
-        players.Add(pl.GetComponent<PlayerController>());
+        pl.NetworkObject.SpawnWithOwnership(clientId, true);
+
+
+
+        players.Add(pl);
         alivePlayer.Add(pl.OwnerClientId);
 
     }
@@ -118,6 +145,14 @@ public class GameManager : NetworkBehaviour
         diePlayer.Add(clientId);
 
         PlayerDieClientRPC(param);
+
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void PlayerDieServerRPC(ulong id)
+    {
+
+        PlayerDie(id);
 
     }
 
