@@ -68,7 +68,7 @@ public abstract class InteractionObject : NetworkBehaviour
 
     }
 
-    protected void Despawn()
+    public void Despawn()
     {
 
         DespawnServerRPC();

@@ -9,7 +9,6 @@ public class TestItem : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("이제 먹는다");
-        Inventory.Instance.ObtainItem(slotData);
         Destroy(gameObject);
     }
 }

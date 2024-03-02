@@ -95,10 +95,12 @@ public class PlayerAnimationController : NetworkBehaviour
 
     }
 
+
     private void Update()
     {
 
-        if (!IsOwner && !debug) return;
+        if (playerController == null) return;
+        if (!IsOwner && !debug && playerController.CurrentState == EnumPlayerState.Idle) return;
 
         if (!debug && oldInput != playerController.Input.MoveVecter)
         {

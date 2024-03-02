@@ -24,7 +24,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     private CinemachineVirtualCamera cvcam;
     private Canvas interactionCanvas;
-    private bool isStopped;
+    private bool isActive = true;
 
     public CinemachineVirtualCamera watchCam { get; private set; }
 
@@ -55,7 +55,6 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         interactionCanvas.gameObject.SetActive(IsOwner || debug);
 
         if(!IsOwner && !debug) return;
-        if (isStopped) return;
 
         if (!debug)
         {
@@ -91,7 +90,8 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     private void HandleInvenActive()
     {
 
-        isStopped = !isStopped;
+        isActive = !isActive;
+        Active(isActive);
         Inventory.Instance.SetActiveInventoryUI();
 
     }
@@ -108,13 +108,6 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     {
 
         if (!IsOwner && !debug) return;
-
-        if(GameManager.Instance != null)
-        {
-
-            if (!GameManager.Instance.PlayerMoveable) return;
-
-        }
 
         base.Update();
 
@@ -158,6 +151,23 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         AddState(state, EnumPlayerState.Move);
         ChangeState(EnumPlayerState.Move);
 
+    }
+
+    public void Active(bool active)
+    {
+
+        if (active)
+        {
+
+            ChangeState(EnumPlayerState.Move);
+
+        }
+        else
+        {
+
+            ChangeState(EnumPlayerState.Idle);
+
+        }
     }
 
 }

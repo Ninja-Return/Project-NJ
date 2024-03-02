@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -49,23 +50,26 @@ public class GameManager : NetworkBehaviour
 
             StartGame();
             HostSingle.Instance.GameManager.OnPlayerConnect += HandlePlayerConnect;
-        }
 
-        yield return null;
+            yield return null;
 
-        var param = new ClientRpcParams
-        {
-
-            Send = new ClientRpcSendParams
+            var param = new ClientRpcParams
             {
 
-                TargetClientIds = new[] { PlayerRoleManager.Instance.FindMafiaId() },
+                Send = new ClientRpcSendParams
+                {
 
-            }
+                    TargetClientIds = new[] { PlayerRoleManager.Instance.FindMafiaId() },
 
-        };
+                }
 
-        players.Find(x => x.OwnerClientId == PlayerRoleManager.Instance.FindMafiaId()).SetMafiaClientRPC(param);
+            };
+
+            players.Find(x => x.OwnerClientId == PlayerRoleManager.Instance.FindMafiaId()).SetMafiaClientRPC(param);
+
+        }
+
+
         
     }
 
@@ -104,8 +108,6 @@ public class GameManager : NetworkBehaviour
         pl.transform.position = new Vector3(Random.Range(-10f, 10f), 1f, Random.Range(-10f, 10f));
         pl.NetworkObject.SpawnWithOwnership(clientId, true);
 
-
-
         players.Add(pl);
         alivePlayer.Add(pl.OwnerClientId);
 
@@ -115,7 +117,7 @@ public class GameManager : NetworkBehaviour
     public void PlayerMoveableChangeClientRPC(bool value)
     {
 
-        PlayerMoveable = value;
+        FindObjectsOfType<PlayerController>().ToList().Find(x => x.IsOwner).Active(value);
 
     }
 

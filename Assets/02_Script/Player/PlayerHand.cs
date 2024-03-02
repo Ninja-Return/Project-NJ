@@ -1,16 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
+using WebSocketSharp;
 
 public class PlayerHand : NetworkBehaviour
 {
 
+    [SerializeField] private Transform itemParent;
+
     private GameObject currentObject;
     private PlayerAnimationController controller;
-    private Transform itemParent;
     private int currentIdx = -1;
 
     private IEnumerator Start()
@@ -18,24 +21,27 @@ public class PlayerHand : NetworkBehaviour
 
         yield return null;
 
-        if (!IsOwner) yield break;
-
         controller = GetComponent<PlayerAnimationController>();
-        itemParent = controller.GetHandTarget();
+        itemParent.transform.position = controller.GetHandTarget().position;
+
+        if (IsOwner)
+        {
+
+            Inventory.Instance.OnSlotClickEvt += HandleHold;
+
+        }
 
     }
 
-    private void HandleClickItem(GameObject obj, int index)
+    private void HandleHold(string objKey, int idx)
     {
-
-        if(currentIdx == index && currentObject != null)
+        
+        if(currentIdx == idx && currentObject != null)
         {
 
             Destroy(currentObject);
-            currentIdx = -1;
-
+            currentObject = null;
             controller.HandControl(false);
-
             return;
 
         }
@@ -47,12 +53,28 @@ public class PlayerHand : NetworkBehaviour
 
         }
 
-        var cloneObj = Instantiate(obj, itemParent).GetComponent<NetworkObject>();
-        cloneObj.Spawn(true);
-
-        currentIdx = index;
+        SpawnItemServerRPC(objKey);
 
         controller.HandControl(true);
+
+    }
+
+    [ServerRpc]
+    private void SpawnItemServerRPC(FixedString128Bytes objKey)
+    {
+
+        SpawnItemClientRPC(objKey);
+
+    }
+
+    [ClientRpc]
+    private void SpawnItemClientRPC(FixedString128Bytes objKey)
+    {
+
+        var obj = Resources.Load<GameObject>($"ItemObj/{objKey}_Hand");
+
+        currentObject = Instantiate(obj, itemParent);
+        currentObject.transform.localPosition = Vector3.zero;
 
     }
 
