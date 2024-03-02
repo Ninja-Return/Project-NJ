@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using EnumList;
 using System.Linq;
+using Unity.Netcode;
 
-public class CraftingTable : MonoBehaviour
+public class CraftingTable : NetworkBehaviour
 {
     private CraftData[] allCraftData;
     private List<SlotData> onTableItem; //니도 ItemData로 바꿀거임
@@ -19,6 +20,8 @@ public class CraftingTable : MonoBehaviour
 
     public void CraftingItem() //버튼 누를때 호출
     {
+        if (!IsServer) return;
+
         //craftingCol에 붙어있는 아이템들 onTableItem에 넣기
         UpdateOnTableItems();
 
@@ -53,14 +56,34 @@ public class CraftingTable : MonoBehaviour
 
             if (isPossibleData)
             {
-                //합성 가능한 아이템을 생성
-                GameObject crateItem = Instantiate(craftData.crateItem, crateItmeSpawnTrs);
-                //올려둔 아이템 제거하고
-                foreach (SlotData onTableObj in onTableItem)
-                    Destroy(onTableObj);
+                CreateItemServerRpc(craftData);
                 //나가기
                 break;
             }
+        }
+    }
+
+    [ServerRpc]
+    private void CreateItemServerRpc(CraftData craftData)
+    {
+        GameObject crateItem = Instantiate(craftData.crateItem, crateItmeSpawnTrs);
+        RemoveItemsFromTable();
+
+        CreateItemClientRpc(craftData);
+    }
+
+    [ClientRpc]
+    private void CreateItemClientRpc(CraftData craftData)
+    {
+        GameObject crateItem = Instantiate(craftData.crateItem, crateItmeSpawnTrs);
+        RemoveItemsFromTable();
+    }
+
+    private void RemoveItemsFromTable()
+    {
+        foreach (SlotData onTableObj in onTableItem)
+        {
+            Destroy(onTableObj);
         }
     }
 
