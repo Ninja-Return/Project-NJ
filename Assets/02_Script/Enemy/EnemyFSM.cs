@@ -24,8 +24,8 @@ public class EnemyFSM : FSM_Controller<EnemyState>
 
     private void InitializeStates()
     {
-        AddState(new IdleState(this), EnemyState.Idle);
-        AddState(new PatrolState(this), EnemyState.Patrol);
+        //AddState(new IdleState(this), EnemyState.Idle);
+        //AddState(new PatrolState(this), EnemyState.Patrol);
         // Add other states similarly
     }
 }
