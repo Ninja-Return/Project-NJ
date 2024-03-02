@@ -56,7 +56,10 @@ public class CraftingTable : NetworkBehaviour
 
             if (isPossibleData)
             {
-                CreateItemServerRpc(craftData);
+                //합성 가능한 아이템을 생성
+                NetworkObject crateItem = Instantiate(craftData.crateItem, crateItmeSpawnTrs);
+                //올려둔 아이템 제거하고
+                TableItemRemoveServerRpc();
                 //나가기
                 break;
             }
@@ -64,27 +67,18 @@ public class CraftingTable : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void CreateItemServerRpc(CraftData craftData)
+    private void TableItemRemoveServerRpc()
     {
-        GameObject crateItem = Instantiate(craftData.crateItem, crateItmeSpawnTrs);
-        RemoveItemsFromTable();
-
-        CreateItemClientRpc(craftData);
+        foreach (SlotData onTableObj in onTableItem)
+            Destroy(onTableObj);
+        TableItemRemoveClientRpc();
     }
 
     [ClientRpc]
-    private void CreateItemClientRpc(CraftData craftData)
-    {
-        GameObject crateItem = Instantiate(craftData.crateItem, crateItmeSpawnTrs);
-        RemoveItemsFromTable();
-    }
-
-    private void RemoveItemsFromTable()
+    private void TableItemRemoveClientRpc()
     {
         foreach (SlotData onTableObj in onTableItem)
-        {
             Destroy(onTableObj);
-        }
     }
 
     private void UpdateOnTableItems()
