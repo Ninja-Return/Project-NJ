@@ -14,7 +14,17 @@ public enum ItemCategory
 [RequireComponent(typeof(ClientNetworkTransform))]
 public abstract class ItemRoot : InteractionObject
 {
-    
+
+    [SerializeField] private SlotData data;
+
     public ItemCategory itemCategory { get; protected set; }
+
+    protected override void DoInteraction()
+    {
+
+        Inventory.Instance.ObtainItem(data);
+        Despawn();
+
+    }
 
 }

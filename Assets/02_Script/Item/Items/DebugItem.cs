@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class DebugItem : ItemRoot
 {
-    protected override void DoInteraction()
-    {
 
-        
-
-    }
 
 }

@@ -29,6 +29,11 @@ public class PlayerAnimationController : NetworkBehaviour
             NetworkVariableReadPermission.Everyone,
             NetworkVariableWritePermission.Owner);
 
+    private NetworkVariable<float> rigValue =
+        new NetworkVariable<float>(default,
+            NetworkVariableReadPermission.Everyone,
+            NetworkVariableWritePermission.Owner);
+
     private PlayerController playerController;
     private Animator controlAnimator;
     private Rig controlRig;
@@ -67,7 +72,6 @@ public class PlayerAnimationController : NetworkBehaviour
             playerController = GetComponent<PlayerController>();
             groundSencer = GetComponentInChildren<GroundSencer>();
 
-
         }
         else
         {
@@ -78,9 +82,16 @@ public class PlayerAnimationController : NetworkBehaviour
             xStateValue.OnValueChanged += HandleXValueChanged;
             yStateValue.OnValueChanged += HandleYValueChanged;
             isGroundStateValue.OnValueChanged += HandleIsGroundChanged;
-
+            rigValue.OnValueChanged += HandleRigValueChanged;
 
         }
+
+    }
+
+    private void HandleRigValueChanged(float previousValue, float newValue)
+    {
+
+        controlRig.weight = newValue;
 
     }
 
@@ -131,6 +142,22 @@ public class PlayerAnimationController : NetworkBehaviour
     {
 
         controlAnimator.SetBool(HASH_IS_GROUND, newValue);
+
+    }
+
+    public void HandControl(bool isUp)
+    {
+
+        var value = isUp ? 1 : 0;
+        controlRig.weight = value;
+        rigValue.Value = value;
+
+    }
+
+    public Transform GetHandTarget()
+    {
+
+        return controlRig.transform.Find("HandTarget");
 
     }
 
