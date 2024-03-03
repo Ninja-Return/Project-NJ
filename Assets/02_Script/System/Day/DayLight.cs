@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class DayLight : MonoBehaviour
@@ -12,6 +13,8 @@ public class DayLight : MonoBehaviour
 
     private void Start()
     {
+
+        if (!NetworkManager.Singleton.IsServer) return;
 
         DayManager.instance.OnTimeUpdate += HandleTimeUpdate;
 
@@ -26,14 +29,12 @@ public class DayLight : MonoBehaviour
 
         lightTrm.transform.eulerAngles = new Vector3(angle, 50, 0);
 
-        Debug.Log(angle);
-
         if(angle >= 30 && !isLight && angle <= 40)
         {
 
             isLight = true;
-            StartCoroutine(SetLight(1));
-            DayManager.instance.DayComming(false);
+            SetLightClientRPC(1);
+            DayManager.instance.DayCommingClientRPC(false);
 
         }
 
@@ -42,10 +43,18 @@ public class DayLight : MonoBehaviour
 
 
             isLight = false;
-            StartCoroutine(SetLight(0));
-            DayManager.instance.NightComming(false);
+            SetLightClientRPC(0);
+            DayManager.instance.NightCommingClientRPC(false);
 
         }
+
+    }
+
+    [ClientRpc]
+    private void SetLightClientRPC(float targetIntansity)
+    {
+
+        StartCoroutine(SetLight(targetIntansity));
 
     }
 

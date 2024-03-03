@@ -1,11 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using FSM_System.Netcode;
 using Cinemachine;
-using Unity.VisualScripting;
-using DG.Tweening;
-using Unity.Netcode;
+using System;
 
 public enum EnumPlayerState
 {
@@ -26,13 +23,18 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     private CinemachineVirtualCamera cvcam;
     private Canvas interactionCanvas;
+    private bool isStopped;
+
+    public CinemachineVirtualCamera watchCam { get; private set; }
 
     protected override void Awake()
     {
         
         base.Awake();
 
-        cvcam = GetComponentInChildren<CinemachineVirtualCamera>();
+        cvcam = transform.Find("PlayerCamera").GetComponent<CinemachineVirtualCamera>();
+        watchCam = cvcam.transform.Find("PlayerWatchingCam").GetComponent<CinemachineVirtualCamera>();
+
         interactionCanvas = GetComponentInChildren<Canvas>();
 
     }
@@ -41,9 +43,18 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     {
 
         cvcam.Priority = IsOwner || debug ? 10 : 0;
+
+        if (!IsOwner)
+        {
+
+            Destroy(cvcam);
+
+        }
+
         interactionCanvas.gameObject.SetActive(IsOwner || debug);
 
         if(!IsOwner && !debug) return;
+        if (isStopped) return;
 
         if (!debug)
         {
@@ -71,6 +82,16 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         AddState(interaction, EnumPlayerState.Move);
 
         ChangeState(startState);
+
+        Input.OnInventoryKeyPress += HandleInvenActive;
+
+    }
+
+    private void HandleInvenActive()
+    {
+
+        isStopped = !isStopped;
+        Inventory.Instance.SetActiveInventoryUI();
 
     }
 
@@ -114,10 +135,17 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     }
 
-    public void PlayerDieOwnerRPC(ClientRpcParams clientParams = default)
+    public override void OnDestroy()
     {
 
+        base.OnDestroy();
 
+        if(IsOwner && Inventory.Instance != null)
+        {
+
+            Input.OnInventoryKeyPress -= HandleInvenActive;
+
+        }
 
     }
 

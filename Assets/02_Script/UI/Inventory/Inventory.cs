@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using EnumList;
+using Unity.Netcode;
 
-public class Inventory : MonoBehaviour
+public class Inventory : NetworkBehaviour
 {
     public static Inventory Instance;
 
@@ -23,20 +24,32 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        Instance = this; //나중에 모노싱글톤 있겠지?
 
-        slots = GetComponentsInChildren<SlotUI>();
-        for (int i = 0; i < slots.Length; i++) //손에 든 아이템 쓸때 비워야 하니까
+        if (IsOwner)
         {
-            slots[i].slotIndex = i;
+
+            Instance = this; //나중에 모노싱글톤 있겠지?
+
+            slots = GetComponentsInChildren<SlotUI>();
+            for (int i = 0; i < slots.Length; i++) //손에 든 아이템 쓸때 비워야 하니까
+            {
+                slots[i].slotIndex = i;
+            }
+
+            inventoryPanel.SetActive(false);
+
         }
 
-        inventoryPanel.SetActive(false);
+
     }
 
-    private void SetActiveInventoryUI() //플레이어 인풋과 연결
+    public void SetActiveInventoryUI() //플레이어 인풋과 연결
     {
         isShow = !isShow;
+
+        Cursor.visible = isShow;
+        Cursor.lockState = isShow ? CursorLockMode.None : CursorLockMode.Locked;
+
         inventoryPanel.SetActive(isShow);
     }
 

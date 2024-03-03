@@ -10,6 +10,9 @@ public class GameManager : NetworkBehaviour
 
     [SerializeField] private NetworkObject player;
 
+    public NetworkList<ulong> alivePlayer { get; private set; } = new();
+    public NetworkList<ulong> diePlayer { get; private set; } = new();
+
     private List<PlayerController> players = new();
 
     public static GameManager Instance;
@@ -77,6 +80,7 @@ public class GameManager : NetworkBehaviour
         pl.transform.position = new Vector3(Random.Range(-10f, 10f), 1f, Random.Range(-10f, 10f));
         pl.SpawnWithOwnership(clientId, true);
         players.Add(pl.GetComponent<PlayerController>());
+        alivePlayer.Add(pl.OwnerClientId);
 
     }
 
@@ -93,6 +97,11 @@ public class GameManager : NetworkBehaviour
 
         players.Find(x => x.OwnerClientId == clientId).NetworkObject.Despawn();
 
+        var data = HostSingle.Instance.NetServer.GetUserDataByClientID(clientId).Value;
+        data.isDie = true;
+
+        HostSingle.Instance.NetServer.SetUserDataByClientId(clientId, data);
+
         var param = new ClientRpcParams
         {
 
@@ -105,6 +114,9 @@ public class GameManager : NetworkBehaviour
 
         };
 
+        alivePlayer.Remove(clientId);
+        diePlayer.Add(clientId);
+
         PlayerDieClientRPC(param);
 
     }
@@ -113,7 +125,7 @@ public class GameManager : NetworkBehaviour
     private void PlayerDieClientRPC(ClientRpcParams param)
     {
 
-
+        WatchingSystem.Instance.StartWatching();
 
     }
 

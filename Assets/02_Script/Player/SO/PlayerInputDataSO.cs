@@ -12,6 +12,7 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
     public event Action OnInteractionKeyPress;
     public event Action OnObjectMoveKeyPress;
     public event Action OnObjectMoveKeyUp;
+    public event Action OnInventoryKeyPress;
 
     private PlayerInput playerInput;
 
@@ -92,6 +93,18 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
 
         }
 
+
+    }
+
+    public void OnInventoryActive(InputAction.CallbackContext context)
+    {
+
+        if (context.performed)
+        {
+
+            OnInventoryKeyPress?.Invoke();
+
+        }
 
     }
 

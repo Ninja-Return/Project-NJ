@@ -18,7 +18,7 @@ public class PlayerInteraction : PlayerStateRoot
     public PlayerInteraction(PlayerController controller) : base(controller)
     {
 
-        interactionText = transform.Find("InteractionCanvas").GetComponentInChildren<TMP_Text>();
+        interactionText = transform.Find("InteractionCanvas").Find("InteractionText").GetComponent<TMP_Text>();
         cameraTrm = transform.Find("PlayerCamera");
         moveObjectTrm = transform.Find("MoveObject");
         interactionText.text = string.Empty;
@@ -89,6 +89,8 @@ public class PlayerInteraction : PlayerStateRoot
 
     protected override void UpdateState()
     {
+
+        Debug.Log(123);
 
         CheckInteraction();
         SetMoveObjectPos();
