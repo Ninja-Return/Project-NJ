@@ -18,9 +18,9 @@ public class NotificationUIController : MonoBehaviour
 
         Sequence seq = DOTween.Sequence();
 
-        seq.Append(notificationText.DOFade(1, 0.3f));
-        seq.AppendInterval(0.1f);
-        seq.Append(notificationText.DOFade(0, 0.3f));
+        seq.Append(notificationText.DOFade(1, 0.7f));
+        seq.AppendInterval(0.3f);
+        seq.Append(notificationText.DOFade(0, 0.7f));
 
     }
 

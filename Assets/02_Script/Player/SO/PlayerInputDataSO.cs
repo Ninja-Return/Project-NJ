@@ -32,10 +32,24 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
     public void Enable()
     {
 
-        playerInput = new PlayerInput();
+        if(playerInput == null)
+        {
+
+            playerInput = new PlayerInput();
+
+        }
+
         playerInput.PlayerMovement.SetCallbacks(this);
 
         playerInput.PlayerMovement.Enable();
+
+    }
+
+    public void Disable()
+    {
+        
+        playerInput.PlayerMovement.SetCallbacks(null);
+        playerInput.PlayerMovement.Disable();
 
     }
 

@@ -8,7 +8,7 @@ public struct UserData
 
     public string nickName;
     public string authId;
-    public List<string> attachedItem;
+    public List<AttachedItem> attachedItem;
     public bool isDie;
 
 }

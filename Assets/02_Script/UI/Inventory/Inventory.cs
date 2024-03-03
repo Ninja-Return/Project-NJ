@@ -6,13 +6,14 @@ using TMPro;
 using EnumList;
 using Unity.Netcode;
 
+public delegate void SlotClick(string objKey, int idx);
+
 public class Inventory : NetworkBehaviour
 {
     public static Inventory Instance;
 
-    //GameObject 메계변수는 아이템
-    public event Action<GameObject> OnSlotClickEvt; //상호작용에서 아이템 손에드는 함수 넣어줘라 웅언아
-    public event Action<GameObject> OnSlotDropEvt; //얘는 아이템 던지면서 버릴때 함수 넣어줘
+    public event SlotClick OnSlotClickEvt; //상호작용에서 아이템 손에드는 함수 넣어줘라 웅언아
+    public event Action<string> OnSlotDropEvt; //얘는 아이템 던지면서 버릴때 함수 넣어줘
 
     [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private TextMeshProUGUI slotExpText;
@@ -74,15 +75,15 @@ public class Inventory : NetworkBehaviour
         return;
     }
 
-    public void HoldItem(GameObject itemObj, int idx)
+    public void HoldItem(string itemObj, int idx)
     {
         isHold = true;
         slotIdx = idx;
 
-        OnSlotClickEvt?.Invoke(itemObj); //기존에 들던 무기 pop하고 새로운 무기들기
+        OnSlotClickEvt?.Invoke(itemObj, idx); //기존에 들던 무기 pop하고 새로운 무기들기
     }
 
-    public void DropItem(GameObject itemObj, int idx)
+    public void DropItem(string itemObj, int idx)
     {
         slotIdx = idx;
         slots[slotIdx].ResetSlot();

@@ -11,8 +11,15 @@ public class ChattingSystem : NetworkBehaviour
 
     private readonly int MAX_CHAT_CHAR = 100;
 
-    private NetworkList<ChatData> chatList = new();
+    private NetworkList<ChatData> chatList;
     public event OnChatting OnChattingAdd;
+
+    private void Awake()
+    {
+
+        chatList = new();
+
+    }
 
     private void Start()
     {

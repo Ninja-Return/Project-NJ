@@ -22,8 +22,6 @@ public class PlayerStateRoot : FSM_State_Netcode<EnumPlayerState>
         input = controller.Input;
         groundSencer = transform.GetComponentInChildren<GroundSencer>();
 
-
     }
-
 
 }

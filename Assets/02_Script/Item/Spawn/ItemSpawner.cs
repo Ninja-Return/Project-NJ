@@ -31,7 +31,7 @@ public class ItemSpawner : MonoBehaviour
             if (Random.value < 0.8f)
             {
 
-                var itemPrefab = spawnItemList.GetRandomList();
+                var itemPrefab = spawnItemList.GetRandomListObject();
 
                 if (debug)
                 {

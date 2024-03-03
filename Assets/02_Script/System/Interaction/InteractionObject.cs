@@ -16,29 +16,70 @@ public abstract class InteractionObject : NetworkBehaviour
 
     [field:SerializeField] public string interactionText { get; protected set; }
     [field:SerializeField] public ObjectType objectType { get; protected set; }
+    [field:SerializeField] public bool rpcOfLocalClient { get; protected set; }
 
     protected abstract void DoInteraction();
 
     public virtual void Interaction()
     {
 
-        InteractionServerRPC();
+        InteractionServerRPC(NetworkManager.LocalClientId);
 
     }
 
+
     [ServerRpc(RequireOwnership = false)]
-    protected virtual void InteractionServerRPC()
+    protected virtual void InteractionServerRPC(ulong localClient)
     {
 
-        InteractionClientRPC();
+        if (rpcOfLocalClient)
+        {
+
+            var param = new ClientRpcParams
+            {
+
+                Send = new ClientRpcSendParams
+                {
+
+                    TargetClientIds = new[] { localClient },
+
+                }
+
+            };
+
+            InteractionClientRPC(param);
+
+        }
+        else
+        {
+
+            InteractionClientRPC();
+
+        }
+
 
     }
 
     [ClientRpc]
-    protected virtual void InteractionClientRPC()
+    protected virtual void InteractionClientRPC(ClientRpcParams param = default)
     {
 
         DoInteraction();
+
+    }
+
+    public void Despawn()
+    {
+
+        DespawnServerRPC();
+
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DespawnServerRPC()
+    {
+
+        NetworkObject.Despawn(true);
 
     }
 

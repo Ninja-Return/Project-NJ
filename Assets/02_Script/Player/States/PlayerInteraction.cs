@@ -29,7 +29,6 @@ public class PlayerInteraction : PlayerStateRoot
     {
 
         input.OnInteractionKeyPress += HandleInteractionKeyPress;
-        input.OnObjectMoveKeyPress += HandleObjectMoveKeyPress;
         input.OnObjectMoveKeyUp += HandleObjectMoveKeyRelease;
 
     }
@@ -40,23 +39,7 @@ public class PlayerInteraction : PlayerStateRoot
     {
 
         input.OnInteractionKeyPress -= HandleInteractionKeyPress;
-        input.OnObjectMoveKeyPress -= HandleObjectMoveKeyPress;
         input.OnObjectMoveKeyUp -= HandleObjectMoveKeyRelease;
-
-    }
-
-    private void HandleObjectMoveKeyPress()
-    {
-
-        if(interactionObject != null && interactionObject.objectType == ObjectType.Dynamic) 
-        { 
-            
-            isObjectMove = true;
-            originLayer = interactionObject.gameObject.layer;
-            interactionObject.gameObject.layer = LayerMask.NameToLayer("NotCasting");
-            interactionText.text = string.Empty;
-        
-        }
 
     }
 
@@ -90,23 +73,7 @@ public class PlayerInteraction : PlayerStateRoot
     protected override void UpdateState()
     {
 
-        Debug.Log(123);
-
         CheckInteraction();
-        SetMoveObjectPos();
-        MovementObject();
-
-    }
-
-    private void MovementObject()
-    {
-
-        if (isObjectMove)
-        {
-
-            interactionObject.transform.position = moveObjectTrm.position;
-
-        }
 
     }
 
@@ -141,26 +108,6 @@ public class PlayerInteraction : PlayerStateRoot
 
             interactionText.text = string.Empty;
             interactionObject = null;
-
-        }
-
-    }
-
-    private void SetMoveObjectPos()
-    {
-
-        var hit = Physics.Raycast(cameraTrm.position, cameraTrm.forward, out var info, data.InteractionRange.Value, ~LayerMask.GetMask("NotCasting", "Player"));
-
-        if (hit)
-        {
-
-            moveObjectTrm.position = info.point - cameraTrm.forward / 1.5f;
-
-        }
-        else
-        {
-
-            moveObjectTrm.position = cameraTrm.position + cameraTrm.forward * (data.InteractionRange.Value / 1.5f);
 
         }
 

@@ -18,10 +18,25 @@ public class AttachedItemData
 {
 
     public AttachedItemCategory category;
-    public List<string> items;
+    public List<AttachedItem> items;
 
 }
 
+[Serializable]
+public struct AttachedItem
+{
+
+    public string name;
+    public string description;
+
+    public override string ToString()
+    {
+
+        return name;
+
+    }
+
+}
 
 public class AttachedItemSystem : NetworkBehaviour
 {
@@ -41,7 +56,7 @@ public class AttachedItemSystem : NetworkBehaviour
 
         if (!IsServer) return;
 
-        var ls = datas.GetRandomList();
+        var ls = datas.GetRandomListObject();
 
         var com = GetCombinations(ls.items, 2);
         var filterList = FilterCombinations(com);
@@ -96,10 +111,10 @@ public class AttachedItemSystem : NetworkBehaviour
 
     }
 
-    private List<List<string>> FilterCombinations(List<List<string>> combinations)
+    private List<List<AttachedItem>> FilterCombinations(List<List<AttachedItem>> combinations)
     {
 
-        var filteredCombinations = new List<List<string>>();
+        var filteredCombinations = new List<List<AttachedItem>>();
 
         foreach (var combination in combinations)
         {

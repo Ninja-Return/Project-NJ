@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using WebSocketSharp;
 
-public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
     [HideInInspector] public SlotData slotData { get; private set; }
     [HideInInspector] public int slotIndex { get; set; } //이건 인벤토리에서 부여
@@ -30,8 +31,7 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (slotData == null) return;
 
         //풀링 만들기 전까진 Resources에서 가져오자
-        GameObject itemObj = Resources.Load<GameObject>($"ItemObj/{slotData.poolingName}");
-        Inventory.Instance.HoldItem(itemObj, slotIndex);
+        Inventory.Instance.HoldItem(slotData.poolingName, slotIndex);
     }
 
     public void RemoveSlot() //우클릭 시(아이템 밖으로 던지기)
@@ -40,8 +40,7 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (slotData == null) return;
 
         //풀링 만들기 전까진 Resources에서 가져오자
-        GameObject itemObj = Resources.Load<GameObject>($"ItemObj/{slotData.poolingName}");
-        Inventory.Instance.DropItem(itemObj, slotIndex);
+        Inventory.Instance.DropItem(slotData.poolingName, slotIndex);
     }
 
     public void ResetSlot() //아이템 소진시(슬롯 비우기)
@@ -72,4 +71,22 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         //나중에 텍스트 빼도 됨
         //Inventory.Instance.PopItemText("");
     }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+
+        if(eventData.button == PointerEventData.InputButton.Left)
+        {
+
+            UseSlot();
+
+        }
+        else if (eventData.button == PointerEventData.InputButton.Left)
+        {
+
+            RemoveSlot();
+        }
+
+    }
+
 }
