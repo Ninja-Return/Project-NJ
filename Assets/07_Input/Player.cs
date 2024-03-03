@@ -80,6 +80,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""UseHandObject"",
+                    ""type"": ""Button"",
+                    ""id"": ""4519d8a2-1795-4fb0-8783-74bc7b24178d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -192,6 +201,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""InventoryActive"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eef8aae4-d4eb-41f6-9cec-8fc3bc31ed48"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyAndMouse"",
+                    ""action"": ""UseHandObject"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -223,6 +243,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_PlayerMovement_Interaction = m_PlayerMovement.FindAction("Interaction", throwIfNotFound: true);
         m_PlayerMovement_MoveObject = m_PlayerMovement.FindAction("MoveObject", throwIfNotFound: true);
         m_PlayerMovement_InventoryActive = m_PlayerMovement.FindAction("InventoryActive", throwIfNotFound: true);
+        m_PlayerMovement_UseHandObject = m_PlayerMovement.FindAction("UseHandObject", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -290,6 +311,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_Interaction;
     private readonly InputAction m_PlayerMovement_MoveObject;
     private readonly InputAction m_PlayerMovement_InventoryActive;
+    private readonly InputAction m_PlayerMovement_UseHandObject;
     public struct PlayerMovementActions
     {
         private @PlayerInput m_Wrapper;
@@ -300,6 +322,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Interaction => m_Wrapper.m_PlayerMovement_Interaction;
         public InputAction @MoveObject => m_Wrapper.m_PlayerMovement_MoveObject;
         public InputAction @InventoryActive => m_Wrapper.m_PlayerMovement_InventoryActive;
+        public InputAction @UseHandObject => m_Wrapper.m_PlayerMovement_UseHandObject;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -327,6 +350,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @InventoryActive.started += instance.OnInventoryActive;
             @InventoryActive.performed += instance.OnInventoryActive;
             @InventoryActive.canceled += instance.OnInventoryActive;
+            @UseHandObject.started += instance.OnUseHandObject;
+            @UseHandObject.performed += instance.OnUseHandObject;
+            @UseHandObject.canceled += instance.OnUseHandObject;
         }
 
         private void UnregisterCallbacks(IPlayerMovementActions instance)
@@ -349,6 +375,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @InventoryActive.started -= instance.OnInventoryActive;
             @InventoryActive.performed -= instance.OnInventoryActive;
             @InventoryActive.canceled -= instance.OnInventoryActive;
+            @UseHandObject.started -= instance.OnUseHandObject;
+            @UseHandObject.performed -= instance.OnUseHandObject;
+            @UseHandObject.canceled -= instance.OnUseHandObject;
         }
 
         public void RemoveCallbacks(IPlayerMovementActions instance)
@@ -383,5 +412,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnInteraction(InputAction.CallbackContext context);
         void OnMoveObject(InputAction.CallbackContext context);
         void OnInventoryActive(InputAction.CallbackContext context);
+        void OnUseHandObject(InputAction.CallbackContext context);
     }
 }

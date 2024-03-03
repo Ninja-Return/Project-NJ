@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "UseHandObject",
+                    "type": "Button",
+                    "id": "4519d8a2-1795-4fb0-8783-74bc7b24178d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -168,6 +177,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "InventoryActive",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eef8aae4-d4eb-41f6-9cec-8fc3bc31ed48",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyAndMouse",
+                    "action": "UseHandObject",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

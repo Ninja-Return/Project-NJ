@@ -12,8 +12,9 @@ public class PlayerHand : NetworkBehaviour
 
     [SerializeField] private Transform itemParent;
 
-    private GameObject currentObject;
+    private HandItemRoot currentObject;
     private PlayerAnimationController controller;
+    private PlayerController playerController;
     private int currentIdx = -1;
 
     private IEnumerator Start()
@@ -28,8 +29,16 @@ public class PlayerHand : NetworkBehaviour
         {
 
             Inventory.Instance.OnSlotClickEvt += HandleHold;
+            playerController.Input.OnUseObjectKeyPress += HandleHandUse;
 
         }
+
+    }
+
+    private void HandleHandUse()
+    {
+
+        currentObject.UseServerRPC();
 
     }
 
@@ -71,7 +80,7 @@ public class PlayerHand : NetworkBehaviour
     private void SpawnItemClientRPC(FixedString128Bytes objKey)
     {
 
-        var obj = Resources.Load<GameObject>($"ItemObj/{objKey}_Hand");
+        var obj = Resources.Load<HandItemRoot>($"ItemObj/{objKey}_Hand");
 
         currentObject = Instantiate(obj, itemParent);
         currentObject.transform.localPosition = Vector3.zero;
