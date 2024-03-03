@@ -1,4 +1,5 @@
 using FSM_System;
+using FSM_System.Netcode;
 using System;
 using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
@@ -14,7 +15,7 @@ public enum EnemyState
 }
 
 
-public class EnemyFSM : FSM_Controller<EnemyState>
+public class EnemyFSM : FSM_Controller_Netcode<EnemyState>
 {
     private void Start()
     {

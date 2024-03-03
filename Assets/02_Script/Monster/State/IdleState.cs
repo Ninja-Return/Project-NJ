@@ -1,18 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FSM_System.Netcode;
+using FSM_System;
 
-public class IdleState : MonoBehaviour
+public class IdleState : MonsterStateRoot
 {
-    // Start is called before the first frame update
-    void Start()
+    private float idleDuration = 1f;
+    private float currentTime = 0;
+
+    public IdleState(MonsterFSM controller) : base(controller) { }
+
+    protected override void EnterState()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void UpdateState()
     {
-        
+        if (!IsServer) return;
+
+        if (currentTime >= idleDuration)
+        {
+            controller.ChangeState(MonsterState.Patrol);
+        }
+        else
+        {
+            currentTime += Time.deltaTime;
+        }
+    }
+
+    protected override void ExitState()
+    {
+        currentTime = 0;
     }
 }

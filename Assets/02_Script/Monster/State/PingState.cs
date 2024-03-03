@@ -1,18 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using FSM_System.Netcode;
 
-public class PingState : MonoBehaviour
+public class PingState : MonsterStateRoot
 {
-    // Start is called before the first frame update
-    void Start()
+    public PingState(MonsterFSM controller) : base(controller) { }
+
+    protected override void EnterState()
     {
-        
+        if (!IsServer) return;
+
+        Vector3 pos = monsterFSM.pingPos;
+        nav.SetDestination(pos);
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void UpdateState()
     {
-        
+        base.UpdateState();
+    }
+
+    protected override void ExitState()
+    {
+        base.ExitState();
     }
 }

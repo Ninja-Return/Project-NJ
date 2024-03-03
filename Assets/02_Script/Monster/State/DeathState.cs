@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FSM_System.Netcode;
 
-public class DeathState : MonoBehaviour
+public class DeathState : FSM_State_Netcode<MonsterState>
 {
-    // Start is called before the first frame update
-    void Start()
+    public DeathState(FSM_Controller_Netcode<MonsterState> controller) : base(controller)
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void EnterState()
     {
-        
+        base.EnterState();
+    }
+
+    protected override void UpdateState()
+    {
+        base.UpdateState();
+    }
+
+    protected override void ExitState()
+    {
+        base.ExitState();
     }
 }
