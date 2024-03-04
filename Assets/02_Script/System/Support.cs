@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -44,7 +45,26 @@ public static class Support
         }
 
 
+
         return list;
+
+    }
+
+    public static RPCList<T> Deserialize<T>(this byte[] bytes) where T : struct 
+    {
+
+        var str = Encoding.UTF8.GetString(bytes);
+
+        return JsonUtility.FromJson<RPCList<T>>(str);
+
+    }
+
+    public static byte[] Serialize<T>(RPCList<T> obj) where T : struct
+    {
+
+        var str = JsonUtility.ToJson(obj);
+
+        return Encoding.UTF8.GetBytes(str);
 
     }
 

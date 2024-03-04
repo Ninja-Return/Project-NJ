@@ -10,6 +10,8 @@ public class MeetingProfile : MonoBehaviour, IPointerDownHandler
 
     [SerializeField] private TMP_Text userNameText;
     [SerializeField] private GameObject chackMask;
+    [SerializeField] private GameObject voteObject;
+    [SerializeField] private Transform voteParent;
 
     private ulong ownerClientId;
 
@@ -20,6 +22,18 @@ public class MeetingProfile : MonoBehaviour, IPointerDownHandler
 
         userNameText.text = userName;
         userNameText.color = isOwner ? Color.yellow : Color.black;
+
+    }
+
+    public void OpenVote(int voteCount)
+    {
+
+        for(int i = 0; i < voteCount; i++)
+        {
+
+            Instantiate(voteObject, voteParent);
+
+        }
 
     }
 

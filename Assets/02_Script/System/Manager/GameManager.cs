@@ -51,7 +51,7 @@ public class GameManager : NetworkBehaviour
             StartGame();
             HostSingle.Instance.GameManager.OnPlayerConnect += HandlePlayerConnect;
 
-            yield return null;
+            yield return new WaitForSeconds(1);
 
             var param = new ClientRpcParams
             {

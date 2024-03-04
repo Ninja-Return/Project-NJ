@@ -7,7 +7,7 @@ public class FlashLight : HandItemRoot
 
     [SerializeField] private GameObject flashlight;
 
-    protected override void DoUse()
+    public override void DoUse()
     {
 
         flashlight.SetActive(!flashlight.activeSelf);

@@ -164,6 +164,8 @@ public class MeetingSystem : NetworkBehaviour
 
         }
 
+
+
         if (maxVoteClient.Count > 1)
         {
 
@@ -257,6 +259,23 @@ public class MeetingSystem : NetworkBehaviour
         DayManager.instance.TimeSetting(false);
         MeetingEndClientRPC();
         chattingSystem.ClearChatting();
+
+    }
+
+    private void OpenVote(ulong clientRPC, int voteCount)
+    {
+
+
+        OpenVoteClientRPC(voteCount);
+
+    }
+
+    //
+    [ClientRpc]
+    private void OpenVoteClientRPC(int voteCount)
+    {
+
+        meetingUI.OpenVote();
 
     }
 

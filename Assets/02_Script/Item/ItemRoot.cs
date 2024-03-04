@@ -14,7 +14,7 @@ public enum ItemCategory
 
 }
 
-[RequireComponent(typeof(NetworkTransform))]
+[RequireComponent(typeof(ClientNetworkTransform))]
 public abstract class ItemRoot : InteractionObject
 {
 

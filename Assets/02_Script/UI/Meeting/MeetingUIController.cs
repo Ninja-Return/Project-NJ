@@ -61,4 +61,11 @@ public class MeetingUIController : MonoBehaviour
 
     }
 
+    public void OpenVote()
+    {
+
+
+
+    }
+
 }
