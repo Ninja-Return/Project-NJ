@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ public class MeetingUIController : MonoBehaviour
     [SerializeField] private MeetingChatUIController chattingPanel;
     [SerializeField] private MeetingProfile panelPrefab;
     [SerializeField] private Transform panelRoot;
+    [SerializeField] private TMP_Text itemShowPlayerNameText;
+    [SerializeField] private TMP_Text itemShowText;
 
     private List<MeetingProfile> profiles = new List<MeetingProfile>();
 
@@ -68,7 +71,6 @@ public class MeetingUIController : MonoBehaviour
 
     }
 
-    [ClientRpc]
     public void OpenVote(RPCList<VoteData> list)
     {
 
@@ -90,6 +92,26 @@ public class MeetingUIController : MonoBehaviour
             item.CloseVote();
 
         }
+
+    }
+
+    public void ShowingItem(string playerName, string items)
+    {
+
+        itemShowPlayerNameText.text = playerName;
+        itemShowText.text = items;
+
+        Sequence seq = DOTween.Sequence();
+
+
+        itemShowPlayerNameText.SetColorAlpha(0);
+        itemShowText.SetColorAlpha(0);
+
+        seq.Append(itemShowPlayerNameText.DOFade(1, 0.5f));
+        seq.Join(itemShowText.DOFade(1, 0.5f));
+        seq.AppendInterval(0.3f);
+        seq.Append(itemShowPlayerNameText.DOFade(0, 0.5f));
+        seq.Join(itemShowText.DOFade(0, 0.5f));
 
     }
 

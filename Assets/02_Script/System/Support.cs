@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -67,6 +68,15 @@ public static class Support
         var str = JsonUtility.ToJson(obj);
 
         return Encoding.UTF8.GetBytes(str);
+
+    }
+
+    public static void SetColorAlpha(this TMP_Text text, float value)
+    {
+
+        var c = text.color;
+        c.a = value;
+        text.color = c;
 
     }
 
