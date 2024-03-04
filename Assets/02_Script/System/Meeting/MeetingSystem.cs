@@ -93,6 +93,8 @@ public class MeetingSystem : NetworkBehaviour
     private void MettingOpenClientRPC()
     {
 
+        if (GameManager.Instance.isDie) return;
+
         JoinChannel();
 
         DayManager.instance.TimeSetting(true);
@@ -104,6 +106,8 @@ public class MeetingSystem : NetworkBehaviour
     [ClientRpc]
     private void SpawnPanelClientRPC(ulong clientId, string userName)
     {
+
+        if (GameManager.Instance.isDie) return;
 
         meetingUI.SpawnPanel(clientId, userName, clientId == NetworkManager.LocalClientId);
 
@@ -129,18 +133,23 @@ public class MeetingSystem : NetworkBehaviour
     private void MeetingEndClientRPC()
     {
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        meetingUI.gameObject.SetActive(false);
+
+        if (GameManager.Instance.isDie) return;
+        
+        GameManager.Instance.SettingCursorVisable(false);
 
         Join3DChannel();
+        NetworkController.Instance.vivox.LeaveNormalChannel();
 
-        meetingUI.gameObject.SetActive(false);
 
     }
 
     [ClientRpc]
     private void PhaseEndClientRPC()
     {
+
+        if (GameManager.Instance.isDie) return;
 
         isVote = false;
 
@@ -292,6 +301,8 @@ public class MeetingSystem : NetworkBehaviour
     private void VoteOpenClientRPC(byte[] bytes)
     {
 
+        if (GameManager.Instance.isDie) return;
+
         var list = bytes.Deserialize<VoteData>();
 
         meetingUI.OpenVote(list);
@@ -302,13 +313,17 @@ public class MeetingSystem : NetworkBehaviour
     private void CloseVoteClientRPC()
     {
 
+        if (GameManager.Instance.isDie) return;
+
         meetingUI.CloseVote();
 
     }
 
     [ClientRpc]
-    private void ShowItemClientRPC(FixedString32Bytes name, FixedString32Bytes item)
+    private void ShowItemClientRPC(FixedString128Bytes name, FixedString32Bytes item)
     {
+
+        if (GameManager.Instance.isDie) return;
 
         meetingUI.ShowingItem(name.ToString(), item.ToString());
 

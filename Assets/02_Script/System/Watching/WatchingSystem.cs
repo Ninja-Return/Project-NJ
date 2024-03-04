@@ -30,7 +30,7 @@ public class WatchingSystem : NetworkBehaviour
 
     }
 
-    private void HandleListChanged(NetworkListEvent<ulong> changeEvent)
+    private void HandleListChanged(NetworkListEvent<LiveData> changeEvent)
     {
 
         if (!isWatching) return;
@@ -38,10 +38,10 @@ public class WatchingSystem : NetworkBehaviour
         switch (changeEvent.Type) 
         {
 
-            case NetworkListEvent<ulong>.EventType.Remove:
+            case NetworkListEvent<LiveData>.EventType.Remove:
                 {
 
-                    alivePlayers.Remove(alivePlayers.Find(x => x.OwnerClientId == changeEvent.Value));
+                    alivePlayers.Remove(alivePlayers.Find(x => x.OwnerClientId == changeEvent.Value.clientId));
 
                     break;
 
@@ -51,7 +51,7 @@ public class WatchingSystem : NetworkBehaviour
 
         }
 
-        if(changeEvent.Value == currentWatching)
+        if(changeEvent.Value.clientId == currentWatching)
         {
 
             Watching(alivePlayers[0].OwnerClientId);
@@ -86,6 +86,8 @@ public class WatchingSystem : NetworkBehaviour
 
         watchingUI.gameObject.SetActive(true);
         watchingUI.Init();
+
+        GameManager.Instance.SettingCursorVisable(true);
 
     }
 

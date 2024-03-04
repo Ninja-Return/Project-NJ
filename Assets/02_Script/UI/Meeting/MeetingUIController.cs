@@ -21,7 +21,9 @@ public class MeetingUIController : MonoBehaviour
 
     public void MeetingStart()
     {
-        
+
+        if (GameManager.Instance.isDie) return;
+
         for(int i = 0; i < panelRoot.childCount; i++)
         {
 
@@ -31,13 +33,14 @@ public class MeetingUIController : MonoBehaviour
 
         profiles.Clear();
 
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        GameManager.Instance.SettingCursorVisable(true);
 
     }
 
     public void UpdateTime(int time)
     {
+
+        if (GameManager.Instance.isDie) return;
 
         timeText.text = $"남은 시간 : {time}";
 
@@ -46,12 +49,16 @@ public class MeetingUIController : MonoBehaviour
     public void PhaseChange(int phase)
     {
 
+        if (GameManager.Instance.isDie) return;
+
         phaseText.text = phase == 0 ? "애착품 공개 투표" : "처형 투표";
 
     }
 
     public void SpawnPanel(ulong clientId, string userName, bool isOwner)
     {
+
+        if (GameManager.Instance.isDie) return;
 
         var panel = Instantiate(panelPrefab, panelRoot);
 
@@ -64,6 +71,8 @@ public class MeetingUIController : MonoBehaviour
     public void ChattingOpen()
     {
 
+        if (GameManager.Instance.isDie) return;
+
         bool active = !chattingPanel.gameObject.activeSelf;
 
         chattingPanel.Init(active);
@@ -74,7 +83,9 @@ public class MeetingUIController : MonoBehaviour
     public void OpenVote(RPCList<VoteData> list)
     {
 
-        foreach(VoteData item in list)
+        if (GameManager.Instance.isDie) return;
+
+        foreach (VoteData item in list)
         {
 
             profiles.Find(x => x.ownerClientId == item.clientId).OpenVote(item.voteCount);
@@ -86,7 +97,9 @@ public class MeetingUIController : MonoBehaviour
     public void CloseVote()
     {
 
-        foreach(var item in profiles)
+        if (GameManager.Instance.isDie) return;
+
+        foreach (var item in profiles)
         {
 
             item.CloseVote();
@@ -97,6 +110,8 @@ public class MeetingUIController : MonoBehaviour
 
     public void ShowingItem(string playerName, string items)
     {
+
+        if (GameManager.Instance.isDie) return;
 
         itemShowPlayerNameText.text = playerName;
         itemShowText.text = items;
