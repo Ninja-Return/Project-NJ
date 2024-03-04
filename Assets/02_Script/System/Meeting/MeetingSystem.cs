@@ -188,14 +188,9 @@ public class MeetingSystem : NetworkBehaviour
             if (phase == 1)
             {
 
-                var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(maxVoteClient[0]);
+                var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(maxVoteClient[0]).Value;
 
-                foreach(var item in data.Value.attachedItem)
-                {
-
-                    Debug.Log(item);
-
-                }
+                ShowItemClientRPC(data.nickName, string.Join(',', data.attachedItem));
 
             }
             else if (phase == 2)
@@ -311,5 +306,12 @@ public class MeetingSystem : NetworkBehaviour
 
     }
 
+    [ClientRpc]
+    private void ShowItemClientRPC(FixedString32Bytes name, FixedString32Bytes item)
+    {
+
+        meetingUI.ShowingItem(name.ToString(), item.ToString());
+
+    }
 
 }
