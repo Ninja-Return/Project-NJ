@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,7 +14,7 @@ public class MeetingProfile : MonoBehaviour, IPointerDownHandler
     [SerializeField] private GameObject voteObject;
     [SerializeField] private Transform voteParent;
 
-    private ulong ownerClientId;
+    public ulong ownerClientId { get; private set; }
 
     public void Setting(ulong ownerClientId, string userName, bool isOwner)
     {
@@ -45,6 +46,18 @@ public class MeetingProfile : MonoBehaviour, IPointerDownHandler
 
             chackMask.SetActive(true);
 
+        }
+
+    }
+
+    public void CloseVote()
+    {
+
+        for(int i = 0; i < voteParent.childCount; i++) 
+        {
+            
+            Destroy(voteParent.GetChild(i).gameObject);
+        
         }
 
     }

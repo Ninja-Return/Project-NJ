@@ -17,34 +17,9 @@ public class DebugSC : NetworkBehaviour
     void Start()
     {
 
-        if (IsServer)
-        {
-
-            var ls = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-
-            var rpLs = new RPCList<int>(ls);
-
-            DebugClientRPC(Support.Serialize<int>(rpLs));
-
-        }
-
 
 
     }
 
-    [ClientRpc]
-    public void DebugClientRPC(byte[] stream)
-    {
-
-        var ls = stream.Deserialize<int>();
-
-        foreach(var item in ls)
-        {
-
-            Debug.Log(item);
-
-        }
-
-    }
 
 }

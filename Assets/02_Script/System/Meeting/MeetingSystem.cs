@@ -9,8 +9,8 @@ using UnityEngine;
 public struct VoteData
 {
 
-    ulong clientId;
-    int voteCount;
+    public ulong clientId;
+    public int voteCount;
 
 }
 
@@ -174,7 +174,6 @@ public class MeetingSystem : NetworkBehaviour
         }
 
 
-
         if (maxVoteClient.Count > 1)
         {
 
@@ -208,6 +207,7 @@ public class MeetingSystem : NetworkBehaviour
 
         }
 
+        voteContainer.Clear();
 
         PhaseEndClientRPC();
 
@@ -258,7 +258,13 @@ public class MeetingSystem : NetworkBehaviour
             }
 
             phaseTimeBase.Value = 0;
+
+            OpenVote();
+
+            yield return new WaitForSeconds(5);
+
             PhaseEnd(i + 1);
+            CloseVoteClientRPC();
 
             yield return new WaitForSeconds(1);
 
@@ -271,21 +277,39 @@ public class MeetingSystem : NetworkBehaviour
 
     }
 
-    private void OpenVote(ulong clientRPC, int voteCount)
+    private void OpenVote()
     {
 
+        RPCList<VoteData> voteList = new RPCList<VoteData>();
 
-        OpenVoteClientRPC(voteCount);
+        foreach(var item in voteContainer)
+        {
+
+            voteList.list.Add(new VoteData { clientId = item.Key, voteCount = item.Value });
+
+        }
+
+        VoteOpenClientRPC(voteList.Serialize());
 
     }
 
-    //
     [ClientRpc]
-    private void OpenVoteClientRPC(int voteCount)
+    private void VoteOpenClientRPC(byte[] bytes)
     {
 
-        meetingUI.OpenVote();
+        var list = bytes.Deserialize<VoteData>();
+
+        meetingUI.OpenVote(list);
 
     }
+
+    [ClientRpc]
+    private void CloseVoteClientRPC()
+    {
+
+        meetingUI.CloseVote();
+
+    }
+
 
 }

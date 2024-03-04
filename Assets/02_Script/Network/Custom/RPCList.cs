@@ -8,17 +8,13 @@ using Unity.Netcode;
 using UnityEngine;
 
 [System.Serializable]
-public struct RPCList<T> : IEnumerable where T : struct
+public class RPCList<T> : IEnumerable where T : struct
 {
 
-    public List<T> list;
+    public List<T> list = new();
 
-    public RPCList(int size = 100)
-    {
+    public RPCList() { }
 
-        list = new(size);
-
-    }
 
     public RPCList(List<T> list)
     {

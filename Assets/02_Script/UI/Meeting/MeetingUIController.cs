@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,6 +14,8 @@ public class MeetingUIController : MonoBehaviour
     [SerializeField] private MeetingProfile panelPrefab;
     [SerializeField] private Transform panelRoot;
 
+    private List<MeetingProfile> profiles = new List<MeetingProfile>();
+
     public void MeetingStart()
     {
         
@@ -22,6 +25,8 @@ public class MeetingUIController : MonoBehaviour
             Destroy(panelRoot.GetChild(i).gameObject);
 
         }
+
+        profiles.Clear();
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -49,6 +54,8 @@ public class MeetingUIController : MonoBehaviour
 
         panel.Setting(clientId, userName, isOwner);
 
+        profiles.Add(panel);
+
     }
 
     public void ChattingOpen()
@@ -61,10 +68,28 @@ public class MeetingUIController : MonoBehaviour
 
     }
 
-    public void OpenVote()
+    [ClientRpc]
+    public void OpenVote(RPCList<VoteData> list)
     {
 
+        foreach(VoteData item in list)
+        {
 
+            profiles.Find(x => x.ownerClientId == item.clientId).OpenVote(item.voteCount);
+
+        }
+
+    }
+
+    public void CloseVote()
+    {
+
+        foreach(var item in profiles)
+        {
+
+            item.CloseVote();
+
+        }
 
     }
 

@@ -61,7 +61,7 @@ public static class Support
 
     }
 
-    public static byte[] Serialize<T>(RPCList<T> obj) where T : struct
+    public static byte[] Serialize<T>(this RPCList<T> obj) where T : struct
     {
 
         var str = JsonUtility.ToJson(obj);
