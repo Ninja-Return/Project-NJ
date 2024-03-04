@@ -3,21 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using FSM_System.Netcode;
 
-public class KillState : FSM_State_Netcode<MonsterState>
+public class KillState : MonsterStateRoot
 {
-    public KillState(FSM_Controller_Netcode<MonsterState> controller) : base(controller)
+    private float animTime;
+    private float currentTime = 0;
+
+    public KillState(MonsterFSM controller) : base(controller)
     {
 
     }
 
     protected override void EnterState()
     {
-        base.EnterState();
+        if (!IsServer) return;
+        //animTime = anim.GetCurrentAnimatorStateInfo(0).length; 애니메이션 되면 씁시다.
     }
 
     protected override void UpdateState()
     {
-        base.UpdateState();
+        //if (!IsServer) return;
+
+        if (currentTime >= 1f) //1f => animTime
+        {
+            controller.ChangeState(MonsterState.Idle);
+        }
+        else
+        {
+            currentTime += Time.deltaTime;
+        }
     }
 
     protected override void ExitState()

@@ -18,7 +18,7 @@ public class IdleState : MonsterStateRoot
 
     protected override void UpdateState()
     {
-        if (!IsServer) return;
+        //if (!IsServer) return;
 
         if (currentTime >= idleDuration)
         {

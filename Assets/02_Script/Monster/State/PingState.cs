@@ -10,7 +10,7 @@ public class PingState : MonsterStateRoot
 
     protected override void EnterState()
     {
-        if (!IsServer) return;
+        //if (!IsServer) return;
 
         Vector3 pos = monsterFSM.pingPos;
         nav.SetDestination(pos);

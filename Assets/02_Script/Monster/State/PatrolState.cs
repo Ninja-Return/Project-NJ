@@ -6,21 +6,24 @@ using UnityEngine.AI;
 
 public class PatrolState : MonsterStateRoot
 {
-    private Transform targetPos;
-    private float range = 10f;
+    private Vector3 targetPos;
+    private float range;
 
     Vector3 point;
 
-    public PatrolState(MonsterFSM controller) : base(controller) { }
+    public PatrolState(MonsterFSM controller, float radius) : base(controller) 
+    {
+        range = radius;
+    }
 
     protected override void EnterState()
     {
-        if (!IsServer) return;
+        //if (!IsServer) return;
 
-        if (RandomPoint(targetPos.position, range, out point))
+        if (RandomPoint(targetPos, range, out point))
         {
-            targetPos.position = point;
-            nav.SetDestination(targetPos.position);
+            targetPos = point;
+            nav.SetDestination(targetPos);
         }
     }
 

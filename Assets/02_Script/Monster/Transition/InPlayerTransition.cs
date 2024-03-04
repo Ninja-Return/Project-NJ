@@ -1,18 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FSM_System.Netcode;
 
-public class InPlayerTransition : MonoBehaviour
+public class InPlayerTransition : MonsterTransitionRoot
 {
-    // Start is called before the first frame update
-    void Start()
+    private float radius;
+
+    public InPlayerTransition(MonsterFSM controller, MonsterState nextState, float radius) : base(controller, nextState) 
     {
-        
+        this.radius = radius;
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override bool CheckTransition()
     {
-        
+        Collider targetPlayer = monsterFSM.ViewingPlayer(radius);
+        if (targetPlayer != null)
+        {
+            monsterFSM.targetPlayer = targetPlayer;
+            return true;
+        }
+
+        return false;
     }
 }

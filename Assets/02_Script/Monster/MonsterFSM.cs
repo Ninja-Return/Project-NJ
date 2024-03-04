@@ -16,12 +16,26 @@ public enum MonsterState
 
 public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
 {
-    public Vector3 pingPos;
+    public NavMeshAgent nav;
+    public Transform headTrs;
+    public float angle;
+    public LayerMask playerMask;
 
-    private NavMeshAgent nav;
+    public MonsterState nowState;
+
+    [HideInInspector] public Vector3 pingPos;
+    [HideInInspector] public Collider targetPlayer;
+    [HideInInspector] public bool isDead { get; private set; }
+
+    [SerializeField] private float moveRadius;
+    [SerializeField] private float chaseRadius;
+    [SerializeField] private float killRadius;
+    [SerializeField] private LayerMask obstacleMask;
 
     protected override void Awake()
     {
+        //if (!IsServer) return;
+
         base.Awake();
 
         InitializeStates();
@@ -31,21 +45,112 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
     private void InitializeStates()
     {
         IdleState idleState = new IdleState(this);
-        PatrolState patrolState = new PatrolState(this);
+        PatrolState patrolState = new PatrolState(this, moveRadius);
         PingState pingState = new PingState(this);
+        ChaseState chaseState = new ChaseState(this, chaseRadius);
+        KillState killState = new KillState(this);
+        DeathState deathState = new DeathState(this);
 
-        //patrolState.AddTransition(new MoveTransition(this, MonsterState.Idle, nav));
+        MoveTransition moveTransition = new MoveTransition(this, MonsterState.Idle);
+        InPlayerTransition chasePlayerTransition = new InPlayerTransition(this, MonsterState.Chase, chaseRadius);
+        InPlayerTransition killPlayerTransition = new InPlayerTransition(this, MonsterState.Kill, killRadius);
+        DieTransition dieTransition = new DieTransition(this, MonsterState.Dead);
+
+        patrolState.AddTransition(moveTransition);
+        pingState.AddTransition(moveTransition);
+
+        idleState.AddTransition(chasePlayerTransition);
+        patrolState.AddTransition(chasePlayerTransition);
+        pingState.AddTransition(chasePlayerTransition);
+        chaseState.AddTransition(killPlayerTransition);
+
+        idleState.AddTransition(dieTransition);
+        patrolState.AddTransition(dieTransition);
+        pingState.AddTransition(dieTransition);
+        chaseState.AddTransition(dieTransition);
+        killState.AddTransition(dieTransition);
 
         AddState(idleState, MonsterState.Idle);
         AddState(patrolState, MonsterState.Patrol);
         AddState(pingState, MonsterState.Ping);
+        AddState(chaseState, MonsterState.Chase);
+        AddState(killState, MonsterState.Kill);
+        AddState(deathState, MonsterState.Dead);
+    }
+
+    public Collider ViewingPlayer(float radius)
+    {
+        List<Collider> players = new List<Collider>();
+
+        Vector3 pos = headTrs.position;
+        Vector3 eulerAngles = headTrs.eulerAngles;
+
+        float lookingAngle = eulerAngles.y;  //캐릭터가 바라보는 방향의 각도
+        Vector3 rightDir = AngleToDirX(lookingAngle + angle * 0.5f);
+        Vector3 leftDir = AngleToDirX(lookingAngle - angle * 0.5f);
+        Vector3 upDir = AngleToDirY(lookingAngle, true);
+        Vector3 downDir = AngleToDirY(lookingAngle, false);
+        Vector3 lookDir = AngleToDirX(lookingAngle);
+
+#if UNITY_EDITOR
+        Debug.DrawRay(pos, rightDir * radius, Color.blue);
+        Debug.DrawRay(pos, leftDir * radius, Color.blue);
+        Debug.DrawRay(pos, upDir * radius, Color.blue);
+        Debug.DrawRay(pos, downDir * radius, Color.blue);
+        Debug.DrawRay(pos, lookDir * radius, Color.cyan);
+#endif
+
+        Collider[] allPlayers = Physics.OverlapSphere(pos, radius, playerMask);
+        if (allPlayers.Length == 0) return null;
+        
+        foreach (Collider player in allPlayers)
+        {
+            Vector3 targetPos = player.transform.position;
+            Vector3 targetDir = (targetPos - pos).normalized;
+            float targetAngle = Mathf.Acos(Vector3.Dot(lookDir, targetDir)) * Mathf.Rad2Deg;
+
+            if (targetAngle <= angle * 0.5f && !Physics.Raycast(pos, targetDir, radius, obstacleMask))
+            {
+                //player 감지됨
+                players.Add(player);
+                Debug.DrawLine(pos, targetPos, Color.red);
+            }
+        }
+
+        if (players.Count == 0) return null;
+
+        float minDistance = float.MaxValue;
+        Collider targetPlayer = null;
+        foreach (Collider player in players)
+        {
+            if (Vector3.Distance(player.transform.position, pos) < minDistance)
+            {
+                targetPlayer = player;
+            }
+        }
+
+        return targetPlayer;
+    }
+
+    private Vector3 AngleToDirX(float angle)
+    {
+        float radian = angle * Mathf.Deg2Rad;
+        return new Vector3(Mathf.Sin(radian), 0f, Mathf.Cos(radian));
+    }
+
+    private Vector3 AngleToDirY(float angle1, bool isUp)
+    {
+        float radian1 = angle1 * Mathf.Deg2Rad;
+        float radian2 = (angle * 0.5f) * Mathf.Deg2Rad;
+        Vector3 angleVec = isUp == true ? new Vector3(0f, Mathf.Sin(radian2), 0f) : new Vector3(0f, -Mathf.Sin(radian2), 0f);
+        return new Vector3(Mathf.Sin(radian1), 0f, Mathf.Cos(radian1)) + angleVec;
     }
 
     public void SetPingPos(Vector3 pos)
     {
         NavMeshHit hit;
 
-        if (NavMesh.SamplePosition(pos, out hit, 1.0f, NavMesh.AllAreas)) 
+        if (NavMesh.SamplePosition(pos, out hit, 1.0f, NavMesh.AllAreas))
         {
             pingPos = hit.position;
 
@@ -55,4 +160,26 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
             }
         }
     }
+
+    public void KillPlayerAnimationEvent() //애니메이션은 동기화 되니까 코드는 신경 안써도 될듯?
+    {
+        //targetPlayer에 스크립트 가져와서 죽으라고 전해주자
+    }
+
+    public void SetMonsterDeath()
+    {
+        isDead = true;
+    }
+
+    protected override void Update()
+    {
+
+        //if (!IsServer) return;
+
+        nowState = currentState;
+        base.Update();
+
+
+    }
+
 }
