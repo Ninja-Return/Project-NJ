@@ -117,7 +117,14 @@ public class GameManager : NetworkBehaviour
     public void PlayerMoveableChangeClientRPC(bool value)
     {
 
-        FindObjectsOfType<PlayerController>().ToList().Find(x => x.IsOwner).Active(value);
+        var obj = FindObjectsOfType<PlayerController>().ToList().Find(x => x.IsOwner);
+
+        if(obj != null)
+        {
+
+            obj.Active(value);
+
+        }
 
     }
 
