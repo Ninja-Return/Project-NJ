@@ -1,59 +1,43 @@
 using Cinemachine;
+using System.Collections;
 using UnityEngine;
 
 public class HeadBobController : MonoBehaviour
 {
-    public float bobbingSpeed = 0.18f;
-    public float bobbingAmount = 0.2f;
-    public float strideLengthen = 0.3f;
-    public float tiltAngle = 15f;
+    [SerializeField] private float bobFrequency = 5f; // 움직임 주기
+    [SerializeField] private float bobAmount = 0.1f; // 움직임 크기
+    [SerializeField] private float bobAmplitude = 0.1f; // 움직임 크기
+    [SerializeField] private float tiltAngle = 8f; // 좌우로 기울이는 각도
+    private CinemachineVirtualCamera virtualCamera;
+    private CinemachineBasicMultiChannelPerlin noise;
 
-    private float originalY;
-    private float timer = 0.0f;
-
-    void Start()
-    {
-        originalY = transform.localPosition.y;
-    }
+    private float timer = 0f;
 
     void Update()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-        Vector3 movement = new Vector3(horizontal, 0, vertical);
+        float horizontalMovement = Input.GetAxis("Horizontal");
+        float verticalMovement = Input.GetAxis("Vertical");
 
-        if (movement.magnitude > 0.01f)
+        // 좌우로 움직일 때 카메라를 좌우로 기울임
+        float tilt = horizontalMovement * tiltAngle;
+        transform.localRotation = Quaternion.Euler(0f, 0f, -tilt);
+
+        #region 1 (Just Math)
+        if (Mathf.Abs(horizontalMovement) > 0.1f || Mathf.Abs(verticalMovement) > 0.1f)
         {
-            float waveSlice = Mathf.Sin(timer);
-            float bobbingAmountToUse = bobbingAmount;
+            // 카메라의 위치를 위아래로 움직임
+            float waveSlice = Mathf.Sin(timer * bobFrequency) * bobAmount;
+            transform.localPosition = new Vector3(transform.localPosition.x, waveSlice, transform.localPosition.z);
 
-            if (waveSlice != 0)
-            {
-                float translateChange = waveSlice * bobbingAmountToUse;
-                transform.localPosition = new Vector3(transform.localPosition.x, originalY + translateChange, transform.localPosition.z);
-
-                // 좌우로 기울이기 효과 추가
-                float tilt = Mathf.Sin(timer * 2) * tiltAngle;
-                transform.localRotation = Quaternion.Euler(0, 0, tilt);
-            }
-            else
-            {
-                transform.localPosition = new Vector3(transform.localPosition.x, originalY, transform.localPosition.z);
-                transform.localRotation = Quaternion.identity;
-            }
-
-            timer += bobbingSpeed * Time.deltaTime * Mathf.Clamp(movement.magnitude * strideLengthen, 1f, 2f);
-
-            if (timer > Mathf.PI * 2)
-            {
-                timer = timer - (Mathf.PI * 2);
-            }
+            timer += Time.deltaTime;
+            if (timer > Mathf.PI * 2) timer = timer - (Mathf.PI * 2);
         }
         else
         {
-            timer = 0.0f;
-            transform.localPosition = new Vector3(transform.localPosition.x, originalY, transform.localPosition.z);
-            transform.localRotation = Quaternion.identity;
+            // 정지할 때 카메라를 초기 위치로 되돌림
+            timer = 0;
+            transform.localPosition = new Vector3(transform.localPosition.x, 0f, transform.localPosition.z);
         }
+        #endregion
     }
 }
