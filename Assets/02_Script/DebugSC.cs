@@ -7,6 +7,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System;
 using System.Text;
+using Unity.VisualScripting;
 
 public class DebugSC : NetworkBehaviour
 {
@@ -21,16 +22,9 @@ public class DebugSC : NetworkBehaviour
 
             var ls = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
 
-            var ms = new MemoryStream();
-            var bf = new BinaryFormatter();
+            var rpLs = new RPCList<int>(ls);
 
-            bf.Serialize(ms, ls);
-
-            var data = Encoding.UTF8.GetString(ms.GetBuffer());
-
-            Debug.Log(data);
-
-            DebugClientRPC(data);
+            DebugClientRPC(Support.Serialize<int>(rpLs));
 
         }
 
@@ -39,15 +33,10 @@ public class DebugSC : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void DebugClientRPC(FixedString4096Bytes str)
+    public void DebugClientRPC(byte[] stream)
     {
 
-        Debug.Log(str);
-
-        var ms = new MemoryStream(Encoding.UTF8.GetBytes(str.ToString()));
-        var bf = new BinaryFormatter();
-
-        List<int> ls = (List<int>)bf.Deserialize(ms);
+        var ls = stream.Deserialize<int>();
 
         foreach(var item in ls)
         {

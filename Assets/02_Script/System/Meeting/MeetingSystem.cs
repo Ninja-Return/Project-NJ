@@ -5,6 +5,15 @@ using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
+[System.Serializable]
+public struct VoteData
+{
+
+    ulong clientId;
+    int voteCount;
+
+}
+
 public class MeetingSystem : NetworkBehaviour
 {
 
