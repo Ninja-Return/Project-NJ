@@ -12,6 +12,8 @@ public class DeathState : FSM_State_Netcode<MonsterState>
 
     protected override void EnterState()
     {
+        if (!IsServer) return;
+
         //죽는 애니메이션
         //리썰처럼 시체 냅두는게 좋을듯?
     }

@@ -9,6 +9,7 @@ public class MonsterTransitionRoot : FSM_Transition_Netcode<MonsterState>
     protected MonsterFSM monsterFSM;
 
     protected NavMeshAgent nav;
+    protected Transform monsterTrs;
     protected Transform headTrs;
     protected float angle;
     protected LayerMask playerMask;
@@ -17,7 +18,8 @@ public class MonsterTransitionRoot : FSM_Transition_Netcode<MonsterState>
     {
         monsterFSM = controller;
 
-        nav = controller.nav;
+        nav = monsterFSM.nav;
+        monsterTrs = monsterFSM.transform;
         headTrs = monsterFSM.headTrs;
         angle = monsterFSM.angle;
         playerMask = monsterFSM.playerMask;

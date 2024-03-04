@@ -15,7 +15,7 @@ public class KillState : MonsterStateRoot
 
     protected override void EnterState()
     {
-        if (!IsServer) return;
+        //if (!IsServer) return;
         //animTime = anim.GetCurrentAnimatorStateInfo(0).length; 애니메이션 되면 씁시다.
     }
 
@@ -35,6 +35,6 @@ public class KillState : MonsterStateRoot
 
     protected override void ExitState()
     {
-        base.ExitState();
+        currentTime = 0f;
     }
 }

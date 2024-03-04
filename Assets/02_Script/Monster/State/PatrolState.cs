@@ -8,17 +8,21 @@ public class PatrolState : MonsterStateRoot
 {
     private Vector3 targetPos;
     private float range;
+    private float speed;
 
     Vector3 point;
 
-    public PatrolState(MonsterFSM controller, float radius) : base(controller) 
+    public PatrolState(MonsterFSM controller, float radius, float speed) : base(controller) 
     {
         range = radius;
+        this.speed = speed;
     }
 
     protected override void EnterState()
     {
         //if (!IsServer) return;
+
+        nav.speed = speed;
 
         if (RandomPoint(targetPos, range, out point))
         {

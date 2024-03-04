@@ -6,15 +6,19 @@ using FSM_System.Netcode;
 public class ChaseState : MonsterStateRoot
 {
     private float radius;
+    private float speed;
 
-    public ChaseState(MonsterFSM controller, float radius) : base(controller)
+    public ChaseState(MonsterFSM controller, float radius, float speed) : base(controller)
     {
         this.radius = radius;
+        this.speed = speed;
     }
 
     protected override void EnterState()
     {
-        
+        if (!IsServer) return;
+
+        nav.speed = speed;
     }
 
     protected override void UpdateState()
@@ -24,9 +28,11 @@ public class ChaseState : MonsterStateRoot
         Vector3 playerPos = monsterFSM.targetPlayer.transform.position;
         nav.SetDestination(playerPos);
 
-        if (monsterFSM.ViewingPlayer(radius) != null)
+        Collider player = monsterFSM.ViewingPlayer(radius);
+
+        if (player != null)
         {
-            monsterFSM.targetPlayer = monsterFSM.ViewingPlayer(radius);
+            monsterFSM.targetPlayer = player;
         }
         else
         {

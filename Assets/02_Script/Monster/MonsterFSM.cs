@@ -27,9 +27,12 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
     [HideInInspector] public Collider targetPlayer;
     [HideInInspector] public bool isDead { get; private set; }
 
+    [Header("Values")]
     [SerializeField] private float moveRadius;
     [SerializeField] private float chaseRadius;
     [SerializeField] private float killRadius;
+    [SerializeField] private float workSpeed;
+    [SerializeField] private float runSpeed;
     [SerializeField] private LayerMask obstacleMask;
 
     protected override void Awake()
@@ -45,15 +48,15 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
     private void InitializeStates()
     {
         IdleState idleState = new IdleState(this);
-        PatrolState patrolState = new PatrolState(this, moveRadius);
-        PingState pingState = new PingState(this);
-        ChaseState chaseState = new ChaseState(this, chaseRadius);
+        PatrolState patrolState = new PatrolState(this, moveRadius, workSpeed);
+        PingState pingState = new PingState(this, workSpeed);
+        ChaseState chaseState = new ChaseState(this, chaseRadius, runSpeed);
         KillState killState = new KillState(this);
         DeathState deathState = new DeathState(this);
 
         MoveTransition moveTransition = new MoveTransition(this, MonsterState.Idle);
         InPlayerTransition chasePlayerTransition = new InPlayerTransition(this, MonsterState.Chase, chaseRadius);
-        InPlayerTransition killPlayerTransition = new InPlayerTransition(this, MonsterState.Kill, killRadius);
+        CatchPlayerTransition catchPlayerTransition = new CatchPlayerTransition(this, MonsterState.Kill, killRadius);
         DieTransition dieTransition = new DieTransition(this, MonsterState.Dead);
 
         patrolState.AddTransition(moveTransition);
@@ -62,7 +65,8 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
         idleState.AddTransition(chasePlayerTransition);
         patrolState.AddTransition(chasePlayerTransition);
         pingState.AddTransition(chasePlayerTransition);
-        chaseState.AddTransition(killPlayerTransition);
+
+        chaseState.AddTransition(catchPlayerTransition);
 
         idleState.AddTransition(dieTransition);
         patrolState.AddTransition(dieTransition);

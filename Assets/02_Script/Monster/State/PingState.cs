@@ -6,11 +6,18 @@ using FSM_System.Netcode;
 
 public class PingState : MonsterStateRoot
 {
-    public PingState(MonsterFSM controller) : base(controller) { }
+    private float speed;
+
+    public PingState(MonsterFSM controller, float speed) : base(controller) 
+    {
+        this.speed = speed;
+    }
 
     protected override void EnterState()
     {
         //if (!IsServer) return;
+
+        nav.speed = speed;
 
         Vector3 pos = monsterFSM.pingPos;
         nav.SetDestination(pos);
