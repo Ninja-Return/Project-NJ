@@ -8,9 +8,10 @@ using WebSocketSharp;
 
 public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
-    [HideInInspector] public SlotData slotData { get; private set; }
-    [HideInInspector] public int slotIndex { get; set; } //이건 인벤토리에서 부여
-    [HideInInspector] public bool onCursor { get; private set; } //얘도 참조할 일이 있지 않을까
+    public SlotData slotData { get; private set; }
+    public int slotIndex { get; set; } //이건 인벤토리에서 부여
+    public bool onCursor { get; private set; } //얘도 참조할 일이 있지 않을까
+    public ItemDataSO data {  get; private set; }
 
     private Image slotImage;
 
@@ -19,9 +20,10 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         slotImage = GetComponent<Image>();
     }
 
-    public void InsertSlot(SlotData newData)
+    public void InsertSlot(ItemDataSO newData)
     {
-        slotData = newData;
+        slotData = newData.slotData;
+        data = newData;
         slotImage.sprite = slotData.slotSprite;
     }
 

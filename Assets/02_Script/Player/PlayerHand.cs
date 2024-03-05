@@ -147,4 +147,11 @@ public class PlayerHand : NetworkBehaviour
 
     }
 
+    public bool CheckHandItem(string targetName)
+    {
+
+        return Inventory.Instance.GetItemName(currentIdx) == targetName;
+
+    }
+
 }
