@@ -3,25 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using FSM_System.Netcode;
 
-public class DeathState : FSM_State_Netcode<MonsterState>
+public class DeathState : MonsterStateRoot
 {
-    public DeathState(FSM_Controller_Netcode<MonsterState> controller) : base(controller)
+    public DeathState(MonsterFSM controller) : base(controller)
     {
 
     }
 
     protected override void EnterState()
     {
-        base.EnterState();
+        if (!IsServer) return;
+
+        monsterFSM.SetAnimation("Death", true);
+
+        //죽는 애니메이션
+        //리썰처럼 시체 냅두는게 좋을듯?
     }
 
     protected override void UpdateState()
     {
-        base.UpdateState();
+        
     }
 
     protected override void ExitState()
     {
-        base.ExitState();
+        if (!IsServer) return;
+
+        monsterFSM.SetAnimation("Death", false);
     }
 }

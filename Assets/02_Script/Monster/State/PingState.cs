@@ -6,11 +6,20 @@ using FSM_System.Netcode;
 
 public class PingState : MonsterStateRoot
 {
-    public PingState(MonsterFSM controller) : base(controller) { }
+    private float speed;
+
+    public PingState(MonsterFSM controller, float speed) : base(controller) 
+    {
+        this.speed = speed;
+    }
 
     protected override void EnterState()
     {
         if (!IsServer) return;
+
+        monsterFSM.SetAnimation("Work", true);
+
+        nav.speed = speed;
 
         Vector3 pos = monsterFSM.pingPos;
         nav.SetDestination(pos);
@@ -23,6 +32,10 @@ public class PingState : MonsterStateRoot
 
     protected override void ExitState()
     {
-        base.ExitState();
+        if (!IsServer) return;
+
+        monsterFSM.SetAnimation("Work", false);
+
+        nav.SetDestination(monsterFSM.transform.position);
     }
 }

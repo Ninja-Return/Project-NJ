@@ -1,17 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using FSM_System;
+using FSM_System.Netcode;
 using UnityEngine.AI;
 
-public class MoveTransition : FSM_Transition<MonsterState>
+public class MoveTransition : MonsterTransitionRoot
 {
-    private NavMeshAgent nav;
-
-    public MoveTransition(FSM_Controller<MonsterState> controller, MonsterState nextState, NavMeshAgent nav) : base(controller, nextState)
-    {
-        this.nav = nav;
-    }
+    public MoveTransition(MonsterFSM controller, MonsterState nextState) : base(controller, nextState) { }
 
     protected override bool CheckTransition()
     {
