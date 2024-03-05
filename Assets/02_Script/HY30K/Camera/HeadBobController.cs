@@ -33,7 +33,7 @@ public class HeadBobController : NetworkBehaviour
 
         // 좌우로 움직일 때 카메라를 좌우로 기울임
         float tilt = horizontalMovement * tiltAngle;
-        transform.localRotation = Quaternion.Euler(0f, 0f, -tilt);
+        transform.localRotation = Quaternion.Euler(transform.localEulerAngles.x, transform.localEulerAngles.y, -tilt);
 
         #region 1 (Just Math)
         if (Mathf.Abs(horizontalMovement) > 0.1f || Mathf.Abs(verticalMovement) > 0.1f)
