@@ -18,17 +18,19 @@ public class ChaseState : MonsterStateRoot
     {
         if (!IsServer) return;
 
+        monsterFSM.SetAnimation("Run", true);
+
         nav.speed = speed;
     }
 
     protected override void UpdateState()
     {
-        //if (!IsServer) return;
+        if (!IsServer) return;
 
         Vector3 playerPos = monsterFSM.targetPlayer.transform.position;
         nav.SetDestination(playerPos);
 
-        Collider player = monsterFSM.ViewingPlayer(radius);
+        Collider player = monsterFSM.CirclePlayer(radius);
 
         if (player != null)
         {
@@ -42,6 +44,10 @@ public class ChaseState : MonsterStateRoot
 
     protected override void ExitState()
     {
-        
+        if (!IsServer) return;
+
+        monsterFSM.SetAnimation("Run", false);
+
+        nav.SetDestination(monsterFSM.transform.position);
     }
 }

@@ -20,7 +20,9 @@ public class PatrolState : MonsterStateRoot
 
     protected override void EnterState()
     {
-        //if (!IsServer) return;
+        if (!IsServer) return;
+
+        monsterFSM.SetAnimation("Work", true);
 
         nav.speed = speed;
 
@@ -38,7 +40,11 @@ public class PatrolState : MonsterStateRoot
 
     protected override void ExitState()
     {
-        base.ExitState();
+        if (!IsServer) return;
+
+        monsterFSM.SetAnimation("Work", false);
+
+        nav.SetDestination(monsterFSM.transform.position);
     }
 
     private bool RandomPoint(Vector3 center, float range, out Vector3 result)

@@ -13,12 +13,14 @@ public class IdleState : MonsterStateRoot
 
     protected override void EnterState()
     {
-        
+        if (!IsServer) return;
+
+        monsterFSM.SetAnimation("Idle", true);
     }
 
     protected override void UpdateState()
     {
-        //if (!IsServer) return;
+        if (!IsServer) return;
 
         if (currentTime >= idleDuration)
         {
@@ -32,6 +34,9 @@ public class IdleState : MonsterStateRoot
 
     protected override void ExitState()
     {
+        if (!IsServer) return;
+
+        monsterFSM.SetAnimation("Idle", false);
         currentTime = 0;
     }
 }

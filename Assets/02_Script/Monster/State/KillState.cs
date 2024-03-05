@@ -15,13 +15,16 @@ public class KillState : MonsterStateRoot
 
     protected override void EnterState()
     {
-        //if (!IsServer) return;
-        //animTime = anim.GetCurrentAnimatorStateInfo(0).length; 애니메이션 되면 씁시다.
+        if (!IsServer) return;
+
+        monsterFSM.SetAnimation("Attack", true);
+
+        nav.isStopped = true;
     }
 
     protected override void UpdateState()
     {
-        //if (!IsServer) return;
+        if (!IsServer) return;
 
         if (currentTime >= 1f) //1f => animTime
         {
@@ -35,6 +38,12 @@ public class KillState : MonsterStateRoot
 
     protected override void ExitState()
     {
+        if (!IsServer) return;
+
+        monsterFSM.SetAnimation("Attack", false);
+
+        nav.isStopped = false;
+
         currentTime = 0f;
     }
 }

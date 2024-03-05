@@ -15,7 +15,9 @@ public class PingState : MonsterStateRoot
 
     protected override void EnterState()
     {
-        //if (!IsServer) return;
+        if (!IsServer) return;
+
+        monsterFSM.SetAnimation("Work", true);
 
         nav.speed = speed;
 
@@ -30,6 +32,10 @@ public class PingState : MonsterStateRoot
 
     protected override void ExitState()
     {
-        base.ExitState();
+        if (!IsServer) return;
+
+        monsterFSM.SetAnimation("Work", false);
+
+        nav.SetDestination(monsterFSM.transform.position);
     }
 }

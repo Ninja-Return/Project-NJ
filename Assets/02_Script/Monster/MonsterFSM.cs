@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Unity.Netcode;
 using FSM_System.Netcode;
 
 public enum MonsterState
@@ -16,6 +17,7 @@ public enum MonsterState
 
 public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
 {
+    public Animator anim;
     public NavMeshAgent nav;
     public Transform headTrs;
     public float angle;
@@ -35,9 +37,14 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
     [SerializeField] private float runSpeed;
     [SerializeField] private LayerMask obstacleMask;
 
-    protected override void Awake()
+    private void Start()
     {
-        //if (!IsServer) return;
+        if (!IsHost)
+        {
+            nav.enabled = false;
+        }
+
+        if (!IsServer) return;
 
         base.Awake();
 
@@ -80,6 +87,47 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
         AddState(chaseState, MonsterState.Chase);
         AddState(killState, MonsterState.Kill);
         AddState(deathState, MonsterState.Dead);
+    }
+
+    public void SetAnimation(string name, bool value)
+    {
+        SetAnimationServerRpc(name, value);
+    }
+
+    [ServerRpc]
+    private void SetAnimationServerRpc(string name, bool value)
+    {
+        anim.SetBool(name, value);
+        SetAnimationClientRpc(name, value);
+    }
+
+    [ClientRpc]
+    private void SetAnimationClientRpc(string name, bool value)
+    {
+        anim.SetBool(name, value);
+    }
+
+    public Collider CirclePlayer(float radius)
+    {
+        Vector3 pos = headTrs.position;
+
+        Collider[] allPlayers = Physics.OverlapSphere(pos, radius, playerMask);
+        if (allPlayers.Length == 0) return null;
+
+        float minDistance = float.MaxValue;
+        Collider targetPlayer = null;
+        foreach (Collider player in allPlayers)
+        {
+            if (Vector3.Distance(player.transform.position, pos) < minDistance)
+            {
+                targetPlayer = player;
+            }
+        }
+
+        Vector3 targetPos = targetPlayer.transform.position;
+        Debug.DrawLine(pos, targetPos, Color.red);
+
+        return targetPlayer;
     }
 
     public Collider ViewingPlayer(float radius)
@@ -139,19 +187,22 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
     private Vector3 AngleToDirX(float angle)
     {
         float radian = angle * Mathf.Deg2Rad;
-        return new Vector3(Mathf.Sin(radian), 0f, Mathf.Cos(radian));
+        return new Vector3(Mathf.Sin(radian), 0, Mathf.Cos(radian));
     }
 
     private Vector3 AngleToDirY(float angle1, bool isUp)
     {
         float radian1 = angle1 * Mathf.Deg2Rad;
         float radian2 = (angle * 0.5f) * Mathf.Deg2Rad;
+
         Vector3 angleVec = isUp == true ? new Vector3(0f, Mathf.Sin(radian2), 0f) : new Vector3(0f, -Mathf.Sin(radian2), 0f);
-        return new Vector3(Mathf.Sin(radian1), 0f, Mathf.Cos(radian1)) + angleVec;
+        return new Vector3(Mathf.Sin(radian1), 0, Mathf.Cos(radian1)) + angleVec;
     }
 
     public void SetPingPos(Vector3 pos)
     {
+        if (!IsServer) return;
+
         NavMeshHit hit;
 
         if (NavMesh.SamplePosition(pos, out hit, 1.0f, NavMesh.AllAreas))
@@ -167,20 +218,25 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
 
     public void KillPlayerAnimationEvent() //애니메이션은 동기화 되니까 코드는 신경 안써도 될듯?
     {
+        if (!IsServer) return;
         //targetPlayer에 스크립트 가져와서 죽으라고 전해주자
+        //Destroy(targetPlayer.gameObject);
     }
 
     public void SetMonsterDeath()
     {
+        if (!IsServer) return;
+
         isDead = true;
     }
 
     protected override void Update()
     {
 
-        //if (!IsServer) return;
+        if (!IsServer) return;
 
         nowState = currentState;
+
         base.Update();
 
 
