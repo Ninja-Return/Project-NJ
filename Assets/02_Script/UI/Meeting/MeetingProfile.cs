@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,8 +11,10 @@ public class MeetingProfile : MonoBehaviour, IPointerDownHandler
 
     [SerializeField] private TMP_Text userNameText;
     [SerializeField] private GameObject chackMask;
+    [SerializeField] private GameObject voteObject;
+    [SerializeField] private Transform voteParent;
 
-    private ulong ownerClientId;
+    public ulong ownerClientId { get; private set; }
 
     public void Setting(ulong ownerClientId, string userName, bool isOwner)
     {
@@ -23,6 +26,18 @@ public class MeetingProfile : MonoBehaviour, IPointerDownHandler
 
     }
 
+    public void OpenVote(int voteCount)
+    {
+
+        for(int i = 0; i < voteCount; i++)
+        {
+
+            Instantiate(voteObject, voteParent);
+
+        }
+
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
 
@@ -31,6 +46,18 @@ public class MeetingProfile : MonoBehaviour, IPointerDownHandler
 
             chackMask.SetActive(true);
 
+        }
+
+    }
+
+    public void CloseVote()
+    {
+
+        for(int i = 0; i < voteParent.childCount; i++) 
+        {
+            
+            Destroy(voteParent.GetChild(i).gameObject);
+        
         }
 
     }

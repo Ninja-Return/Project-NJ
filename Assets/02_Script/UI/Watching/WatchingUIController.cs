@@ -24,33 +24,34 @@ public class WatchingUIController : MonoBehaviour
 
             var p = Instantiate(alivePlayerPrefab, alivePanelRoot);
 
-            p.Spawn(player);
+            p.Spawn(player.clientId, player.name.ToString());
 
             alivePlayers.Add(p);
 
         }
 
-        foreach(var player in GameManager.Instance.alivePlayer)
+        foreach(var player in GameManager.Instance.diePlayer)
         {
 
-            Instantiate(diePlayerPrefab, diePlayerRoot);
+            var p = Instantiate(diePlayerPrefab, diePlayerRoot);
+            p.Spawn(player.name.ToString());
 
         }
 
     }
 
-    private void HandleAliveChanged(NetworkListEvent<ulong> changeEvent)
+    private void HandleAliveChanged(NetworkListEvent<LiveData> changeEvent)
     {
 
         switch (changeEvent.Type)
         {
 
-            case NetworkListEvent<ulong>.EventType.Remove:
+            case NetworkListEvent<LiveData>.EventType.Remove:
                 {
 
                     Instantiate(diePlayerPrefab, diePlayerRoot);
 
-                    Destroy(alivePlayers.Find(x => x.clientId == changeEvent.Value).gameObject);
+                    Destroy(alivePlayers.Find(x => x.clientId == changeEvent.Value.clientId).gameObject);
 
                     break;
 

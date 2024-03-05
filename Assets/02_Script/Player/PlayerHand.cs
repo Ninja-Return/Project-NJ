@@ -29,7 +29,23 @@ public class PlayerHand : NetworkBehaviour
         {
 
             Inventory.Instance.OnSlotClickEvt += HandleHold;
+            Inventory.Instance.OnSlotDropEvt += HandleDrop;
+
+            playerController = GetComponent<PlayerController>();
             playerController.Input.OnUseObjectKeyPress += HandleHandUse;
+
+        }
+
+    }
+
+    private void HandleDrop(string objKey, int idx)
+    {
+
+        if(currentIdx == idx)
+        {
+
+            HandDeleteServerRPC();
+            controller.HandControl(false);
 
         }
 
@@ -38,7 +54,31 @@ public class PlayerHand : NetworkBehaviour
     private void HandleHandUse()
     {
 
-        currentObject.UseServerRPC();
+        if(currentObject != null)
+        {
+
+            UseServerRPC();
+
+        }
+
+
+    }
+
+    [ServerRpc]
+    private void HandDeleteServerRPC()
+    {
+
+        HandDeleteClientRPC();
+
+    }
+
+    [ClientRpc]
+    private void HandDeleteClientRPC()
+    {
+
+        Destroy(currentObject.gameObject);
+        currentObject = null;
+        currentIdx = -1;
 
     }
 
@@ -66,6 +106,8 @@ public class PlayerHand : NetworkBehaviour
 
         controller.HandControl(true);
 
+        currentIdx = idx;
+
     }
 
     [ServerRpc]
@@ -84,6 +126,23 @@ public class PlayerHand : NetworkBehaviour
 
         currentObject = Instantiate(obj, itemParent);
         currentObject.transform.localPosition = Vector3.zero;
+
+    }
+
+    [ServerRpc]
+    private void UseServerRPC()
+    {
+
+        UseClientRPC();
+
+    }
+
+    [ClientRpc]
+    private void UseClientRPC()
+    {
+
+
+        currentObject.DoUse();
 
     }
 

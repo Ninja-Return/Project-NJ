@@ -5,15 +5,16 @@ using UnityEngine;
 using TMPro;
 using EnumList;
 using Unity.Netcode;
+using Unity.Collections;
 
-public delegate void SlotClick(string objKey, int idx);
+public delegate void SlotChange(string objKey, int idx);
 
 public class Inventory : NetworkBehaviour
 {
-    public static Inventory Instance;
+    public static Inventory Instance { get; private set; }
 
-    public event SlotClick OnSlotClickEvt; //상호작용에서 아이템 손에드는 함수 넣어줘라 웅언아
-    public event Action<string> OnSlotDropEvt; //얘는 아이템 던지면서 버릴때 함수 넣어줘
+    public event SlotChange OnSlotClickEvt; //상호작용에서 아이템 손에드는 함수 넣어줘라 웅언아
+    public event SlotChange OnSlotDropEvt; //얘는 아이템 던지면서 버릴때 함수 넣어줘
 
     [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private TextMeshProUGUI slotExpText;
@@ -88,7 +89,10 @@ public class Inventory : NetworkBehaviour
         slotIdx = idx;
         slots[slotIdx].ResetSlot();
 
-        OnSlotDropEvt?.Invoke(itemObj); //손에서 아이템 투척
+        DropItemServerRPC(itemObj);
+        Debug.Log("Asdf");
+
+        OnSlotDropEvt?.Invoke(itemObj, idx); //손에서 아이템 투척
     }
 
     public void Deleteltem() //일회용 아이템 소진시 준표가 갇고와서 발행
@@ -98,4 +102,21 @@ public class Inventory : NetworkBehaviour
 
         slots[slotIdx].ResetSlot();
     }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DropItemServerRPC(FixedString128Bytes itemKey)
+    {
+
+        var item = Resources.Load<ItemRoot>($"ItemObj/{itemKey}");
+
+        var trm = transform.root;
+
+        var clone = Instantiate(item,
+            trm.position + trm.forward, 
+            Quaternion.identity);
+
+        clone.NetworkObject.Spawn();
+
+    }
+
 }

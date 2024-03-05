@@ -2,15 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.Collections;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System;
+using System.Text;
+using Unity.VisualScripting;
 
 public class DebugSC : NetworkBehaviour
 {
 
+
+
     void Start()
     {
-        float time = 0f;
-        float result = (Mathf.Sin(time - Mathf.PI / 2) + 1) / 2;
-        Debug.Log("Result: " + result);
+
+
+
     }
+
 
 }

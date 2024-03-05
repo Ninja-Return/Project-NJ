@@ -81,10 +81,11 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
             UseSlot();
 
         }
-        else if (eventData.button == PointerEventData.InputButton.Left)
+        else if (eventData.button == PointerEventData.InputButton.Right)
         {
 
             RemoveSlot();
+            
         }
 
     }

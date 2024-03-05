@@ -5,6 +5,15 @@ using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
+[System.Serializable]
+public struct VoteData
+{
+
+    public ulong clientId;
+    public int voteCount;
+
+}
+
 public class MeetingSystem : NetworkBehaviour
 {
 
@@ -84,6 +93,8 @@ public class MeetingSystem : NetworkBehaviour
     private void MettingOpenClientRPC()
     {
 
+        if (GameManager.Instance.isDie) return;
+
         JoinChannel();
 
         DayManager.instance.TimeSetting(true);
@@ -95,6 +106,8 @@ public class MeetingSystem : NetworkBehaviour
     [ClientRpc]
     private void SpawnPanelClientRPC(ulong clientId, string userName)
     {
+
+        if (GameManager.Instance.isDie) return;
 
         meetingUI.SpawnPanel(clientId, userName, clientId == NetworkManager.LocalClientId);
 
@@ -120,18 +133,23 @@ public class MeetingSystem : NetworkBehaviour
     private void MeetingEndClientRPC()
     {
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        meetingUI.gameObject.SetActive(false);
+
+        if (GameManager.Instance.isDie) return;
+        
+        GameManager.Instance.SettingCursorVisable(false);
 
         Join3DChannel();
+        NetworkController.Instance.vivox.LeaveNormalChannel();
 
-        meetingUI.gameObject.SetActive(false);
 
     }
 
     [ClientRpc]
     private void PhaseEndClientRPC()
     {
+
+        if (GameManager.Instance.isDie) return;
 
         isVote = false;
 
@@ -164,6 +182,7 @@ public class MeetingSystem : NetworkBehaviour
 
         }
 
+
         if (maxVoteClient.Count > 1)
         {
 
@@ -178,14 +197,9 @@ public class MeetingSystem : NetworkBehaviour
             if (phase == 1)
             {
 
-                var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(maxVoteClient[0]);
+                var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(maxVoteClient[0]).Value;
 
-                foreach(var item in data.Value.attachedItem)
-                {
-
-                    Debug.Log(item);
-
-                }
+                ShowItemClientRPC(data.nickName, string.Join(',', data.attachedItem));
 
             }
             else if (phase == 2)
@@ -197,6 +211,7 @@ public class MeetingSystem : NetworkBehaviour
 
         }
 
+        voteContainer.Clear();
 
         PhaseEndClientRPC();
 
@@ -247,7 +262,13 @@ public class MeetingSystem : NetworkBehaviour
             }
 
             phaseTimeBase.Value = 0;
+
+            OpenVote();
+
+            yield return new WaitForSeconds(5);
+
             PhaseEnd(i + 1);
+            CloseVoteClientRPC();
 
             yield return new WaitForSeconds(1);
 
@@ -257,6 +278,54 @@ public class MeetingSystem : NetworkBehaviour
         DayManager.instance.TimeSetting(false);
         MeetingEndClientRPC();
         chattingSystem.ClearChatting();
+
+    }
+
+    private void OpenVote()
+    {
+
+        RPCList<VoteData> voteList = new RPCList<VoteData>();
+
+        foreach(var item in voteContainer)
+        {
+
+            voteList.list.Add(new VoteData { clientId = item.Key, voteCount = item.Value });
+
+        }
+
+        VoteOpenClientRPC(voteList.Serialize());
+
+    }
+
+    [ClientRpc]
+    private void VoteOpenClientRPC(byte[] bytes)
+    {
+
+        if (GameManager.Instance.isDie) return;
+
+        var list = bytes.Deserialize<VoteData>();
+
+        meetingUI.OpenVote(list);
+
+    }
+
+    [ClientRpc]
+    private void CloseVoteClientRPC()
+    {
+
+        if (GameManager.Instance.isDie) return;
+
+        meetingUI.CloseVote();
+
+    }
+
+    [ClientRpc]
+    private void ShowItemClientRPC(FixedString128Bytes name, FixedString32Bytes item)
+    {
+
+        if (GameManager.Instance.isDie) return;
+
+        meetingUI.ShowingItem(name.ToString(), item.ToString());
 
     }
 

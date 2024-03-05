@@ -6,22 +6,6 @@ using UnityEngine;
 public abstract class HandItemRoot : MonoBehaviour
 {
 
-    [ServerRpc(RequireOwnership = false)]
-    public void UseServerRPC()
-    {
-
-        UseClientRPC();
-
-    }
-
-    [ClientRpc]
-    private void UseClientRPC()
-    {
-
-        DoUse();
-
-    }
-
-    protected abstract void DoUse();
+    public abstract void DoUse();
 
 }

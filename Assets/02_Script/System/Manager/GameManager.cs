@@ -2,17 +2,43 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
+
+[Serializable]
+public struct LiveData : INetworkSerializable, IEquatable<LiveData>
+{
+
+    public ulong clientId;
+    public FixedString64Bytes name;
+
+    public bool Equals(LiveData other)
+    {
+
+        return other.clientId == clientId;
+
+    }
+
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+    {
+
+        serializer.SerializeValue(ref clientId);
+        serializer.SerializeValue(ref name);
+
+    }
+
+}
 
 public class GameManager : NetworkBehaviour
 {
 
     [SerializeField] private NetworkObject player;
+    [SerializeField] private bool debug;
 
-    public NetworkList<ulong> alivePlayer { get; private set; }
-    public NetworkList<ulong> diePlayer { get; private set; }
+    public NetworkList<LiveData> alivePlayer { get; private set; }
+    public NetworkList<LiveData> diePlayer { get; private set; }
 
     private List<PlayerController> players = new();
 
@@ -21,6 +47,7 @@ public class GameManager : NetworkBehaviour
     public event Action OnGameStarted;
     public event Action OnGameStartCallEnd;
     public bool PlayerMoveable { get; private set; } = true;
+    public bool isDie { get; private set; }
 
 
     private void Awake()
@@ -44,14 +71,13 @@ public class GameManager : NetworkBehaviour
 
         OnGameStartCallEnd?.Invoke();
 
-
         if (IsServer)
         {
 
             StartGame();
             HostSingle.Instance.GameManager.OnPlayerConnect += HandlePlayerConnect;
 
-            yield return null;
+            yield return new WaitForSeconds(1);
 
             var param = new ClientRpcParams
             {
@@ -108,8 +134,10 @@ public class GameManager : NetworkBehaviour
         pl.transform.position = new Vector3(Random.Range(-10f, 10f), 1f, Random.Range(-10f, 10f));
         pl.NetworkObject.SpawnWithOwnership(clientId, true);
 
+        var data = HostSingle.Instance.NetServer.GetUserDataByClientID(pl.OwnerClientId).Value;
+
         players.Add(pl);
-        alivePlayer.Add(pl.OwnerClientId);
+        alivePlayer.Add(new LiveData { clientId = pl.OwnerClientId, name = data.nickName });
 
     }
 
@@ -117,7 +145,14 @@ public class GameManager : NetworkBehaviour
     public void PlayerMoveableChangeClientRPC(bool value)
     {
 
-        FindObjectsOfType<PlayerController>().ToList().Find(x => x.IsOwner).Active(value);
+        var obj = FindObjectsOfType<PlayerController>().ToList().Find(x => x.IsOwner);
+
+        if(obj != null)
+        {
+
+            obj.Active(value);
+
+        }
 
     }
 
@@ -143,8 +178,37 @@ public class GameManager : NetworkBehaviour
 
         };
 
-        alivePlayer.Remove(clientId);
-        diePlayer.Add(clientId);
+        var live = new LiveData();
+
+        foreach(var item in alivePlayer)
+        {
+
+            if(item.clientId == clientId)
+            {
+
+                live = item;
+                alivePlayer.Remove(item);
+                break;
+
+            }
+
+        }
+
+        diePlayer.Add(live);
+
+        if (!debug)
+        {
+
+            var id = PlayerRoleManager.Instance.FindMafiaId();
+
+            if(alivePlayer.Count <= 2 && alivePlayer.Find(x => x.clientId == id).clientId == id)
+            {
+
+                WinSystem.Instance.WinServerRPC(EnumWinState.Mafia);
+
+            }
+
+        }
 
         PlayerDieClientRPC(param);
 
@@ -163,6 +227,22 @@ public class GameManager : NetworkBehaviour
     {
 
         WatchingSystem.Instance.StartWatching();
+        isDie = true;
+
+    }
+
+    public void SettingCursorVisable(bool visable)
+    {
+
+        if (isDie)
+        {
+
+            visable = true;
+
+        }
+
+        Cursor.lockState = visable ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = visable;
 
     }
 

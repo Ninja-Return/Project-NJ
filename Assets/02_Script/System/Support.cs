@@ -1,8 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public static class Support
 {
@@ -44,7 +48,51 @@ public static class Support
         }
 
 
+
         return list;
+
+    }
+
+    public static RPCList<T> Deserialize<T>(this byte[] bytes) where T : struct 
+    {
+
+        var str = Encoding.UTF8.GetString(bytes);
+
+        Debug.Log(str);
+
+        return JsonUtility.FromJson<RPCList<T>>(str);
+
+    }
+
+    public static byte[] Serialize<T>(this RPCList<T> obj) where T : struct
+    {
+
+        var str = JsonUtility.ToJson(obj);
+
+        return Encoding.UTF8.GetBytes(str);
+
+    }
+
+    public static void SetColorAlpha(this TMP_Text text, float value)
+    {
+
+        var c = text.color;
+        c.a = value;
+        text.color = c;
+
+    }
+
+    public static T Find<T>(this NetworkList<T> list, Predicate<T> obj) where T : unmanaged, IEquatable<T>
+    {
+
+        foreach(var item in list)
+        {
+
+            if (obj(item)) return item;
+
+        }
+
+        return default(T);
 
     }
 
