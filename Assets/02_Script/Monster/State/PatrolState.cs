@@ -6,21 +6,30 @@ using UnityEngine.AI;
 
 public class PatrolState : MonsterStateRoot
 {
-    private Transform targetPos;
-    private float range = 10f;
+    private Vector3 targetPos;
+    private float range;
+    private float speed;
 
     Vector3 point;
 
-    public PatrolState(MonsterFSM controller) : base(controller) { }
+    public PatrolState(MonsterFSM controller, float radius, float speed) : base(controller) 
+    {
+        range = radius;
+        this.speed = speed;
+    }
 
     protected override void EnterState()
     {
         if (!IsServer) return;
 
-        if (RandomPoint(targetPos.position, range, out point))
+        monsterFSM.SetAnimation("Work", true);
+
+        nav.speed = speed;
+
+        if (RandomPoint(targetPos, range, out point))
         {
-            targetPos.position = point;
-            nav.SetDestination(targetPos.position);
+            targetPos = point;
+            nav.SetDestination(targetPos);
         }
     }
 
@@ -31,7 +40,11 @@ public class PatrolState : MonsterStateRoot
 
     protected override void ExitState()
     {
-        base.ExitState();
+        if (!IsServer) return;
+
+        monsterFSM.SetAnimation("Work", false);
+
+        nav.SetDestination(monsterFSM.transform.position);
     }
 
     private bool RandomPoint(Vector3 center, float range, out Vector3 result)

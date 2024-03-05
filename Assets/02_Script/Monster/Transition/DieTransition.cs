@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DieTransition : MonoBehaviour
+public class DieTransition : MonsterTransitionRoot
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public DieTransition(MonsterFSM controller, MonsterState nextState) : base(controller, nextState) { }
 
-    // Update is called once per frame
-    void Update()
+    protected override bool CheckTransition()
     {
-        
+        if (monsterFSM.isDead)
+        {
+            return true;
+        }
+        return false;
     }
 }
