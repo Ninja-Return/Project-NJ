@@ -125,7 +125,8 @@ public class PlayerHand : NetworkBehaviour
         var obj = Resources.Load<HandItemRoot>($"ItemObj/{objKey}_Hand");
 
         currentObject = Instantiate(obj, itemParent);
-        currentObject.transform.localPosition = Vector3.zero;
+        currentObject.transform.localPosition = Vector3.zero + currentObject.handPivot;
+        currentObject.transform.localEulerAngles = currentObject.handRotation;
 
     }
 
@@ -143,6 +144,13 @@ public class PlayerHand : NetworkBehaviour
 
 
         currentObject.DoUse();
+
+    }
+
+    public bool CheckHandItem(string targetName)
+    {
+
+        return Inventory.Instance.GetItemName(currentIdx) == targetName;
 
     }
 
