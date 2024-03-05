@@ -23,31 +23,17 @@ public class WinSystem : NetworkBehaviour
     private void Awake()
     {
 
-        if(Instance == null)
-        {
-
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-        }
-        else
-        {
-
-            Destroy(gameObject);
-
-        }
+        Instance = this;
 
     }
 
-    [ServerRpc(RequireOwnership = false)]
+    [ServerRpc(RequireOwnership = false)]   
     public void WinServerRPC(EnumWinState winState)
     {
 
         NetworkManager.SceneManager.LoadScene("Win", LoadSceneMode.Single);
 
-
-
-        this.winState.Value = winState;
+        PlayerPrefs.SetInt("WinState", (int)winState);
 
         StartCoroutine(ShutDown());
 

@@ -2,24 +2,33 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
-public class WinUIController : MonoBehaviour
+public class WinUIController : NetworkBehaviour
 {
 
     [SerializeField] private TMP_Text winText;
 
-    private void Awake()
+    private void Start()
     {
 
-        winText.text = GetText();
+        if (IsServer)
+        {
+
+            EnumWinState state = (EnumWinState)PlayerPrefs.GetInt("WinState");
+            Debug.Log(state);
+            SetTextClientRPC(GetText(state));
+
+        }
 
     }
 
-    private string GetText()
+    private string GetText(EnumWinState state)
     {
 
-        switch (WinSystem.Instance.winState.Value)
+        switch (state)
         {
 
             case EnumWinState.None:
@@ -32,6 +41,16 @@ public class WinUIController : MonoBehaviour
         }
 
         return "???????";
+
+    }
+
+    [ClientRpc]
+    private void SetTextClientRPC(FixedString32Bytes str)
+    {
+
+        NetworkController.Instance.vivox.LeaveNormalChannel();
+        NetworkController.Instance.vivox.Leave3DChannel();
+        winText.text = str.ToString();
 
     }
 
