@@ -10,6 +10,7 @@ public class PlayerKillState : PlayerStateRoot
     private Transform cameraTrm;
     private PlayerController player;
     private PlayerHand hand;
+    private MonsterFSM monsterFSM;
 
     public PlayerKillState(PlayerController controller) : base(controller)
     {
@@ -18,6 +19,7 @@ public class PlayerKillState : PlayerStateRoot
         cameraTrm = transform.Find("PlayerCamera");
         interactionText.text = string.Empty;
         hand = GetComponent<PlayerHand>();
+        monsterFSM = Object.FindObjectOfType<MonsterFSM>();
 
     }
 
@@ -53,7 +55,12 @@ public class PlayerKillState : PlayerStateRoot
             else
             {
 
-                Debug.Log("위치 제공");
+                if(monsterFSM != null)
+                {
+
+                    monsterFSM.SetPingPos(player.transform.position);
+
+                }
 
             }
 
