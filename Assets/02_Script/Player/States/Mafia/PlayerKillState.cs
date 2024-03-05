@@ -9,6 +9,8 @@ public class PlayerKillState : PlayerStateRoot
     private TMP_Text interactionText;
     private Transform cameraTrm;
     private PlayerController player;
+    private PlayerHand hand;
+    private MonsterFSM monsterFSM;
 
     public PlayerKillState(PlayerController controller) : base(controller)
     {
@@ -16,6 +18,8 @@ public class PlayerKillState : PlayerStateRoot
         interactionText = transform.Find("InteractionCanvas").Find("KillText").GetComponent<TMP_Text>();
         cameraTrm = transform.Find("PlayerCamera");
         interactionText.text = string.Empty;
+        hand = GetComponent<PlayerHand>();
+        monsterFSM = Object.FindObjectOfType<MonsterFSM>();
 
     }
 
@@ -42,7 +46,24 @@ public class PlayerKillState : PlayerStateRoot
         if (player != null)
         {
 
-            GameManager.Instance.PlayerDieServerRPC(player.OwnerClientId);
+            if(hand.CheckHandItem("검 아이템 키"))
+            {
+
+                GameManager.Instance.PlayerDieServerRPC(player.OwnerClientId);
+
+            }
+            else
+            {
+
+                if(monsterFSM != null)
+                {
+
+                    monsterFSM.SetPingPos(player.transform.position);
+
+                }
+
+            }
+
 
         }
 
@@ -66,12 +87,23 @@ public class PlayerKillState : PlayerStateRoot
 
             player = info.transform.GetComponent<PlayerController>();
 
-            Debug.Log(123);
 
             if (player != null)
             {
 
-                interactionText.text = "E키를 눌러 플레이어를 죽이세요";
+                if(hand.CheckHandItem("검 아이템 키"))
+                {
+
+                    interactionText.text = "E키를 눌러 플레이어를 죽이세요";
+
+                }
+                else
+                {
+
+                    interactionText.text = "E키를 몬스터에게 위치를 제공하세요";
+
+                }
+
 
             }
             else

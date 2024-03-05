@@ -60,7 +60,7 @@ public class Inventory : NetworkBehaviour
         slotExpText.text = $"\"{ex}\"";
     }
 
-    public void ObtainItem(SlotData data) //æ∆¿Ã≈€ ∏‘¿ª∂ß ∫“∑Ø¡‡ ¡ÿ«•ææ
+    public void ObtainItem(ItemDataSO data) //æ∆¿Ã≈€ ∏‘¿ª∂ß ∫“∑Ø¡‡ ¡ÿ«•ææ
     {
         for (int i = 0; i < slots.Length; i++)
         {
@@ -116,6 +116,15 @@ public class Inventory : NetworkBehaviour
             Quaternion.identity);
 
         clone.NetworkObject.Spawn();
+
+    }
+
+    public string GetItemName(int idx)
+    {
+
+        if (idx == -1) return "";
+
+        return slots[idx].data.itemName;
 
     }
 

@@ -18,7 +18,7 @@ public enum ItemCategory
 public abstract class ItemRoot : InteractionObject
 {
 
-    [SerializeField] private SlotData data;
+    [SerializeField] protected ItemDataSO data;
 
     public ItemCategory itemCategory { get; protected set; }
 

@@ -219,8 +219,11 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
     public void KillPlayerAnimationEvent() //애니메이션은 동기화 되니까 코드는 신경 안써도 될듯?
     {
         if (!IsServer) return;
-        //targetPlayer에 스크립트 가져와서 죽으라고 전해주자
-        //Destroy(targetPlayer.gameObject);
+
+        var player = targetPlayer.GetComponent<PlayerController>();
+
+        GameManager.Instance.PlayerDieServerRPC(player.OwnerClientId);
+
     }
 
     public void SetMonsterDeath()
