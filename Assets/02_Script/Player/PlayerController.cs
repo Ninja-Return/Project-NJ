@@ -121,6 +121,8 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         while (true)
         {
 
+            if(gameObject == null) yield break;
+
             NetworkController.Instance.vivox.UpdateChannelPos(gameObject);
 
             yield return sec;

@@ -43,6 +43,8 @@ public class VivoxController
     public async Task JoinNormalChannel()
     {
 
+        if (completeJoin2D) return;
+
         await Init();
         await VivoxService.Instance.JoinGroupChannelAsync(joinCode + "_Voice_Normal", ChatCapability.AudioOnly);
 
@@ -52,6 +54,8 @@ public class VivoxController
 
     public async Task Join3DChannel()
     {
+
+        if (completeJoin3D) return;
 
         await Init();
         await VivoxService.Instance.JoinPositionalChannelAsync(joinCode + "_Voice_3D", ChatCapability.AudioOnly, channel3DProperties);
@@ -72,6 +76,8 @@ public class VivoxController
     public async Task LeaveNormalChannel()
     {
 
+        if(completeJoin2D == false) return;
+
         await VivoxService.Instance.LeaveChannelAsync(joinCode + "_Voice_Normal");
 
         completeJoin2D = false;
@@ -80,6 +86,8 @@ public class VivoxController
 
     public async Task Leave3DChannel()
     {
+
+        if (completeJoin3D == false) return;
 
         await VivoxService.Instance.LeaveChannelAsync(joinCode + "_Voice_3D");
 

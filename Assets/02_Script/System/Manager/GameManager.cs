@@ -35,6 +35,7 @@ public class GameManager : NetworkBehaviour
 {
 
     [SerializeField] private NetworkObject player;
+    [SerializeField] private bool debug;
 
     public NetworkList<LiveData> alivePlayer { get; private set; }
     public NetworkList<LiveData> diePlayer { get; private set; }
@@ -69,7 +70,6 @@ public class GameManager : NetworkBehaviour
         yield return null;
 
         OnGameStartCallEnd?.Invoke();
-
 
         if (IsServer)
         {
@@ -195,6 +195,20 @@ public class GameManager : NetworkBehaviour
         }
 
         diePlayer.Add(live);
+
+        if (!debug)
+        {
+
+            var id = PlayerRoleManager.Instance.FindMafiaId();
+
+            if(alivePlayer.Count <= 2 && alivePlayer.Find(x => x.clientId == id).clientId == id)
+            {
+
+                WinSystem.Instance.WinServerRPC(EnumWinState.Mafia);
+
+            }
+
+        }
 
         PlayerDieClientRPC(param);
 

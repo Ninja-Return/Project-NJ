@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,6 +6,7 @@ using System.Text;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public static class Support
 {
@@ -77,6 +79,20 @@ public static class Support
         var c = text.color;
         c.a = value;
         text.color = c;
+
+    }
+
+    public static T Find<T>(this NetworkList<T> list, Predicate<T> obj) where T : unmanaged, IEquatable<T>
+    {
+
+        foreach(var item in list)
+        {
+
+            if (obj(item)) return item;
+
+        }
+
+        return default(T);
 
     }
 
