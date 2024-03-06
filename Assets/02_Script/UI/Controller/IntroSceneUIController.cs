@@ -7,7 +7,18 @@ using DG.Tweening;
 
 public class IntroSceneUIController : MonoBehaviour
 {
-    FullScreenMode screenMode = FullScreenMode.Windowed;
+    [SerializeField] private Image introPanel;
+
+    private FullScreenMode screenMode = FullScreenMode.Windowed;
+
+    private void Start()
+    {
+        Sequence introSequence = DOTween.Sequence();
+        introSequence.Append(transform.DOLocalMove(Vector2.zero, 1f));
+        introSequence.Append(introPanel.DOColor(Color.white, 0.1f));
+        introSequence.Append(introPanel.DOFade(0, 0.5f));
+        introSequence.Append(transform.DOLocalMove(Vector2.zero, 0.1f).OnComplete(() => { introPanel.gameObject.SetActive(false); }));
+    }
 
     public void GameobjectActiveTrue(GameObject obj)
     {
@@ -17,6 +28,16 @@ public class IntroSceneUIController : MonoBehaviour
     public void GameobjectActiveFalse(GameObject obj)
     {
         obj.SetActive(false);
+    }
+
+    public void PanelMoveOn(RectTransform rectTrs)
+    {
+        rectTrs.DOLocalMoveY(0, 0.5f);
+    }
+
+    public void PanelMoveOut(RectTransform rectTrs)
+    {
+        rectTrs.DOLocalMoveY(-1200, 0.5f);
     }
 
     public void LobbySceneChange()

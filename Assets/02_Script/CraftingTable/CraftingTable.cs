@@ -8,7 +8,7 @@ using Unity.Netcode;
 public class CraftingTable : NetworkBehaviour
 {
     private CraftData[] allCraftData;
-    private List<SlotData> onTableItem; //니도 ItemData로 바꿀거임
+    private List<ItemDataSO> onTableItem;
 
     [SerializeField] private GameObject tableBoxArea;
     [SerializeField] private Transform crateItmeSpawnTrs;
@@ -31,22 +31,22 @@ public class CraftingTable : NetworkBehaviour
 
             // 각 재료의 필요한 개수를 저장할 Dictionary 생성
             Dictionary<ItemType, int> requiredMaterials = new Dictionary<ItemType, int>();
-            foreach (SlotData slotData in craftData.materialsItems)
+            foreach (ItemDataSO itemData in craftData.materialsItems)
             {
-                if (requiredMaterials.ContainsKey(slotData.slotType))
+                if (requiredMaterials.ContainsKey(itemData.slotData.slotType))
                 {
-                    requiredMaterials[slotData.slotType]++;
+                    requiredMaterials[itemData.slotData.slotType]++;
                 }
                 else
                 {
-                    requiredMaterials.Add(slotData.slotType, 1);
+                    requiredMaterials.Add(itemData.slotData.slotType, 1);
                 }
             }
 
             // 테이블 위에 있는 아이템들이 필요한 재료를 충족하는지 확인
             foreach (KeyValuePair<ItemType, int> pair in requiredMaterials)
             {
-                int count = onTableItem.Count(x => x.slotType == pair.Key);
+                int count = onTableItem.Count(x => x.slotData.slotType == pair.Key);
                 if (count != pair.Value) //정확한 개수를 맟춰야지
                 {
                     isPossibleData = false;
@@ -69,7 +69,7 @@ public class CraftingTable : NetworkBehaviour
     [ServerRpc]
     private void TableItemRemoveServerRpc()
     {
-        foreach (SlotData onTableObj in onTableItem)
+        foreach (ItemDataSO onTableObj in onTableItem)
             Destroy(onTableObj);
         TableItemRemoveClientRpc();
     }
@@ -77,7 +77,7 @@ public class CraftingTable : NetworkBehaviour
     [ClientRpc]
     private void TableItemRemoveClientRpc()
     {
-        foreach (SlotData onTableObj in onTableItem)
+        foreach (ItemDataSO onTableObj in onTableItem)
             Destroy(onTableObj);
     }
 
@@ -92,9 +92,9 @@ public class CraftingTable : NetworkBehaviour
 
         foreach (var hitCollider in hitColliders)
         {
-            if (hitCollider.TryGetComponent<SlotData>(out SlotData slotData))
+            if (hitCollider.TryGetComponent<ItemDataSO>(out ItemDataSO itemData))
             {
-                onTableItem.Add(slotData);
+                onTableItem.Add(itemData);
             }
         }
     }

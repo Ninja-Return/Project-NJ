@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using DG.Tweening;
 
 public class LobbyUIController : NetworkBehaviour
 {
@@ -12,6 +13,9 @@ public class LobbyUIController : NetworkBehaviour
     [SerializeField] private Transform panelRoot;
     [SerializeField] private TMP_Text joinCodeText;
     [SerializeField] private GameObject startBtn;
+
+    [Header("Panel")]
+    [SerializeField] private RectTransform mapPanel;
 
     private void Start()
     {
@@ -92,6 +96,18 @@ public class LobbyUIController : NetworkBehaviour
         HostSingle.Instance.GameManager.ChangeLobbyState(true);
         NetworkManager.SceneManager.LoadScene(SceneList.GameScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
 
+    }
+
+    public void OnMapPanelMove()
+    {
+        if (mapPanel.localPosition == Vector3.zero)
+        {
+            mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
+        }
+        else
+        {
+            mapPanel.DOLocalMove(Vector2.zero, 0.5f).SetEase(Ease.InExpo);
+        }
     }
 
     public override void OnDestroy()
