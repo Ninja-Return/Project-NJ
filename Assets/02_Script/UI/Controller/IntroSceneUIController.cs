@@ -33,13 +33,11 @@ public class IntroSceneUIController : MonoBehaviour
     public void PanelMoveOn(RectTransform rectTrs)
     {
         rectTrs.DOLocalMoveY(0, 0.5f);
-        rectTrs.DOLocalRotate(new Vector3(0, 0, 360f), 0.5f);
     }
 
     public void PanelMoveOut(RectTransform rectTrs)
     {
-        rectTrs.DOLocalMoveY(-1000, 0.5f);
-        rectTrs.DOLocalRotate(new Vector3(0, 0, 0f), 0.5f);
+        rectTrs.DOLocalMoveY(-1200, 0.5f);
     }
 
     public void LobbySceneChange()

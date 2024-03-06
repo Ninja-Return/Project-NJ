@@ -5,10 +5,18 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class LobbySelectUIController : MonoBehaviour
 {
+    [Header("Panel")]
+    [SerializeField] private RectTransform lobbySelectUI;
+    [SerializeField] private RectTransform roomSearchUI;
+    [SerializeField] private RectTransform roomCreateUI;
+    [SerializeField] private RectTransform roomJoinUI;
+    [SerializeField] private RectTransform blackPanel;
 
+    [Header("UI")]
     [SerializeField] private TMP_InputField roomInputField;
     [SerializeField] private TMP_InputField joinCodeInputField;
     [SerializeField] private Transform lobbyPanelRoot;
@@ -20,6 +28,12 @@ public class LobbySelectUIController : MonoBehaviour
         StartCoroutine(RefreshLobby());
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        Sequence startSequence = DOTween.Sequence();
+        startSequence.Append(lobbySelectUI.DOLocalMoveY(0, 0.5f));
+        startSequence.Append(roomSearchUI.DOLocalMoveX(0, 0.5f));
+        startSequence.Insert(0.75f, roomCreateUI.DOLocalMoveX(0, 0.5f));
+        startSequence.Insert(1f, roomJoinUI.DOLocalMoveX(0, 0.5f));
 
     }
 
