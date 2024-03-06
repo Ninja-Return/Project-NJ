@@ -37,12 +37,14 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private NetworkObject player;
     [SerializeField] private bool debug;
 
+    private List<PlayerController> players = new();
+    private PlayerController clientPlayer;
+
+    public static GameManager Instance;
     public NetworkList<LiveData> alivePlayer { get; private set; }
     public NetworkList<LiveData> diePlayer { get; private set; }
 
-    private List<PlayerController> players = new();
 
-    public static GameManager Instance;
 
     public event Action OnGameStarted;
     public event Action OnGameStartCallEnd;
@@ -95,8 +97,30 @@ public class GameManager : NetworkBehaviour
 
         }
 
+        yield return new WaitForSeconds(0.5f);
+
+        SetLocalPlayerClientRPC();
 
         
+    }
+
+    [ClientRpc]
+    private void SetLocalPlayerClientRPC()
+    {
+
+        foreach(var item in FindObjectsOfType<PlayerController>())
+        {
+
+            if(item.OwnerClientId == NetworkManager.LocalClientId)
+            {
+
+                clientPlayer = item; 
+                break;
+
+            }
+
+        }
+
     }
 
     private void HandlePlayerConnect(string authId, ulong clientId)

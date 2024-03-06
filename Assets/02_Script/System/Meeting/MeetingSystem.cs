@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -28,6 +29,8 @@ public class MeetingSystem : NetworkBehaviour
     private readonly int phaseTime = 3;
 
     public static MeetingSystem Instance { get; private set; }
+
+    public event Action OnMeetingEnd;
 
     private void Awake()
     {
@@ -95,7 +98,7 @@ public class MeetingSystem : NetworkBehaviour
 
         if (GameManager.Instance.isDie) return;
 
-        JoinChannel();
+        //JoinChannel();
 
         DayManager.instance.TimeSetting(true);
         meetingUI.gameObject.SetActive(true);
@@ -113,21 +116,6 @@ public class MeetingSystem : NetworkBehaviour
 
     }
 
-    private async void JoinChannel()
-    {
-
-        await NetworkController.Instance.vivox.Leave3DChannel();
-        await NetworkController.Instance.vivox.JoinNormalChannel();
-
-    }
-
-    private async void Join3DChannel()
-    {
-
-        await NetworkController.Instance.vivox.LeaveNormalChannel();
-        await NetworkController.Instance.vivox.Join3DChannel();
-
-    }
 
     [ClientRpc]
     private void MeetingEndClientRPC()
@@ -139,8 +127,8 @@ public class MeetingSystem : NetworkBehaviour
         
         GameManager.Instance.SettingCursorVisable(false);
 
-        Join3DChannel();
-        NetworkController.Instance.vivox.LeaveNormalChannel();
+        //Join3DChannel();
+        //NetworkController.Instance.vivox.LeaveNormalChannel();
 
 
     }
@@ -278,6 +266,10 @@ public class MeetingSystem : NetworkBehaviour
         DayManager.instance.TimeSetting(false);
         MeetingEndClientRPC();
         chattingSystem.ClearChatting();
+
+        yield return null;
+
+        OnMeetingEnd?.Invoke();
 
     }
 

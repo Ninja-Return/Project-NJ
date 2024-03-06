@@ -90,7 +90,7 @@ public class LobbyUIController : NetworkBehaviour
     {
 
         HostSingle.Instance.GameManager.ChangeLobbyState(true);
-        NetworkManager.SceneManager.LoadScene(SceneList.GameScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
+        NetworkManager.SceneManager.LoadScene(SceneList.LoadingScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
 
     }
 
