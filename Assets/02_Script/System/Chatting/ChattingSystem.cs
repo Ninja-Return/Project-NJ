@@ -41,7 +41,7 @@ public class ChattingSystem : NetworkBehaviour
         {
 
             case NetworkListEvent<ChatData>.EventType.Add:
-                OnChattingAdd(changeEvent.Value);
+                OnChattingAdd?.Invoke(changeEvent.Value);
                 break;
 
         }

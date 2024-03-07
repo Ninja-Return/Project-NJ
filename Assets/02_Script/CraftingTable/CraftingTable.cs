@@ -8,7 +8,7 @@ using Unity.Netcode;
 public class CraftingTable : NetworkBehaviour
 {
     private CraftData[] allCraftData;
-    private List<ItemDataSO> onTableItem;
+    private List<ItemRoot> onTableItem = new();
 
     [SerializeField] private GameObject tableBoxArea;
     [SerializeField] private Transform crateItmeSpawnTrs;
@@ -46,7 +46,7 @@ public class CraftingTable : NetworkBehaviour
             // 테이블 위에 있는 아이템들이 필요한 재료를 충족하는지 확인
             foreach (KeyValuePair<ItemType, int> pair in requiredMaterials)
             {
-                int count = onTableItem.Count(x => x.slotData.slotType == pair.Key);
+                int count = onTableItem.Count(x => x.data.slotData.slotType == pair.Key);
                 if (count != pair.Value) //정확한 개수를 맟춰야지
                 {
                     isPossibleData = false;
@@ -57,7 +57,8 @@ public class CraftingTable : NetworkBehaviour
             if (isPossibleData)
             {
                 //합성 가능한 아이템을 생성
-                NetworkObject crateItem = Instantiate(craftData.crateItem, crateItmeSpawnTrs);
+                NetworkObject crateItem = Instantiate(craftData.crateItem, crateItmeSpawnTrs.position ,Quaternion.identity);
+                crateItem.Spawn(true);
                 //올려둔 아이템 제거하고
                 TableItemRemoveServerRpc();
                 //나가기
@@ -69,17 +70,10 @@ public class CraftingTable : NetworkBehaviour
     [ServerRpc]
     private void TableItemRemoveServerRpc()
     {
-        foreach (ItemDataSO onTableObj in onTableItem)
-            Destroy(onTableObj);
-        TableItemRemoveClientRpc();
+        foreach (var onTableObj in onTableItem)
+            onTableObj.NetworkObject.Despawn();
     }
 
-    [ClientRpc]
-    private void TableItemRemoveClientRpc()
-    {
-        foreach (ItemDataSO onTableObj in onTableItem)
-            Destroy(onTableObj);
-    }
 
     private void UpdateOnTableItems()
     {
@@ -92,9 +86,10 @@ public class CraftingTable : NetworkBehaviour
 
         foreach (var hitCollider in hitColliders)
         {
-            if (hitCollider.TryGetComponent<ItemDataSO>(out ItemDataSO itemData))
+            if (hitCollider.TryGetComponent<ItemRoot>(out ItemRoot itemData))
             {
                 onTableItem.Add(itemData);
+
             }
         }
     }

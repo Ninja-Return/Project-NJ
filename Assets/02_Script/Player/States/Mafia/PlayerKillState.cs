@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 
 public class PlayerKillState : PlayerStateRoot
@@ -55,10 +56,12 @@ public class PlayerKillState : PlayerStateRoot
             else
             {
 
-                if(monsterFSM != null)
+                monsterFSM = Object.FindObjectOfType<MonsterFSM>();
+
+                if (monsterFSM != null)
                 {
 
-                    monsterFSM.SetPingPos(player.transform.position);
+                    monsterFSM.PingServerRPC(player.transform.position);
 
                 }
 
@@ -68,6 +71,7 @@ public class PlayerKillState : PlayerStateRoot
         }
 
     }
+
 
     protected override void UpdateState()
     {

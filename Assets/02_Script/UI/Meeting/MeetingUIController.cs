@@ -34,6 +34,7 @@ public class MeetingUIController : MonoBehaviour
         profiles.Clear();
 
         GameManager.Instance.SettingCursorVisable(true);
+        chattingPanel.Init();
 
     }
 
@@ -68,17 +69,6 @@ public class MeetingUIController : MonoBehaviour
 
     }
 
-    public void ChattingOpen()
-    {
-
-        if (GameManager.Instance.isDie) return;
-
-        bool active = !chattingPanel.gameObject.activeSelf;
-
-        chattingPanel.Init(active);
-        chattingPanel.gameObject.SetActive(active);
-
-    }
 
     public void OpenVote(RPCList<VoteData> list)
     {
@@ -127,6 +117,13 @@ public class MeetingUIController : MonoBehaviour
         seq.AppendInterval(0.3f);
         seq.Append(itemShowPlayerNameText.DOFade(0, 0.5f));
         seq.Join(itemShowText.DOFade(0, 0.5f));
+
+    }
+
+    public void EndVote()
+    {
+
+        chattingPanel.EndVote();
 
     }
 
