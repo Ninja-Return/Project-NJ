@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class ButtonController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
 {
+    [SerializeField] private float fade;
+
     private Button _button;
     private Image image;
     public UnityEvent OnClick;
@@ -40,7 +42,7 @@ public class ButtonController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         transform.DOScale(Vector3.one * 1.1f, 0.2f).SetEase(Ease.OutQuad);
 
         Color color = Color.white;
-        color.a = 1;
+        color.a = fade;
         image.color = color;
     }
 

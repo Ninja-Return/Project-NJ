@@ -15,7 +15,7 @@ public class LoadingIcon : MonoBehaviour
 
     private void Start()
     {
-        center = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        center = new Vector2(Screen.width / 2f, Screen.height / 2f) + (Vector2)transform.localPosition;
         value = new float[pieces.Length];
 
         StartCoroutine(PieceCor());
