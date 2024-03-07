@@ -222,7 +222,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
 
         var player = targetPlayer.GetComponent<PlayerController>();
 
-        GameManager.Instance.PlayerDieServerRPC(player.OwnerClientId);
+        GameManager.Instance.PlayerDieServerRPC(EnumList.DeadType.Monster ,player.OwnerClientId);
 
     }
 
