@@ -8,6 +8,14 @@ public class Door : InteractionObject
 
     private bool isOpen;
     private bool isOpening;
+    private float origin;
+
+    private void Start()
+    {
+        
+        origin = transform.localEulerAngles.y;
+
+    }
 
     protected override void DoInteraction()
     {
@@ -20,7 +28,7 @@ public class Door : InteractionObject
         if (isOpen)
         {
 
-            transform.DOLocalRotate(new Vector3(0, 130, 0), 0.3f)
+            transform.DOLocalRotate(new Vector3(0, origin + 130, 0), 0.3f)
                 .SetEase(Ease.OutExpo)
                 .OnComplete(() =>
                 {
@@ -33,7 +41,7 @@ public class Door : InteractionObject
         else
         {
 
-            transform.DOLocalRotate(new Vector3(0, 0, 0), 0.3f)
+            transform.DOLocalRotate(new Vector3(0, origin, 0), 0.3f)
                 .SetEase(Ease.OutExpo)
                 .OnComplete(() =>
                 {
