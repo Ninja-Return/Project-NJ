@@ -22,9 +22,12 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     [field:SerializeField] public PlayerDataSO Data { get; private set; }
     [field:SerializeField] public PlayerInputDataSO Input { get; private set; }
 
+    private GameObject meetingObject;
     private CinemachineVirtualCamera cvcam;
     private Canvas interactionCanvas;
     private bool isActive = true;
+
+    public bool IsMeeting { get; set; }
 
     public CinemachineVirtualCamera watchCam { get; private set; }
 
@@ -37,6 +40,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         watchCam = cvcam.transform.Find("PlayerWatchingCam").GetComponent<CinemachineVirtualCamera>();
 
         interactionCanvas = GetComponentInChildren<Canvas>();
+        meetingObject = GameObject.Find("MeetingObject");
 
     }
 
@@ -116,14 +120,26 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     private IEnumerator Update3DPosCo()
     {
 
-        var sec = new WaitForSecondsRealtime(0.1f);
+        var sec = new WaitForSecondsRealtime(0.05f);
 
         while (true)
         {
 
             if(gameObject == null) yield break;
 
-            NetworkController.Instance.vivox.UpdateChannelPos(gameObject);
+            if (IsMeeting)
+            {
+
+                NetworkController.Instance.vivox.UpdateChannelPos(meetingObject);
+
+            }
+            else
+            {
+
+                NetworkController.Instance.vivox.UpdateChannelPos(gameObject);
+
+            }
+
 
             yield return sec;
 
