@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -33,6 +34,22 @@ public struct AttachedItem
     {
 
         return name;
+
+    }
+
+}
+
+public struct AttachedItemRPCData : INetworkSerializable
+{
+
+    public FixedString32Bytes item_1;
+    public FixedString32Bytes item_2;
+
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+    {
+
+        serializer.SerializeValue(ref item_1);
+        serializer.SerializeValue(ref item_2);
 
     }
 
