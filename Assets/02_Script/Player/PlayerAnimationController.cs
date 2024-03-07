@@ -100,7 +100,7 @@ public class PlayerAnimationController : NetworkBehaviour
     {
 
         if (playerController == null) return;
-        if (!IsOwner && !debug && playerController.CurrentState == EnumPlayerState.Idle) return;
+        if ((!IsOwner && !debug) || playerController.CurrentState == EnumPlayerState.Idle) return;
 
         if (!debug && oldInput != playerController.Input.MoveVecter)
         {

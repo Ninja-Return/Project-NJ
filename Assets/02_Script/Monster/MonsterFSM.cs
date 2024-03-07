@@ -233,6 +233,14 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
         isDead = true;
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    public void PingServerRPC(Vector3 pos)
+    {
+
+        SetPingPos(pos);
+
+    }
+
     protected override void Update()
     {
 

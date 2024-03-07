@@ -127,6 +127,7 @@ public class MeetingSystem : NetworkBehaviour
 
         if (GameManager.Instance.isDie) return;
         
+        meetingUI.EndVote();
         GameManager.Instance.SettingCursorVisable(false);
 
         //Join3DChannel();

@@ -14,37 +14,27 @@ public class MeetingChatUIController : MonoBehaviour
     [SerializeField] private MeetingPlayerChatPanel ownerPanel;
     [SerializeField] private Transform chatPanelRoot;
 
-    public void Init(bool active)
+    public void Init()
     {
 
-        if (active)
+
+        for (int i = 0; i < chatPanelRoot.childCount; i++)
         {
 
-            var ls = chattingSystem.GetChatting();
-
-            foreach (var c in ls)
-            {
-
-                HandleChattingAdd(c);
-
-            }
-
-            chattingSystem.OnChattingAdd += HandleChattingAdd;
+            Destroy(chatPanelRoot.GetChild(i).gameObject);
 
         }
-        else
+
+        var ls = chattingSystem.GetChatting();
+
+        foreach (var c in ls)
         {
 
-            for(int i = 0; i < chatPanelRoot.childCount; i++)
-            {
-
-                Destroy(chatPanelRoot.GetChild(i).gameObject);
-
-            }
-
-            chattingSystem.OnChattingAdd -= HandleChattingAdd;
+            HandleChattingAdd(c);
 
         }
+
+        chattingSystem.OnChattingAdd += HandleChattingAdd;
 
     }
 
@@ -62,6 +52,13 @@ public class MeetingChatUIController : MonoBehaviour
 
         chattingSystem.SummitMessage(chatInput.text);
         chatInput.text = "";
+
+    }
+
+    public void EndVote()
+    {
+
+        chattingSystem.OnChattingAdd -= HandleChattingAdd;
 
     }
 
