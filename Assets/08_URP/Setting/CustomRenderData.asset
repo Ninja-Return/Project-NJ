@@ -42,7 +42,8 @@ MonoBehaviour:
   - {fileID: 7454557365107426504}
   - {fileID: 8892415236681755115}
   - {fileID: -561008420075234043}
-  m_RendererFeatureMap: c80400796de87367ebe9af318b34687b059d6975d0e536f8
+  - {fileID: 362125901437058445}
+  m_RendererFeatureMap: c80400796de87367ebe9af318b34687b059d6975d0e536f88dbd1fb796870605
   m_UseNativeRenderPass: 1
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -69,7 +70,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_DefaultStencilState:
-    overrideStencilState: 0
+    overrideStencilState: 1
     stencilReference: 0
     stencilCompareFunction: 8
     passOperation: 2
@@ -81,6 +82,21 @@ MonoBehaviour:
   m_CopyDepthMode: 1
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 0
+--- !u!114 &362125901437058445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96dab975e69883249a56554e791c4fd0, type: 3}
+  m_Name: ButoRenderFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    renderPassEvent: 450
 --- !u!114 &7454557365107426504
 MonoBehaviour:
   m_ObjectHideFlags: 0

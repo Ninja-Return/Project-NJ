@@ -38,6 +38,7 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private NetworkObject player;
     [SerializeField] private bool debug;
     [SerializeField] private DeathUI deathUI;
+    [SerializeField] private List<Transform> trms;
 
     private List<PlayerController> players = new();
     public PlayerController clientPlayer { get; private set; }
@@ -156,8 +157,7 @@ public class GameManager : NetworkBehaviour
     public void SpawnPlayer(ulong clientId)
     {
 
-        var pl = Instantiate(player).GetComponent<PlayerController>();
-        pl.transform.position = new Vector3(Random.Range(-10f, 10f), 1f, Random.Range(-10f, 10f));
+        var pl = Instantiate(player, trms.GetRandomListObject().position, Quaternion.identity).GetComponent<PlayerController>();
         pl.NetworkObject.SpawnWithOwnership(clientId, true);
 
         var data = HostSingle.Instance.NetServer.GetUserDataByClientID(pl.OwnerClientId).Value;
