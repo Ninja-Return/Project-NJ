@@ -196,7 +196,7 @@ public class MeetingSystem : NetworkBehaviour
             else if (phase == 2)
             {
 
-                GameManager.Instance.PlayerDie(maxVoteClient[0]);
+                GameManager.Instance.PlayerDie(EnumList.DeadType.Vote, maxVoteClient[0]);
 
             }
 

@@ -1,3 +1,4 @@
+using EnumList;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,6 +37,7 @@ public class GameManager : NetworkBehaviour
 
     [SerializeField] private NetworkObject player;
     [SerializeField] private bool debug;
+    [SerializeField] private DeathUI deathUI;
 
     private List<PlayerController> players = new();
     public PlayerController clientPlayer { get; private set; }
@@ -180,7 +182,7 @@ public class GameManager : NetworkBehaviour
 
     }
 
-    public void PlayerDie(ulong clientId)
+    public void PlayerDie(DeadType type, ulong clientId)
     {
 
         players.Find(x => x.OwnerClientId == clientId).NetworkObject.Despawn();
@@ -234,23 +236,25 @@ public class GameManager : NetworkBehaviour
 
         }
 
-        PlayerDieClientRPC(param);
+        PlayerDieClientRPC(type, param);
 
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void PlayerDieServerRPC(ulong id)
+    public void PlayerDieServerRPC(DeadType type, ulong id)
     {
 
-        PlayerDie(id);
+        PlayerDie(type, id);
 
     }
 
     [ClientRpc]
-    private void PlayerDieClientRPC(ClientRpcParams param)
+    private void PlayerDieClientRPC(DeadType type, ClientRpcParams param)
     {
 
-        WatchingSystem.Instance.StartWatching();
+        
+        deathUI.gameObject.SetActive(true);
+        deathUI.PopupDeathUI(type);
         isDie = true;
 
     }
