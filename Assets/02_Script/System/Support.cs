@@ -6,6 +6,7 @@ using System.Text;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using DG.Tweening;
 using Random = UnityEngine.Random;
 
 public static class Support
@@ -93,6 +94,25 @@ public static class Support
         }
 
         return default(T);
+
+    }
+
+    public static void TVEffect(this Transform targetTrm, bool isOn)
+    {
+
+        if (isOn)
+        {
+            targetTrm.localScale = new Vector3(0, 0, 1);
+
+            Sequence tvSequence = DOTween.Sequence();
+            tvSequence.Append(targetTrm.DOScaleX(0.1f, 0.2f).SetEase(Ease.InCirc));
+            tvSequence.Join(targetTrm.DOScaleY(1f, 0.2f).SetEase(Ease.OutBack));
+            tvSequence.Append(targetTrm.DOScaleX(1f, 0.5f).SetEase(Ease.OutElastic));
+        }
+        else
+        {
+            targetTrm.DOScale(new Vector3(0, 0, 1), 0.4f).SetEase(Ease.OutExpo);
+        }
 
     }
 
