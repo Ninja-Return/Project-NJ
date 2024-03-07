@@ -23,7 +23,13 @@ public class DeathUI : MonoBehaviour
         //InputSystem에 아무클릭에다가 PopupWatchingUI()추가하기
 
         redImage.DOFade(1, 1f);
-        redImage.DOColor(Color.black, 1f);
+        redImage.DOColor(Color.black, 1f)
+            .OnComplete(() =>
+            {
+
+                PopupWatchingUI();
+
+            });
 
         signText.text = deadType switch
         {
@@ -37,6 +43,6 @@ public class DeathUI : MonoBehaviour
     public void PopupWatchingUI()
     {
         gameObject.SetActive(false);
-        //WatchUI 켜주기
+        WatchingSystem.Instance.StartWatching();
     }
 }

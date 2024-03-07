@@ -116,4 +116,21 @@ public static class Support
 
     }
 
+    public static ClientRpcParams GetRPCParams(this ulong clientId)
+    {
+
+        return new ClientRpcParams
+        {
+
+            Send = new ClientRpcSendParams
+            {
+
+                TargetClientIds = new[] { clientId },
+            }
+
+        };
+
+    }
+
+
 }

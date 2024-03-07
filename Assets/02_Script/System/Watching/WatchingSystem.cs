@@ -51,7 +51,7 @@ public class WatchingSystem : NetworkBehaviour
 
         }
 
-        if(changeEvent.Value.clientId == currentWatching)
+        if(changeEvent.Value.clientId == currentWatching && alivePlayers.Count != 0)
         {
 
             Watching(alivePlayers[0].OwnerClientId);

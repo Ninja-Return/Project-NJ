@@ -50,7 +50,7 @@ public class PlayerKillState : PlayerStateRoot
             if(hand.CheckHandItem("검 아이템 키"))
             {
 
-                GameManager.Instance.PlayerDieServerRPC(player.OwnerClientId);
+                GameManager.Instance.PlayerDieServerRPC(EnumList.DeadType.Mafia, player.OwnerClientId);
 
             }
             else

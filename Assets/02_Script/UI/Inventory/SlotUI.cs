@@ -32,6 +32,8 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         if (!onCursor) return;
         if (slotData == null) return;
 
+        slotImage.color = Color.white;
+
         //풀링 만들기 전까진 Resources에서 가져오자
         Inventory.Instance.HoldItem(slotData.poolingName, slotIndex);
     }
@@ -50,6 +52,7 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         slotData = null;
 
         slotImage.sprite = null;
+        slotImage.color = Color.clear;
         Inventory.Instance.PopItemText("");
     }
 

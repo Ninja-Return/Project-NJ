@@ -59,7 +59,7 @@ public class AttachedItemSystem : NetworkBehaviour
 {
 
     [SerializeField] private List<AttachedItemData> datas;
-    [SerializeField] private TMP_Text debugText;
+    [SerializeField] private AttachedItemUIController controller;
 
     private void Start()
     {
@@ -87,19 +87,23 @@ public class AttachedItemSystem : NetworkBehaviour
             data.attachedItem = randList[(int)client].ToList();
 
             HostSingle.Instance.GameManager.NetServer.SetUserDataByClientId(client, data);
-            SetAttachedItemClientRPC(string.Join(", ", randList[(int)client]), client);
+            SetAttachedItemClientRPC(new AttachedItemRPCData
+            {
+
+                item_1 = data.attachedItem[0].ToString(),
+                item_2 = data.attachedItem[1].ToString()
+
+            }, client.GetRPCParams());
 
         }
 
     }
 
     [ClientRpc]
-    private void SetAttachedItemClientRPC(string item, ulong clientId)
+    private void SetAttachedItemClientRPC(AttachedItemRPCData data, ClientRpcParams clientRpcParams)
     {
 
-        if (NetworkManager.LocalClientId != clientId) return;
-
-        debugText.text = item;
+        controller.Init(data);
 
     }
 
