@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 
 public class LobbyUIController : NetworkBehaviour
@@ -15,7 +16,12 @@ public class LobbyUIController : NetworkBehaviour
     [SerializeField] private GameObject startBtn;
 
     [Header("Panel")]
+    [SerializeField] private RectTransform peoplePanel;
+    [SerializeField] private RectTransform gameSettingPanel;
+    [SerializeField] private RectTransform joinCodePanel;
     [SerializeField] private RectTransform mapPanel;
+    [SerializeField] private RectTransform gameBarPanel;
+    [SerializeField] private Image[] gameBarBtns;
 
     private void Start()
     {
@@ -34,6 +40,21 @@ public class LobbyUIController : NetworkBehaviour
 
         joinCodeText.text = $"초대코드 : {NetworkController.Instance.joinCode}";
 
+        SetupPanel();
+
+    }
+
+    private void SetupPanel()
+    {
+        Sequence startSequence = DOTween.Sequence();
+        startSequence.Append(peoplePanel.DOLocalMove(Vector2.zero, 0.5f));
+        startSequence.Join(gameSettingPanel.DOLocalMove(Vector2.zero, 0.5f));
+        startSequence.Join(joinCodePanel.DOLocalMove(Vector2.zero, 0.5f));
+        startSequence.Join(gameBarPanel.DOLocalMove(Vector2.zero, 0.5f));
+        for (float i = 0; i < gameBarBtns.Length; i++)
+        {
+            startSequence.Insert(2f + (i * 0.25f), gameBarBtns[(int)i].DOFade(1, 0.5f));
+        }
     }
 
     private void OnPlayerDisconnect(string authId, ulong clientId)
