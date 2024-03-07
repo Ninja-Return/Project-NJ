@@ -21,7 +21,7 @@ public class MonsterSpawner : NetworkBehaviour
 
             DayManager.instance.OnDayComming += HandleDestroyMonster;
 
-            MeetingSystem.Instance.OnMeetingEnd += HandleMonsterSpawn;
+            DayManager.instance.OnNightComming += HandleMonsterSpawn;
 
         }
 

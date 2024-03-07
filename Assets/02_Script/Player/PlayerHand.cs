@@ -142,7 +142,6 @@ public class PlayerHand : NetworkBehaviour
     private void UseClientRPC()
     {
 
-
         currentObject.DoUse();
 
     }
@@ -151,6 +150,23 @@ public class PlayerHand : NetworkBehaviour
     {
 
         return Inventory.Instance.GetItemName(currentIdx) == targetName;
+
+    }
+
+    public void UseHandItem()
+    {
+
+        Inventory.Instance.Deleteltem();
+        controller.HandControl(false);
+        UseHandServerRPC();
+
+    }
+
+    [ServerRpc]
+    private void UseHandServerRPC()
+    {
+
+        HandDeleteClientRPC();
 
     }
 

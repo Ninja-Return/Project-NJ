@@ -104,6 +104,8 @@ public class MeetingSystem : NetworkBehaviour
         meetingUI.gameObject.SetActive(true);
         meetingUI.MeetingStart();
 
+        GameManager.Instance.clientPlayer.IsMeeting = true;
+
     }
 
     [ClientRpc]
@@ -308,6 +310,8 @@ public class MeetingSystem : NetworkBehaviour
         if (GameManager.Instance.isDie) return;
 
         meetingUI.CloseVote();
+
+        GameManager.Instance.clientPlayer.IsMeeting = false;
 
     }
 

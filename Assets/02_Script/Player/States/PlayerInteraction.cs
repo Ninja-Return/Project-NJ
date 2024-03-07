@@ -11,6 +11,7 @@ public class PlayerInteraction : PlayerStateRoot
     private Transform cameraTrm;
     private InteractionObject interactionObject;
     private Transform moveObjectTrm;
+    private PlayerHand hand;
 
     private int originLayer;
     private bool isObjectMove;
@@ -22,6 +23,7 @@ public class PlayerInteraction : PlayerStateRoot
         cameraTrm = transform.Find("PlayerCamera");
         moveObjectTrm = transform.Find("MoveObject");
         interactionText.text = string.Empty;
+        hand = GetComponent<PlayerHand>();
 
     }
 
@@ -64,7 +66,18 @@ public class PlayerInteraction : PlayerStateRoot
         if(interactionObject != null && !isObjectMove)
         {
 
-            interactionObject.Interaction();
+            if(interactionObject.interactionAbleItemName == string.Empty)
+            {
+
+                interactionObject.Interaction();
+
+            }
+            else if(hand.CheckHandItem(interactionObject.interactionAbleItemName))
+            {
+
+                interactionObject.Interaction();
+
+            }
 
         }
 
@@ -92,7 +105,29 @@ public class PlayerInteraction : PlayerStateRoot
             if (interactionObject != null)
             {
 
-                interactionText.text = interactionObject.interactionText;
+                if(interactionObject.interactionAbleItemName != string.Empty)
+                {
+
+                    if (hand.CheckHandItem(interactionObject.interactionAbleItemName))
+                    {
+
+                        interactionText.text = interactionObject.interactionText;
+
+                    }
+                    else
+                    {
+
+                        interactionText.text = $"{interactionObject.interactionAbleItemName}이(가) 필요합니다";
+
+                    }
+
+                }
+                else
+                {
+
+                    interactionText.text = interactionObject.interactionText;
+
+                }
 
             }
             else

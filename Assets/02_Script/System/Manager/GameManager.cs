@@ -38,7 +38,7 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private bool debug;
 
     private List<PlayerController> players = new();
-    private PlayerController clientPlayer;
+    public PlayerController clientPlayer { get; private set; }
 
     public static GameManager Instance;
     public NetworkList<LiveData> alivePlayer { get; private set; }
