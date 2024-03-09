@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class ItemSpawner : MonoBehaviour
+public class ItemSpawner : NetworkBehaviour
 {
 
     [SerializeField] private List<Transform> spawnPoss;
@@ -12,19 +13,26 @@ public class ItemSpawner : MonoBehaviour
     private void Start()
     {
 
-        if(spawnPoss.Count == 0)
+        if (IsServer)
         {
 
-            for(int i = 0;  i < transform.childCount; i++)
+
+            if (spawnPoss.Count == 0)
             {
 
-                spawnPoss.Add(transform.GetChild(i));
+                for (int i = 0; i < transform.childCount; i++)
+                {
+
+                    spawnPoss.Add(transform.GetChild(i));
+
+                }
 
             }
 
+            SpawnItem();
+
         }
 
-        SpawnItem();
 
     }
 

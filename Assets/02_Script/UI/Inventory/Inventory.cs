@@ -90,7 +90,6 @@ public class Inventory : NetworkBehaviour
         slots[slotIdx].ResetSlot();
 
         DropItemServerRPC(itemObj);
-        Debug.Log("Asdf");
 
         OnSlotDropEvt?.Invoke(itemObj, idx); //손에서 아이템 투척
     }

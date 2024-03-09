@@ -134,6 +134,7 @@ public class PlayerInteraction : PlayerStateRoot
             {
 
                 interactionText.text = string.Empty;
+                Debug.LogError("??????????");
 
             }
 
