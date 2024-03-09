@@ -12,12 +12,19 @@ public class ItemSpawner : MonoBehaviour
     private void Start()
     {
 
-        if (debug)
+        if(spawnPoss.Count == 0)
         {
 
-            SpawnItem();
+            for(int i = 0;  i < transform.childCount; i++)
+            {
+
+                spawnPoss.Add(transform.GetChild(i));
+
+            }
 
         }
+
+        SpawnItem();
 
     }
 
@@ -27,24 +34,13 @@ public class ItemSpawner : MonoBehaviour
         foreach(var pos in spawnPoss)
         {
 
-
             if (Random.value < 0.8f)
             {
 
                 var itemPrefab = spawnItemList.GetRandomListObject();
 
-                if (debug)
-                {
-
-                    Instantiate(itemPrefab, pos.position, Quaternion.identity);
-
-                }
-                else
-                {
-
-                    Instantiate(itemPrefab, pos.position, Quaternion.identity).NetworkObject.Spawn(true);
-
-                }
+                Instantiate(itemPrefab, pos.position, Quaternion.identity)
+                    .NetworkObject.Spawn(true);
 
 
             }
