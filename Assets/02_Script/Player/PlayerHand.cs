@@ -10,8 +10,8 @@ using WebSocketSharp;
 public class PlayerHand : NetworkBehaviour
 {
 
-    [SerializeField] private Transform itemParent;
 
+    private Transform itemParent;
     private HandItemRoot currentObject;
     private PlayerAnimationController controller;
     private PlayerController playerController;
@@ -23,7 +23,7 @@ public class PlayerHand : NetworkBehaviour
         yield return null;
 
         controller = GetComponent<PlayerAnimationController>();
-        itemParent.transform.position = controller.GetHandTarget().position;
+        itemParent = controller.GetHandTarget();
 
         if (IsOwner)
         {

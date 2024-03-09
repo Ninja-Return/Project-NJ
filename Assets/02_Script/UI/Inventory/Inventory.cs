@@ -24,6 +24,8 @@ public class Inventory : NetworkBehaviour
     [HideInInspector] public bool isShow = false;
     [HideInInspector] public bool isHold = false;
 
+    [SerializeField] private List<ItemDataSO> firstItem = new();
+
     private void Start()
     {
 
@@ -39,6 +41,13 @@ public class Inventory : NetworkBehaviour
             }
 
             inventoryPanel.SetActive(false);
+
+            foreach(var item in firstItem)
+            {
+
+                ObtainItem(item);
+
+            }
 
         }
 
@@ -90,7 +99,6 @@ public class Inventory : NetworkBehaviour
         slots[slotIdx].ResetSlot();
 
         DropItemServerRPC(itemObj);
-        Debug.Log("Asdf");
 
         OnSlotDropEvt?.Invoke(itemObj, idx); //손에서 아이템 투척
     }

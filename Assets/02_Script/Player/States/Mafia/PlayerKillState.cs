@@ -47,7 +47,7 @@ public class PlayerKillState : PlayerStateRoot
         if (player != null)
         {
 
-            if(hand.CheckHandItem("검 아이템 키"))
+            if(hand.CheckHandItem("오함마"))
             {
 
                 GameManager.Instance.PlayerDieServerRPC(EnumList.DeadType.Mafia, player.OwnerClientId);
@@ -95,7 +95,7 @@ public class PlayerKillState : PlayerStateRoot
             if (player != null)
             {
 
-                if(hand.CheckHandItem("검 아이템 키"))
+                if(hand.CheckHandItem("오함마"))
                 {
 
                     interactionText.text = "E키를 눌러 플레이어를 죽이세요";
