@@ -59,7 +59,7 @@ public class PlayerAnimationController : NetworkBehaviour
     {
 
         var serverObj = transform.Find("VisualServer");
-        var clientObj = transform.Find("VisualClient");
+        var clientObj = transform.Find("PlayerCamera").Find("VisualClient");
 
         serverObj.gameObject.SetActive(!IsOwner);
         clientObj.gameObject.SetActive(IsOwner);
