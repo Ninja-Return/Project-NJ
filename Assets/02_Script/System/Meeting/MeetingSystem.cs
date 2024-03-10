@@ -20,13 +20,15 @@ public class MeetingSystem : NetworkBehaviour
 
     [SerializeField] private MeetingUIController meetingUI;
     [SerializeField] private ChattingSystem chattingSystem;
+    [SerializeField] private FavoritemOpenUIController favoritemOpenUI;
 
     private NetworkVariable<int> phaseCountBase = new();
     private NetworkVariable<int> phaseTimeBase = new();
     private Dictionary<ulong, int> voteContainer = new();
     private bool isVote = false;
+    private bool isOpening = false;
 
-    private readonly int phaseTime = 3;
+    private readonly int phaseTime = 10;
 
     public static MeetingSystem Instance { get; private set; }
 
@@ -190,7 +192,10 @@ public class MeetingSystem : NetworkBehaviour
 
                 var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(maxVoteClient[0]).Value;
 
-                ShowItemClientRPC(data.nickName, string.Join(',', data.attachedItem));
+                RPCList<AttachedItem> list = new RPCList<AttachedItem>();
+                list.list = data.attachedItem;
+
+                ShowItemClientRPC(data.nickName, list.Serialize());
 
             }
             else if (phase == 2)
@@ -211,6 +216,8 @@ public class MeetingSystem : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void VoteServerRPC(ulong clientId)
     {
+
+        if (isOpening) return;
 
         if(!voteContainer.ContainsKey(clientId)) 
         {
@@ -254,11 +261,14 @@ public class MeetingSystem : NetworkBehaviour
 
             phaseTimeBase.Value = 0;
 
+            isOpening = true;
             OpenVote();
-
-            yield return new WaitForSeconds(5);
-
             PhaseEnd(i + 1);
+
+            yield return new WaitForSeconds(3);
+
+            isOpening = false;
+
             CloseVoteClientRPC();
 
             yield return new WaitForSeconds(1);
@@ -317,12 +327,15 @@ public class MeetingSystem : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void ShowItemClientRPC(FixedString128Bytes name, FixedString32Bytes item)
+    private void ShowItemClientRPC(FixedString128Bytes name, byte[] serList)
     {
 
         if (GameManager.Instance.isDie) return;
 
-        meetingUI.ShowingItem(name.ToString(), item.ToString());
+        var list = serList.Deserialize<AttachedItem>();
+
+        favoritemOpenUI.transform.TVEffect(true);
+        favoritemOpenUI.Setting(name.ToString(), list.list);
 
     }
 

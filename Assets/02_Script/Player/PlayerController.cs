@@ -111,14 +111,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     protected override void Update()
     {
 
-        if (!IsOwner && !debug) return;
-
-        if (!IsServer)
-        {
-
-            NetworkSoundManager.Play2DSound("Debug");
-
-        }
+        if (!IsOwner && !debug) return; 
 
         base.Update();
 

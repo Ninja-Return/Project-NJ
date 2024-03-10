@@ -17,6 +17,16 @@ public class FavoritemOpenUIController : MonoBehaviour
         item_1Text.text = items[0].ToString();
         item_2Text.text = items[1].ToString();
 
+        StartCoroutine(Delay());
+
+    }
+
+    private IEnumerator Delay()
+    {
+
+        yield return new WaitForSeconds(4f);
+        transform.TVEffect(false);
+
     }
 
 }
