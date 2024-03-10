@@ -257,6 +257,8 @@ public class GameManager : NetworkBehaviour
         deathUI.PopupDeathUI(type);
         isDie = true;
 
+        NetworkController.Instance.vivox.Leave3DChannel();
+
     }
 
     public void SettingCursorVisable(bool visable)

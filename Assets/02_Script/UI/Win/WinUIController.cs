@@ -48,7 +48,6 @@ public class WinUIController : NetworkBehaviour
     private void SetTextClientRPC(FixedString32Bytes str)
     {
 
-        NetworkController.Instance.vivox.LeaveNormalChannel();
         NetworkController.Instance.vivox.Leave3DChannel();
         winText.text = str.ToString();
 

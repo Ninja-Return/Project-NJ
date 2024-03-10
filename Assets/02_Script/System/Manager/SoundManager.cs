@@ -6,14 +6,6 @@ using UnityEngine.Audio;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
-public enum SoundType
-{
-
-    SFX,
-    BGM
-
-}
-
 public class SoundManager : MonoBehaviour
 {
 
@@ -49,20 +41,12 @@ public class SoundManager : MonoBehaviour
 
         if (instance == null) return;
 
-        instance.Play2DSoundServerRPC(clipName, type);
-
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void Play2DSoundServerRPC(string clipName, SoundType type)
-    {
-
-        Play2DSoundClientRPC(clipName, type);
+        instance.Play2D(clipName, type);
 
     }
 
     [ClientRpc]
-    private void Play2DSoundClientRPC(string clipName, SoundType type)
+    private void Play2D(string clipName, SoundType type)
     {
 
         GameObject obj = new GameObject();
@@ -99,19 +83,7 @@ public class SoundManager : MonoBehaviour
 
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void Play3DSoundServerRPC(string clipName, Vector3 position,
-        float minDistance = 1, float maxDistance = 500,
-        SoundType type = SoundType.SFX,
-        AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic)
-    {
-
-        Play3DSoundClientRPC(clipName, position, minDistance, maxDistance, type, rolloffMode);
-
-    }
-
-    [ClientRpc]
-    private void Play3DSoundClientRPC(string clipName, Vector3 position,
+    private void Play3D(string clipName, Vector3 position,
         float minDistance = 1, float maxDistance = 500,
         SoundType type = SoundType.SFX,
         AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic)
@@ -155,15 +127,15 @@ public class SoundManager : MonoBehaviour
 
     }
 
-    public static void Play3DSound(string clipName, Vector3 position, 
-        float minDistance = 1, float maxDistance = 500, 
-        SoundType type = SoundType.SFX, 
+    public static void Play3DSound(string clipName, Vector3 position,
+        float minDistance = 1, float maxDistance = 500,
+        SoundType type = SoundType.SFX,
         AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic)
     {
 
         if (instance == null) return;
 
-        instance.Play3DSoundServerRPC(clipName, position, minDistance, maxDistance, type, rolloffMode);
+        instance.Play3D(clipName, position, minDistance, maxDistance, type, rolloffMode);
 
     }
 
@@ -172,7 +144,7 @@ public class SoundManager : MonoBehaviour
 
         yield return new WaitForSeconds(lenght + 0.1f);
 
-        if(obj != null)
+        if (obj != null)
         {
 
             Destroy(obj);
@@ -180,5 +152,7 @@ public class SoundManager : MonoBehaviour
         }
 
     }
+
+
 
 }

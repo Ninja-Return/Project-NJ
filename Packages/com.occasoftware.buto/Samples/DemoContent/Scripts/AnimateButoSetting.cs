@@ -11,6 +11,8 @@ namespace OccaSoftware.Buto.Demo
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
+
+                return;
                 Volume[] volumes = FindObjectsOfType<Volume>();
                 foreach (Volume volume in volumes)
                 {

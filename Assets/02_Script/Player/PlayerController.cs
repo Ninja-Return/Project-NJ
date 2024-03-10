@@ -113,6 +113,13 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
         if (!IsOwner && !debug) return;
 
+        if (!IsServer)
+        {
+
+            NetworkSoundManager.Play2DSound("Debug");
+
+        }
+
         base.Update();
 
     }
