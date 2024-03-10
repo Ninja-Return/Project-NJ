@@ -10,6 +10,8 @@ public class MoveTransition : MonsterTransitionRoot
 
     protected override bool CheckTransition()
     {
+        if (nav.pathPending) return false;
+
         if (Vector3.Distance(nav.destination, controller.transform.position) <= 2f)
         {
             return true;
