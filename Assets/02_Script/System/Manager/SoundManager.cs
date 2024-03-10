@@ -6,28 +6,19 @@ using UnityEngine.Audio;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
-public enum SoundType
-{
-
-    SFX,
-    BGM
-
-}
-
 public class SoundManager : MonoBehaviour
 {
 
     private static SoundManager instance;
-    private static AudioMixer mainMixer;
 
     private AudioMixerGroup bgmMixer;
     private AudioMixerGroup sfxMixer;
+    private AudioMixer mainMixer; 
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Init()
     {
 
-        mainMixer = Resources.Load<AudioMixer>("Audio/MainMixer");
         GameObject obj = new GameObject("SoundManager");
         instance = obj.AddComponent<SoundManager>();
         instance.InitInstance();
@@ -37,6 +28,7 @@ public class SoundManager : MonoBehaviour
     private void InitInstance()
     {
 
+        mainMixer = Resources.Load<AudioMixer>("Audio/MainMixer");
         sfxMixer = mainMixer.FindMatchingGroups("SFX")[0];
         bgmMixer = mainMixer.FindMatchingGroups("BGM")[0];
 
@@ -49,20 +41,23 @@ public class SoundManager : MonoBehaviour
 
         if (instance == null) return;
 
-        instance.Play2DSoundServerRPC(clipName, type);
+        instance.Play2D(clipName, type);
 
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void Play2DSoundServerRPC(string clipName, SoundType type)
+    public static void Play3DSound(string clipName, Vector3 position,
+    float minDistance = 1, float maxDistance = 500,
+    SoundType type = SoundType.SFX,
+    AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic)
     {
 
-        Play2DSoundClientRPC(clipName, type);
+        if (instance == null) return;
+
+        instance.Play3D(clipName, position, minDistance, maxDistance, type, rolloffMode);
 
     }
 
-    [ClientRpc]
-    private void Play2DSoundClientRPC(string clipName, SoundType type)
+    private void Play2D(string clipName, SoundType type)
     {
 
         GameObject obj = new GameObject();
@@ -99,19 +94,7 @@ public class SoundManager : MonoBehaviour
 
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void Play3DSoundServerRPC(string clipName, Vector3 position,
-        float minDistance = 1, float maxDistance = 500,
-        SoundType type = SoundType.SFX,
-        AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic)
-    {
-
-        Play3DSoundClientRPC(clipName, position, minDistance, maxDistance, type, rolloffMode);
-
-    }
-
-    [ClientRpc]
-    private void Play3DSoundClientRPC(string clipName, Vector3 position,
+    private void Play3D(string clipName, Vector3 position,
         float minDistance = 1, float maxDistance = 500,
         SoundType type = SoundType.SFX,
         AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic)
@@ -155,24 +138,14 @@ public class SoundManager : MonoBehaviour
 
     }
 
-    public static void Play3DSound(string clipName, Vector3 position, 
-        float minDistance = 1, float maxDistance = 500, 
-        SoundType type = SoundType.SFX, 
-        AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic)
-    {
 
-        if (instance == null) return;
-
-        instance.Play3DSoundServerRPC(clipName, position, minDistance, maxDistance, type, rolloffMode);
-
-    }
 
     private static IEnumerator SFXDestroyCo(float lenght, GameObject obj)
     {
 
         yield return new WaitForSeconds(lenght + 0.1f);
 
-        if(obj != null)
+        if (obj != null)
         {
 
             Destroy(obj);
@@ -180,5 +153,7 @@ public class SoundManager : MonoBehaviour
         }
 
     }
+
+
 
 }
