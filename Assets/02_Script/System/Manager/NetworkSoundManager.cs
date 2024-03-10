@@ -38,7 +38,6 @@ public class NetworkSoundManager : NetworkBehaviour
     public static void Play2DSound(string clipName, SoundType type = SoundType.SFX, SoundPlayType playType = SoundPlayType.Server)
     {
 
-        Debug.Log(instance);
         if (instance == null) return;
 
         if(playType == SoundPlayType.Server)

@@ -10,16 +10,15 @@ public class SoundManager : MonoBehaviour
 {
 
     private static SoundManager instance;
-    private static AudioMixer mainMixer;
 
     private AudioMixerGroup bgmMixer;
     private AudioMixerGroup sfxMixer;
+    private AudioMixer mainMixer; 
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Init()
     {
 
-        mainMixer = Resources.Load<AudioMixer>("Audio/MainMixer");
         GameObject obj = new GameObject("SoundManager");
         instance = obj.AddComponent<SoundManager>();
         instance.InitInstance();
@@ -29,6 +28,7 @@ public class SoundManager : MonoBehaviour
     private void InitInstance()
     {
 
+        mainMixer = Resources.Load<AudioMixer>("Audio/MainMixer");
         sfxMixer = mainMixer.FindMatchingGroups("SFX")[0];
         bgmMixer = mainMixer.FindMatchingGroups("BGM")[0];
 
@@ -45,7 +45,18 @@ public class SoundManager : MonoBehaviour
 
     }
 
-    [ClientRpc]
+    public static void Play3DSound(string clipName, Vector3 position,
+    float minDistance = 1, float maxDistance = 500,
+    SoundType type = SoundType.SFX,
+    AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic)
+    {
+
+        if (instance == null) return;
+
+        instance.Play3D(clipName, position, minDistance, maxDistance, type, rolloffMode);
+
+    }
+
     private void Play2D(string clipName, SoundType type)
     {
 
@@ -127,17 +138,7 @@ public class SoundManager : MonoBehaviour
 
     }
 
-    public static void Play3DSound(string clipName, Vector3 position,
-        float minDistance = 1, float maxDistance = 500,
-        SoundType type = SoundType.SFX,
-        AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic)
-    {
 
-        if (instance == null) return;
-
-        instance.Play3D(clipName, position, minDistance, maxDistance, type, rolloffMode);
-
-    }
 
     private static IEnumerator SFXDestroyCo(float lenght, GameObject obj)
     {
