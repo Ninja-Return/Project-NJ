@@ -18,6 +18,7 @@ public class PingState : MonsterStateRoot
         if (!IsServer) return;
 
         monsterFSM.SetAnimation("Work", true);
+        
 
         nav.speed = speed;
 
