@@ -10,6 +10,7 @@ public class FlashLight : HandItemRoot
     public override void DoUse()
     {
 
+        SoundManager.Play3DSound("FlashLight", transform.position, 0.1f, 5);
         flashlight.SetActive(!flashlight.activeSelf);
 
     }

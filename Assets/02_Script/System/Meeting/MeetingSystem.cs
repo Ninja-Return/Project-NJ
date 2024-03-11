@@ -102,6 +102,8 @@ public class MeetingSystem : NetworkBehaviour
 
         //JoinChannel();
 
+        SoundManager.Play2DSound("MeetingStart");
+
         DayManager.instance.TimeSetting(true);
         meetingUI.gameObject.SetActive(true);
         meetingUI.MeetingStart();
@@ -128,7 +130,9 @@ public class MeetingSystem : NetworkBehaviour
         meetingUI.gameObject.SetActive(false);
 
         if (GameManager.Instance.isDie) return;
-        
+
+        SoundManager.Play2DSound("MeetingEnd");
+
         meetingUI.EndVote();
         GameManager.Instance.SettingCursorVisable(false);
 

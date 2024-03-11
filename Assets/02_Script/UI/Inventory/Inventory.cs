@@ -61,6 +61,13 @@ public class Inventory : NetworkBehaviour
         Cursor.visible = isShow;
         Cursor.lockState = isShow ? CursorLockMode.None : CursorLockMode.Locked;
 
+        if (isShow)
+        {
+
+            SoundManager.Play2DSound("InventoryOpen");
+
+        }
+
         inventoryPanel.SetActive(isShow);
     }
 
@@ -71,6 +78,9 @@ public class Inventory : NetworkBehaviour
 
     public void ObtainItem(ItemDataSO data) //æ∆¿Ã≈€ ∏‘¿ª∂ß ∫“∑Ø¡‡ ¡ÿ«•ææ
     {
+
+        NetworkSoundManager.Play3DSound("GetItem", transform.position, 0.1f, 5);
+
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].slotData == null)
@@ -95,6 +105,9 @@ public class Inventory : NetworkBehaviour
 
     public void DropItem(string itemObj, int idx)
     {
+
+        NetworkSoundManager.Play3DSound("DropItem", transform.position, 0.1f, 5);
+
         slotIdx = idx;
         slots[slotIdx].ResetSlot();
 

@@ -25,8 +25,12 @@ public class Door : InteractionObject
         isOpen = !isOpen;
         isOpening = true;
 
+
+
         if (isOpen)
         {
+
+            SoundManager.Play3DSound("OpenDoor", transform.position, 1, 20);
 
             transform.DOLocalRotate(new Vector3(0, origin + 130, 0), 0.3f)
                 .SetEase(Ease.OutExpo)
@@ -40,6 +44,8 @@ public class Door : InteractionObject
         }
         else
         {
+
+            SoundManager.Play3DSound("CloseDoor", transform.position, 1, 20);
 
             transform.DOLocalRotate(new Vector3(0, origin, 0), 0.3f)
                 .SetEase(Ease.OutExpo)
@@ -73,5 +79,16 @@ public class Door : InteractionObject
         }
 
     }
+
+#if UNITY_EDITOR
+
+    private void OnValidate()
+    {
+
+        gameObject.layer = 3;
+
+    }
+
+#endif
 
 }

@@ -144,6 +144,8 @@ public class PlayerRoleManager : NetworkBehaviour
     public void SetRoleClientRPC(PlayerRole clientRole, ClientRpcParams rpcParams)
     {
 
+        SoundManager.Play2DSound("GameStart");
+
         switch (clientRole)
         {
             case PlayerRole.Survivor:
