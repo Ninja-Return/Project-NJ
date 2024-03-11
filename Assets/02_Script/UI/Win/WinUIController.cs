@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
 
 public class WinUIController : NetworkBehaviour
 {
 
-    [SerializeField] private TMP_Text winText;
+    [SerializeField] private ResultUIController controller;
 
     private void Start()
     {
@@ -18,38 +19,31 @@ public class WinUIController : NetworkBehaviour
         {
 
             EnumWinState state = (EnumWinState)PlayerPrefs.GetInt("WinState");
-            Debug.Log(state);
-            SetTextClientRPC(GetText(state));
+            SettingClientRPC(state);
 
         }
 
     }
 
-    private string GetText(EnumWinState state)
+    [ClientRpc]
+    private void SettingClientRPC(EnumWinState state)
     {
 
         switch (state)
         {
 
             case EnumWinState.None:
-                return "ERROR";
+                controller.MafiaWin();
+                break;
             case EnumWinState.Player:
-                return "플레이어 승리";
+                controller.HumanWin();
+                break;
             case EnumWinState.Mafia:
-                return "마피아 승리";
+                controller.MafiaWin();
+                break;
 
         }
 
-        return "???????";
-
-    }
-
-    [ClientRpc]
-    private void SetTextClientRPC(FixedString32Bytes str)
-    {
-
-        NetworkController.Instance.vivox.Leave3DChannel();
-        winText.text = str.ToString();
 
     }
 

@@ -88,7 +88,7 @@ public class PlayerHand : NetworkBehaviour
         if(currentIdx == idx && currentObject != null)
         {
 
-            Destroy(currentObject);
+            Destroy(currentObject.gameObject);
             currentObject = null;
             controller.HandControl(false);
             return;
@@ -98,7 +98,7 @@ public class PlayerHand : NetworkBehaviour
         if(currentObject != null)
         {
 
-            Destroy(currentObject);
+            Destroy(currentObject.gameObject);
 
         }
 
