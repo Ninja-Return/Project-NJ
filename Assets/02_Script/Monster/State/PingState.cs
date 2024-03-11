@@ -18,7 +18,7 @@ public class PingState : MonsterStateRoot
         if (!IsServer) return;
 
         monsterFSM.SetAnimation("Work", true);
-        
+        NetworkSoundManager.Play3DSound("MonsterPing", monsterFSM.transform.position, 30f);
 
         nav.speed = speed;
 

@@ -23,6 +23,7 @@ public class PatrolState : MonsterStateRoot
         if (!IsServer) return;
 
         monsterFSM.SetAnimation("Work", true);
+        NetworkSoundManager.Play3DSound("MonsterHowling", monsterFSM.transform.position, 0.1f, 30f);
 
         nav.speed = speed;
 

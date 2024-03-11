@@ -17,7 +17,7 @@ public class DebugSC : NetworkBehaviour
     void Start()
     {
 
-
+        
 
     }
 

@@ -16,6 +16,7 @@ public class IdleState : MonsterStateRoot
         if (!IsServer) return;
 
         monsterFSM.SetAnimation("Idle", true);
+        NetworkSoundManager.Play3DSound("MonsterHowling", monsterFSM.transform.position, 0.1f, 30f);
     }
 
     protected override void UpdateState()
