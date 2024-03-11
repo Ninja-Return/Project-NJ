@@ -9,6 +9,7 @@ public class NetworkAudioSource : NetworkBehaviour
 {
 
     private AudioSource source;
+    public bool isPlaying => source.isPlaying;
     
     private enum NetworkAudioType
     {
