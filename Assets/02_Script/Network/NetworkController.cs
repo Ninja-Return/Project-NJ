@@ -28,8 +28,10 @@ public class NetworkController : IDisposable
 
     }
 
-    public void Dispose()
+    public async void Dispose()
     {
+
+        await vivox.Leave3DChannel();
 
         Instance = null;
 

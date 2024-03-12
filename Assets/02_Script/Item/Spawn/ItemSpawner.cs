@@ -16,22 +16,30 @@ public class ItemSpawner : NetworkBehaviour
         if (IsServer)
         {
 
+            GameManager.Instance.OnGameStarted += Spawning;
 
-            if (spawnPoss.Count == 0)
+        }
+
+
+    }
+
+    private void Spawning()
+    {
+
+
+        if (spawnPoss.Count == 0)
+        {
+
+            for (int i = 0; i < transform.childCount; i++)
             {
 
-                for (int i = 0; i < transform.childCount; i++)
-                {
-
-                    spawnPoss.Add(transform.GetChild(i));
-
-                }
+                spawnPoss.Add(transform.GetChild(i));
 
             }
 
-            SpawnItem();
-
         }
+
+        SpawnItem();
 
 
     }

@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 8540132757314937975}
   - component: {fileID: 3852334843449199038}
   - component: {fileID: 6878685423206958018}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Walk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -531,7 +531,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "E\uD0A4\uB97C \uB20C\uB7EC \uC0C1\uD638\uC791\uC6A9"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f6c8102b58e55b244a1bc4f7bec6647a, type: 2}
   m_sharedMaterial: {fileID: 1542767373513044965, guid: f6c8102b58e55b244a1bc4f7bec6647a, type: 2}
@@ -639,13 +639,13 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2069740885390650756}
   - {fileID: 3939626142408652954}
   - {fileID: 1345514840316441852}
   - {fileID: 5042362726089981683}
   - {fileID: 110877240118104820}
   - {fileID: 4649879868395734766}
   - {fileID: 3662501413363716783}
-  - {fileID: 2069740885390650756}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3153456310294272312
@@ -717,7 +717,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.25
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -1308,7 +1308,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "E\uD0A4\uB97C \uB20C\uB7EC \uC0C1\uD638\uC791\uC6A9"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f6c8102b58e55b244a1bc4f7bec6647a, type: 2}
   m_sharedMaterial: {fileID: 1542767373513044965, guid: f6c8102b58e55b244a1bc4f7bec6647a, type: 2}
