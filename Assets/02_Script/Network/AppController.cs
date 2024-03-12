@@ -49,7 +49,18 @@ public class AppController : MonoBehaviour
         ClientSingle client = Instantiate(clientPrefab, transform);
         client.CreateClient();
 
+#if UNITY_EDITOR
+
+
         SceneManager.LoadScene(SceneList.LobbySelectScene);
+
+#elif UNITY_STANDALONE_WIN
+
+        SceneManager.LoadScene(SceneList.IntroScene);
+
+#endif
+
+
 
     }
 

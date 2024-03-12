@@ -16,13 +16,15 @@ public class ResultUIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI clearAreaText;
     [SerializeField] private TextMeshProUGUI mafiaKillText;
     [SerializeField] private TextMeshProUGUI monsterKillText;
+    [SerializeField] private TMP_Text winText;
 
     public void MafiaWin()
     {
         resuitPanel.color = Color.red;
         winnerText.color = Color.red;
 
-        FeedbackSetting();
+        winText.text = "¸¶ÇÇ¾Æ ½Â¸®";
+
     }
 
     public void HumanWin()
@@ -31,7 +33,8 @@ public class ResultUIController : MonoBehaviour
         resuitPanel.color = skyColor;
         winnerText.color = skyColor;
 
-        FeedbackSetting();
+        winText.text = "»ýÁ¸ÀÚ ½Â¸®";
+
     }
 
     private void FeedbackSetting()

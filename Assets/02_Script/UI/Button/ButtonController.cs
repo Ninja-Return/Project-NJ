@@ -44,6 +44,9 @@ public class ButtonController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         Color color = Color.white;
         color.a = fade;
         image.color = color;
+
+        SoundManager.Play2DSound("MousePoint");
+
     }
 
     public void OnPointerExit(PointerEventData eventData)

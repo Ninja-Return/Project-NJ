@@ -88,7 +88,7 @@ public class PlayerHand : NetworkBehaviour
         if(currentIdx == idx && currentObject != null)
         {
 
-            Destroy(currentObject.gameObject);
+            DeleteServerRPC();
             currentObject = null;
             controller.HandControl(false);
             return;
@@ -98,7 +98,7 @@ public class PlayerHand : NetworkBehaviour
         if(currentObject != null)
         {
 
-            Destroy(currentObject.gameObject);
+            DeleteServerRPC();
 
         }
 
@@ -167,6 +167,27 @@ public class PlayerHand : NetworkBehaviour
     {
 
         HandDeleteClientRPC();
+
+    }
+
+    [ServerRpc]
+    private void DeleteServerRPC()
+    {
+
+        DeleteClientRPC();
+
+    }
+
+    [ClientRpc]
+    private void DeleteClientRPC()
+    {
+
+        if(currentObject != null)
+        {
+
+            Destroy(currentObject.gameObject);
+
+        }
 
     }
 

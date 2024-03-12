@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class IntroSceneUIController : MonoBehaviour
 {
@@ -40,9 +41,11 @@ public class IntroSceneUIController : MonoBehaviour
         rectTrs.DOLocalMoveY(-1200, 0.5f);
     }
 
-    public void LobbySceneChange()
+    public void SceneChage()
     {
-        //네트워크 매니저에서 넘겨주는거 있었는데
+
+        SceneManager.LoadScene(SceneList.LobbySelectScene);
+
     }
 
     public void BgmSetting(Slider slider)

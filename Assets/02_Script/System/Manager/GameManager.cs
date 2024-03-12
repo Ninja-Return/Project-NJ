@@ -161,7 +161,7 @@ public class GameManager : NetworkBehaviour
     private void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.F))
         {
 
             recipeUI.SetActive(!recipeUI.activeSelf);
