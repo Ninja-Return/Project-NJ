@@ -9,6 +9,10 @@ public abstract class HandItemRoot : MonoBehaviour
     [field:SerializeField] public Vector3 handRotation { get; protected set;}
     [field:SerializeField] public Vector3 handPivot { get; protected set; }
 
+    public string extraData { get; set; }
+
     public abstract void DoUse();
+
+    public virtual void SetUpExtraData(string extraData) { this.extraData = extraData; }
 
 }

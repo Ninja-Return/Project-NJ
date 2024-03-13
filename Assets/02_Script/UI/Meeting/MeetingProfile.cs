@@ -60,6 +60,8 @@ public class MeetingProfile : MonoBehaviour, IPointerDownHandler
         
         }
 
+        chackMask.SetActive(false);
+
     }
 
 }

@@ -5,7 +5,6 @@ using Unity.Collections;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
-using WebSocketSharp;
 
 public class PlayerHand : NetworkBehaviour
 {
@@ -16,6 +15,7 @@ public class PlayerHand : NetworkBehaviour
     private PlayerAnimationController controller;
     private PlayerController playerController;
     private int currentIdx = -1;
+    private bool isDelay;
 
     private IEnumerator Start()
     {
@@ -38,7 +38,7 @@ public class PlayerHand : NetworkBehaviour
 
     }
 
-    private void HandleDrop(string objKey, int idx)
+    private void HandleDrop(string objKey, int idx, string extraData)
     {
 
         if(currentIdx == idx)
@@ -76,20 +76,27 @@ public class PlayerHand : NetworkBehaviour
     private void HandDeleteClientRPC()
     {
 
+        if (currentObject == null) return;
+
         Destroy(currentObject.gameObject);
         currentObject = null;
         currentIdx = -1;
 
     }
 
-    private void HandleHold(string objKey, int idx)
+    private void HandleHold(string objKey, int idx, string extraData)
     {
-        
-        if(currentIdx == idx && currentObject != null)
+
+        if (isDelay) return;
+
+        StartCoroutine(DelayCo());
+        Inventory.Instance.SetActiveInventoryUI();
+
+
+        if (currentIdx == idx && currentObject != null)
         {
 
             DeleteServerRPC();
-            currentObject = null;
             controller.HandControl(false);
             return;
 
@@ -107,6 +114,7 @@ public class PlayerHand : NetworkBehaviour
         controller.HandControl(true);
 
         currentIdx = idx;
+
 
     }
 
@@ -142,6 +150,8 @@ public class PlayerHand : NetworkBehaviour
     private void UseClientRPC()
     {
 
+        if (currentObject == null) return;
+
         currentObject.DoUse();
 
     }
@@ -153,22 +163,6 @@ public class PlayerHand : NetworkBehaviour
 
     }
 
-    public void UseHandItem()
-    {
-
-        Inventory.Instance.Deleteltem();
-        controller.HandControl(false);
-        UseHandServerRPC();
-
-    }
-
-    [ServerRpc]
-    private void UseHandServerRPC()
-    {
-
-        HandDeleteClientRPC();
-
-    }
 
     [ServerRpc]
     private void DeleteServerRPC()
@@ -186,8 +180,21 @@ public class PlayerHand : NetworkBehaviour
         {
 
             Destroy(currentObject.gameObject);
+            currentObject = null;
+            currentIdx = -1;
 
         }
+
+    }
+
+    private IEnumerator DelayCo()
+    {
+
+        isDelay = true;
+
+        yield return new WaitForSeconds(0.5f);
+
+        isDelay = false;
 
     }
 

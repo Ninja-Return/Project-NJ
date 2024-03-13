@@ -37,13 +37,4 @@ public class ResultUIController : MonoBehaviour
 
     }
 
-    private void FeedbackSetting()
-    {
-        //players에 모든 플레이어 넣기(playerPrefab)
-        //배경을 마피아는 빨간색, 생존자는 흰색, 생존자+죽은사람은 회색
-
-        //clearAreaText.text = ;
-        //mafiaKillText.text = ;
-        //monsterKillText.text = ;
-    }
 }

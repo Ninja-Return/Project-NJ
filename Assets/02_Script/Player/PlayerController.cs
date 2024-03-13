@@ -94,8 +94,6 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     private void HandleInvenActive()
     {
 
-        isActive = !isActive;
-        Active(isActive);
         Inventory.Instance.SetActiveInventoryUI();
 
     }

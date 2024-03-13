@@ -7,7 +7,7 @@ using EnumList;
 using Unity.Netcode;
 using Unity.Collections;
 
-public delegate void SlotChange(string objKey, int idx);
+public delegate void SlotChange(string objKey, int idx, string extraData);
 
 public class Inventory : NetworkBehaviour
 {
@@ -45,7 +45,7 @@ public class Inventory : NetworkBehaviour
             foreach(var item in firstItem)
             {
 
-                ObtainItem(item);
+                ObtainItem(item, "");
 
             }
 
@@ -60,6 +60,7 @@ public class Inventory : NetworkBehaviour
 
         Cursor.visible = isShow;
         Cursor.lockState = isShow ? CursorLockMode.None : CursorLockMode.Locked;
+        GameManager.Instance.clientPlayer.Active(!isShow);
 
         if (isShow)
         {
@@ -76,7 +77,7 @@ public class Inventory : NetworkBehaviour
         slotExpText.text = $"\"{ex}\"";
     }
 
-    public void ObtainItem(ItemDataSO data) //아이템 먹을때 불러줘 준표씨
+    public bool ObtainItem(ItemDataSO data, string extraData) //아이템 먹을때 불러줘 준표씨
     {
 
         NetworkSoundManager.Play3DSound("GetItem", transform.position, 0.1f, 5);
@@ -85,25 +86,25 @@ public class Inventory : NetworkBehaviour
         {
             if (slots[i].slotData == null)
             {
-                slots[i].InsertSlot(data);
+                slots[i].InsertSlot(data, extraData);
                 //slots[i].TouchSlot(); //먹자마자 들고있을라면 이걸로
-                break;
+                return true;
             }
         }
 
         //여기서는 뭔가 안먹어진다는걸 알려줄수도 있고
-        return;
+        return false;
     }
 
-    public void HoldItem(string itemObj, int idx)
+    public void HoldItem(string itemObj, int idx, string extraData)
     {
         isHold = true;
         slotIdx = idx;
 
-        OnSlotClickEvt?.Invoke(itemObj, idx); //기존에 들던 무기 pop하고 새로운 무기들기
+        OnSlotClickEvt?.Invoke(itemObj, idx, extraData); //기존에 들던 무기 pop하고 새로운 무기들기
     }
 
-    public void DropItem(string itemObj, int idx)
+    public void DropItem(string itemObj, int idx, string extraData)
     {
 
         NetworkSoundManager.Play3DSound("DropItem", transform.position, 0.1f, 5);
@@ -111,9 +112,11 @@ public class Inventory : NetworkBehaviour
         slotIdx = idx;
         slots[slotIdx].ResetSlot();
 
-        DropItemServerRPC(itemObj);
+        if (extraData == null) extraData = " ";
 
-        OnSlotDropEvt?.Invoke(itemObj, idx); //손에서 아이템 투척
+        DropItemServerRPC(itemObj, extraData);
+
+        OnSlotDropEvt?.Invoke(itemObj, idx, extraData); //손에서 아이템 투척
     }
 
     public void Deleteltem() //일회용 아이템 소진시 준표가 갇고와서 발행
@@ -125,7 +128,7 @@ public class Inventory : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void DropItemServerRPC(FixedString128Bytes itemKey)
+    private void DropItemServerRPC(FixedString128Bytes itemKey, FixedString32Bytes extraData)
     {
 
         var item = Resources.Load<ItemRoot>($"ItemObj/{itemKey}");
@@ -137,6 +140,7 @@ public class Inventory : NetworkBehaviour
             Quaternion.identity);
 
         clone.NetworkObject.Spawn();
+        clone.SetUpExtraDataServerRPC(extraData);
 
     }
 
