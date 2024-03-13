@@ -17,7 +17,8 @@ public class CatchPlayerTransition : MonsterTransitionRoot
         if (monsterFSM.targetPlayer == null) return false;
 
         Vector3 targetPlayerPos = monsterFSM.targetPlayer.transform.position;
-        if (Vector3.Distance(monsterTrs.position, targetPlayerPos) <= radius)
+        Vector3 playerVec = targetPlayerPos - transform.position;
+        if (monsterFSM.RayPlayer(radius, playerVec) != null)
         {
             return true;
         }
