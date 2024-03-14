@@ -18,7 +18,7 @@ public class HostGameManager : IDisposable
     private Allocation allocation;
     private string joinCode;
     private string lobbyId;
-    private const int MAX_CONNECTIONS = 10;
+    private const int MAX_CONNECTIONS = 6;
 
     public NetworkServer NetServer { get; private set; }
 
