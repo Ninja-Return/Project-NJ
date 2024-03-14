@@ -107,6 +107,29 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
         anim.SetBool(name, value);
     }
 
+    public Collider RayPlayer(float radius, Vector3 lookVec)
+    {
+        Vector3 pos = headTrs.position;
+
+        RaycastHit[] allPlayers = Physics.RaycastAll(pos, lookVec, radius, playerMask);
+        if (allPlayers.Length == 0) return null;
+
+        float minDistance = float.MaxValue;
+        Collider targetPlayer = null;
+        foreach (RaycastHit player in allPlayers)
+        {
+            if (Vector3.Distance(player.transform.position, pos) < minDistance)
+            {
+                targetPlayer = player.collider;
+            }
+        }
+
+        Vector3 targetPos = targetPlayer.transform.position;
+        Debug.DrawLine(pos, targetPos, Color.black);
+
+        return targetPlayer;
+    }
+
     public Collider CirclePlayer(float radius)
     {
         Vector3 pos = headTrs.position;
