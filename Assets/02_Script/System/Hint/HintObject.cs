@@ -10,18 +10,21 @@ public class HintObject : ItemRoot
 
     [SerializeField] private TMP_Text hintText;
 
-    protected override void DoInteraction()
-    {
-
-        Debug.Log("추후 구현");
-
-    }
 
     [ClientRpc]
     public void SpawnClientRPC(FixedString128Bytes hintText)
     {
 
-        this.hintText.text = hintText.ToString();
+        SetUpExtraData(hintText.ToString());
+
+    }
+
+    protected override void SetUpExtraData(string str)
+    {
+
+        base.SetUpExtraData(str);
+
+        this.hintText.text = str;
 
     }
 

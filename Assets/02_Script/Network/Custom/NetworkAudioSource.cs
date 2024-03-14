@@ -60,7 +60,7 @@ public class NetworkAudioSource : NetworkBehaviour
 
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void EventServerRPC(NetworkAudioType type)
     {
 

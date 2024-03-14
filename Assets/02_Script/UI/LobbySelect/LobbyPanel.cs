@@ -18,7 +18,7 @@ public class LobbyPanel : MonoBehaviour
 
         joinCode = lobby.Data["JoinCode"].Value;
         titleText.text = lobby.Name;
-        peopleText.text = $"{lobby.Players.Count}/10";
+        peopleText.text = $"{6 - lobby.AvailableSlots}/6";
 
     }
 

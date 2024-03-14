@@ -21,9 +21,13 @@ public class PlayerSoundController : NetworkBehaviour
     private void Update()
     {
 
-        if (!IsOwner) return;
+        if (IsOwner)
+        {
 
-        SetWalkSound();
+            SetWalkSound();
+
+        }
+
 
     }
 

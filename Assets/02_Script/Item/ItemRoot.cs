@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
@@ -20,23 +21,38 @@ public abstract class ItemRoot : InteractionObject
 
     [field:SerializeField] public ItemDataSO data { get; private set; }
 
+    public string extraData { get; set; }
     public ItemCategory itemCategory { get; protected set; }
 
     protected override void DoInteraction()
     {
 
-        Inventory.Instance.ObtainItem(data);
-        Despawn();
+        if (Inventory.Instance.ObtainItem(data, extraData))
+        {
+
+            Despawn();
+
+        }
 
     }
-
-    public virtual void UseKeyPress() { }
 
     [ServerRpc(RequireOwnership = false)]
-    public void SetSpawnServerRPC()
+    public void SetUpExtraDataServerRPC(FixedString32Bytes str)
     {
 
-        NetworkObject.Spawn(true);
+        SetUpExtraDataClientRPC(str);
 
     }
+
+    [ClientRpc]
+    private void SetUpExtraDataClientRPC(FixedString32Bytes str)
+    {
+
+        SetUpExtraData(str.ToString());
+
+    }
+
+    protected virtual void SetUpExtraData(string str) { extraData = str; }
+
+
 }

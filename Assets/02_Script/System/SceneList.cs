@@ -9,5 +9,6 @@ public class SceneList
     public const string LobbyScene = "Lobby";
     public const string LobbySelectScene = "LobbySelect";
     public const string LoadingScene = "Loading";
+    public const string IntroScene = "Intro";
 
 }

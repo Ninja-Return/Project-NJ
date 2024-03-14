@@ -14,18 +14,20 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     public ItemDataSO data {  get; private set; }
 
     private Image slotImage;
+    private string extraData;
 
     private void Awake()
     {
         slotImage = GetComponent<Image>();
     }
 
-    public void InsertSlot(ItemDataSO newData)
+    public void InsertSlot(ItemDataSO newData, string extraData)
     {
         slotData = newData.slotData;
         data = newData;
         slotImage.sprite = slotData.slotSprite;
         slotImage.color = Color.white;
+        this.extraData = extraData;
     }
 
     public void UseSlot() //왼클릭 시(손에 들게하기)
@@ -34,7 +36,7 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         if (slotData == null) return;
 
         //풀링 만들기 전까진 Resources에서 가져오자
-        Inventory.Instance.HoldItem(slotData.poolingName, slotIndex);
+        Inventory.Instance.HoldItem(slotData.poolingName, slotIndex, extraData);
     }
 
     public void RemoveSlot() //우클릭 시(아이템 밖으로 던지기)
@@ -43,7 +45,7 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         if (slotData == null) return;
 
         //풀링 만들기 전까진 Resources에서 가져오자
-        Inventory.Instance.DropItem(slotData.poolingName, slotIndex);
+        Inventory.Instance.DropItem(slotData.poolingName, slotIndex, extraData);
     }
 
     public void ResetSlot() //아이템 소진시(슬롯 비우기)

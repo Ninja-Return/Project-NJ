@@ -19,7 +19,7 @@ public class ChaseState : MonsterStateRoot
         if (!IsServer) return;
 
         monsterFSM.SetAnimation("Run", true);
-        NetworkSoundManager.Play3DSound("FindPlayer", monsterFSM.transform.position, 0.1f, 30f);
+        NetworkSoundManager.Play3DSound("FindPlayer", transform.position, 0.1f, 100f);
 
         nav.speed = speed;
     }

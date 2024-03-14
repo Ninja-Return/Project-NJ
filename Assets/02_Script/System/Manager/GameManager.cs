@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -39,6 +40,8 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private bool debug;
     [SerializeField] private DeathUI deathUI;
     [SerializeField] private List<Transform> trms;
+    [SerializeField] private TMP_Text startText;
+    [SerializeField] private GameObject recipeUI;
 
     private List<PlayerController> players = new();
     public PlayerController clientPlayer { get; private set; }
@@ -67,6 +70,16 @@ public class GameManager : NetworkBehaviour
 
     private IEnumerator Start()
     {
+
+        for(int i = 10; i > 0; i--)
+        {
+
+            SetTextClientRPC(i);
+            yield return new WaitForSeconds(1);
+
+        }
+
+        SetTextClientRPC(-1);
 
         yield return new WaitForSeconds(1);
 
@@ -140,6 +153,18 @@ public class GameManager : NetworkBehaviour
         {
 
             SpawnPlayer(id);
+
+        }
+
+    }
+
+    private void Update()
+    {
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+
+            recipeUI.SetActive(!recipeUI.activeSelf);
 
         }
 
@@ -273,6 +298,16 @@ public class GameManager : NetworkBehaviour
 
         Cursor.lockState = visable ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = visable;
+
+    }
+
+    [ClientRpc]
+    private void SetTextClientRPC(int t)
+    {
+
+        startText.text = $"시작까지 : {t}";
+
+        if (t == -1) startText.text = "";
 
     }
 
