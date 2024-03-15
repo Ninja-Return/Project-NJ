@@ -6,7 +6,7 @@ using FSM_System;
 
 public class IdleState : MonsterStateRoot
 {
-    private float idleDuration = 1f;
+    private float idleDuration = 3f;
     private float currentTime = 0;
 
     public IdleState(MonsterFSM controller) : base(controller) { }

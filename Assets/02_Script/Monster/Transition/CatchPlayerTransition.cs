@@ -14,6 +14,7 @@ public class CatchPlayerTransition : MonsterTransitionRoot
 
     protected override bool CheckTransition()
     {
+        if (nav.pathPending) return false;
         if (monsterFSM.targetPlayer == null) return false;
 
         Vector3 targetPlayerPos = monsterFSM.targetPlayer.transform.position;
