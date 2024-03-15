@@ -51,6 +51,7 @@ public class SoundManager : MonoBehaviour
     AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic)
     {
 
+        Debug.Log(1234);
         if (instance == null) return;
 
         instance.Play3D(clipName, position, minDistance, maxDistance, type, rolloffMode);

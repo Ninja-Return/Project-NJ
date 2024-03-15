@@ -36,7 +36,10 @@ public class PatrolState : MonsterStateRoot
 
     protected override void UpdateState()
     {
-        
+
+        if(!IsServer) return;
+
+        NetworkSoundManager.Play3DSound("MonsterHowling", monsterFSM.transform.position, 0.1f, 30f);
     }
 
     protected override void ExitState()
