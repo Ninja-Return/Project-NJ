@@ -18,7 +18,7 @@ public class KillState : MonsterStateRoot
         if (!IsServer) return;
 
         monsterFSM.SetAnimation("Attack", true);
-        NetworkSoundManager.Play3DSound("MonsterDie", monsterFSM.transform.position, 0.1f, 60f);
+        NetworkSoundManager.Play3DSound("MonsterDie", monsterFSM.transform.position, 0.1f, 60f, SoundType.SFX, AudioRolloffMode.Linear);
 
         nav.isStopped = true;
     }
