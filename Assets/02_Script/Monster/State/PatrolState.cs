@@ -23,23 +23,20 @@ public class PatrolState : MonsterStateRoot
         if (!IsServer) return;
 
         monsterFSM.SetAnimation("Work", true);
-        NetworkSoundManager.Play3DSound("MonsterHowling", monsterFSM.transform.position, 0.1f, 30f);
+        NetworkSoundManager.Play3DSound("MonsterHowling", monsterFSM.transform.position, 0.1f, 60f, SoundType.SFX, AudioRolloffMode.Linear);
+        
 
         nav.speed = speed;
 
-        if (RandomPoint(targetPos, range, out point))
+        if (RandomPoint(range, out point))
         {
-            targetPos = point;
-            nav.SetDestination(targetPos);
+            nav.SetDestination(point);
         }
     }
 
     protected override void UpdateState()
     {
 
-        if(!IsServer) return;
-
-        NetworkSoundManager.Play3DSound("MonsterHowling", monsterFSM.transform.position, 0.1f, 30f);
     }
 
     protected override void ExitState()
@@ -51,14 +48,14 @@ public class PatrolState : MonsterStateRoot
         nav.SetDestination(monsterFSM.transform.position);
     }
 
-    private bool RandomPoint(Vector3 center, float range, out Vector3 result)
+    private bool RandomPoint(float range, out Vector3 result)
     {
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < 90; i++)
         {
-            Vector3 randomPoint = center + Random.insideUnitSphere * range;
+            Vector3 randomPoint = monsterFSM.transform.position + Random.insideUnitSphere * range;
             NavMeshHit hit;
 
-            if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas) && Vector3.Distance(monsterFSM.transform.position, hit.position) >= range / 2f)
             {
                 result = hit.position;
                 return true;

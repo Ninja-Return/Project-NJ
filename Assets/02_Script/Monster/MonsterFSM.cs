@@ -98,7 +98,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
     private void SetAnimationServerRpc(string name, bool value)
     {
         anim.SetBool(name, value);
-        SetAnimationClientRpc(name, value);
+        SetAnimationClientRpc(name, value); 
     }
 
     [ClientRpc]
@@ -177,23 +177,21 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
 
         Collider[] allPlayers = Physics.OverlapSphere(pos, radius, playerMask);
         if (allPlayers.Length == 0) return null;
-        
         foreach (Collider player in allPlayers)
         {
             Vector3 targetPos = player.transform.position;
             Vector3 targetDir = (targetPos - pos).normalized;
             float targetAngle = Mathf.Acos(Vector3.Dot(lookDir, targetDir)) * Mathf.Rad2Deg;
 
-            if (targetAngle <= angle * 0.5f && !Physics.Raycast(pos, targetDir, radius, obstacleMask))
+            if (targetAngle <= angle * 0.5f)
             {
                 //player °¨ÁöµÊ
                 players.Add(player);
                 Debug.DrawLine(pos, targetPos, Color.red);
             }
         }
-
         if (players.Count == 0) return null;
-
+        
         float minDistance = float.MaxValue;
         Collider targetPlayer = null;
         foreach (Collider player in players)

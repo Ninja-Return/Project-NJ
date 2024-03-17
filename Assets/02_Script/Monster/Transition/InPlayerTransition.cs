@@ -14,6 +14,8 @@ public class InPlayerTransition : MonsterTransitionRoot
 
     protected override bool CheckTransition()
     {
+        if (nav.pathPending) return false;
+
         Collider targetPlayer = monsterFSM.ViewingPlayer(radius);
         if (targetPlayer != null)
         {

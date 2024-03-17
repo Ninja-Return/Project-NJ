@@ -6,7 +6,7 @@ using FSM_System;
 
 public class IdleState : MonsterStateRoot
 {
-    private float idleDuration = 1f;
+    private float idleDuration = 3f;
     private float currentTime = 0;
 
     public IdleState(MonsterFSM controller) : base(controller) { }
@@ -16,7 +16,7 @@ public class IdleState : MonsterStateRoot
         if (!IsServer) return;
 
         monsterFSM.SetAnimation("Idle", true);
-        NetworkSoundManager.Play3DSound("MonsterHowling", monsterFSM.transform.position, 0.1f, 30f);
+        NetworkSoundManager.Play3DSound("MonsterHowling", monsterFSM.transform.position, 0.1f, 60f, SoundType.SFX, AudioRolloffMode.Linear);
     }
 
     protected override void UpdateState()
