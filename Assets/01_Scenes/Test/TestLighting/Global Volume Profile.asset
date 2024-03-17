@@ -17,14 +17,14 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   qualityLevel:
-    m_OverrideState: 0
-    m_Value: 2
+    m_OverrideState: 1
+    m_Value: 0
   gridPixelSize:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 12
   gridSizeZ:
-    m_OverrideState: 0
-    m_Value: 160
+    m_OverrideState: 1
+    m_Value: 64
   maxDistanceVolumetric:
     m_OverrideState: 0
     m_Value: 64
@@ -121,7 +121,7 @@ MonoBehaviour:
       gain: 0.35
       seed: 0
       noiseType: 2
-      noiseQuality: 2
+      noiseQuality: 0
       invert: 0
       userTexture: {fileID: 0}
 --- !u!114 &11400000
@@ -157,8 +157,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   shadows:
-    m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: -0.55925435}
+    m_OverrideState: 0
+    m_Value: {x: 1, y: 1, z: 1, w: -0.42201826}
   midtones:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: -0.3062583}
@@ -436,7 +436,7 @@ MonoBehaviour:
     m_Value: 0.8
   intensity:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 1
   scatter:
     m_OverrideState: 0
     m_Value: 0.7
