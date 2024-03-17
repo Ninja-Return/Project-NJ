@@ -50,6 +50,30 @@ public class AppController : MonoBehaviour
         ClientSingle client = Instantiate(clientPrefab, transform);
         client.CreateClient();
 
+        LootLockerController.Init((result) =>
+        {
+
+            if (result)
+            {
+
+                OnInitComplete();
+
+            }
+            else
+            {
+
+                Application.Quit();
+
+            }
+
+
+        });
+
+    }
+
+    private void OnInitComplete()
+    {
+
 #if UNITY_EDITOR
 
 
@@ -60,8 +84,6 @@ public class AppController : MonoBehaviour
         SceneManager.LoadScene(SceneList.IntroScene);
 
 #endif
-
-
 
     }
 
@@ -91,7 +113,6 @@ public class AppController : MonoBehaviour
         };
 
     }
-
 
     public async Task<List<Lobby>> GetLobbyList()
     {
