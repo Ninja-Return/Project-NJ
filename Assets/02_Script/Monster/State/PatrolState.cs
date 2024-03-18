@@ -25,7 +25,6 @@ public class PatrolState : MonsterStateRoot
         monsterFSM.SetAnimation("Work", true);
         NetworkSoundManager.Play3DSound("MonsterHowling", monsterFSM.transform.position, 0.1f, 60f, SoundType.SFX, AudioRolloffMode.Linear);
         
-
         nav.speed = speed;
 
         if (RandomPoint(range, out point))
@@ -48,14 +47,17 @@ public class PatrolState : MonsterStateRoot
         nav.SetDestination(monsterFSM.transform.position);
     }
 
-    private bool RandomPoint(float range, out Vector3 result)
+    private bool RandomPoint(float range, out Vector3 result) //약간 고치기
     {
-        for (int i = 0; i < 90; i++)
+        for (int i = 0; i < 200; i++)
         {
             Vector3 randomPoint = monsterFSM.transform.position + Random.insideUnitSphere * range;
             NavMeshHit hit;
 
-            if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas) && Vector3.Distance(monsterFSM.transform.position, hit.position) >= range / 2f)
+            //Vector3.Distance(monsterFSM.transform.position, hit.position) >= range / 2f <= 최소 이동거리 양
+
+            if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas)
+                && Physics.OverlapSphere(hit.position, range / 5f, playerMask).Length > 0)
             {
                 result = hit.position;
                 return true;
