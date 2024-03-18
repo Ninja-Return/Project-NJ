@@ -36,7 +36,7 @@ public class HeadBobController : NetworkBehaviour
         transform.localRotation = Quaternion.Euler(transform.localEulerAngles.x, transform.localEulerAngles.y, -tilt);
 
         #region 1 (Just Math)
-        if (Mathf.Abs(horizontalMovement) > 0.1f || Mathf.Abs(verticalMovement) > 0.1f)
+        if (Mathf.Abs(horizontalMovement) > 0.1f || Mathf.Abs(verticalMovement) > 0.1f && !controller.isSittingDown)
         {
             // 카메라의 위치를 위아래로 움직임
             float waveSlice = Mathf.Sin(timer * bobFrequency) * bobAmount;
@@ -44,13 +44,16 @@ public class HeadBobController : NetworkBehaviour
 
             timer += Time.deltaTime;
             if (timer > Mathf.PI * 2) timer = timer - (Mathf.PI * 2);
+        }else if (controller.isSittingDown)
+        {
+
         }
-        else
+        /*else
         {
             // 정지할 때 카메라를 초기 위치로 되돌림
             timer = 0;
             transform.localPosition = new Vector3(transform.localPosition.x, 0.6f, transform.localPosition.z);
-        }
+        }*/
         #endregion
     }
 }

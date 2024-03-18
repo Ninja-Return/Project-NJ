@@ -23,9 +23,11 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     [field:SerializeField] public PlayerInputDataSO Input { get; private set; }
 
     private GameObject meetingObject;
-    private CinemachineVirtualCamera cvcam;
+    public CinemachineVirtualCamera cvcam;
     private Canvas interactionCanvas;
     private bool isActive = true;
+    public bool isSittingDown = false; // 현재 앉아 있는지 여부
+
 
     public bool IsMeeting { get; set; }
 
