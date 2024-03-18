@@ -182,7 +182,10 @@ public class GameManager : NetworkBehaviour
     public void SpawnPlayer(ulong clientId)
     {
 
-        var pl = Instantiate(player, trms.GetRandomListObject().position, Quaternion.identity).GetComponent<PlayerController>();
+        var spawnTrm = trms.GetRandomListObject();
+        trms.Remove(spawnTrm);
+
+        var pl = Instantiate(player, spawnTrm.position, Quaternion.identity).GetComponent<PlayerController>();
         pl.NetworkObject.SpawnWithOwnership(clientId, true);
 
         var data = HostSingle.Instance.NetServer.GetUserDataByClientID(pl.OwnerClientId).Value;

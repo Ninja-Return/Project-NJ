@@ -32,7 +32,7 @@ public class Door : InteractionObject
 
             SoundManager.Play3DSound("OpenDoor", transform.position, 1, 20);
 
-            transform.DOLocalRotate(new Vector3(0, origin + 130, 0), 0.3f)
+            transform.DOLocalRotate(new Vector3(0, origin + 90, 0), 0.3f)
                 .SetEase(Ease.OutExpo)
                 .OnComplete(() =>
                 {
