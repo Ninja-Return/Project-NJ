@@ -7,8 +7,8 @@ using UnityEngine;
 public class ItemDataSO : ScriptableObject, IEquatable<ItemDataSO>
 {
 
-    [field: SerializeField] public string itemName { get; private set; }
-    [field: SerializeField] public SlotData slotData { get; private set; }
+    [field: SerializeField] public string itemName { get; set; }
+    [field: SerializeField] public SlotData slotData { get; set; }
 
     public bool Equals(ItemDataSO other)
     {
