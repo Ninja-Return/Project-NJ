@@ -1,48 +1,32 @@
-using System;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
+
 public class ColorManager : NetworkBehaviour
 {
+    [SerializeField] private Color ownColor;
+    public NetworkVariable<Color> playerColor = new NetworkVariable<Color>();
 
-    [SerializeField] SkinnedMeshRenderer serverMesh;
-    [SerializeField] SkinnedMeshRenderer clientMesh;
-    [SerializeField] private Color[] colors;
+    private void Start()
+    {
+        ownColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+        playerColor.Value = ownColor;
+    }
 
     public override void OnNetworkSpawn()
     {
+        if (IsServer)
+        {
+            UserData? data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(OwnerClientId);
 
-        base.OnNetworkSpawn();
-        HostSingle.Instance.GameManager.OnPlayerConnect += HandleColor;
-
-    }
-
-    public override void OnNetworkDespawn()
-    {
-
-        base.OnNetworkDespawn();
-        HostSingle.Instance.GameManager.OnPlayerConnect -= HandleColor;
-
-    }
-
-    private void HandleColor(string authId, ulong clientId)
-    {
-
-        GiveColor(clientId);
-
-    }
-
-    private void GiveColor(ulong clientId)
-    {
+            playerColor.Value = data.Value.color;
+        }
 
         if (IsOwner)
         {
 
-            Color plColor = colors[UnityEngine.Random.Range(0, colors.Length)];
-            serverMesh.material.color = plColor;
-            clientMesh.material.color = plColor;
-
         }
-
     }
+
 }
