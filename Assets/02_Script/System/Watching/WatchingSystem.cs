@@ -9,6 +9,8 @@ public class WatchingSystem : NetworkBehaviour
 {
 
     [SerializeField] private WatchingUIController watchingUI;
+    [SerializeField] private SpectatorUIController chattingUI;
+    [SerializeField] private SpectatorChattingSystem chattingSystem;
 
     public static WatchingSystem Instance;
 
@@ -35,7 +37,7 @@ public class WatchingSystem : NetworkBehaviour
 
         if (!isWatching) return;
 
-        switch (changeEvent.Type) 
+        switch (changeEvent.Type)
         {
 
             case NetworkListEvent<LiveData>.EventType.Remove:
@@ -47,11 +49,9 @@ public class WatchingSystem : NetworkBehaviour
 
                 }
 
-
-
         }
 
-        if(changeEvent.Value.clientId == currentWatching && alivePlayers.Count != 0)
+        if (changeEvent.Value.clientId == currentWatching && alivePlayers.Count != 0)
         {
 
             Watching(alivePlayers[0].OwnerClientId);
@@ -63,7 +63,7 @@ public class WatchingSystem : NetworkBehaviour
     public void Watching(ulong watch)
     {
 
-        if(alivePlayers.Find(x => x.OwnerClientId == currentWatching) != null)
+        if (alivePlayers.Find(x => x.OwnerClientId == currentWatching) != null)
         {
 
             alivePlayers.Find(x => x.OwnerClientId == currentWatching).watchCam.Priority = -1;
@@ -78,6 +78,8 @@ public class WatchingSystem : NetworkBehaviour
     public void StartWatching()
     {
 
+        HandleChattingOpen();
+
         isWatching = true;
 
         alivePlayers = FindObjectsOfType<PlayerController>().ToList();
@@ -88,6 +90,42 @@ public class WatchingSystem : NetworkBehaviour
         watchingUI.Init();
 
         GameManager.Instance.SettingCursorVisable(true);
+
+    }
+
+    private void HandleChattingOpen()
+    {
+
+        GameManager.Instance.PlayerMoveableChangeClientRPC(false);
+
+        chattingSystem.ClearSpectatorChatting();
+
+        MettingOpenClientRPC();
+
+    }
+
+    [ClientRpc]
+    private void MettingOpenClientRPC()
+    {
+
+        if (GameManager.Instance.isDie) return;
+
+        //JoinChannel();
+
+        SoundManager.Play2DSound("MeetingStart");
+
+        DayManager.instance.TimeSetting(true);
+        chattingUI.gameObject.SetActive(true);
+        chattingUI.ChattingStart();
+
+        GameManager.Instance.clientPlayer.IsMeeting = true;
+
+    }
+
+    public void CloseChatting()
+    {
+
+        chattingUI.EndSpectatorChat();
 
     }
 
