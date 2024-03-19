@@ -56,7 +56,7 @@ public class LoadingSystem : NetworkBehaviour
         yield return new WaitUntil(() => 
         completeCount == NetworkManager.ConnectedClients.Count);
 
-        NetworkManager.SceneManager.LoadScene(SceneList.GameScene, LoadSceneMode.Single);
+        NetworkManager.SceneManager.LoadScene(SceneList.MultiGameScene, LoadSceneMode.Single);
 
     }
 

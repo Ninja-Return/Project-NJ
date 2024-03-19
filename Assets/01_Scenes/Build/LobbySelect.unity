@@ -550,7 +550,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 108159003}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1577887057}
+        m_TargetAssemblyTypeName: LobbySelectUIController, Assembly-CSharp
+        m_MethodName: CheckSeleteRoom
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &108159003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1275,7 +1287,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -496, y: -278}
+  m_AnchoredPosition: {x: 0, y: -900}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &485017431
@@ -1360,7 +1372,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 485017434}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1577887057}
+        m_TargetAssemblyTypeName: LobbySelectUIController, Assembly-CSharp
+        m_MethodName: StartSinglePlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &485017434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3198,7 +3222,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1278266562}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1577887057}
+        m_TargetAssemblyTypeName: LobbySelectUIController, Assembly-CSharp
+        m_MethodName: CreateRoom
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1278266562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3889,11 +3925,12 @@ MonoBehaviour:
   roomSearchUI: {fileID: 47028563}
   roomCreateUI: {fileID: 1848247275}
   roomJoinUI: {fileID: 1091274987}
-  blackPanel: {fileID: 0}
+  roomSeleteUI: {fileID: 420282225}
   roomInputField: {fileID: 90944814}
   joinCodeInputField: {fileID: 829169550}
   lobbyPanelRoot: {fileID: 1042637136}
   lobbyPrefab: {fileID: 5612641318047026393, guid: 5a891b0b1ec8e2049b14e0314d4a8d90, type: 3}
+  checkIcon: {fileID: 1149552736}
 --- !u!4 &1577887058
 Transform:
   m_ObjectHideFlags: 0
@@ -3994,7 +4031,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1577887057}
         m_TargetAssemblyTypeName: LobbySelectUIController, Assembly-CSharp
-        m_MethodName: CreateRoom
+        m_MethodName: RoomSetting
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4821,7 +4858,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1901719773}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1577887057}
+        m_TargetAssemblyTypeName: LobbySelectUIController, Assembly-CSharp
+        m_MethodName: StartTutorial
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1901719773
 MonoBehaviour:
   m_ObjectHideFlags: 0

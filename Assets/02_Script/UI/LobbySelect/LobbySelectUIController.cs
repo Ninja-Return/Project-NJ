@@ -6,6 +6,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using Unity.Services.Lobbies.Models;
 
 public class LobbySelectUIController : MonoBehaviour
 {
@@ -14,13 +15,16 @@ public class LobbySelectUIController : MonoBehaviour
     [SerializeField] private RectTransform roomSearchUI;
     [SerializeField] private RectTransform roomCreateUI;
     [SerializeField] private RectTransform roomJoinUI;
-    [SerializeField] private RectTransform blackPanel;
+    [SerializeField] private RectTransform roomSeleteUI;
 
     [Header("UI")]
     [SerializeField] private TMP_InputField roomInputField;
     [SerializeField] private TMP_InputField joinCodeInputField;
     [SerializeField] private Transform lobbyPanelRoot;
     [SerializeField] private LobbyPanel lobbyPrefab;
+    [SerializeField] private GameObject checkIcon;
+
+    private bool isRoomLook;
 
     private void Start()
     {
@@ -37,6 +41,11 @@ public class LobbySelectUIController : MonoBehaviour
 
     }
 
+    public void RoomSetting()
+    {
+        roomSeleteUI.DOLocalMoveY(0, 0.5f);
+    }
+
     public async void CreateRoom()
     {
 
@@ -48,7 +57,7 @@ public class LobbySelectUIController : MonoBehaviour
             NetworkManager.Singleton.SceneManager.LoadScene(SceneList.LobbyScene, LoadSceneMode.Single);
 
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
 
             Debug.LogException(ex);
@@ -74,6 +83,22 @@ public class LobbySelectUIController : MonoBehaviour
 
         }
 
+    }
+
+    public void CheckSeleteRoom()
+    {
+        isRoomLook = !isRoomLook;
+        checkIcon.SetActive(isRoomLook);
+    }
+
+    public void StartTutorial()
+    {
+        SceneManager.LoadScene(SceneList.TutorialScene);
+    }
+
+    public void StartSinglePlay()
+    {
+        SceneManager.LoadScene(SceneList.SingleGameScene);
     }
 
     private IEnumerator RefreshLobby()

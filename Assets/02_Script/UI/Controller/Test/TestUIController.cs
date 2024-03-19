@@ -4,6 +4,7 @@ using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.Services.Lobbies.Models;
 
 public class TestUIController : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class TestUIController : MonoBehaviour
 
         await AppController.Instance.StartHostAsync("asdfasdfasdf", "asdfasdfasdfasdf");
 
-        NetworkManager.Singleton.SceneManager.LoadScene(SceneList.GameScene, LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene(SceneList.MultiGameScene, LoadSceneMode.Single);
 
     }
 
