@@ -8,7 +8,7 @@ public class ColorDisplay : MonoBehaviour
 
     private void Start()
     {
-        HandlePlayerColorChanged(Color.clear, _colorManager.playerColor.Value);
+        HandlePlayerColorChanged(Color.white, _colorManager.playerColor.Value);
 
         _colorManager.playerColor.OnValueChanged += HandlePlayerColorChanged;
     }
