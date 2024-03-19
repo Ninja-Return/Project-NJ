@@ -13,5 +13,16 @@ public class Item : ItemRoot
         interactionText = $"E를 눌러 {data.itemName}을 수집";
 
     }
+#if UNITY_EDITOR
+
+    private void OnValidate()
+    {
+
+        gameObject.layer = 3;
+
+    }
+
+#endif
+
 
 }
