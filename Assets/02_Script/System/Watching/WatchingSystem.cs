@@ -80,6 +80,9 @@ public class WatchingSystem : NetworkBehaviour
 
         HandleChattingOpen();
 
+        // 일반 음성 채널 조인
+        JoinVivox();
+
         isWatching = true;
 
         alivePlayers = FindObjectsOfType<PlayerController>().ToList();
@@ -126,6 +129,13 @@ public class WatchingSystem : NetworkBehaviour
     {
 
         chattingUI.EndSpectatorChat();
+
+    }
+
+    private async void JoinVivox()
+    {
+
+        await NetworkController.Instance.vivox.JoinNormalChannel();
 
     }
 
