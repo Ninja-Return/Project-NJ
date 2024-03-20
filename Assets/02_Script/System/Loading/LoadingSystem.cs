@@ -53,11 +53,20 @@ public class LoadingSystem : NetworkBehaviour
     private IEnumerator CycleCo()
     {
 
-        yield return new WaitUntil(() => 
+        yield return new WaitUntil(() =>
         completeCount == NetworkManager.ConnectedClients.Count);
 
-        NetworkManager.SceneManager.LoadScene(SceneList.MultiGameScene, LoadSceneMode.Single);
+        //NetworkManager.SceneManager.LoadScene(SceneList.MultiGameScene, LoadSceneMode.Single);
+        WaitForSceneToLoad();
+    }
 
+    private IEnumerator WaitForSceneToLoad()
+    {
+        var asyncLoadMap = SceneManager.LoadSceneAsync("Office_Map", LoadSceneMode.Single);
+        while (!asyncLoadMap.isDone)
+        {
+            yield return null;
+        }
     }
 
 }

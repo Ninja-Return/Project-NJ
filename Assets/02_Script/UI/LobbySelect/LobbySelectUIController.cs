@@ -93,12 +93,12 @@ public class LobbySelectUIController : MonoBehaviour
 
     public void StartTutorial()
     {
-        SceneManager.LoadScene(SceneList.TutorialScene);
+        //SceneManager.LoadScene(SceneList.TutorialScene);
     }
 
     public void StartSinglePlay()
     {
-        SceneManager.LoadScene(SceneList.SingleGameScene);
+        //SceneManager.LoadScene(SceneList.SingleGameScene);
     }
 
     private IEnumerator RefreshLobby()
