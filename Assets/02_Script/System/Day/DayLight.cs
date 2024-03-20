@@ -7,6 +7,7 @@ public class DayLight : MonoBehaviour
 {
 
     [SerializeField] private Transform lightTrm;
+    [SerializeField] private Light lig;
 
     private bool isLight = false;
     private float angle;
@@ -34,6 +35,7 @@ public class DayLight : MonoBehaviour
 
             isLight = true;
             DayManager.instance.DayCommingClientRPC(false);
+            SetDayClientRPC(true);
 
         }
 
@@ -43,12 +45,34 @@ public class DayLight : MonoBehaviour
 
             isLight = false;
             DayManager.instance.NightCommingClientRPC(false);
+            SetDayClientRPC(false);
 
         }
 
     }
 
 
+    [ClientRpc]
+    private void SetDayClientRPC(bool isDay)
+    {
+
+        if (isDay)
+        {
+
+            lig.transform.eulerAngles = new Vector3(50, -30, 0);
+            lig.intensity = 1;
+
+        }
+        else
+        {
+
+            lig.transform.eulerAngles = new Vector3(-90, -30, 0);
+            lig.intensity = 0;
+
+
+        }
+
+    }
     
 
 }

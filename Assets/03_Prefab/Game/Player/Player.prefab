@@ -662,7 +662,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4154335052
+  GlobalObjectIdHash: 394503693
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -739,6 +739,11 @@ MonoBehaviour:
   debug: 0
   <Data>k__BackingField: {fileID: 11400000, guid: f54f5af034a21bc47883b4637f65c268, type: 2}
   <Input>k__BackingField: {fileID: 11400000, guid: cf2139e5354173640bb562d302d47e01, type: 2}
+  cvcam: {fileID: 0}
+  isSittingDown: 0
+  targetCameraPosition: {x: 0, y: 0, z: 0}
+  changeTime: 1
+  originalCameraPosition: {x: 0, y: 0, z: 0}
 --- !u!54 &8347118786876183791
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -819,7 +824,8 @@ MonoBehaviour:
   slotExpText: {fileID: 6150465179774594071}
   isShow: 0
   isHold: 0
-  firstItem: []
+  firstItem:
+  - {fileID: 11400000, guid: d456a4dcd8ed86143a8100f8d686706f, type: 2}
 --- !u!114 &5310942124214475713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1562,6 +1568,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6076623417194512365, guid: 80d2380390d9b0b43b4b164877458363, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -4791791807392184750, guid: ad40758dedcd9284c9e16aa564d12def, type: 2}
     - target: {fileID: 6076623417194512365, guid: 80d2380390d9b0b43b4b164877458363, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
