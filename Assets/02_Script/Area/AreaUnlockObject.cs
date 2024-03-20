@@ -10,7 +10,6 @@ public class AreaUnlockObject : InteractionObject
     protected override void DoInteraction()
     {
 
-        //나중에 조건 추가
 
         NotificationSystem.Instance.Notification(unlockText);
 

@@ -63,7 +63,7 @@ public class PlayerInteraction : PlayerStateRoot
     private void HandleInteractionKeyPress()
     {
 
-        if(interactionObject != null && !isObjectMove)
+        if(interactionObject != null && interactionObject.interactionAble)
         {
 
             if(interactionObject.interactionAbleItemName == string.Empty)
@@ -102,7 +102,7 @@ public class PlayerInteraction : PlayerStateRoot
 
             interactionObject = info.transform.GetComponent<InteractionObject>();
 
-            if (interactionObject != null)
+            if (interactionObject != null && interactionObject.interactionAble)
             {
 
                 if(interactionObject.interactionAbleItemName != string.Empty)

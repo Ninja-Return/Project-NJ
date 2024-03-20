@@ -119,30 +119,43 @@ public class HostGameManager : IDisposable
     public async void ShutdownAsync()
     {
 
-        if (!string.IsNullOrEmpty(lobbyId))
+        try
         {
 
-            if (HostSingle.Instance != null)
+            if (!string.IsNullOrEmpty(lobbyId))
             {
-                HostSingle.Instance.StopCoroutine(nameof(HeartbeatLobby));
+
+                if (HostSingle.Instance != null)
+                {
+                    HostSingle.Instance.StopCoroutine(nameof(HeartbeatLobby));
+                }
+
+                try
+                {
+                    await Lobbies.Instance.DeleteLobbyAsync(lobbyId);
+                }
+                catch (LobbyServiceException ex)
+                {
+                    Debug.LogError(ex);
+                }
             }
 
-            try
-            {
-                await Lobbies.Instance.DeleteLobbyAsync(lobbyId);
-            }
-            catch (LobbyServiceException ex)
-            {
-                Debug.LogError(ex);
-            }
+            NetServer.OnClientLeftEvent -= HandleClientLeft;
+            NetServer.OnClientJoinEvent -= HandleClientJoin;
+            lobbyId = string.Empty;
+            NetServer?.Dispose();
+
+            NetworkController.Instance.Dispose();
+
+        }
+        catch(Exception ex)
+        {
+
+            Debug.LogError(ex);
+
         }
 
-        NetServer.OnClientLeftEvent -= HandleClientLeft;
-        NetServer.OnClientJoinEvent -= HandleClientJoin;
-        lobbyId = string.Empty;
-        NetServer?.Dispose();
 
-        NetworkController.Instance.Dispose();
 
     }
 

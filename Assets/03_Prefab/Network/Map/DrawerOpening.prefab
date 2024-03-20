@@ -94,9 +94,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5796823124211782442}
+  - component: {fileID: 7174836649910790262}
   - component: {fileID: 9062120609390264311}
   - component: {fileID: 1863701318209323755}
   - component: {fileID: 1880276771141705009}
+  - component: {fileID: 1968257392740650351}
   m_Layer: 0
   m_Name: Open
   m_TagString: Untagged
@@ -119,6 +121,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1461564143828948266}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7174836649910790262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4882684569081067928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1782774211
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!33 &9062120609390264311
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -178,7 +200,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4882684569081067928}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2dd94124dad9e2147886fc5eff15dc54, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -193,6 +215,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -2894539323624315501, guid: 1b239b8471e1cf440bdd2c9364d81b41, type: 3}
+--- !u!114 &1968257392740650351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4882684569081067928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bcb5c34cdaaffc419760a36c42e2aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6723989185933020701
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,7 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 793173276
+  GlobalObjectIdHash: 1782774211
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
