@@ -61,7 +61,7 @@ public class PlayerRoleManager : NetworkBehaviour
     private void SettingMafia()
     {
         
-        var clients = NetworkManager.ConnectedClients.Keys.ToList().GetRandomList(100);
+        var clients = NetworkManager.ConnectedClients.Keys.ToList().GetRandomList(1000);
 
         {
 

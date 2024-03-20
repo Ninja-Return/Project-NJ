@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class ItemSpawner : NetworkBehaviour
 {
 
     [SerializeField] private List<Transform> spawnPoss;
-    [SerializeField] private List<ItemRoot> spawnItemList;
+    [SerializeField] private ItemRoot spawnItem;
     [SerializeField] private bool debug;
+    [SerializeField] private int spawnCount;
 
     private void Start()
     {
@@ -47,22 +49,19 @@ public class ItemSpawner : NetworkBehaviour
     public void SpawnItem()
     {
 
-        foreach(var pos in spawnPoss)
+
+        for(int i = 0; i < spawnCount; i++)
         {
 
-            if (Random.value < 0.8f)
-            {
+            var pos = spawnPoss.GetRandomListObject();
+            spawnPoss.Remove(pos);
 
-                var itemPrefab = spawnItemList.GetRandomListObject();
-
-                Instantiate(itemPrefab, pos.position, Quaternion.identity)
-                    .NetworkObject.Spawn(true);
-
-
-            }
-
+            var itemPrefab = spawnItem;
+            Instantiate(itemPrefab, pos.position, pos.transform.rotation)
+                .NetworkObject.Spawn(true);
 
         }
+
 
     }
 
