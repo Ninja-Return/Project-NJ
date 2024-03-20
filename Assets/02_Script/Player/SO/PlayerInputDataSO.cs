@@ -14,6 +14,8 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
     public event Action OnObjectMoveKeyUp;
     public event Action OnInventoryKeyPress;
     public event Action OnUseObjectKeyPress;
+    public event Action OnSitDownKeyPress;
+    public event Action OnSitDownKeyUp;
 
     private PlayerInput playerInput;
 
@@ -92,6 +94,21 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
 
     }
 
+    public void OnSitDown(InputAction.CallbackContext context)
+    {
+
+        if (context.performed)
+        {
+
+            OnSitDownKeyPress?.Invoke();
+
+        }else if (context.canceled)
+        {
+            OnSitDownKeyUp?.Invoke();
+        }
+
+    }
+
     public void OnMoveObject(InputAction.CallbackContext context)
     {
 
@@ -103,9 +120,7 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
         }
         else if (context.canceled)
         {
-
             OnObjectMoveKeyUp?.Invoke();
-
         }
 
 

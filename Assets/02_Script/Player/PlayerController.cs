@@ -10,7 +10,7 @@ public enum EnumPlayerState
 
     Idle, //시스템적으로 이동 불가 상태일때
     Move, //이동 가능 상태일때
-
+   
 }
 
 public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
@@ -23,9 +23,13 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     [field:SerializeField] public PlayerInputDataSO Input { get; private set; }
 
     private GameObject meetingObject;
-    private CinemachineVirtualCamera cvcam;
+    public CinemachineVirtualCamera cvcam;
     private Canvas interactionCanvas;
     private bool isActive = true;
+    public bool isSittingDown = false; // 현재 앉아 있는지 여부
+    public Vector3 targetCameraPosition;
+    public float changeTime = 1f;
+    public Vector3 originalCameraPosition;
 
     public bool IsMeeting { get; set; }
 
@@ -85,6 +89,9 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         var interaction = new PlayerInteraction(this);
         AddState(interaction, EnumPlayerState.Move);
 
+        var sitDown = new PlayerSitDown(this);
+        AddState(sitDown, EnumPlayerState.Move);
+
         ChangeState(startState);
 
         Input.OnInventoryKeyPress += HandleInvenActive;
@@ -109,7 +116,9 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     protected override void Update()
     {
 
-        if (!IsOwner && !debug) return; 
+        if (!IsOwner && !debug) return;
+
+        
 
         base.Update();
 

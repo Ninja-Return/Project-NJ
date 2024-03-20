@@ -89,6 +89,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SitDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""f77cbd63-b5c6-4dda-a112-32bdf9b15163"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -212,6 +221,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""UseHandObject"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1bdeda21-1c7a-42d9-90c9-7b1cedd2639c"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SitDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -244,6 +264,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_PlayerMovement_MoveObject = m_PlayerMovement.FindAction("MoveObject", throwIfNotFound: true);
         m_PlayerMovement_InventoryActive = m_PlayerMovement.FindAction("InventoryActive", throwIfNotFound: true);
         m_PlayerMovement_UseHandObject = m_PlayerMovement.FindAction("UseHandObject", throwIfNotFound: true);
+        m_PlayerMovement_SitDown = m_PlayerMovement.FindAction("SitDown", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -312,6 +333,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_MoveObject;
     private readonly InputAction m_PlayerMovement_InventoryActive;
     private readonly InputAction m_PlayerMovement_UseHandObject;
+    private readonly InputAction m_PlayerMovement_SitDown;
     public struct PlayerMovementActions
     {
         private @PlayerInput m_Wrapper;
@@ -323,6 +345,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @MoveObject => m_Wrapper.m_PlayerMovement_MoveObject;
         public InputAction @InventoryActive => m_Wrapper.m_PlayerMovement_InventoryActive;
         public InputAction @UseHandObject => m_Wrapper.m_PlayerMovement_UseHandObject;
+        public InputAction @SitDown => m_Wrapper.m_PlayerMovement_SitDown;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -353,6 +376,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @UseHandObject.started += instance.OnUseHandObject;
             @UseHandObject.performed += instance.OnUseHandObject;
             @UseHandObject.canceled += instance.OnUseHandObject;
+            @SitDown.started += instance.OnSitDown;
+            @SitDown.performed += instance.OnSitDown;
+            @SitDown.canceled += instance.OnSitDown;
         }
 
         private void UnregisterCallbacks(IPlayerMovementActions instance)
@@ -378,6 +404,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @UseHandObject.started -= instance.OnUseHandObject;
             @UseHandObject.performed -= instance.OnUseHandObject;
             @UseHandObject.canceled -= instance.OnUseHandObject;
+            @SitDown.started -= instance.OnSitDown;
+            @SitDown.performed -= instance.OnSitDown;
+            @SitDown.canceled -= instance.OnSitDown;
         }
 
         public void RemoveCallbacks(IPlayerMovementActions instance)
@@ -413,5 +442,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnMoveObject(InputAction.CallbackContext context);
         void OnInventoryActive(InputAction.CallbackContext context);
         void OnUseHandObject(InputAction.CallbackContext context);
+        void OnSitDown(InputAction.CallbackContext context);
     }
 }
