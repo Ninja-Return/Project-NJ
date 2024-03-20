@@ -16,7 +16,7 @@ public class TestUIController : MonoBehaviour
 
         await AppController.Instance.StartHostAsync("asdfasdfasdf", "asdfasdfasdfasdf");
 
-        NetworkManager.Singleton.SceneManager.LoadScene(SceneList.GameScene, LoadSceneMode.Single);
+        //NetworkManager.Singleton.SceneManager.LoadScene(SceneList.MultiGameScene, LoadSceneMode.Single);
 
     }
 

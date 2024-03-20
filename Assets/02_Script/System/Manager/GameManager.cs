@@ -70,6 +70,8 @@ public class GameManager : NetworkBehaviour
 
     private IEnumerator Start()
     {
+        yield return new WaitUntil(() => 
+        NetworkManager.ConnectedClientsList.Count == NetworkManager.ConnectedClients.Count);
 
         for(int i = 10; i > 0; i--)
         {
