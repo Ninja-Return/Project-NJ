@@ -6,7 +6,7 @@ using UnityEngine;
 public class DayLight : MonoBehaviour
 {
 
-    [SerializeField] private Light lightTrm;
+    [SerializeField] private Transform lightTrm;
 
     private bool isLight = false;
     private float angle;
@@ -33,7 +33,6 @@ public class DayLight : MonoBehaviour
         {
 
             isLight = true;
-            SetLightClientRPC(1);
             DayManager.instance.DayCommingClientRPC(false);
 
         }
@@ -43,39 +42,13 @@ public class DayLight : MonoBehaviour
 
 
             isLight = false;
-            SetLightClientRPC(0);
             DayManager.instance.NightCommingClientRPC(false);
 
         }
 
     }
 
-    [ClientRpc]
-    private void SetLightClientRPC(float targetIntansity)
-    {
 
-        StartCoroutine(SetLight(targetIntansity));
-
-    }
-
-    private IEnumerator SetLight(float targetIntansity)
-    {
-
-        float per = 0;
-
-        float origin = lightTrm.intensity;
-
-        while(per <= 1)
-        {
-
-            lightTrm.intensity = Mathf.Lerp(origin, targetIntansity, per);
-            per += Time.deltaTime;
-            yield return null;
-
-        }
-
-        lightTrm.intensity = targetIntansity;
-
-    }
+    
 
 }
