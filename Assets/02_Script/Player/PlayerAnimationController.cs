@@ -9,6 +9,7 @@ public class PlayerAnimationController : NetworkBehaviour
 {
 
     private readonly int HASH_IS_GROUND = Animator.StringToHash("IsGround");
+    private readonly int HASH_SITDOWN = Animator.StringToHash("Sit");
     private readonly int HASH_X = Animator.StringToHash("X");
     private readonly int HASH_Y = Animator.StringToHash("Y");
 
@@ -25,6 +26,11 @@ public class PlayerAnimationController : NetworkBehaviour
             NetworkVariableWritePermission.Owner);
 
     private NetworkVariable<bool> isGroundStateValue =
+        new NetworkVariable<bool>(default,
+            NetworkVariableReadPermission.Everyone,
+            NetworkVariableWritePermission.Owner);
+
+    private NetworkVariable<bool> sitDownStateValue =
         new NetworkVariable<bool>(default,
             NetworkVariableReadPermission.Everyone,
             NetworkVariableWritePermission.Owner);
@@ -83,10 +89,15 @@ public class PlayerAnimationController : NetworkBehaviour
             yStateValue.OnValueChanged += HandleYValueChanged;
             isGroundStateValue.OnValueChanged += HandleIsGroundChanged;
             rigValue.OnValueChanged += HandleRigValueChanged;
+            sitDownStateValue.OnValueChanged += HandleSitDownChanged;
 
         }
 
     }
+
+    
+
+
 
     private void HandleRigValueChanged(float previousValue, float newValue)
     {
@@ -124,6 +135,25 @@ public class PlayerAnimationController : NetworkBehaviour
 
         }
 
+        if (playerController.isSittingDown)
+        {
+            HandleSitDownChanged(false, true); 
+        }
+        else
+        {
+            HandleSitDownChanged(true, false);
+            
+        }
+
+    }
+
+    private void HandleSitDownChanged(bool previousValue, bool newValue)
+    {
+        controlAnimator.SetBool(HASH_SITDOWN, newValue);
+        Debug.Log(newValue ? "앉기 애니메이션" : "일어서기 애니메이션");
+
+        // Set sitDownStateValue accordingly
+        sitDownStateValue.Value = newValue;
     }
 
     private void HandleXValueChanged(float previousValue, float newValue)
@@ -144,7 +174,7 @@ public class PlayerAnimationController : NetworkBehaviour
     {
 
         controlAnimator.SetBool(HASH_IS_GROUND, newValue);
-
+        Debug.Log("땅");
     }
 
     public void HandControl(bool isUp)
