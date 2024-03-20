@@ -12,6 +12,12 @@ using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
 
+public enum GameMode
+{
+    Single,
+    Mutli
+};
+
 public class HostGameManager : IDisposable
 {
 
@@ -19,6 +25,8 @@ public class HostGameManager : IDisposable
     private string joinCode;
     private string lobbyId;
     private const int MAX_CONNECTIONS = 6;
+
+    public GameMode gameMode;
 
     public NetworkServer NetServer { get; private set; }
 

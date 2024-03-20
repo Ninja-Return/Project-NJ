@@ -36,7 +36,7 @@ public class PlayerRoleManager : NetworkBehaviour
 
     private void Start()
     {
-
+        if (HostSingle.Instance.GameManager.gameMode == GameMode.Single) return;
         if (IsServer)
         {
 

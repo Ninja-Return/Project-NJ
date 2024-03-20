@@ -23,6 +23,8 @@ public class LobbyUIController : NetworkBehaviour
     [SerializeField] private RectTransform gameBarPanel;
     [SerializeField] private Image[] gameBarBtns;
 
+    private bool IsSingleMode;
+
     private void Start()
     {
 
@@ -41,6 +43,11 @@ public class LobbyUIController : NetworkBehaviour
         joinCodeText.text = $"초대코드 : {NetworkController.Instance.joinCode}";
 
         SetupPanel();
+
+        if (HostSingle.Instance.GameManager.gameMode == GameMode.Single)
+        {
+            joinCodePanel.gameObject.SetActive(false);
+        }
 
     }
 
