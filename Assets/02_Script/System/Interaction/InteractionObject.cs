@@ -19,6 +19,8 @@ public abstract class InteractionObject : NetworkBehaviour
     [field:SerializeField] public bool rpcOfLocalClient { get; protected set; }
     [field:SerializeField] public string interactionAbleItemName {  get; protected set; }
 
+    public bool interactionAble = true;
+
     protected abstract void DoInteraction();
 
     public virtual void Interaction()
