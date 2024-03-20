@@ -9,6 +9,7 @@ public class PlayerAnimationController : NetworkBehaviour
 {
 
     private readonly int HASH_IS_GROUND = Animator.StringToHash("IsGround");
+    private readonly int HASH_SITDOWN = Animator.StringToHash("Sit");
     private readonly int HASH_X = Animator.StringToHash("X");
     private readonly int HASH_Y = Animator.StringToHash("Y");
 
@@ -25,6 +26,11 @@ public class PlayerAnimationController : NetworkBehaviour
             NetworkVariableWritePermission.Owner);
 
     private NetworkVariable<bool> isGroundStateValue =
+        new NetworkVariable<bool>(default,
+            NetworkVariableReadPermission.Everyone,
+            NetworkVariableWritePermission.Owner);
+
+    private NetworkVariable<bool> sitDownStateValue =
         new NetworkVariable<bool>(default,
             NetworkVariableReadPermission.Everyone,
             NetworkVariableWritePermission.Owner);
@@ -122,6 +128,15 @@ public class PlayerAnimationController : NetworkBehaviour
             oldIsGround = groundSencer.IsGround;
             isGroundStateValue.Value = groundSencer.IsGround;
 
+        }
+
+        if (playerController.isSittingDown)
+        {
+            controlAnimator.SetBool(HASH_SITDOWN, true);
+        } 
+        else
+        {
+            controlAnimator.SetBool(HASH_SITDOWN, false);
         }
 
     }

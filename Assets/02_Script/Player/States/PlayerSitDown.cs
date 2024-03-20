@@ -1,16 +1,16 @@
 using Cinemachine;
 using System;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerSitDown : PlayerStateRoot
 {
     private Transform playerCameraTransform;
 
-    private Vector3 sitDownOffset = new Vector3(0f, -40f, 0f); 
-    private float moveSpeed = 100f; 
-
-    private Vector3 originalCameraPosition; 
-    private Vector3 targetCameraPosition; 
+    private Vector3 sitDownOffset = new Vector3(0f, -0.40f, 0f); 
+    
+   
+    
     private PlayerController controllers;
 
     public PlayerSitDown(PlayerController controller) : base(controller)
@@ -21,10 +21,10 @@ public class PlayerSitDown : PlayerStateRoot
     protected override void EnterState()
     {
         controllers = transform.root.GetComponent<PlayerController>();
-        originalCameraPosition = playerCameraTransform.localPosition;
-        targetCameraPosition = originalCameraPosition + sitDownOffset;
+        controllers.targetCameraPosition = controllers.originalCameraPosition + sitDownOffset;
         input.OnSitDownKeyPress += HandleSitDownKeyPress;
     }
+    
 
 
     protected override void ExitState()
@@ -39,19 +39,13 @@ public class PlayerSitDown : PlayerStateRoot
             controllers.isSittingDown = true;
             Debug.Log("앉음");
         }
-        else if (Vector3.Distance(playerCameraTransform.localPosition, targetCameraPosition) < 0.01f)
+        else if (controllers.isSittingDown && Input.GetKeyDown(KeyCode.LeftControl))
         {
             controllers.isSittingDown = false;
-            playerCameraTransform.localPosition = originalCameraPosition;
+            playerCameraTransform.DOLocalMoveY(controllers.originalCameraPosition.y, controllers.changeTime);
             Debug.Log("돌아감");
         }
-        else
-        {
-            // 내리기 애니메이션 해
-            playerCameraTransform.localPosition = Vector3.MoveTowards(playerCameraTransform.localPosition, targetCameraPosition, moveSpeed * Time.deltaTime);
-            Debug.Log(playerCameraTransform.localPosition);
-            Debug.Log(targetCameraPosition);
-            Debug.Log(Vector3.Distance(playerCameraTransform.localPosition, targetCameraPosition));
-        }
+        
     }
 }
+

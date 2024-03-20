@@ -27,7 +27,9 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     private Canvas interactionCanvas;
     private bool isActive = true;
     public bool isSittingDown = false; // 현재 앉아 있는지 여부
-
+    public Vector3 targetCameraPosition;
+    public float changeTime = 1f;
+    public Vector3 originalCameraPosition;
 
     public bool IsMeeting { get; set; }
 
@@ -114,7 +116,9 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     protected override void Update()
     {
 
-        if (!IsOwner && !debug) return; 
+        if (!IsOwner && !debug) return;
+
+        
 
         base.Update();
 
