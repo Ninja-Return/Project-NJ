@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class CHSceneManager : MonoBehaviour
 {
@@ -62,6 +63,7 @@ public class CHSceneManager : MonoBehaviour
         });
     }
     public GameObject Loading;
+    public TextMeshProUGUI Loading_text; //퍼센트 표시할 텍스트
 
     IEnumerator LoadScene(string sceneName)
     {
@@ -93,6 +95,7 @@ public class CHSceneManager : MonoBehaviour
                 percentage = Mathf.Lerp(percentage, async.progress * 100f, past_time);
                 if (percentage >= 90) past_time = 0;
             }
+            Loading_text.text = percentage.ToString("0") + "%"; //로딩 퍼센트 표기
         }
     }
 }
