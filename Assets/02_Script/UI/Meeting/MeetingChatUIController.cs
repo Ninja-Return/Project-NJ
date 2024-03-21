@@ -14,6 +14,18 @@ public class MeetingChatUIController : MonoBehaviour
     [SerializeField] private MeetingPlayerChatPanel ownerPanel;
     [SerializeField] private Transform chatPanelRoot;
 
+    private void Update()
+    {
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+
+            SummitMessage();
+
+        }
+
+    }
+
     public void Init()
     {
 

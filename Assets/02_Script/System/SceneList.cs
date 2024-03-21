@@ -7,7 +7,8 @@ public class SceneList
 
     public const string TutorialScene = "Tutorial";
     public const string SingleGameScene = "Office_Map_Single";
-    public const string GameScene = "Office_Map";
+    public const string OfficeMap = "Office_Map";
+    public const string TunnelMap = "Tunnel";
     public const string LobbyScene = "Lobby";
     public const string LobbySelectScene = "LobbySelect";
     public const string LoadingScene = "Loading";

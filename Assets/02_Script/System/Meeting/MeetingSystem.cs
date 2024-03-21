@@ -5,6 +5,7 @@ using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using DG.Tweening;
 
 [System.Serializable]
 public struct VoteData
@@ -20,6 +21,7 @@ public class MeetingSystem : NetworkBehaviour
 
     [SerializeField] private MeetingUIController meetingUI;
     [SerializeField] private ChattingSystem chattingSystem;
+    [SerializeField] private RectTransform alertUI;
     [SerializeField] private FavoritemOpenUIController favoritemOpenUI;
 
     private NetworkVariable<int> phaseCountBase = new();
@@ -49,7 +51,7 @@ public class MeetingSystem : NetworkBehaviour
 
         if (!IsServer) return;
 
-        DayManager.instance.OnDayComming += HandleMettingOpen;
+        DayManager.instance.OnDayComming += MeetingOpen;
 
     }
 
@@ -67,6 +69,13 @@ public class MeetingSystem : NetworkBehaviour
 
     }
 
+    private void MeetingOpen()
+    {
+        DOTween.Sequence().Append(alertUI.DOLocalMoveY(0, 1.5f))
+            .Append(alertUI.DOLocalMoveY(1200, 1))
+            .OnComplete(HandleMettingOpen);
+    }
+
     private void HandleMettingOpen()
     {
 
@@ -76,12 +85,12 @@ public class MeetingSystem : NetworkBehaviour
 
         MettingOpenClientRPC();
 
-        foreach(var item in NetworkManager.ConnectedClientsIds)
+        foreach (var item in NetworkManager.ConnectedClientsIds)
         {
 
             var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(item);
 
-            if(data != null && data.Value.isDie == false)
+            if (data != null && data.Value.isDie == false)
             {
 
                 SpawnPanelClientRPC(item, data.Value.nickName);
@@ -158,10 +167,10 @@ public class MeetingSystem : NetworkBehaviour
         int maxVoteCount = int.MinValue;
         List<ulong> maxVoteClient = new();
 
-        foreach(var item in voteContainer)
+        foreach (var item in voteContainer)
         {
 
-            if(item.Value > maxVoteCount)
+            if (item.Value > maxVoteCount)
             {
 
                 maxVoteClient.Clear();
@@ -170,7 +179,7 @@ public class MeetingSystem : NetworkBehaviour
                 maxVoteCount = item.Value;
 
             }
-            else if(item.Value == maxVoteCount)
+            else if (item.Value == maxVoteCount)
             {
 
                 maxVoteClient.Add(item.Key);
@@ -223,7 +232,7 @@ public class MeetingSystem : NetworkBehaviour
 
         if (isOpening) return;
 
-        if(!voteContainer.ContainsKey(clientId)) 
+        if (!voteContainer.ContainsKey(clientId))
         {
 
             voteContainer.Add(clientId, 0);
@@ -250,12 +259,12 @@ public class MeetingSystem : NetworkBehaviour
     private IEnumerator MeetingCountingCo()
     {
 
-        for(int i = 0; i < 2; i++)
+        for (int i = 0; i < 2; i++)
         {
 
             phaseCountBase.Value = i;
 
-            for(int j = phaseTime; j > 0; j--)
+            for (int j = phaseTime; j > 0; j--)
             {
 
                 phaseTimeBase.Value = j;
@@ -295,7 +304,7 @@ public class MeetingSystem : NetworkBehaviour
 
         RPCList<VoteData> voteList = new RPCList<VoteData>();
 
-        foreach(var item in voteContainer)
+        foreach (var item in voteContainer)
         {
 
             voteList.list.Add(new VoteData { clientId = item.Key, voteCount = item.Value });
