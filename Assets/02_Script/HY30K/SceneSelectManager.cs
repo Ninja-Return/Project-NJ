@@ -5,12 +5,19 @@ public class SceneSelectManager : MonoBehaviour
 
     public static SceneSelectManager Instance { get; private set; }
 
-    public string sceneName = SceneList.OfficeMap;
+    public string sceneName;
 
     private void Awake()
     {
 
         Instance = this;
+
+    }
+
+    private void Start()
+    {
+
+        sceneName = SceneList.OfficeMap;
 
     }
 
