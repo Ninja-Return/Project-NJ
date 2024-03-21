@@ -27,11 +27,18 @@ public class PlayerManager : NetworkBehaviour
 
     public bool IsDie { get; private set; }
 
-    private void Start()
+    private void Awake()
     {
 
         alivePlayer = new();
         diePlayer = new();
+
+        Instance = this;
+
+    }
+
+    private void Start()
+    {
 
         if (!IsServer) return;
 
