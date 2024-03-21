@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class DayLight : MonoBehaviour
+public class DayLight : NetworkBehaviour
 {
 
     [SerializeField] private Transform lightTrm;
@@ -15,7 +15,7 @@ public class DayLight : MonoBehaviour
     private void Start()
     {
 
-        if (!NetworkManager.Singleton.IsServer) return;
+        if (!IsServer) return;
 
         DayManager.instance.OnTimeUpdate += HandleTimeUpdate;
 

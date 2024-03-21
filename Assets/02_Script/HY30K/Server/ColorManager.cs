@@ -10,12 +10,18 @@ public class ColorManager : NetworkBehaviour
 
     private void Start()
     {
+
+        return;
+
         ownColor = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
         playerColor.Value = ownColor;
     }
 
     public override void OnNetworkSpawn()
     {
+
+        return;
+
         if (IsServer)
         {
             UserData? data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(OwnerClientId);
