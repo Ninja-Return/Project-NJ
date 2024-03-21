@@ -5,7 +5,9 @@ using UnityEngine;
 public class SceneList
 {
 
-    public const string GameScene = "Tutorial";
+    public const string TutorialScene = "Tutorial";
+    public const string SingleGameScene = "Office_Map_Single";
+    public const string GameScene = "Office_Map";
     public const string LobbyScene = "Lobby";
     public const string LobbySelectScene = "LobbySelect";
     public const string LoadingScene = "Loading";

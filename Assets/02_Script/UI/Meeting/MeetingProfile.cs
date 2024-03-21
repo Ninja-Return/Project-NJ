@@ -22,7 +22,7 @@ public class MeetingProfile : MonoBehaviour, IPointerDownHandler
         this.ownerClientId = ownerClientId;
 
         userNameText.text = userName;
-        userNameText.color = isOwner ? Color.yellow : Color.black;
+        userNameText.color = isOwner ? Color.yellow : Color.white;
 
     }
 

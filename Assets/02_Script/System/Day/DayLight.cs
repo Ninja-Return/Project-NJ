@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class DayLight : MonoBehaviour
+public class DayLight : NetworkBehaviour
 {
 
-    [SerializeField] private Light lightTrm;
+    [SerializeField] private Transform lightTrm;
+    [SerializeField] private Light lig;
 
     private bool isLight = false;
     private float angle;
@@ -14,7 +15,7 @@ public class DayLight : MonoBehaviour
     private void Start()
     {
 
-        if (!NetworkManager.Singleton.IsServer) return;
+        if (!IsServer) return;
 
         DayManager.instance.OnTimeUpdate += HandleTimeUpdate;
 
@@ -33,8 +34,8 @@ public class DayLight : MonoBehaviour
         {
 
             isLight = true;
-            SetLightClientRPC(1);
             DayManager.instance.DayCommingClientRPC(false);
+            SetDayClientRPC(true);
 
         }
 
@@ -43,39 +44,35 @@ public class DayLight : MonoBehaviour
 
 
             isLight = false;
-            SetLightClientRPC(0);
             DayManager.instance.NightCommingClientRPC(false);
+            SetDayClientRPC(false);
 
         }
 
     }
+
 
     [ClientRpc]
-    private void SetLightClientRPC(float targetIntansity)
+    private void SetDayClientRPC(bool isDay)
     {
 
-        StartCoroutine(SetLight(targetIntansity));
-
-    }
-
-    private IEnumerator SetLight(float targetIntansity)
-    {
-
-        float per = 0;
-
-        float origin = lightTrm.intensity;
-
-        while(per <= 1)
+        if (isDay)
         {
 
-            lightTrm.intensity = Mathf.Lerp(origin, targetIntansity, per);
-            per += Time.deltaTime;
-            yield return null;
+            lig.transform.eulerAngles = new Vector3(50, -30, 0);
+            lig.intensity = 1;
+
+        }
+        else
+        {
+
+            lig.transform.eulerAngles = new Vector3(-90, -30, 0);
+            lig.intensity = 0;
+
 
         }
 
-        lightTrm.intensity = targetIntansity;
-
     }
+    
 
 }

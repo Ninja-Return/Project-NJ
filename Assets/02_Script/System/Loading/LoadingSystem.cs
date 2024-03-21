@@ -56,13 +56,15 @@ public class LoadingSystem : NetworkBehaviour
         yield return new WaitUntil(() =>
         completeCount == NetworkManager.ConnectedClients.Count);
 
-        //NetworkManager.SceneManager.LoadScene(SceneList.MultiGameScene, LoadSceneMode.Single);
+        NetworkManager.SceneManager.LoadScene(SceneList.GameScene, LoadSceneMode.Single);
         WaitForSceneToLoad();
     }
 
     private IEnumerator WaitForSceneToLoad()
     {
-        var asyncLoadMap = SceneManager.LoadSceneAsync("Office_Map", LoadSceneMode.Single);
+        string sceneName;
+        sceneName = HostSingle.Instance.GameManager.gameMode == GameMode.Single ? "Office_Map_Single" : "Office_Map";
+        var asyncLoadMap = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
         while (!asyncLoadMap.isDone)
         {
             yield return null;

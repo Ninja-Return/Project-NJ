@@ -30,23 +30,23 @@ public class CraftingTable : NetworkBehaviour
             bool isPossibleData = true;
 
             // 각 재료의 필요한 개수를 저장할 Dictionary 생성
-            Dictionary<ItemType, int> requiredMaterials = new Dictionary<ItemType, int>();
+            Dictionary<string, int> requiredMaterials = new Dictionary<string, int>();
             foreach (ItemDataSO itemData in craftData.materialsItems)
             {
-                if (requiredMaterials.ContainsKey(itemData.slotData.slotType))
+                if (requiredMaterials.ContainsKey(itemData.slotData.poolingName))
                 {
-                    requiredMaterials[itemData.slotData.slotType]++;
+                    requiredMaterials[itemData.slotData.poolingName]++;
                 }
                 else
                 {
-                    requiredMaterials.Add(itemData.slotData.slotType, 1);
+                    requiredMaterials.Add(itemData.slotData.poolingName, 1);
                 }
             }
 
             // 테이블 위에 있는 아이템들이 필요한 재료를 충족하는지 확인
-            foreach (KeyValuePair<ItemType, int> pair in requiredMaterials)
+            foreach (KeyValuePair<string, int> pair in requiredMaterials)
             {
-                int count = onTableItem.Count(x => x.data.slotData.slotType == pair.Key);
+                int count = onTableItem.Count(x => x.data.slotData.poolingName == pair.Key);
                 if (count != pair.Value) //정확한 개수를 맟춰야지
                 {
                     isPossibleData = false;

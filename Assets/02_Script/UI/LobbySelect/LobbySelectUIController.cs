@@ -54,6 +54,7 @@ public class LobbySelectUIController : MonoBehaviour
 
             await AppController.Instance.StartHostAsync(Guid.NewGuid().ToString(), roomInputField.text);
 
+            HostSingle.Instance.GameManager.gameMode = GameMode.Mutli;
             NetworkManager.Singleton.SceneManager.LoadScene(SceneList.LobbyScene, LoadSceneMode.Single);
 
         }
@@ -96,8 +97,23 @@ public class LobbySelectUIController : MonoBehaviour
         //SceneManager.LoadScene(SceneList.TutorialScene);
     }
 
-    public void StartSinglePlay()
+    public async void StartSinglePlay()
     {
+        try
+        {
+
+            await AppController.Instance.StartHostAsync(Guid.NewGuid().ToString(), roomInputField.text);
+
+            HostSingle.Instance.GameManager.gameMode = GameMode.Single;
+            NetworkManager.Singleton.SceneManager.LoadScene(SceneList.LobbyScene, LoadSceneMode.Single);
+
+        }
+        catch (Exception ex)
+        {
+
+            Debug.LogException(ex);
+
+        }
         //SceneManager.LoadScene(SceneList.SingleGameScene);
     }
 

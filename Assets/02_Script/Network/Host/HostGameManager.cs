@@ -12,6 +12,12 @@ using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
 
+public enum GameMode
+{
+    Single,
+    Mutli
+};
+
 public class HostGameManager : IDisposable
 {
 
@@ -19,6 +25,8 @@ public class HostGameManager : IDisposable
     private string joinCode;
     private string lobbyId;
     private const int MAX_CONNECTIONS = 6;
+
+    public GameMode gameMode;
 
     public NetworkServer NetServer { get; private set; }
 
@@ -111,30 +119,43 @@ public class HostGameManager : IDisposable
     public async void ShutdownAsync()
     {
 
-        if (!string.IsNullOrEmpty(lobbyId))
+        try
         {
 
-            if (HostSingle.Instance != null)
+            if (!string.IsNullOrEmpty(lobbyId))
             {
-                HostSingle.Instance.StopCoroutine(nameof(HeartbeatLobby));
+
+                if (HostSingle.Instance != null)
+                {
+                    HostSingle.Instance.StopCoroutine(nameof(HeartbeatLobby));
+                }
+
+                try
+                {
+                    await Lobbies.Instance.DeleteLobbyAsync(lobbyId);
+                }
+                catch (LobbyServiceException ex)
+                {
+                    Debug.LogError(ex);
+                }
             }
 
-            try
-            {
-                await Lobbies.Instance.DeleteLobbyAsync(lobbyId);
-            }
-            catch (LobbyServiceException ex)
-            {
-                Debug.LogError(ex);
-            }
+            NetServer.OnClientLeftEvent -= HandleClientLeft;
+            NetServer.OnClientJoinEvent -= HandleClientJoin;
+            lobbyId = string.Empty;
+            NetServer?.Dispose();
+
+            NetworkController.Instance.Dispose();
+
+        }
+        catch(Exception ex)
+        {
+
+            Debug.LogError(ex);
+
         }
 
-        NetServer.OnClientLeftEvent -= HandleClientLeft;
-        NetServer.OnClientJoinEvent -= HandleClientJoin;
-        lobbyId = string.Empty;
-        NetServer?.Dispose();
 
-        NetworkController.Instance.Dispose();
 
     }
 

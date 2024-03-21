@@ -44,12 +44,13 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private GameObject recipeUI;
 
     private List<PlayerController> players = new();
+    private NetworkVariable<bool> isCompJoin = new();
+    private int joinCnt;
     public PlayerController clientPlayer { get; private set; }
 
     public static GameManager Instance;
     public NetworkList<LiveData> alivePlayer { get; private set; }
     public NetworkList<LiveData> diePlayer { get; private set; }
-
 
 
     public event Action OnGameStarted;
@@ -70,18 +71,23 @@ public class GameManager : NetworkBehaviour
 
     private IEnumerator Start()
     {
-        yield return new WaitUntil(() => 
-        NetworkManager.ConnectedClientsList.Count == NetworkManager.ConnectedClients.Count);
+
+
+        if (IsClient) CompJoinServerRPC();
+
+        yield return new WaitUntil(() => isCompJoin.Value);
+
 
         for(int i = 10; i > 0; i--)
         {
 
-            SetTextClientRPC(i);
+
+            if(IsServer) SetTextClientRPC(i);
             yield return new WaitForSeconds(1);
 
         }
 
-        SetTextClientRPC(-1);
+        if (IsServer) SetTextClientRPC(-1);
 
         yield return new WaitForSeconds(1);
 
@@ -120,6 +126,16 @@ public class GameManager : NetworkBehaviour
         SetLocalPlayerClientRPC();
 
         
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void CompJoinServerRPC()
+    {
+
+        joinCnt++;
+
+        isCompJoin.Value = joinCnt == NetworkManager.ConnectedClientsIds.Count;
+
     }
 
     [ClientRpc]
@@ -163,10 +179,14 @@ public class GameManager : NetworkBehaviour
     private void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F) && clientPlayer != null)
         {
 
             recipeUI.SetActive(!recipeUI.activeSelf);
+
+            SettingCursorVisable(recipeUI.activeSelf);
+
+            clientPlayer.Active(!recipeUI.activeSelf);
 
         }
 
@@ -309,6 +329,7 @@ public class GameManager : NetworkBehaviour
     [ClientRpc]
     private void SetTextClientRPC(int t)
     {
+
 
         startText.text = $"시작까지 : {t}";
 
