@@ -79,7 +79,8 @@ public class MeetingSystem : NetworkBehaviour
     private void HandleMettingOpen()
     {
 
-        GameManager.Instance.PlayerMoveableChangeClientRPC(false);
+        PlayerManager.Instance.Active(false);
+        New_GameManager.Instance.SettingCursorVisable(true);
 
         chattingSystem.ClearChatting();
 
@@ -107,7 +108,7 @@ public class MeetingSystem : NetworkBehaviour
     private void MettingOpenClientRPC()
     {
 
-        if (GameManager.Instance.isDie) return;
+        if (PlayerManager.Instance.IsDie) return;
 
         //JoinChannel();
 
@@ -117,7 +118,7 @@ public class MeetingSystem : NetworkBehaviour
         meetingUI.gameObject.SetActive(true);
         meetingUI.MeetingStart();
 
-        GameManager.Instance.clientPlayer.IsMeeting = true;
+        PlayerManager.Instance.localController.IsMeeting = true;
 
     }
 
@@ -125,7 +126,7 @@ public class MeetingSystem : NetworkBehaviour
     private void SpawnPanelClientRPC(ulong clientId, string userName)
     {
 
-        if (GameManager.Instance.isDie) return;
+        if (PlayerManager.Instance.IsDie) return;
 
         meetingUI.SpawnPanel(clientId, userName, clientId == NetworkManager.LocalClientId);
 
@@ -138,24 +139,16 @@ public class MeetingSystem : NetworkBehaviour
 
         meetingUI.gameObject.SetActive(false);
 
-        if (GameManager.Instance.isDie) return;
-
         SoundManager.Play2DSound("MeetingEnd");
 
         meetingUI.EndVote();
-        GameManager.Instance.SettingCursorVisable(false);
-
-        //Join3DChannel();
-        //NetworkController.Instance.vivox.LeaveNormalChannel();
-
+        New_GameManager.Instance.SettingCursorVisable(false);
 
     }
 
     [ClientRpc]
     private void PhaseEndClientRPC()
     {
-
-        if (GameManager.Instance.isDie) return;
 
         isVote = false;
 
@@ -214,7 +207,7 @@ public class MeetingSystem : NetworkBehaviour
             else if (phase == 2)
             {
 
-                GameManager.Instance.PlayerDie(EnumList.DeadType.Vote, maxVoteClient[0]);
+                PlayerManager.Instance.PlayerDie(EnumList.DeadType.Vote, maxVoteClient[0]);
 
             }
 
@@ -288,7 +281,7 @@ public class MeetingSystem : NetworkBehaviour
 
         }
 
-        GameManager.Instance.PlayerMoveableChangeClientRPC(true);
+        PlayerManager.Instance.Active(true);
         DayManager.instance.TimeSetting(false);
         MeetingEndClientRPC();
         chattingSystem.ClearChatting();
@@ -319,7 +312,7 @@ public class MeetingSystem : NetworkBehaviour
     private void VoteOpenClientRPC(byte[] bytes)
     {
 
-        if (GameManager.Instance.isDie) return;
+        if (PlayerManager.Instance.IsDie) return;
 
         var list = bytes.Deserialize<VoteData>();
 
@@ -331,11 +324,11 @@ public class MeetingSystem : NetworkBehaviour
     private void CloseVoteClientRPC()
     {
 
-        if (GameManager.Instance.isDie) return;
+        if (PlayerManager.Instance.IsDie) return;
 
         meetingUI.CloseVote();
 
-        GameManager.Instance.clientPlayer.IsMeeting = false;
+        PlayerManager.Instance.localController.IsMeeting = false;
 
     }
 
@@ -343,7 +336,7 @@ public class MeetingSystem : NetworkBehaviour
     private void ShowItemClientRPC(FixedString128Bytes name, byte[] serList)
     {
 
-        if (GameManager.Instance.isDie) return;
+        if (PlayerManager.Instance.IsDie) return;
 
         var list = serList.Deserialize<AttachedItem>();
 

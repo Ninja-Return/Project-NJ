@@ -17,9 +17,9 @@ public class WatchingUIController : MonoBehaviour
     public void Init()
     {
 
-        GameManager.Instance.alivePlayer.OnListChanged += HandleAliveChanged;
+        PlayerManager.Instance.alivePlayer.OnListChanged += HandleAliveChanged;
 
-        foreach (var player in GameManager.Instance.alivePlayer)
+        foreach (var player in PlayerManager.Instance.alivePlayer)
         {
 
             var p = Instantiate(alivePlayerPrefab, alivePanelRoot);
@@ -30,7 +30,7 @@ public class WatchingUIController : MonoBehaviour
 
         }
 
-        foreach(var player in GameManager.Instance.diePlayer)
+        foreach(var player in PlayerManager.Instance.diePlayer)
         {
 
             var p = Instantiate(diePlayerPrefab, diePlayerRoot);

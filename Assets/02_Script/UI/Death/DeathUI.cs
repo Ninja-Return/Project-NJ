@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using EnumList;
 using TMPro;
 using DG.Tweening;
+using System.ComponentModel;
 
 public class DeathUI : MonoBehaviour
 {
@@ -38,11 +39,17 @@ public class DeathUI : MonoBehaviour
             DeadType.Vote => voteSign,
             _ => bugSign
         };
+
+        WatchingSystem.Instance.StartWatching();
+
     }
+
+
 
     public void PopupWatchingUI()
     {
         gameObject.SetActive(false);
         WatchingSystem.Instance.StartWatching();
     }
+
 }

@@ -13,8 +13,8 @@ public class Inventory : NetworkBehaviour
 {
     public static Inventory Instance { get; private set; }
 
-    public event SlotChange OnSlotClickEvt; //»óÈ£ÀÛ¿ë¿¡¼­ ¾ÆÀÌÅÛ ¼Õ¿¡µå´Â ÇÔ¼ö ³Ö¾îÁà¶ó ¿õ¾ð¾Æ
-    public event SlotChange OnSlotDropEvt; //¾ê´Â ¾ÆÀÌÅÛ ´øÁö¸é¼­ ¹ö¸±¶§ ÇÔ¼ö ³Ö¾îÁà
+    public event SlotChange OnSlotClickEvt; //ï¿½ï¿½È£ï¿½Û¿ë¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Õ¿ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+    public event SlotChange OnSlotDropEvt; //ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½é¼­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½
 
     [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private TextMeshProUGUI slotExpText;
@@ -35,12 +35,12 @@ public class Inventory : NetworkBehaviour
         if (IsOwner)
         {
 
-            Instance = this; //³ªÁß¿¡ ¸ð³ë½Ì±ÛÅæ ÀÖ°ÚÁö?
+            Instance = this; //ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½Ì±ï¿½ï¿½ï¿½ ï¿½Ö°ï¿½ï¿½ï¿½?
 
             playerController = GetComponent<PlayerController>();
             slots = GetComponentsInChildren<SlotUI>();
 
-            for (int i = 0; i < slots.Length; i++) //¼Õ¿¡ µç ¾ÆÀÌÅÛ ¾µ¶§ ºñ¿ö¾ß ÇÏ´Ï±î
+            for (int i = 0; i < slots.Length; i++) //ï¿½Õ¿ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´Ï±ï¿½
             {
                 slots[i].slotIndex = i;
             }
@@ -59,7 +59,7 @@ public class Inventory : NetworkBehaviour
 
     }
 
-    public void SetActiveInventoryUI() //ÇÃ·¹ÀÌ¾î ÀÎÇ²°ú ¿¬°á
+    public void SetActiveInventoryUI() //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½Ç²ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     {
         isShow = !isShow;
 
@@ -85,7 +85,7 @@ public class Inventory : NetworkBehaviour
         slotExpText.text = $"\"{ex}\"";
     }
 
-    public bool ObtainItem(ItemDataSO data, string extraData) //¾ÆÀÌÅÛ ¸ÔÀ»¶§ ºÒ·¯Áà ÁØÇ¥¾¾
+    public bool ObtainItem(ItemDataSO data, string extraData) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½
     {
 
         NetworkSoundManager.Play3DSound("GetItem", transform.position, 0.1f, 5);
@@ -96,12 +96,12 @@ public class Inventory : NetworkBehaviour
             {
                 getItemCount++;
                 slots[i].InsertSlot(data, extraData);
-                //slots[i].TouchSlot(); //¸ÔÀÚ¸¶ÀÚ µé°íÀÖÀ»¶ó¸é ÀÌ°É·Î
+                //slots[i].TouchSlot(); //ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì°É·ï¿½
                 return true;
             }
         }
 
-        //¿©±â¼­´Â ¹º°¡ ¾È¸Ô¾îÁø´Ù´Â°É ¾Ë·ÁÁÙ¼öµµ ÀÖ°í
+        //ï¿½ï¿½ï¿½â¼­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½È¸Ô¾ï¿½ï¿½ï¿½ï¿½Ù´Â°ï¿½ ï¿½Ë·ï¿½ï¿½Ù¼ï¿½ï¿½ï¿½ ï¿½Ö°ï¿½
         return false;
     }
 
@@ -110,7 +110,7 @@ public class Inventory : NetworkBehaviour
         isHold = true;
         slotIdx = idx;
 
-        OnSlotClickEvt?.Invoke(itemObj, idx, extraData); //±âÁ¸¿¡ µé´ø ¹«±â popÇÏ°í »õ·Î¿î ¹«±âµé±â
+        OnSlotClickEvt?.Invoke(itemObj, idx, extraData); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ popï¿½Ï°ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     }
 
     public void DropItem(string itemObj, int idx, string extraData)
@@ -127,10 +127,10 @@ public class Inventory : NetworkBehaviour
 
         DropItemServerRPC(itemObj, extraData);
 
-        OnSlotDropEvt?.Invoke(itemObj, idx, extraData); //¼Õ¿¡¼­ ¾ÆÀÌÅÛ ÅõÃ´
+        OnSlotDropEvt?.Invoke(itemObj, idx, extraData); //ï¿½Õ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã´
     }
 
-    public void Deleteltem() //ÀÏÈ¸¿ë ¾ÆÀÌÅÛ ¼ÒÁø½Ã ÁØÇ¥°¡ °¤°í¿Í¼­ ¹ßÇà
+    public void Deleteltem() //ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ ï¿½ï¿½ï¿½ï¿½
     {
         if (!isHold) return;
         isHold = false;

@@ -50,24 +50,7 @@ public class AppController : MonoBehaviour
         ClientSingle client = Instantiate(clientPrefab, transform);
         client.CreateClient();
 
-        LootLockerController.Init((result) =>
-        {
-
-            if (result)
-            {
-
-                OnInitComplete();
-
-            }
-            else
-            {
-
-                Application.Quit();
-
-            }
-
-
-        });
+        OnInitComplete();
 
     }
 

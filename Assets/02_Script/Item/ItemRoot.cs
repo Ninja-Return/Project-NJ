@@ -14,8 +14,6 @@ public enum ItemCategory
     Debug = -1,
 
 }
-
-[RequireComponent(typeof(ClientNetworkTransform))]
 public abstract class ItemRoot : InteractionObject
 {
 

@@ -47,10 +47,10 @@ public class PlayerKillState : PlayerStateRoot
         if (player != null)
         {
 
-            if(hand.CheckHandItem("¿ÀÇÔ¸¶"))
+            if(hand.CheckHandItem("³ì½¼ Ä®"))
             {
 
-                GameManager.Instance.PlayerDieServerRPC(EnumList.DeadType.Mafia, player.OwnerClientId);
+                PlayerManager.Instance.PlayerDie(EnumList.DeadType.Mafia, player.OwnerClientId);
 
             }
             else

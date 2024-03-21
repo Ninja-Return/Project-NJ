@@ -74,6 +74,8 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         Input = Input.Init();
         Data = Instantiate(Data);
 
+        PlayerManager.Instance.SetLocalPlayer(this);
+
         var defaultState = new PlayerStateRoot(this);
         AddState(defaultState, EnumPlayerState.Idle);
 
@@ -132,6 +134,13 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         }
 
 #endif
+
+        //if (UnityEngine.Input.GetKeyDown(KeyCode.K))
+        //{
+        //
+        //    GameManager.Instance.PlayerDie(EnumList.DeadType.Mafia, OwnerClientId);
+        //
+        //}
 
     }
 
