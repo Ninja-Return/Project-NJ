@@ -60,6 +60,8 @@ public class Door : InteractionObject
 
     }
 
+    public bool IsDoorOpenning() { return isOpening; }
+
     private void Update()
     {
 

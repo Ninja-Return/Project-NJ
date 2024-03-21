@@ -18,11 +18,14 @@ public class Inventory : NetworkBehaviour
 
     [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private TextMeshProUGUI slotExpText;
+
+    private PlayerController playerController;
     private SlotUI[] slots;
     private int slotIdx;
 
-    [HideInInspector] public bool isShow = false;
+     public bool isShow = false;
     [HideInInspector] public bool isHold = false;
+    public int getItemCount;
 
     [SerializeField] private List<ItemDataSO> firstItem = new();
 
@@ -34,7 +37,9 @@ public class Inventory : NetworkBehaviour
 
             Instance = this; //나중에 모노싱글톤 있겠지?
 
+            playerController = GetComponent<PlayerController>();
             slots = GetComponentsInChildren<SlotUI>();
+
             for (int i = 0; i < slots.Length; i++) //손에 든 아이템 쓸때 비워야 하니까
             {
                 slots[i].slotIndex = i;
@@ -60,7 +65,10 @@ public class Inventory : NetworkBehaviour
 
         Cursor.visible = isShow;
         Cursor.lockState = isShow ? CursorLockMode.None : CursorLockMode.Locked;
-        GameManager.Instance.clientPlayer.Active(!isShow);
+        if (GameManager.Instance == null)
+            playerController.Active(!isShow);
+        else
+            GameManager.Instance.clientPlayer.Active(!isShow);
 
         if (isShow)
         {
@@ -86,6 +94,7 @@ public class Inventory : NetworkBehaviour
         {
             if (slots[i].slotData == null)
             {
+                getItemCount++;
                 slots[i].InsertSlot(data, extraData);
                 //slots[i].TouchSlot(); //먹자마자 들고있을라면 이걸로
                 return true;
@@ -111,6 +120,8 @@ public class Inventory : NetworkBehaviour
 
         slotIdx = idx;
         slots[slotIdx].ResetSlot();
+
+        getItemCount--;
 
         if (extraData == null) extraData = " ";
 

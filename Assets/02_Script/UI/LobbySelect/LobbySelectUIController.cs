@@ -92,9 +92,23 @@ public class LobbySelectUIController : MonoBehaviour
         checkIcon.SetActive(isRoomLook);
     }
 
-    public void StartTutorial()
+    public async void StartTutorial()
     {
-        //SceneManager.LoadScene(SceneList.TutorialScene);
+        try
+        {
+
+            await AppController.Instance.StartHostAsync(Guid.NewGuid().ToString(), roomInputField.text);
+
+            HostSingle.Instance.GameManager.gameMode = GameMode.Tutorial;
+            NetworkManager.Singleton.SceneManager.LoadScene(SceneList.TutorialScene, LoadSceneMode.Single);
+
+        }
+        catch (Exception ex)
+        {
+
+            Debug.LogException(ex);
+
+        }
     }
 
     public async void StartSinglePlay()

@@ -4,9 +4,12 @@ using UnityEngine;
 using EnumList;
 using System.Linq;
 using Unity.Netcode;
+using System;
 
 public class CraftingTable : NetworkBehaviour
 {
+    public event Action OnItemCraftEvt;
+
     private CraftData[] allCraftData;
     private List<ItemRoot> onTableItem = new();
 
@@ -59,6 +62,8 @@ public class CraftingTable : NetworkBehaviour
                 //합성 가능한 아이템을 생성
                 NetworkObject crateItem = Instantiate(craftData.crateItem, crateItmeSpawnTrs.position ,Quaternion.identity);
                 crateItem.Spawn(true);
+                //이벤트 호출하고
+                OnItemCraftEvt?.Invoke();
                 //올려둔 아이템 제거하고
                 TableItemRemoveServerRpc();
                 //나가기

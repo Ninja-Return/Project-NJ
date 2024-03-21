@@ -13,9 +13,10 @@ public class TutorialSystem : NetworkBehaviour
 
         Show,
         Text,
-        Relase,
+        Relase, 
         ShowObject,
-        Delay
+        Delay,
+        OffObject
 
     }
 
@@ -82,9 +83,12 @@ public class TutorialSystem : NetworkBehaviour
     {
 
         public string sequenceKey;
+        public TutorialObject tutorialObject;
         public List<TutorialSequence> sequences;
 
     }
+
+    public static TutorialSystem Instance;
 
     [SerializeField] private PlayerController playerController;
     [SerializeField] private TutorialPanel panel;
@@ -97,11 +101,14 @@ public class TutorialSystem : NetworkBehaviour
     private Dictionary<string, string> textContainer = new();
     private Dictionary<string, GameObject> tutorialObjectContainer = new();
     private Dictionary<string, List<TutorialSequence>> tutorialSequenceContainer = new();
+    private Dictionary<string, TutorialObject> tutorialSequenceTutorialObject = new();
 
     private PlayerController player;
 
     private void Awake()
     {
+
+        Instance = this;
         
         foreach(var item in textList)
         {
@@ -124,13 +131,23 @@ public class TutorialSystem : NetworkBehaviour
 
         }
 
+        foreach (var item in tutorialSequenceObjects)
+        {
+
+            tutorialSequenceTutorialObject.Add(item.sequenceKey, item.tutorialObject);
+
+        }
+
+        player = Instantiate(playerController, startPos.position, Quaternion.identity);
+        player.NetworkObject.SpawnAsPlayerObject(OwnerClientId);
+
     }
 
     private void Start()
     {
         
-        player = Instantiate(playerController, startPos.position, Quaternion.identity);
-        player.NetworkObject.SpawnAsPlayerObject(OwnerClientId);
+        //player = Instantiate(playerController, startPos.position, Quaternion.identity);
+        //player.NetworkObject.SpawnAsPlayerObject(OwnerClientId);
 
         StartSequence("Start");
 
@@ -177,14 +194,14 @@ public class TutorialSystem : NetworkBehaviour
 
         if (tutorialSequenceContainer.TryGetValue(key, out var seq))
         {
-
-            StartCoroutine(SequenceCo(seq));
+            TutorialObject tutorialObject = tutorialSequenceTutorialObject[key];
+            StartCoroutine(SequenceCo(seq, tutorialObject));
 
         }
 
     }
 
-    private IEnumerator SequenceCo(List<TutorialSequence> sequences)
+    private IEnumerator SequenceCo(List<TutorialSequence> sequences, TutorialObject obj)
     {
 
         foreach(var item in sequences)
@@ -207,16 +224,30 @@ public class TutorialSystem : NetworkBehaviour
                 case SequenceType.Delay:
                     {
 
-                        float delay = float.Parse(item.commend);
-                        yield return new WaitForSeconds(delay);
+                        //float delay = float.Parse(item.commend);
+                        //yield return new WaitForSeconds(delay);
+                        yield return new WaitWhile(() => { return PressSpace(); });
                     }
                     break;
             }
 
-            yield return null;
+            //yield return null;
 
         }
 
+        obj.isTutorialOn = true;
+
+        yield return null;
+
+    }
+
+    private bool PressSpace()
+    {
+        if (Input.GetKeyUp(KeyCode.Return))
+        {
+            return false;
+        }
+        return true;
     }
 
 }
