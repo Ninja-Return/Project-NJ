@@ -243,7 +243,7 @@ public class TutorialSystem : NetworkBehaviour
 
     private bool PressSpace()
     {
-        if (Input.GetKeyUp(KeyCode.Return))
+        if (Input.GetKeyUp(KeyCode.G))
         {
             return false;
         }
