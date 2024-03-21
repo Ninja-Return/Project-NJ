@@ -104,6 +104,7 @@ public class LobbySelectUIController : MonoBehaviour
 
             await AppController.Instance.StartHostAsync(Guid.NewGuid().ToString(), roomInputField.text);
 
+            isRoomLook = true;
             HostSingle.Instance.GameManager.gameMode = GameMode.Single;
             NetworkManager.Singleton.SceneManager.LoadScene(SceneList.LobbyScene, LoadSceneMode.Single);
 
