@@ -65,10 +65,10 @@ public class Inventory : NetworkBehaviour
 
         Cursor.visible = isShow;
         Cursor.lockState = isShow ? CursorLockMode.None : CursorLockMode.Locked;
-        if (GameManager.Instance == null)
+        if (PlayerManager.Instance == null)
             playerController.Active(!isShow);
         else
-            GameManager.Instance.clientPlayer.Active(!isShow);
+            PlayerManager.Instance.localController.Active(!isShow);
 
         if (isShow)
         {
