@@ -32,6 +32,7 @@ public class NetworkController : IDisposable
     {
 
         await vivox.Leave3DChannel();
+        vivox.Dispose();
 
         Instance = null;
 

@@ -168,6 +168,8 @@ public class New_GameManager : NetworkBehaviour
 
         }
 
+        OnTimeChangeClientRPC(-1);
+
     }
 
 

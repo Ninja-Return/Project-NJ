@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -5,7 +6,7 @@ using Unity.Netcode;
 using Unity.Services.Vivox;
 using UnityEngine;
 
-public class VivoxController
+public class VivoxController : IDisposable
 {
 
     private Channel3DProperties channel3DProperties;
@@ -36,7 +37,7 @@ public class VivoxController
 
         isInit = true;
 
-        await VivoxService.Instance.LoginAsync();
+        await VivoxService.Instance.LoginAsync(loginOptions);
 
     }
 
@@ -93,6 +94,13 @@ public class VivoxController
 
         completeJoin3D = false;
 
+
+    }
+
+    public void Dispose()
+    {
+        
+        VivoxService.Instance.LogoutAsync();
 
     }
 

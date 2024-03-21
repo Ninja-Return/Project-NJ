@@ -16,7 +16,7 @@ public class PlayerManager : NetworkBehaviour
     [Header("Die")]
     [SerializeField] private DeathUI deathUI;
 
-    private List<PlayerController> players;
+    private List<PlayerController> players = new();
     public PlayerController localController { get; private set; }
 
     public static PlayerManager Instance { get; private set; }
@@ -58,6 +58,7 @@ public class PlayerManager : NetworkBehaviour
 
             var pl = Instantiate(playerPrefab, spawnTrm.position, Quaternion.identity)
                 .GetComponent<PlayerController>();
+
             pl.NetworkObject.SpawnWithOwnership(item, true);
 
             players.Add(pl);

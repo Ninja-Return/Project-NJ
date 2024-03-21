@@ -16,7 +16,7 @@ public class HintSystem : NetworkBehaviour
         if (IsServer)
         {
 
-           New_GameManager.Instance.OnGameStarted += SpawnHint;
+           //New_GameManager.Instance.OnGameStarted += SpawnHint;
 
         }
 
