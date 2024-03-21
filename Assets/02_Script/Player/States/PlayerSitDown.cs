@@ -7,7 +7,7 @@ public class PlayerSitDown : PlayerStateRoot
 {
     private Transform playerCameraTransform;
 
-    private Vector3 sitDownOffset = new Vector3(0f, -0.1f, 0f); 
+    private Vector3 sitDownOffset = new Vector3(0f, -0.3f, 0f); 
     
    
     
