@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class RecipePanel : MonoBehaviour
 {
 
-    [SerializeField] private Image resultIcon;
-    [SerializeField] private Image recipeUIPrefab;
+    [SerializeField] private CraftSlot resultIcon;
+    [SerializeField] private CraftSlot recipeUIPrefab;
     [SerializeField] private Transform recipeParent;
 
     public void Setting(CraftData data)
@@ -16,11 +16,11 @@ public class RecipePanel : MonoBehaviour
         foreach(var item in data.materialsItems)
         {
 
-            Instantiate(recipeUIPrefab, recipeParent).sprite = item.slotData.slotSprite;
+            Instantiate(recipeUIPrefab, recipeParent).SetUp(item);
 
         }
 
-        resultIcon.sprite = data.resultData.slotData.slotSprite;
+        resultIcon.SetUp(data.resultData);
 
     }
 

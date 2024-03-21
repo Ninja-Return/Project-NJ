@@ -10,7 +10,6 @@ public class PlayerInteraction : PlayerStateRoot
     private TMP_Text interactionText;
     private Transform cameraTrm;
     private InteractionObject interactionObject;
-    private Transform moveObjectTrm;
     private PlayerHand hand;
 
     private int originLayer;
@@ -21,7 +20,6 @@ public class PlayerInteraction : PlayerStateRoot
 
         interactionText = transform.Find("InteractionCanvas").Find("InteractionText").GetComponent<TMP_Text>();
         cameraTrm = transform.Find("PlayerCamera");
-        moveObjectTrm = transform.Find("MoveObject");
         interactionText.text = string.Empty;
         hand = GetComponent<PlayerHand>();
 
@@ -134,7 +132,14 @@ public class PlayerInteraction : PlayerStateRoot
             {
 
                 interactionText.text = string.Empty;
-                Debug.LogError("??????????");
+
+                if(interactionObject == null)
+                {
+
+                    Debug.LogError("??????????");
+
+                }
+
 
             }
 

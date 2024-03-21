@@ -23,6 +23,9 @@ public class WinUIController : NetworkBehaviour
 
         }
 
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
     }
 
     [ClientRpc]
