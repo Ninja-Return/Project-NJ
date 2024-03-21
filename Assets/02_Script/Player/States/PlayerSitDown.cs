@@ -7,7 +7,8 @@ public class PlayerSitDown : PlayerStateRoot
 {
     private Transform playerCameraTransform;
 
-    private Vector3 sitDownOffset = new Vector3(0f, -0.2f, 0f); 
+    [SerializeField]
+    private Vector3 sitDownOffset = new Vector3(0f, 0f, 0f); 
     
    
     
@@ -21,7 +22,7 @@ public class PlayerSitDown : PlayerStateRoot
     protected override void EnterState()
     {
         controllers = transform.root.GetComponent<PlayerController>();
-        controllers.targetCameraPosition = controllers.originalCameraPosition + sitDownOffset;
+        controllers.targetCameraPosition = sitDownOffset;
         input.OnSitDownKeyPress += HandleSitDownKeyPress;
     }
     
