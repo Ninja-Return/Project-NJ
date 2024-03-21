@@ -43,9 +43,7 @@ public class IntroSceneUIController : MonoBehaviour
 
     public void SceneChage()
     {
-
-        SceneManager.LoadScene(SceneList.LobbySelectScene);
-
+        CHSceneManager.Instance.ChangeScene(SceneList.LobbySelectScene);
     }
 
     public void BgmSetting(Slider slider)
