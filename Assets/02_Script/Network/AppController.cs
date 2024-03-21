@@ -50,6 +50,8 @@ public class AppController : MonoBehaviour
         ClientSingle client = Instantiate(clientPrefab, transform);
         client.CreateClient();
 
+        OnInitComplete();
+
     }
 
     private void OnInitComplete()
