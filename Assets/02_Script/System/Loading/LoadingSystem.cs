@@ -62,7 +62,9 @@ public class LoadingSystem : NetworkBehaviour
 
     private IEnumerator WaitForSceneToLoad()
     {
-        var asyncLoadMap = SceneManager.LoadSceneAsync("Office_Map", LoadSceneMode.Single);
+        string sceneName;
+        sceneName = HostSingle.Instance.GameManager.gameMode == GameMode.Single ? "Office_Map_Single" : "Office_Map";
+        var asyncLoadMap = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
         while (!asyncLoadMap.isDone)
         {
             yield return null;
