@@ -44,7 +44,9 @@ public class ResultUIController : MonoBehaviour
         resuitPanel.color = skyColor;
         winnerText.color = skyColor;
 
-        if (HostSingle.Instance.GameManager.gameMode == GameMode.Single)
+        if (HostSingle.Instance.GameManager.gameMode == GameMode.Tutorial)
+            winText.text = "튜토리얼 완수";
+        else if(HostSingle.Instance.GameManager.gameMode == GameMode.Single)
             winText.text = "탈출 성공";
         else
             winText.text = "생존자 승리";
