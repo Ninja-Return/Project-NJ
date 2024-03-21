@@ -33,6 +33,7 @@ public struct LiveData : INetworkSerializable, IEquatable<LiveData>
 
 }
 
+[Obsolete("GameManager is NotSuppoted", true)]
 public class GameManager : NetworkBehaviour
 {
 
@@ -111,7 +112,7 @@ public class GameManager : NetworkBehaviour
                 Send = new ClientRpcSendParams
                 {
 
-                    TargetClientIds = new[] { PlayerRoleManager.Instance.FindMafiaId() },
+                    TargetClientIds = new[] { PlayerRoleManager.Instance.FindMafiaId().Value },
 
                 }
 

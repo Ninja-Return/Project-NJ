@@ -28,7 +28,7 @@ public class DayManager : NetworkBehaviour
     private void Start()
     {
 
-        GameManager.Instance.OnGameStarted += HandleStartedGame;
+        New_GameManager.Instance.OnGameStarted += HandleStartedGame;
 
     }
 

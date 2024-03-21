@@ -17,7 +17,7 @@ public class ItemSpawner : NetworkBehaviour
         if (IsServer)
         {
 
-            GameManager.Instance.OnGameStarted += Spawning;
+            New_GameManager.Instance.OnGameStarted += Spawning;
 
         }
 

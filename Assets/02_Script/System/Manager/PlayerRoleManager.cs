@@ -40,7 +40,7 @@ public class PlayerRoleManager : NetworkBehaviour
         if (IsServer)
         {
 
-            GameManager.Instance.OnGameStarted += HandleGameStarted;
+            New_GameManager.Instance.OnGameStarted += HandleGameStarted;
 
         }
 
@@ -173,7 +173,7 @@ public class PlayerRoleManager : NetworkBehaviour
 
     }
 
-    public ulong FindMafiaId()
+    public ulong? FindMafiaId()
     {
 
         foreach(var item in roleContainer)
@@ -188,7 +188,7 @@ public class PlayerRoleManager : NetworkBehaviour
 
         }
 
-        return 0;
+        return null;
 
     }
 

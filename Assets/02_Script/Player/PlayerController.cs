@@ -133,6 +133,13 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
 #endif
 
+        //if (UnityEngine.Input.GetKeyDown(KeyCode.K))
+        //{
+        //
+        //    GameManager.Instance.PlayerDie(EnumList.DeadType.Mafia, OwnerClientId);
+        //
+        //}
+
     }
 
     private IEnumerator Update3DPosCo()

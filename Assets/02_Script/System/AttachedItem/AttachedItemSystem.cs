@@ -64,7 +64,7 @@ public class AttachedItemSystem : NetworkBehaviour
     private void Start()
     {
 
-        GameManager.Instance.OnGameStarted += HandleGameStarted;
+        New_GameManager.Instance.OnGameStarted += HandleGameStarted;
 
     }
 

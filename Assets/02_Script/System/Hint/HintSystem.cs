@@ -16,7 +16,7 @@ public class HintSystem : NetworkBehaviour
         if (IsServer)
         {
 
-            GameManager.Instance.OnGameStartCallEnd += SpawnHint;
+           New_GameManager.Instance.OnGameStarted += SpawnHint;
 
         }
 
@@ -27,7 +27,7 @@ public class HintSystem : NetworkBehaviour
 
         var id = PlayerRoleManager.Instance.FindMafiaId();
 
-        var data = HostSingle.Instance.NetServer.GetUserDataByClientID(id).Value;
+        var data = HostSingle.Instance.NetServer.GetUserDataByClientID(id.Value).Value;
 
         foreach(var item in data.attachedItem)
         {

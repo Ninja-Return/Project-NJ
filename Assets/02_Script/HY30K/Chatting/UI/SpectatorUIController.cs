@@ -15,7 +15,7 @@ public class SpectatorUIController : MonoBehaviour
     public void ChattingStart()
     {
 
-        GameManager.Instance.SettingCursorVisable(true);
+        New_GameManager.Instance.SettingCursorVisable(true);
         spectatorChattingPanel.Init();
 
     }

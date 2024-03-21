@@ -22,7 +22,7 @@ public class MeetingUIController : MonoBehaviour
     public void MeetingStart()
     {
 
-        if (GameManager.Instance.isDie) return;
+        if (PlayerManager.Instance.IsDie) return;
 
         for(int i = 0; i < panelRoot.childCount; i++)
         {
@@ -33,7 +33,7 @@ public class MeetingUIController : MonoBehaviour
 
         profiles.Clear();
 
-        GameManager.Instance.SettingCursorVisable(true);
+        New_GameManager.Instance.SettingCursorVisable(true);
         chattingPanel.Init();
 
     }
@@ -41,7 +41,7 @@ public class MeetingUIController : MonoBehaviour
     public void UpdateTime(int time)
     {
 
-        if (GameManager.Instance.isDie) return;
+        if (PlayerManager.Instance.IsDie) return;
 
         timeText.text = $"남은 시간 : {time}";
 
@@ -50,7 +50,7 @@ public class MeetingUIController : MonoBehaviour
     public void PhaseChange(int phase)
     {
 
-        if (GameManager.Instance.isDie) return;
+        if (PlayerManager.Instance.IsDie) return;
 
         phaseText.text = phase == 0 ? "애착품 공개 투표" : "처형 투표";
 
@@ -59,7 +59,7 @@ public class MeetingUIController : MonoBehaviour
     public void SpawnPanel(ulong clientId, string userName, bool isOwner)
     {
 
-        if (GameManager.Instance.isDie) return;
+        if (PlayerManager.Instance.IsDie) return;
 
         var panel = Instantiate(panelPrefab, panelRoot);
 
@@ -73,7 +73,7 @@ public class MeetingUIController : MonoBehaviour
     public void OpenVote(RPCList<VoteData> list)
     {
 
-        if (GameManager.Instance.isDie) return;
+        if (PlayerManager.Instance.IsDie) return;
 
         foreach (VoteData item in list)
         {
@@ -87,7 +87,7 @@ public class MeetingUIController : MonoBehaviour
     public void CloseVote()
     {
 
-        if (GameManager.Instance.isDie) return;
+        if (PlayerManager.Instance.IsDie) return;
 
         foreach (var item in profiles)
         {
@@ -101,7 +101,7 @@ public class MeetingUIController : MonoBehaviour
     public void ShowingItem(string playerName, string items)
     {
 
-        if (GameManager.Instance.isDie) return;
+        if (PlayerManager.Instance.IsDie) return;
 
         itemShowPlayerNameText.text = playerName;
         itemShowText.text = items;

@@ -60,7 +60,7 @@ public class Inventory : NetworkBehaviour
 
         Cursor.visible = isShow;
         Cursor.lockState = isShow ? CursorLockMode.None : CursorLockMode.Locked;
-        GameManager.Instance.clientPlayer.Active(!isShow);
+        PlayerManager.Instance.Active(!isShow);
 
         if (isShow)
         {

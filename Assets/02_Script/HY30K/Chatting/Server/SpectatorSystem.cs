@@ -28,7 +28,7 @@ public class SpectatorSystem : NetworkBehaviour
     private void Update()
     {
         
-        if (GameManager.Instance.isDie)
+        if (PlayerManager.Instance.IsDie)
         {
 
             HandleChattingOpen();
@@ -40,7 +40,7 @@ public class SpectatorSystem : NetworkBehaviour
     private void HandleChattingOpen()
     {
 
-        GameManager.Instance.PlayerMoveableChangeClientRPC(false);
+        PlayerManager.Instance.Active(false);
 
         chattingSystem.ClearSpectatorChatting();
 
@@ -52,7 +52,7 @@ public class SpectatorSystem : NetworkBehaviour
     private void MettingOpenClientRPC()
     {
 
-        if (GameManager.Instance.isDie) return;
+        if (PlayerManager.Instance.IsDie) return;
 
         //JoinChannel();
 
@@ -62,7 +62,7 @@ public class SpectatorSystem : NetworkBehaviour
         chattingUI.gameObject.SetActive(true);
         chattingUI.ChattingStart();
 
-        GameManager.Instance.clientPlayer.IsMeeting = true;
+        PlayerManager.Instance.localController.IsMeeting = true;
 
     }
 

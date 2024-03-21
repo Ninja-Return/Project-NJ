@@ -28,7 +28,7 @@ public class WatchingSystem : NetworkBehaviour
     private void Start()
     {
 
-        GameManager.Instance.alivePlayer.OnListChanged += HandleListChanged;
+        PlayerManager.Instance.alivePlayer.OnListChanged += HandleListChanged;
 
     }
 
@@ -92,16 +92,16 @@ public class WatchingSystem : NetworkBehaviour
         watchingUI.gameObject.SetActive(true);
         watchingUI.Init();
 
-        GameManager.Instance.SettingCursorVisable(true);
+        New_GameManager.Instance.SettingCursorVisable(true);
 
     }
 
     private void HandleChattingOpen()
     {
 
-        GameManager.Instance.PlayerMoveableChangeClientRPC(false);
+        PlayerManager.Instance.Active(false);
 
-        chattingSystem.ClearSpectatorChatting();
+        //chattingSystem.ClearSpectatorChatting();
 
         MettingOpenClientRPC();
 
@@ -111,7 +111,7 @@ public class WatchingSystem : NetworkBehaviour
     private void MettingOpenClientRPC()
     {
 
-        if (GameManager.Instance.isDie) return;
+        if (PlayerManager.Instance.IsDie) return;
 
         //JoinChannel();
 
@@ -121,7 +121,7 @@ public class WatchingSystem : NetworkBehaviour
         chattingUI.gameObject.SetActive(true);
         chattingUI.ChattingStart();
 
-        GameManager.Instance.clientPlayer.IsMeeting = true;
+        PlayerManager.Instance.localController.IsMeeting = true;
 
     }
 
