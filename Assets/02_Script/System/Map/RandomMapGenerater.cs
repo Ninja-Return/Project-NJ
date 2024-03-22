@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
+using Unity.Netcode;
 using UnityEngine;
 
-public class RandomMapGenerater : MonoBehaviour
+public class RandomMapGenerater : NetworkBehaviour
 {
 
     [SerializeField] private Transform roomRoot;
@@ -19,6 +20,8 @@ public class RandomMapGenerater : MonoBehaviour
     private void Start()
     {
 
+        if(!IsServer) return;
+
         startRoom = Instantiate(startRoom, Vector3.zero, Quaternion.identity);
 
         GetRoomResource();
@@ -26,6 +29,8 @@ public class RandomMapGenerater : MonoBehaviour
         CloseAllRoom();
 
         surface.BuildNavMesh();
+
+
         StaticBatchingUtility.Combine(roomRoot.gameObject);
 
     }
@@ -133,7 +138,7 @@ public class RandomMapGenerater : MonoBehaviour
                 if (!constDir.Contains(vec))
                 {
 
-                    item.Close(dir);
+                    item.CloseClientRPC(dir);
 
                 }
                 else if(vecByRoom.TryGetValue(vec, out var room))
@@ -142,7 +147,7 @@ public class RandomMapGenerater : MonoBehaviour
                     if(room.dirs.FindIndex(x => x == GetRevDir(dir)) == -1)
                     {
 
-                        item.Close(dir);
+                        item.CloseClientRPC(dir);
 
                     }
 

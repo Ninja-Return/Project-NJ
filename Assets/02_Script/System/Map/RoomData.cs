@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class RoomData : MonoBehaviour
+public class RoomData : NetworkBehaviour
 {
     
     public enum Dir
@@ -28,7 +29,8 @@ public class RoomData : MonoBehaviour
     [field:SerializeField] public List<Dir> dirs { get; private set; } = new();
     [field:SerializeField] public List<CloseData> closeDatas { get; private set; } = new();
 
-    public void Close(Dir dir)
+    [ClientRpc]
+    public void CloseClientRPC(Dir dir)
     {
 
         var data = closeDatas.Find(x => x.dir == dir);
