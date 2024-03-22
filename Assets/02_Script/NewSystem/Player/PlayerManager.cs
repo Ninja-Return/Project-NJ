@@ -40,7 +40,7 @@ public class PlayerManager : NetworkBehaviour
     private void Start()
     {
 
-        if (!IsServer) return;
+        if (!IsServer || New_GameManager.Instance == null) return;
 
         New_GameManager.Instance.OnPlayerSpawnCall += HandlePlayerSpawn;
  

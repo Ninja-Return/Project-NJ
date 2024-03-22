@@ -26,7 +26,18 @@ public abstract class InteractionObject : NetworkBehaviour
     public virtual void Interaction()
     {
 
-        InteractionServerRPC(NetworkManager.LocalClientId);
+        if (rpcOfLocalClient)
+        {
+
+            DoInteraction();
+
+        }
+        else
+        {
+
+            InteractionServerRPC(NetworkManager.LocalClientId);
+
+        }
 
     }
 
@@ -35,31 +46,7 @@ public abstract class InteractionObject : NetworkBehaviour
     protected virtual void InteractionServerRPC(ulong localClient)
     {
 
-        if (rpcOfLocalClient)
-        {
-
-            var param = new ClientRpcParams
-            {
-
-                Send = new ClientRpcSendParams
-                {
-
-                    TargetClientIds = new[] { localClient },
-
-                }
-
-            };
-
-            InteractionClientRPC(param);
-
-        }
-        else
-        {
-
-            InteractionClientRPC();
-
-        }
-
+        InteractionClientRPC();
 
     }
 

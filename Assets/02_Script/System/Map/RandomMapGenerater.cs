@@ -31,8 +31,7 @@ public class RandomMapGenerater : NetworkBehaviour
 
         surface.BuildNavMesh();
 
-
-        StaticBatchingUtility.Combine(roomRoot.gameObject);
+        EndSpawnClientRPC();
 
     }
 
@@ -125,6 +124,8 @@ public class RandomMapGenerater : NetworkBehaviour
 
         }
 
+
+
     }
 
     private void CloseAllRoom()
@@ -159,6 +160,16 @@ public class RandomMapGenerater : NetworkBehaviour
             }
 
         }
+
+    }
+
+    [ClientRpc]
+    private void EndSpawnClientRPC()
+    {
+
+
+        StaticBatchingUtility.Combine(roomRoot.gameObject);
+
 
     }
 

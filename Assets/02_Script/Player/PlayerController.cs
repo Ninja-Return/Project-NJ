@@ -74,7 +74,12 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         Input = Input.Init();
         Data = Instantiate(Data);
 
-        PlayerManager.Instance.SetLocalPlayer(this);
+        if(PlayerManager.Instance != null)
+        {
+
+            PlayerManager.Instance.SetLocalPlayer(this);
+
+        }
 
         var defaultState = new PlayerStateRoot(this);
         AddState(defaultState, EnumPlayerState.Idle);
@@ -110,7 +115,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     private async void JoinChannel()
     {
 
-        await NetworkController.Instance.vivox.Join3DChannel();
+        //await NetworkController.Instance.vivox.Join3DChannel();
         StartCoroutine(Update3DPosCo());
 
     }
