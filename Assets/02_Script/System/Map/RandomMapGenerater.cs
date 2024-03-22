@@ -23,6 +23,7 @@ public class RandomMapGenerater : NetworkBehaviour
         if(!IsServer) return;
 
         startRoom = Instantiate(startRoom, Vector3.zero, Quaternion.identity);
+        startRoom.NetworkObject.Spawn(true);
 
         GetRoomResource();
         SpawnRoom();
@@ -111,6 +112,8 @@ public class RandomMapGenerater : NetworkBehaviour
                     var cloneRoom = Instantiate(
                         dirByRoom[GetRevDir(dir)].GetRandomListObject(), 
                         vec, Quaternion.identity);
+
+                    cloneRoom.NetworkObject.Spawn(true);
 
                     rooms.Enqueue(cloneRoom);
 
