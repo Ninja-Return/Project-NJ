@@ -234,7 +234,7 @@ public class TutorialSystem : NetworkBehaviour
             //yield return null;
 
         }
-
+        WinSystem.Instance.WinServerRPC(EnumWinState.Player);
         obj.isTutorialOn = true;
 
         yield return null;

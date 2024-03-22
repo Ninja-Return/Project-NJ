@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Unity.Netcode;
 using FSM_System.Netcode;
+using DG.Tweening;
 
 public enum MonsterState
 {
@@ -98,7 +99,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
     private void SetAnimationServerRpc(string name, bool value)
     {
         anim.SetBool(name, value);
-        SetAnimationClientRpc(name, value); 
+        SetAnimationClientRpc(name, value);
     }
 
     [ClientRpc]
@@ -191,7 +192,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
             }
         }
         if (players.Count == 0) return null;
-        
+
         float minDistance = float.MaxValue;
         Collider targetPlayer = null;
         foreach (Collider player in players)
@@ -243,8 +244,18 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
 
         var player = targetPlayer.GetComponent<PlayerController>();
 
-        PlayerManager.Instance.PlayerDie(EnumList.DeadType.Monster ,player.OwnerClientId);
+        PlayerManager.Instance.PlayerDie(EnumList.DeadType.Monster, player.OwnerClientId);
 
+    }
+
+    public void JumpScare() //사실상 애니메이션이 되어 있어서 플레이어가 못 움직이고 괴물을 바라보게 고정만 하면 될 듯?
+    {
+        if (!IsServer) return;
+
+        var player = targetPlayer.GetComponent<PlayerController>();
+        player.enabled = false;
+        //시발 player를 돌려
+        player.cvcam.transform.DOLookAt(transform.position + new Vector3(0, 1.5f, 0), 0.1f);
     }
 
     public void SetMonsterDeath()
@@ -273,5 +284,13 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
 
 
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.gray;
+        Gizmos.DrawWireSphere(transform.position, moveRadius);
+    }
+#endif
 
 }

@@ -49,21 +49,23 @@ public class PatrolState : MonsterStateRoot
 
     private bool RandomPoint(float range, out Vector3 result) //약간 고치기
     {
-        for (int i = 0; i < 200; i++)
+        for (int i = 0; i < 400; i++)
         {
-            Vector3 randomPoint = monsterFSM.transform.position + Random.insideUnitSphere * range;
+            Vector3 randomPoint = monsterFSM.transform.position + (Random.insideUnitSphere * range);
             NavMeshHit hit;
 
-            //Vector3.Distance(monsterFSM.transform.position, hit.position) >= range / 2f <= 최소 이동거리 양
+            //Vector3.Distance(monsterFSM.transform.position, hit.position) >= range / 2f
+            //최소 이동거리 양이 정찰범위의 절반은 움직여야 한다.
 
             if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas)
-                && Physics.OverlapSphere(hit.position, range / 5f, playerMask).Length > 0)
+                && Vector3.Distance(monsterFSM.transform.position, hit.position) >= range / 2f)
             {
                 result = hit.position;
                 return true;
             }
         }
         result = Vector3.zero;
+        Debug.Log("어라?");
         return false;
     }
 }
