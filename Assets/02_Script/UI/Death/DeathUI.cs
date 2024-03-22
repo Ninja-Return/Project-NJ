@@ -23,8 +23,8 @@ public class DeathUI : MonoBehaviour
     {
         //InputSystem에 아무클릭에다가 PopupWatchingUI()추가하기
 
-        redImage.DOFade(1, 1f);
-        redImage.DOColor(Color.black, 1f)
+        redImage.color = Color.red;
+        redImage.DOColor(Color.black, 0.5f)
             .OnComplete(() =>
             {
 
