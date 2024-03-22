@@ -118,8 +118,8 @@ public class WatchingSystem : NetworkBehaviour
         SoundManager.Play2DSound("MeetingStart");
 
         DayManager.instance.TimeSetting(true);
-        //chattingUI.gameObject.SetActive(true);
-        //chattingUI.ChattingStart();
+        chattingUI.gameObject.SetActive(true);
+        chattingUI.ChattingStart();
 
         PlayerManager.Instance.localController.IsMeeting = true;
 
