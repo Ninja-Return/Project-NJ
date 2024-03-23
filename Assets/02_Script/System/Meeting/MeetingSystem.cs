@@ -71,8 +71,8 @@ public class MeetingSystem : NetworkBehaviour
 
     private void MeetingOpen()
     {
-        DOTween.Sequence().Append(alertUI.DOLocalMoveY(0, 1.5f))
-            .Append(alertUI.DOLocalMoveY(1200, 1))
+        DOTween.Sequence().Append(alertUI.DOScaleX(1, 0.5f).SetEase(Ease.OutElastic))
+            .Append(alertUI.DOScaleX(0, 0.5f).SetEase(Ease.InElastic))
             .OnComplete(HandleMettingOpen);
     }
 

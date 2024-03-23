@@ -41,7 +41,7 @@ public class ButtonController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         transform.DOScale(Vector3.one * 1.1f, 0.2f).SetEase(Ease.OutQuad);
 
-        Color color = Color.white;
+        Color color = Color.red;
         color.a = fade;
         image.color = color;
 
@@ -53,8 +53,7 @@ public class ButtonController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutQuad);
 
-        Color color = Color.white;
-        color.a = 0;
+        Color color = Color.clear;
         image.color = color;
     }
 }

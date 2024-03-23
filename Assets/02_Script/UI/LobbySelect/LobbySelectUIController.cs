@@ -132,6 +132,11 @@ public class LobbySelectUIController : MonoBehaviour
         //SceneManager.LoadScene(SceneList.SingleGameScene);
     }
 
+    public void BackBtn()
+    {
+        SceneManager.LoadScene(SceneList.IntroScene);
+    }
+
     private IEnumerator RefreshLobby()
     {
 
