@@ -9,6 +9,8 @@ public class StartRoomBtn : InteractionObject
     protected override void DoInteraction()
     {
 
+        if (!IsServer) return;
+
         NetworkManager.SceneManager.LoadScene("Room", LoadSceneMode.Additive);
 
     }
