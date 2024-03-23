@@ -16,6 +16,7 @@ public class MeetingUIController : MonoBehaviour
     [SerializeField] private Transform panelRoot;
     [SerializeField] private TMP_Text itemShowPlayerNameText;
     [SerializeField] private TMP_Text itemShowText;
+    [SerializeField] private Transform endPlayerPanel;
 
     private List<MeetingProfile> profiles = new List<MeetingProfile>();
 
@@ -24,7 +25,7 @@ public class MeetingUIController : MonoBehaviour
 
         if (PlayerManager.Instance.IsDie) return;
 
-        for(int i = 0; i < panelRoot.childCount; i++)
+        for (int i = 0; i < panelRoot.childCount; i++)
         {
 
             Destroy(panelRoot.GetChild(i).gameObject);
@@ -125,6 +126,22 @@ public class MeetingUIController : MonoBehaviour
 
         chattingPanel.EndVote();
 
+    }
+
+    [ClientRpc]
+    private void OpenDiePlayerClientRPC(string userName)
+    {
+        endPlayerPanel.TVEffect(true);
+
+        endPlayerPanel.GetComponentInChildren<TMP_Text>().text = $"{userName}이(가) 투표에서 죽었습니다.";
+    }
+
+    public IEnumerator OpenDiePlayer(string userName) //서버가 실행하는 코루틴
+    {
+        OpenDiePlayerClientRPC(userName);
+        yield return new WaitForSeconds(1.5f);
+        endPlayerPanel.TVEffect(false);
+        yield return null;
     }
 
 }

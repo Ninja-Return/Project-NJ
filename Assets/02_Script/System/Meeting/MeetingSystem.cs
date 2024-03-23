@@ -29,6 +29,7 @@ public class MeetingSystem : NetworkBehaviour
     private Dictionary<ulong, int> voteContainer = new();
     private bool isVote = false;
     private bool isOpening = false;
+    private string diePlayerName = "";
 
     private readonly int phaseTime = 10;
 
@@ -52,6 +53,8 @@ public class MeetingSystem : NetworkBehaviour
         if (!IsServer) return;
 
         DayManager.instance.OnDayComming += MeetingOpen;
+
+        diePlayerName = "";
 
     }
 
@@ -207,6 +210,9 @@ public class MeetingSystem : NetworkBehaviour
             else if (phase == 2)
             {
 
+                var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(maxVoteClient[0]);
+                diePlayerName = data.Value.nickName;
+
                 PlayerManager.Instance.PlayerDie(EnumList.DeadType.Vote, maxVoteClient[0]);
 
             }
@@ -281,10 +287,17 @@ public class MeetingSystem : NetworkBehaviour
 
         }
 
+        if (diePlayerName != "")
+        {
+            //죽은 사람 알리기
+            yield return meetingUI.OpenDiePlayer(diePlayerName);
+        }
+
         PlayerManager.Instance.Active(true);
         DayManager.instance.TimeSetting(false);
         MeetingEndClientRPC();
         chattingSystem.ClearChatting();
+        diePlayerName = "";
 
         yield return null;
 
