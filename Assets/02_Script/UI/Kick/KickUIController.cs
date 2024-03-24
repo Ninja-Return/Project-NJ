@@ -60,12 +60,14 @@ public class KickUIController : MonoBehaviour
         {
 
             KickSystem.Instance.VoteServerRPC(true);
+            CloseVotePanel();
 
         }
         else if (Input.GetKeyDown(KeyCode.N))
         {
 
             KickSystem.Instance.VoteServerRPC(false);
+            CloseVotePanel();
 
         }
     }
@@ -76,6 +78,14 @@ public class KickUIController : MonoBehaviour
         isVoteOpen = true;
         votePanelTrm.TVEffect(true);
         playerNameText.text = playerName;
+
+    }
+
+    public void CloseVotePanel()
+    {
+
+        isVoteOpen = false;
+        votePanelTrm.TVEffect(false);
 
     }
 

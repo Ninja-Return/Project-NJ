@@ -60,6 +60,14 @@ public class KickSystem : NetworkBehaviour
 
     }
 
+    [ClientRpc]
+    private void VoteEndClientRPC()
+    {
+
+        KickUIController.Instance.CloseVotePanel();
+
+    }
+
     private IEnumerator WaitVoteCo()
     {
 
