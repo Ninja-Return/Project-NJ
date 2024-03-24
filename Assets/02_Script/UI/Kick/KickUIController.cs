@@ -84,6 +84,7 @@ public class KickUIController : MonoBehaviour
     public void CloseVotePanel()
     {
 
+        PlayerManager.Instance.Active(true);
         isVoteOpen = false;
         votePanelTrm.TVEffect(false);
 

@@ -34,6 +34,8 @@ public class RandomMapGenerater : NetworkBehaviour
 
         EndSpawnClientRPC();
 
+        Resources.UnloadUnusedAssets();
+
     }
 
     private void GetRoomResource()
@@ -117,7 +119,7 @@ public class RandomMapGenerater : NetworkBehaviour
 
                     RoomData cloneRoom;
 
-                    if(!isControomSpawnd && spcnt > 100)
+                    if(!isControomSpawnd && spcnt > 40)
                     {
 
                         isControomSpawnd = true;

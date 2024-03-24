@@ -78,10 +78,10 @@ public class WatchingSystem : NetworkBehaviour
     public void StartWatching()
     {
 
-        HandleChattingOpen();
+        //HandleChattingOpen();
 
         // 일반 음성 채널 조인
-        JoinVivox();
+        //JoinVivox();
 
         isWatching = true;
 

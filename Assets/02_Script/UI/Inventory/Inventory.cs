@@ -15,6 +15,7 @@ public class Inventory : NetworkBehaviour
 
     public event SlotChange OnSlotClickEvt; //��ȣ�ۿ뿡�� ������ �տ���� �Լ� �־���� �����
     public event SlotChange OnSlotDropEvt; //��� ������ �����鼭 ������ �Լ� �־���
+    public event SlotChange OnSlotRemove;
 
     [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private TextMeshProUGUI slotExpText;
@@ -143,7 +144,10 @@ public class Inventory : NetworkBehaviour
         if (!isHold) return;
         isHold = false;
 
+        OnSlotRemove?.Invoke("", slotIdx, "");
         slots[slotIdx].ResetSlot();
+
+
     }
 
     [ServerRpc(RequireOwnership = false)]

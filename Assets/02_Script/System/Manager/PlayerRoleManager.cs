@@ -52,6 +52,7 @@ public class PlayerRoleManager : NetworkBehaviour
         if(NetworkManager.ConnectedClients.Count > 3 || debug)
         {
 
+            Debug.Log(123);
             SettingMafia();
 
         }

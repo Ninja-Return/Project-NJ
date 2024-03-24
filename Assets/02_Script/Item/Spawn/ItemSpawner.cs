@@ -7,9 +7,10 @@ public class ItemSpawner : NetworkBehaviour
 {
 
     [SerializeField] private List<Transform> spawnPoss;
-    [SerializeField] private ItemRoot spawnItem;
+    [SerializeField] private List<ItemRoot> spawnItems;
     [SerializeField] private bool debug;
     [SerializeField] private int spawnCount;
+    [SerializeField, Range(0f, 1f)] private float spawnPercentage = 1;
 
     private void Start()
     {
@@ -52,12 +53,18 @@ public class ItemSpawner : NetworkBehaviour
         for(int i = 0; i < spawnCount; i++)
         {
 
-            var pos = spawnPoss.GetRandomListObject();
-            spawnPoss.Remove(pos);
+            if(Random.value <= spawnPercentage)
+            {
 
-            var itemPrefab = spawnItem;
-            Instantiate(itemPrefab, pos.position, pos.transform.rotation)
-                .NetworkObject.Spawn(true);
+                var pos = spawnPoss.GetRandomListObject();
+                spawnPoss.Remove(pos);
+
+                var itemPrefab = spawnItems.GetRandomListObject();
+                Instantiate(itemPrefab, pos.position, pos.transform.rotation)
+                    .NetworkObject.Spawn(true);
+
+            }
+
 
         }
 

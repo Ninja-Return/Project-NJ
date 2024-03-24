@@ -27,14 +27,26 @@ public class WinSystem : NetworkBehaviour
 
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void WinServerRPC(EnumWinState winState)
     {
 
+        NetworkManager.SceneManager.LoadScene("Win", LoadSceneMode.Single);
+        NetworkManager.SceneManager.UnloadScene(SceneManager.GetSceneByName("Room"));
 
+        PlayerPrefs.SetInt("WinState", (int)winState);
+
+        //StartCoroutine(ReStart());
 
     }
 
+    private IEnumerator ReStart()
+    {
 
+        yield return new WaitForSeconds(10);
+
+        NetworkManager.SceneManager.LoadScene("WaitRoom", LoadSceneMode.Single);
+
+    }
 
 }

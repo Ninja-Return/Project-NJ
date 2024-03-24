@@ -24,6 +24,7 @@ public class PlayerManager : NetworkBehaviour
     public NetworkList<LiveData> diePlayer { get; private set; }
 
     public bool IsDie { get; private set; }
+    private int joinCount;
 
     private void Awake()
     {
@@ -38,17 +39,13 @@ public class PlayerManager : NetworkBehaviour
     private void Start()
     {
 
+
         if (IsServer)
         {
 
             HostSingle.Instance.GameManager.OnPlayerConnect += HandlePlayerSpawn;
 
-            foreach (var item in NetworkManager.ConnectedClientsIds)
-            {
-
-                SpawnPlayer(item);
-
-            }
+            StartCoroutine(WaitSpawn());
 
         }
 
@@ -72,6 +69,11 @@ public class PlayerManager : NetworkBehaviour
     .GetComponent<PlayerController>();
 
         pl.NetworkObject.SpawnWithOwnership(id, true);
+
+        var data = HostSingle.Instance.NetServer.GetUserDataByClientID(id).Value;
+
+        alivePlayer.Add(new LiveData { clientId = id, name = data.nickName });
+        players.Add(pl);
 
 
     }
@@ -174,5 +176,38 @@ public class PlayerManager : NetworkBehaviour
 
     #endregion
 
+    public override void OnNetworkSpawn()
+    {
+
+        if (IsClient)
+        {
+
+            JoinSceneServerRPC();
+
+        }
+
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void JoinSceneServerRPC()
+    {
+
+        joinCount++;
+
+    }
+
+    private IEnumerator WaitSpawn()
+    {
+
+        yield return new WaitUntil(() => joinCount == NetworkManager.ConnectedClients.Count);
+
+        foreach (var item in NetworkManager.ConnectedClientsIds)
+        {
+
+            SpawnPlayer(item);
+
+        }
+
+    }
 
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class StoreSencer : NetworkBehaviour
+public class StoreSencer : MonoBehaviour
 {
 
     [SerializeField] private StoreUIController shopTrm;
@@ -16,7 +16,13 @@ public class StoreSencer : NetworkBehaviour
         if (other.TryGetComponent<PlayerController>(out var pl))
         {
 
-            shopTrm.StartSeq();
+            if(pl.OwnerClientId == NetworkManager.Singleton.LocalClientId)
+            {
+
+                shopTrm.StartSeq();
+
+            }
+
 
         }
 

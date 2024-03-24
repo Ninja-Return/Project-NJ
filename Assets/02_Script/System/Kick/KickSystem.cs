@@ -83,6 +83,10 @@ public class KickSystem : NetworkBehaviour
         allCnt = 0;
         selectClientId = 0;
 
+        VoteEndClientRPC();
+
+        Debug.Log(PlayerManager.Instance.alivePlayer.Count / 2);
+
     }
 
 }
