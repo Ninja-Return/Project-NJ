@@ -11,8 +11,6 @@ public class PlayerManager : NetworkBehaviour
 
     [Header("Player")]
     [SerializeField] private PlayerController playerPrefab;
-    [Header("SpawnPos")]
-    [SerializeField] private List<Transform> spawnTrms;
     [Header("Die")]
     [SerializeField] private DeathUI deathUI;
 
@@ -26,6 +24,7 @@ public class PlayerManager : NetworkBehaviour
     public NetworkList<LiveData> diePlayer { get; private set; }
 
     public bool IsDie { get; private set; }
+    private int joinCount;
 
     private void Awake()
     {
@@ -40,32 +39,42 @@ public class PlayerManager : NetworkBehaviour
     private void Start()
     {
 
-        if (!IsServer) return;
 
-        New_GameManager.Instance.OnPlayerSpawnCall += HandlePlayerSpawn;
- 
+        if (IsServer)
+        {
+
+            HostSingle.Instance.GameManager.OnPlayerConnect += HandlePlayerSpawn;
+
+            StartCoroutine(WaitSpawn());
+
+        }
+
 
     }
 
-    private void HandlePlayerSpawn()
+    private void HandlePlayerSpawn(string name, ulong id)
     {
 
-        foreach(var item in NetworkManager.ConnectedClientsIds)
-        {
+        SpawnPlayer(id);
 
-            var spawnTrm = spawnTrms.GetRandomListObject();
-            spawnTrms.Remove(spawnTrm);
+    }
 
-            var pl = Instantiate(playerPrefab, spawnTrm.position, Quaternion.identity)
-                .GetComponent<PlayerController>();
+    private void SpawnPlayer(ulong id)
+    {
 
-            pl.NetworkObject.SpawnWithOwnership(item, true);
+        var vec = UnityEngine.Random.insideUnitSphere * 4;
+        vec.y = 105;
 
-            players.Add(pl);
-            var data = HostSingle.Instance.NetServer.GetUserDataByClientID(pl.OwnerClientId).Value;
-            alivePlayer.Add(new LiveData { clientId = pl.OwnerClientId, name = data.nickName });
+        var pl = Instantiate(playerPrefab, vec, Quaternion.identity)
+    .GetComponent<PlayerController>();
 
-        }
+        pl.NetworkObject.SpawnWithOwnership(id, true);
+
+        var data = HostSingle.Instance.NetServer.GetUserDataByClientID(id).Value;
+
+        alivePlayer.Add(new LiveData { clientId = id, name = data.nickName });
+        players.Add(pl);
+
 
     }
 
@@ -167,5 +176,38 @@ public class PlayerManager : NetworkBehaviour
 
     #endregion
 
+    public override void OnNetworkSpawn()
+    {
+
+        if (IsClient)
+        {
+
+            JoinSceneServerRPC();
+
+        }
+
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void JoinSceneServerRPC()
+    {
+
+        joinCount++;
+
+    }
+
+    private IEnumerator WaitSpawn()
+    {
+
+        yield return new WaitUntil(() => joinCount == NetworkManager.ConnectedClients.Count);
+
+        foreach (var item in NetworkManager.ConnectedClientsIds)
+        {
+
+            SpawnPlayer(item);
+
+        }
+
+    }
 
 }

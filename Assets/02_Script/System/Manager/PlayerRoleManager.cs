@@ -19,7 +19,7 @@ public enum PlayerRole
 public class PlayerRoleManager : NetworkBehaviour
 {
 
-    [SerializeField] private TMP_Text mafiaText;
+    [SerializeField] private RoleUIController roleUI;
     [SerializeField] private bool debug;
     [SerializeField, Range(0, 1)] private float newRolePercentage = 1;
 
@@ -52,6 +52,7 @@ public class PlayerRoleManager : NetworkBehaviour
         if(NetworkManager.ConnectedClients.Count > 3 || debug)
         {
 
+            Debug.Log(123);
             SettingMafia();
 
         }
@@ -144,32 +145,7 @@ public class PlayerRoleManager : NetworkBehaviour
     public void SetRoleClientRPC(PlayerRole clientRole, ClientRpcParams rpcParams)
     {
 
-        SoundManager.Play2DSound("GameStart");
-
-        switch (clientRole)
-        {
-            case PlayerRole.Survivor:
-                TextSetUp("당신의 역할은 생존자 입니다", Color.blue);
-                break;
-            case PlayerRole.Mafia:
-                TextSetUp("당신의 역할은 마피아 입니다", Color.red);
-                break;
-            case PlayerRole.New:
-                TextSetUp("당신의 역할은 ??? 입니다", Color.green);
-                break;
-        }
-
-    }
-
-    public void TextSetUp(string text, Color color)
-    {
-
-        mafiaText.color = color;
-        mafiaText.text = text;
-
-        Sequence seq = DOTween.Sequence();
-        seq.AppendInterval(1);
-        seq.Append(mafiaText.DOFade(0, 1.5f));
+        roleUI.SetRole(clientRole);    
 
     }
 

@@ -36,9 +36,26 @@ public class LoadingSystem : NetworkBehaviour
     private async void Join()
     {
 
-        await NetworkController.Instance.vivox.Join3DChannel();
+        try
+        {
 
-        CompleteJoinServerRPC();
+            await NetworkController.Instance.vivox.Join3DChannel();
+
+        }
+        catch(System.Exception ex)
+        {
+
+            Debug.LogError(ex.Message);
+
+        }
+        finally
+        {
+
+
+            CompleteJoinServerRPC();
+
+        }
+
 
     }
 

@@ -9,6 +9,7 @@ public class ItemDataSO : ScriptableObject, IEquatable<ItemDataSO>
 
     [field: SerializeField] public string itemName { get; set; }
     [field: SerializeField] public SlotData slotData { get; set; }
+    [field: SerializeField] public int price { get; set; }
 
     public bool Equals(ItemDataSO other)
     {

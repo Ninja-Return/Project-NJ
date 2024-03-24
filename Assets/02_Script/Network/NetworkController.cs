@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.Services.Vivox;
 using UnityEngine;
 
 public class NetworkController : IDisposable
@@ -30,6 +31,8 @@ public class NetworkController : IDisposable
 
     public async void Dispose()
     {
+
+        return;
 
         await vivox.Leave3DChannel();
         vivox.Dispose();

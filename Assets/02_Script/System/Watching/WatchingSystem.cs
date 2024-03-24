@@ -78,10 +78,10 @@ public class WatchingSystem : NetworkBehaviour
     public void StartWatching()
     {
 
-        HandleChattingOpen();
+        //HandleChattingOpen();
 
         // 일반 음성 채널 조인
-        JoinVivox();
+        //JoinVivox();
 
         isWatching = true;
 
@@ -118,8 +118,8 @@ public class WatchingSystem : NetworkBehaviour
         SoundManager.Play2DSound("MeetingStart");
 
         DayManager.instance.TimeSetting(true);
-        //chattingUI.gameObject.SetActive(true);
-        //chattingUI.ChattingStart();
+        chattingUI.gameObject.SetActive(true);
+        chattingUI.ChattingStart();
 
         PlayerManager.Instance.localController.IsMeeting = true;
 

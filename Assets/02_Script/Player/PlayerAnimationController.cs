@@ -111,7 +111,14 @@ public class PlayerAnimationController : NetworkBehaviour
     {
 
         if (playerController == null) return;
-        if ((!IsOwner && !debug) || playerController.CurrentState == EnumPlayerState.Idle) return;
+        if ((!IsOwner && !debug) || playerController.CurrentState == EnumPlayerState.Idle)
+        {
+            xStateValue.Value = 0;
+            yStateValue.Value = 0;
+            controlAnimator.SetFloat(HASH_X, 0);
+            controlAnimator.SetFloat(HASH_Y, 0);
+
+        }
 
         if (!debug && oldInput != playerController.Input.MoveVecter)
         {
@@ -135,25 +142,16 @@ public class PlayerAnimationController : NetworkBehaviour
 
         }
 
-        if (playerController.isSittingDown)
-        {
-            HandleSitDownChanged(false, true); 
-        }
-        else
-        {
-            HandleSitDownChanged(true, false);
-            
-        }
+        sitDownStateValue.Value = playerController.isSittingDown;
+        HandleSitDownChanged(true, playerController.isSittingDown);
 
     }
 
     private void HandleSitDownChanged(bool previousValue, bool newValue)
     {
-        controlAnimator.SetBool(HASH_SITDOWN, newValue);
-        Debug.Log(newValue ? "앉기 애니메이션" : "일어서기 애니메이션");
 
-        // Set sitDownStateValue accordingly
-        sitDownStateValue.Value = newValue;
+        controlAnimator.SetBool(HASH_SITDOWN, newValue);
+
     }
 
     private void HandleXValueChanged(float previousValue, float newValue)
@@ -174,7 +172,7 @@ public class PlayerAnimationController : NetworkBehaviour
     {
 
         controlAnimator.SetBool(HASH_IS_GROUND, newValue);
-        Debug.Log("땅");
+
     }
 
     public void HandControl(bool isUp)

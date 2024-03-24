@@ -75,7 +75,11 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         Data = Instantiate(Data);
 
         if(PlayerManager.Instance != null)
+        {
+
             PlayerManager.Instance.SetLocalPlayer(this);
+
+        }
 
         var defaultState = new PlayerStateRoot(this);
         AddState(defaultState, EnumPlayerState.Idle);
@@ -108,7 +112,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     }
 
-    private void JoinChannel()
+    private async void JoinChannel()
     {
 
         //await NetworkController.Instance.vivox.Join3DChannel();
@@ -199,7 +203,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     }
 
-    public void Active(bool active)
+    public void Active(bool active, bool disAbleInven = false)
     {
 
         if (active)
@@ -212,6 +216,13 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         {
 
             ChangeState(EnumPlayerState.Idle);
+
+            if(disAbleInven && Inventory.Instance.isShow)
+            {
+
+                Inventory.Instance.SetActiveInventoryUI(true);
+
+            }
 
         }
     }

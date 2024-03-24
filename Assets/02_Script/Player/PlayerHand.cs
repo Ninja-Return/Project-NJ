@@ -30,7 +30,7 @@ public class PlayerHand : NetworkBehaviour
 
             Inventory.Instance.OnSlotClickEvt += HandleHold;
             Inventory.Instance.OnSlotDropEvt += HandleDrop;
-
+            Inventory.Instance.OnSlotRemove += HandleDrop;
             playerController = GetComponent<PlayerController>();
             playerController.Input.OnUseObjectKeyPress += HandleHandUse;
 
@@ -57,7 +57,19 @@ public class PlayerHand : NetworkBehaviour
         if(currentObject != null)
         {
 
-            UseServerRPC();
+            if (currentObject.isLocalUse)
+            {
+
+                currentObject.DoUse();
+
+            }
+            else
+            {
+
+                UseServerRPC();
+
+            }
+
 
         }
 

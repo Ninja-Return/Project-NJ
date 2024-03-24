@@ -27,37 +27,28 @@ public class WinSystem : NetworkBehaviour
 
     }
 
-    [ServerRpc(RequireOwnership = false)]   
+    [ServerRpc(RequireOwnership = false)]
     public void WinServerRPC(EnumWinState winState)
     {
         ulong mafiaId = PlayerRoleManager.Instance.FindMafiaId().Value;
         var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(mafiaId);
 
         NetworkManager.SceneManager.LoadScene("Win", LoadSceneMode.Single);
+        NetworkManager.SceneManager.UnloadScene(SceneManager.GetSceneByName("Room"));
 
         PlayerPrefs.SetInt("WinState", (int)winState);
         PlayerPrefs.SetString("MafiaNickName", data.Value.nickName);
 
-        StartCoroutine(ShutDown());
+        //StartCoroutine(ReStart());
 
     }
 
-    public override void OnNetworkDespawn()
+    private IEnumerator ReStart()
     {
 
-        base.OnNetworkDespawn();
+        yield return new WaitForSeconds(10);
 
-        Destroy(gameObject);
-        Instance = null;
-
-    }
-
-    private IEnumerator ShutDown()
-    {
-
-        yield return new WaitForSeconds(3);
-
-        HostSingle.Instance.GameManager.ShutdownAsync();
+        NetworkManager.SceneManager.LoadScene("WaitRoom", LoadSceneMode.Single);
 
     }
 

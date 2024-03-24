@@ -29,7 +29,6 @@ public class PlayerInteraction : PlayerStateRoot
     {
 
         input.OnInteractionKeyPress += HandleInteractionKeyPress;
-        input.OnObjectMoveKeyUp += HandleObjectMoveKeyRelease;
 
     }
 
@@ -39,21 +38,6 @@ public class PlayerInteraction : PlayerStateRoot
     {
 
         input.OnInteractionKeyPress -= HandleInteractionKeyPress;
-        input.OnObjectMoveKeyUp -= HandleObjectMoveKeyRelease;
-
-    }
-
-    private void HandleObjectMoveKeyRelease()
-    {
-
-        isObjectMove = false;
-
-        if(interactionObject != null)
-        {
-
-            interactionObject.gameObject.layer = originLayer;
-
-        }
 
     }
 
