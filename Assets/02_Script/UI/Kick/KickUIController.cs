@@ -9,6 +9,7 @@ public class KickUIController : MonoBehaviour
     [SerializeField] private Transform panelRoot;
     [SerializeField] private KickPanel kickPanel;
     [SerializeField] private TMP_Text playerNameText;
+    [SerializeField] private Transform votePanelTrm;
 
     private bool isVoteOpen = false;
 
@@ -43,7 +44,9 @@ public class KickUIController : MonoBehaviour
     public void OpenVotePanel(string playerName)
     {
 
-
+        isVoteOpen = true;
+        votePanelTrm.TVEffect(true);
+        playerNameText.text = playerName;
 
     }
 

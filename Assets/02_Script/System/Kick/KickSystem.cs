@@ -43,7 +43,7 @@ public class KickSystem : NetworkBehaviour
     private void SelectPlayerClientRPC(FixedString64Bytes name)
     {
 
-
+        KickUIController.Instance.OpenVotePanel(name.ToString());
 
     }
 
