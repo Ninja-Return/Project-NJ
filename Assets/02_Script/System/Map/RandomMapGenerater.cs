@@ -32,7 +32,7 @@ public class RandomMapGenerater : NetworkBehaviour
 
         surface.BuildNavMesh();
 
-        EndSpawnClientRPC();
+        //EndSpawnClientRPC();
 
         Resources.UnloadUnusedAssets();
 

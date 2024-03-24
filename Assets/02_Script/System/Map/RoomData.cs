@@ -42,6 +42,19 @@ public class RoomData : NetworkBehaviour
 
     }
 
+    public void Close(Dir dir)
+    {
+
+        var data = closeDatas.Find(x => x.dir == dir);
+
+        if (data.openObj == null) return;
+
+        data.closeObj.SetActive(true);
+        data.openObj.SetActive(false);
+
+    }
+
+
     public static Vector3 GetDirVec(Dir dir)
     {
 

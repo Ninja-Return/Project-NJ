@@ -18,6 +18,7 @@ public class AppController : MonoBehaviour
 
     public static AppController Instance;
 
+
     private void Awake()
     {
         
