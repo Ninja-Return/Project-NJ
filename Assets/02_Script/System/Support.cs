@@ -54,6 +54,14 @@ public static class Support
 
     }
 
+    public static void SettingCursorVisable(bool visable)
+    {
+
+        Cursor.lockState = visable ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = visable;
+
+    }
+
     public static RPCList<T> Deserialize<T>(this byte[] bytes) where T : struct 
     {
 
@@ -111,7 +119,7 @@ public static class Support
         }
         else
         {
-            targetTrm.DOScale(new Vector3(0, 0, 1), 0.4f).SetEase(Ease.OutExpo);
+            targetTrm.DOScale(new Vector3(0, 0, 0), 0.4f).SetEase(Ease.OutExpo);
         }
 
     }

@@ -81,8 +81,7 @@ public class New_GameManager : NetworkBehaviour
 
         }
 
-        Cursor.lockState = visable ? CursorLockMode.None : CursorLockMode.Locked;
-        Cursor.visible = visable;
+        Support.SettingCursorVisable(visable);
 
     }
 

@@ -7,7 +7,6 @@ public delegate void OnCreditChange(int oldValue, int newValue, int addValue);
 public class CreditSystem : MonoBehaviour
 {
 
-
     private int credit;
     public int Credit 
     {
@@ -30,5 +29,7 @@ public class CreditSystem : MonoBehaviour
     }
 
     public event OnCreditChange OnCreditChanged;
+
+
 
 }

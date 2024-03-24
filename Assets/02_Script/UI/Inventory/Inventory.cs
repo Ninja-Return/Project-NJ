@@ -59,23 +59,30 @@ public class Inventory : NetworkBehaviour
 
     }
 
-    public void SetActiveInventoryUI() //�÷��̾� ��ǲ�� ����
+    public void SetActiveInventoryUI(bool notPlayerActiveChange = false) //�÷��̾� ��ǲ�� ����
     {
         isShow = !isShow;
 
-        Cursor.visible = isShow;
-        Cursor.lockState = isShow ? CursorLockMode.None : CursorLockMode.Locked;
-        if (PlayerManager.Instance == null)
-            playerController.Active(!isShow);
-        else
-            PlayerManager.Instance.localController.Active(!isShow);
 
-        if (isShow)
+        if (!notPlayerActiveChange)
         {
 
-            SoundManager.Play2DSound("InventoryOpen");
+            Support.SettingCursorVisable(isShow);
+
+            if (PlayerManager.Instance == null)
+                playerController.Active(!isShow);
+            else
+                PlayerManager.Instance.localController.Active(!isShow);
+
+            if (isShow)
+            {
+
+                SoundManager.Play2DSound("InventoryOpen");
+
+            }
 
         }
+
 
         inventoryPanel.SetActive(isShow);
     }
@@ -88,7 +95,6 @@ public class Inventory : NetworkBehaviour
     public bool ObtainItem(ItemDataSO data, string extraData) //������ ������ �ҷ��� ��ǥ��
     {
 
-        NetworkSoundManager.Play3DSound("GetItem", transform.position, 0.1f, 5);
 
         for (int i = 0; i < slots.Length; i++)
         {
@@ -96,6 +102,8 @@ public class Inventory : NetworkBehaviour
             {
                 getItemCount++;
                 slots[i].InsertSlot(data, extraData);
+
+                NetworkSoundManager.Play3DSound("GetItem", transform.position, 0.1f, 5);
                 //slots[i].TouchSlot(); //���ڸ��� ���������� �̰ɷ�
                 return true;
             }

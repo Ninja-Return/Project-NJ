@@ -9,8 +9,9 @@ public class StartRoomBtn : InteractionObject
     protected override void DoInteraction()
     {
 
-        if (!IsServer) return;
+        if (!IsServer || WaitRoomManager.Instance.IsRunningGame.Value == true) return;
 
+        WaitRoomManager.Instance.IsRunningGame.Value = true;
         NetworkManager.SceneManager.LoadScene("Room", LoadSceneMode.Additive);
 
     }

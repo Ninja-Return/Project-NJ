@@ -27,35 +27,14 @@ public class WinSystem : NetworkBehaviour
 
     }
 
-    [ServerRpc(RequireOwnership = false)]   
+    [ServerRpc]
     public void WinServerRPC(EnumWinState winState)
     {
 
-        NetworkManager.SceneManager.LoadScene("Win", LoadSceneMode.Single);
 
-        PlayerPrefs.SetInt("WinState", (int)winState);
-
-        StartCoroutine(ShutDown());
 
     }
 
-    public override void OnNetworkDespawn()
-    {
 
-        base.OnNetworkDespawn();
-
-        Destroy(gameObject);
-        Instance = null;
-
-    }
-
-    private IEnumerator ShutDown()
-    {
-
-        yield return new WaitForSeconds(3);
-
-        HostSingle.Instance.GameManager.ShutdownAsync();
-
-    }
 
 }

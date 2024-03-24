@@ -11,8 +11,6 @@ public class PlayerManager : NetworkBehaviour
 
     [Header("Player")]
     [SerializeField] private PlayerController playerPrefab;
-    [Header("SpawnPos")]
-    [SerializeField] private List<Transform> spawnTrms;
     [Header("Die")]
     [SerializeField] private DeathUI deathUI;
 
@@ -40,32 +38,41 @@ public class PlayerManager : NetworkBehaviour
     private void Start()
     {
 
-        if (!IsServer || New_GameManager.Instance == null) return;
+        if (IsServer)
+        {
 
-        New_GameManager.Instance.OnPlayerSpawnCall += HandlePlayerSpawn;
- 
+            HostSingle.Instance.GameManager.OnPlayerConnect += HandlePlayerSpawn;
+
+            foreach (var item in NetworkManager.ConnectedClientsIds)
+            {
+
+                SpawnPlayer(item);
+
+            }
+
+        }
+
 
     }
 
-    private void HandlePlayerSpawn()
+    private void HandlePlayerSpawn(string name, ulong id)
     {
 
-        foreach(var item in NetworkManager.ConnectedClientsIds)
-        {
+        SpawnPlayer(id);
 
-            var spawnTrm = spawnTrms.GetRandomListObject();
-            spawnTrms.Remove(spawnTrm);
+    }
 
-            var pl = Instantiate(playerPrefab, spawnTrm.position, Quaternion.identity)
-                .GetComponent<PlayerController>();
+    private void SpawnPlayer(ulong id)
+    {
 
-            pl.NetworkObject.SpawnWithOwnership(item, true);
+        var vec = UnityEngine.Random.insideUnitSphere * 4;
+        vec.y = 105;
 
-            players.Add(pl);
-            var data = HostSingle.Instance.NetServer.GetUserDataByClientID(pl.OwnerClientId).Value;
-            alivePlayer.Add(new LiveData { clientId = pl.OwnerClientId, name = data.nickName });
+        var pl = Instantiate(playerPrefab, vec, Quaternion.identity)
+    .GetComponent<PlayerController>();
 
-        }
+        pl.NetworkObject.SpawnWithOwnership(id, true);
+
 
     }
 

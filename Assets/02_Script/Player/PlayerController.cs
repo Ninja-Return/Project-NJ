@@ -203,7 +203,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     }
 
-    public void Active(bool active)
+    public void Active(bool active, bool disAbleInven = false)
     {
 
         if (active)
@@ -216,6 +216,13 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         {
 
             ChangeState(EnumPlayerState.Idle);
+
+            if(disAbleInven && Inventory.Instance.isShow)
+            {
+
+                Inventory.Instance.SetActiveInventoryUI(true);
+
+            }
 
         }
     }

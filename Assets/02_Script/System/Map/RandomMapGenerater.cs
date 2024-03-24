@@ -11,6 +11,7 @@ public class RandomMapGenerater : NetworkBehaviour
     [SerializeField] private RoomData startRoom;
     [SerializeField] private NavMeshSurface surface;
     [SerializeField] private float subtractValue = 0.01f;
+    [SerializeField] private RoomData constRoom;
 
     private Dictionary<RoomData.Dir, List<RoomData>> dirByRoom = new();
     private Dictionary<Vector3, RoomData> vecByRoom = new();
@@ -43,8 +44,11 @@ public class RandomMapGenerater : NetworkBehaviour
         foreach(var roomData in res)
         {
 
+            if(roomData == constRoom || roomData == startRoom) continue;
+
             foreach(var dir in roomData.dirs)
             {
+
 
                 if (dirByRoom.ContainsKey(dir))
                 {
@@ -89,7 +93,10 @@ public class RandomMapGenerater : NetworkBehaviour
         constDir.Add(Vector3.zero);
         float per = 1;
 
-        while(rooms.Count > 0)
+        bool isControomSpawnd = false;
+        int spcnt = 0;
+
+        while(rooms.Count > 0 || !isControomSpawnd)
         {
 
             var room = rooms.Dequeue();
@@ -108,13 +115,30 @@ public class RandomMapGenerater : NetworkBehaviour
                     if (constDir.Contains(vec)) continue;
                     constDir.Add(vec);
 
-                    var cloneRoom = Instantiate(
-                        dirByRoom[GetRevDir(dir)].GetRandomListObject(), 
+                    RoomData cloneRoom;
+
+                    if(!isControomSpawnd && spcnt > 100)
+                    {
+
+                        isControomSpawnd = true;
+                        cloneRoom = Instantiate(
+                        constRoom,
                         vec, Quaternion.identity);
+
+                    }
+                    else
+                    {
+
+                        cloneRoom = Instantiate(
+                        dirByRoom[GetRevDir(dir)].GetRandomListObject(),
+                        vec, Quaternion.identity);
+
+                    }
 
                     cloneRoom.NetworkObject.Spawn(true);
 
                     rooms.Enqueue(cloneRoom);
+                    spcnt++;
 
                     per -= subtractValue;
 
