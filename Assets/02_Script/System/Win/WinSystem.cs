@@ -30,10 +30,13 @@ public class WinSystem : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]   
     public void WinServerRPC(EnumWinState winState)
     {
+        ulong mafiaId = PlayerRoleManager.Instance.FindMafiaId().Value;
+        var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(mafiaId);
 
         NetworkManager.SceneManager.LoadScene("Win", LoadSceneMode.Single);
 
         PlayerPrefs.SetInt("WinState", (int)winState);
+        PlayerPrefs.SetString("MafiaNickName", data.Value.nickName);
 
         StartCoroutine(ShutDown());
 

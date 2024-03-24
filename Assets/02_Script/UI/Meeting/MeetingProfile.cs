@@ -10,13 +10,15 @@ public class MeetingProfile : MonoBehaviour, IPointerDownHandler
 {
 
     [SerializeField] private TMP_Text userNameText;
+    [SerializeField] private Image mainPanel;
+    [SerializeField] private Button voteBtn;
     [SerializeField] private GameObject chackMask;
     [SerializeField] private GameObject voteObject;
     [SerializeField] private Transform voteParent;
 
     public ulong ownerClientId { get; private set; }
 
-    public void Setting(ulong ownerClientId, string userName, bool isOwner)
+    public void Setting(ulong ownerClientId, string userName, bool isOwner, bool isVote = true)
     {
 
         this.ownerClientId = ownerClientId;
@@ -24,6 +26,13 @@ public class MeetingProfile : MonoBehaviour, IPointerDownHandler
         userNameText.text = userName;
         userNameText.color = isOwner ? Color.yellow : Color.white;
 
+        voteBtn.enabled = isVote;
+
+    }
+
+    public void ColorChange(Color panelColor)
+    {
+        mainPanel.color = panelColor;
     }
 
     public void OpenVote(int voteCount)

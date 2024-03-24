@@ -21,10 +21,39 @@ public class WinUIController : NetworkBehaviour
             EnumWinState state = (EnumWinState)PlayerPrefs.GetInt("WinState");
             SettingClientRPC(state);
 
+            PlayerPanelSetting();
+
         }
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+
+    }
+
+    private void PlayerPanelSetting()
+    {
+        foreach (var item in NetworkManager.ConnectedClientsIds)
+        {
+
+            var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(item);
+
+            if (data != null)
+            {
+
+                SpawnPanelClientRPC(item, data.Value.nickName);
+
+            }
+
+        }
+
+        PlayerPrefs.SetString("MafiaNickName", "");
+    }
+
+    [ClientRpc]
+    private void SpawnPanelClientRPC(ulong clientId, string userName)
+    {
+
+        controller.SpawnPanel(clientId, userName, clientId == NetworkManager.LocalClientId);
 
     }
 

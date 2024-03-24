@@ -11,7 +11,7 @@ public class ResultUIController : MonoBehaviour
     [SerializeField] private Image resuitPanel;
     [SerializeField] private TextMeshProUGUI winnerText;
     [SerializeField] private Transform players;
-    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private MeetingProfile playerPrefab;
 
     [Header("FeedbackText")]
     [SerializeField] private TextMeshProUGUI clearAreaText;
@@ -62,6 +62,19 @@ public class ResultUIController : MonoBehaviour
             mafiaKillText.gameObject.SetActive(false);
             monsterKillText.gameObject.SetActive(false);
         }
+    }
+
+    public void SpawnPanel(ulong clientId, string userName, bool isOwner)
+    {
+        var panel = Instantiate(playerPrefab, players);
+
+        panel.Setting(clientId, userName, isOwner, false);
+
+        if (userName == PlayerPrefs.GetString("MafiaNickName"))
+            panel.ColorChange(Color.red);
+        else
+            panel.ColorChange(Color.blue);
+
     }
 
     public void BackMain()
