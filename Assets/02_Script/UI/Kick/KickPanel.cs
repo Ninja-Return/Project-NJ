@@ -21,7 +21,8 @@ public class KickPanel : MonoBehaviour
     public void Select()
     {
 
-
+        KickSystem.Instance.SelectPlayer(curId);
+        KickUIController.Instance.CloseSelectPanel();
 
     }
 

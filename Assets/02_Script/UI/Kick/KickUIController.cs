@@ -10,6 +10,7 @@ public class KickUIController : MonoBehaviour
     [SerializeField] private KickPanel kickPanel;
     [SerializeField] private TMP_Text playerNameText;
     [SerializeField] private Transform votePanelTrm;
+    [SerializeField] private Transform selectPanel;
 
     private bool isVoteOpen = false;
 
@@ -25,6 +26,8 @@ public class KickUIController : MonoBehaviour
     public void OpenKickPanel()
     {
 
+        selectPanel.TVEffect(true);
+
         for(int i = 0; i < panelRoot.childCount; i++)
         {
 
@@ -39,6 +42,32 @@ public class KickUIController : MonoBehaviour
 
         }
 
+    }
+
+    public void CloseSelectPanel()
+    {
+
+        selectPanel.TVEffect(false);
+
+    }
+
+    private void Update()
+    {
+
+        if (!isVoteOpen) return;
+
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+
+            KickSystem.Instance.VoteServerRPC(true);
+
+        }
+        else if (Input.GetKeyDown(KeyCode.N))
+        {
+
+            KickSystem.Instance.VoteServerRPC(false);
+
+        }
     }
 
     public void OpenVotePanel(string playerName)
