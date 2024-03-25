@@ -127,7 +127,7 @@ public class PlayerHand : NetworkBehaviour
         if(currentObject != null)
         {
 
-            DeleteServerRPC();
+            DeleteServerRPC(true);
 
         }
 
@@ -187,15 +187,15 @@ public class PlayerHand : NetworkBehaviour
 
 
     [ServerRpc]
-    private void DeleteServerRPC()
+    private void DeleteServerRPC(bool isChange = false)
     {
 
-        DeleteClientRPC();
+        DeleteClientRPC(isChange);
 
     }
 
     [ClientRpc]
-    private void DeleteClientRPC()
+    private void DeleteClientRPC(bool isChange)
     {
 
         if(currentObject != null)
@@ -203,7 +203,14 @@ public class PlayerHand : NetworkBehaviour
 
             Destroy(currentObject.gameObject);
             currentObject = null;
-            currentIdx = -1;
+
+            if (!isChange)
+            {
+
+                currentIdx = -1;
+
+            }
+
 
         }
 
@@ -214,7 +221,7 @@ public class PlayerHand : NetworkBehaviour
 
         isDelay = true;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
 
         isDelay = false;
 
