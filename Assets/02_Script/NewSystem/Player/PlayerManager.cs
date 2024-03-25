@@ -62,8 +62,8 @@ public class PlayerManager : NetworkBehaviour
     private void SpawnPlayer(ulong id)
     {
 
-        var vec = UnityEngine.Random.insideUnitSphere * 4;
-        vec.y = 105;
+        var vec = UnityEngine.Random.insideUnitSphere * 2.5f;
+        vec.y = 3;
 
         var pl = Instantiate(playerPrefab, vec, Quaternion.identity)
     .GetComponent<PlayerController>();
@@ -98,6 +98,11 @@ public class PlayerManager : NetworkBehaviour
 
         localController.Active(value);
 
+    }
+
+    public PlayerController FindPlayerControllerToID(ulong playerID)
+    {
+        return players.Find(x => x.OwnerClientId == playerID);
     }
 
     #region ServerRPC
@@ -167,8 +172,10 @@ public class PlayerManager : NetworkBehaviour
     private void PlayerDieClientRPC(EnumList.DeadType type, ClientRpcParams param)
     {
 
-        deathUI.gameObject.SetActive(true);
-        deathUI.PopupDeathUI(type);
+        //deathUI.gameObject.SetActive(true);
+        //deathUI.PopupDeathUI(type);
+
+        WatchingSystem.Instance.StartWatching();
 
         IsDie = true;
 

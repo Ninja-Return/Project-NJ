@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 6569519995692428791}
   - component: {fileID: 8415478413249015577}
   - component: {fileID: 3185931770832437928}
+  - component: {fileID: -4002964829961260287}
   m_Layer: 3
   m_Name: Pencil
   m_TagString: Untagged
@@ -208,6 +209,36 @@ MonoBehaviour:
   <interactionAbleItemName>k__BackingField: 
   interactionAble: 1
   <data>k__BackingField: {fileID: 11400000, guid: 1cc4c889bb8222e438ffb917e3cf9999, type: 2}
+--- !u!114 &-4002964829961260287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1770313384682062653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e62e03412d636ea41bce66eea7679496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &2449718077910905706
 GameObject:
   m_ObjectHideFlags: 0

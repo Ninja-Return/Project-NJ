@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -531,10 +531,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: ResultUI
       objectReference: {fileID: 0}
+    - target: {fileID: 4961977933259240186, guid: fd99c40231adbcf4dbc1e4bec328b372, type: 3}
+      propertyPath: semiMinorAxis
+      value: 220
+      objectReference: {fileID: 0}
     - target: {fileID: 5894010827481041186, guid: fd99c40231adbcf4dbc1e4bec328b372, type: 3}
       propertyPath: winText
       value: 
       objectReference: {fileID: 723342132}
+    - target: {fileID: 5894010827481041186, guid: fd99c40231adbcf4dbc1e4bec328b372, type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 8261299188015204174, guid: 667d1f14f370f454180256b35665d08f, type: 3}
     - target: {fileID: 8007980261676010618, guid: fd99c40231adbcf4dbc1e4bec328b372, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -613,6 +621,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8007980261676010618, guid: fd99c40231adbcf4dbc1e4bec328b372, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8060114826277929694, guid: fd99c40231adbcf4dbc1e4bec328b372, type: 3}
+      propertyPath: m_text
+      value: "\uD0C8\uCD9C \uC131\uACF5!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8060114826277929694, guid: fd99c40231adbcf4dbc1e4bec328b372, type: 3}
+      propertyPath: m_enableWordWrapping
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -8,11 +8,11 @@ public class RandomMapGenerater : NetworkBehaviour
 {
 
     [SerializeField] private Transform roomRoot;
-    [SerializeField] private RoomData startRoom;
     [SerializeField] private NavMeshSurface surface;
     [SerializeField] private float subtractValue = 0.01f;
     [SerializeField] private RoomData constRoom;
 
+    private StartRoom startRoom;
     private Dictionary<RoomData.Dir, List<RoomData>> dirByRoom = new();
     private Dictionary<Vector3, RoomData> vecByRoom = new();
     private HashSet<Vector3> constDir = new();
@@ -23,8 +23,7 @@ public class RandomMapGenerater : NetworkBehaviour
 
         if(!IsServer) return;
 
-        startRoom = Instantiate(startRoom, Vector3.zero, Quaternion.identity);
-        startRoom.NetworkObject.Spawn(true);
+        startRoom = FindObjectOfType<StartRoom>();
 
         GetRoomResource();
         SpawnRoom();
@@ -35,6 +34,8 @@ public class RandomMapGenerater : NetworkBehaviour
         //EndSpawnClientRPC();
 
         Resources.UnloadUnusedAssets();
+
+        startRoom.OpenAllClientRPC();
 
     }
 
@@ -119,7 +120,7 @@ public class RandomMapGenerater : NetworkBehaviour
 
                     RoomData cloneRoom;
 
-                    if(!isControomSpawnd && spcnt > 40)
+                    if(!isControomSpawnd && spcnt > 10)
                     {
 
                         isControomSpawnd = true;

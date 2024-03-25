@@ -9,6 +9,7 @@ public abstract class HandItemRoot : MonoBehaviour
     [field:SerializeField] public Vector3 handRotation { get; protected set;}
     [field:SerializeField] public Vector3 handPivot { get; protected set; }
     [field:SerializeField] public bool isLocalUse {  get; protected set; }
+    [field:SerializeField] public bool is1Use { get; protected set; }
 
     public string extraData { get; set; }
 
