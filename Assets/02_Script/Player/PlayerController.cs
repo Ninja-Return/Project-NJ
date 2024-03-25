@@ -48,6 +48,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     }
 
+
     private void Start()
     {
 
@@ -225,6 +226,24 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
             }
 
         }
+    }
+
+    public void AddSpeed(float value, float time)
+    {
+
+        StartCoroutine(SpeedCo(value, time));
+
+    }
+
+    private IEnumerator SpeedCo(float speed, float time) 
+    {
+
+        Data.MoveSpeed.AddMod(speed);
+
+        yield return new WaitForSeconds(time);
+
+        Data.MoveSpeed.RemoveMod(speed);
+
     }
 
 }

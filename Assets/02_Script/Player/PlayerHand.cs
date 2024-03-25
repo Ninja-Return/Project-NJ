@@ -9,7 +9,6 @@ using UnityEngine;
 public class PlayerHand : NetworkBehaviour
 {
 
-
     private Transform itemParent;
     private HandItemRoot currentObject;
     private PlayerAnimationController controller;
@@ -70,6 +69,17 @@ public class PlayerHand : NetworkBehaviour
 
             }
 
+            if (currentObject.is1Use)
+            {
+
+                Destroy(currentObject.gameObject);
+
+                Inventory.Instance.Deleteltem();
+
+                HandDeleteServerRPC();
+                controller.HandControl(false);
+
+            }
 
         }
 

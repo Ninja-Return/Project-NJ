@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4717985985525950134}
   - component: {fileID: 5261800128204370837}
   - component: {fileID: 6299678696502890566}
+  - component: {fileID: 2764797035709621584}
   m_Layer: 3
   m_Name: WoodenPiece
   m_TagString: Untagged
@@ -175,3 +176,33 @@ MonoBehaviour:
   <interactionAbleItemName>k__BackingField: 
   interactionAble: 1
   <data>k__BackingField: {fileID: 11400000, guid: 02c5c88e7aa63eb41af9b9d01f4412cd, type: 2}
+--- !u!114 &2764797035709621584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2020800056280854120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e62e03412d636ea41bce66eea7679496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
