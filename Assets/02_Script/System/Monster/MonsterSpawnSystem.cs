@@ -42,7 +42,7 @@ public class MonsterSpawnSystem : NetworkBehaviour
         {
 
             yield return new WaitForSeconds(Random.Range(60f, 200f));
-            Instantiate(monsterPrefab, spawnTrms.GetRandomListObject().position, Quaternion.identity);
+            Instantiate(monsterPrefab, spawnTrms.GetRandomListObject().position, Quaternion.identity).Spawn(true);
 
 
         }

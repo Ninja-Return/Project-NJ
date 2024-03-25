@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 284337454}
-  m_IndirectSpecularColor: {r: 0.58776, g: 0.6241889, b: 0.67649424, a: 1}
+  m_IndirectSpecularColor: {r: 0.29280165, g: 0.33484834, b: 0.4005714, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7653,11 +7653,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7827444974065714861, guid: be87b92f95c193243ab4ae1edc5a3b50, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -960
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7827444974065714861, guid: be87b92f95c193243ab4ae1edc5a3b50, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -540
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7827444974065714861, guid: be87b92f95c193243ab4ae1edc5a3b50, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -23103,7 +23103,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1491639608}
     m_Modifications:
     - target: {fileID: 2894562559221082260, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
       propertyPath: m_Pivot.x
@@ -23155,15 +23155,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2894562559221082260, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2894562559221082260, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2894562559221082260, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2894562559221082260, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -23205,6 +23205,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 551da6a7619969d47a1d2834e2e7045d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &1445380076 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2894562559221082260, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+  m_PrefabInstance: {fileID: 1445380074}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1447490888
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24350,6 +24355,7 @@ RectTransform:
   - {fileID: 1875067904}
   - {fileID: 915106847}
   - {fileID: 463257135}
+  - {fileID: 1445380076}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -33210,7 +33216,6 @@ SceneRoots:
   - {fileID: 284337455}
   - {fileID: 1491639608}
   - {fileID: 304738070}
-  - {fileID: 1445380074}
   - {fileID: 970646539}
   - {fileID: 660117582}
   - {fileID: 2007534745}

@@ -10,7 +10,7 @@ public class ItemSpawner : NetworkBehaviour
     [SerializeField] private List<ItemRoot> spawnItems;
     [SerializeField] private bool debug;
     [SerializeField] private int spawnCount;
-    [SerializeField, Range(0f, 1f)] private float spawnPercentage = 1;
+    [SerializeField, Range(-1f, 1f)] private float spawnPercentage = 1;
 
     private void Start()
     {
@@ -53,7 +53,7 @@ public class ItemSpawner : NetworkBehaviour
         for(int i = 0; i < spawnCount; i++)
         {
 
-            if(Random.value <= spawnPercentage)
+            if(Random.value <= spawnPercentage || spawnPercentage == -1)
             {
 
                 var pos = spawnPoss.GetRandomListObject();
