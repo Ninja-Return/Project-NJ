@@ -8,7 +8,7 @@ public class EscapeObject : InteractionObject
     protected override void DoInteraction()
     {
 
-        WinSystem.Instance.WinServerRPC(EnumWinState.Player);
+        PlayerManager.Instance.PlayerDie(EnumList.DeadType.Vote, NetworkManager.LocalClientId);
 
     }
 

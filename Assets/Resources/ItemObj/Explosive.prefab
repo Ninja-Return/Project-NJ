@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5047196861170930986}
   - component: {fileID: 6811907536926327879}
   - component: {fileID: 9059435105732532534}
+  - component: {fileID: 287033148281222816}
   m_Layer: 3
   m_Name: Explosive
   m_TagString: Untagged
@@ -173,3 +174,33 @@ MonoBehaviour:
   <interactionAbleItemName>k__BackingField: 
   interactionAble: 1
   <data>k__BackingField: {fileID: 11400000, guid: 6f617a896627c94429e0e82288257847, type: 2}
+--- !u!114 &287033148281222816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5696141707329004685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e62e03412d636ea41bce66eea7679496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0

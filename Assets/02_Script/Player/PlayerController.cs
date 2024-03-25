@@ -4,6 +4,7 @@ using FSM_System.Netcode;
 using Cinemachine;
 using System;
 using Unity.Netcode;
+using DG.Tweening;
 
 public enum EnumPlayerState
 {
@@ -47,6 +48,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         meetingObject = GameObject.Find("MeetingObject");
 
     }
+
 
     private void Start()
     {
@@ -225,6 +227,24 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
             }
 
         }
+    }
+
+    public void AddSpeed(float value, float time)
+    {
+
+        StartCoroutine(SpeedCo(value, time));
+
+    }
+
+    private IEnumerator SpeedCo(float speed, float time) 
+    {
+
+        Data.MoveSpeed.AddMod(speed);
+
+        yield return new WaitForSeconds(time);
+
+        Data.MoveSpeed.RemoveMod(speed);
+
     }
 
 }

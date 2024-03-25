@@ -26,6 +26,8 @@ public class KickUIController : MonoBehaviour
     public void OpenKickPanel()
     {
 
+        if (PlayerManager.Instance.IsDie) return;
+
         selectPanel.TVEffect(true);
 
         for(int i = 0; i < panelRoot.childCount; i++)
@@ -74,6 +76,8 @@ public class KickUIController : MonoBehaviour
 
     public void OpenVotePanel(string playerName)
     {
+
+        if (PlayerManager.Instance.IsDie) return;
 
         isVoteOpen = true;
         votePanelTrm.TVEffect(true);
