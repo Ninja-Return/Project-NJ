@@ -100,6 +100,11 @@ public class PlayerManager : NetworkBehaviour
 
     }
 
+    public PlayerController FindPlayerControllerToID(ulong playerID)
+    {
+        return players.Find(x => x.OwnerClientId == playerID);
+    }
+
     #region ServerRPC
 
     [ServerRpc(RequireOwnership = false)]
