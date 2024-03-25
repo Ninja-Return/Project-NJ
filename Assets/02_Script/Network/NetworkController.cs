@@ -32,12 +32,18 @@ public class NetworkController : IDisposable
     public async void Dispose()
     {
 
+#if UNITY_EDITOR
+
         return;
+
+#else
 
         await vivox.Leave3DChannel();
         vivox.Dispose();
 
         Instance = null;
+
+#endif
 
     }
 

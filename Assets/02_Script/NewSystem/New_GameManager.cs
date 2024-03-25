@@ -61,7 +61,7 @@ public class New_GameManager : NetworkBehaviour
     public void CheckGameEnd(int playerCount, bool mafiaAlive)
     {
 
-        if((mafiaAlive && playerCount <= 2) || playerCount == 0)
+        if(playerCount == 0)
         {
 
             OnGameFinishedClientRPC();
