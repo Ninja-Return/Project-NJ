@@ -58,14 +58,15 @@ public class New_GameManager : NetworkBehaviour
 
     }
 
-    public void CheckGameEnd(int playerCount, bool mafiaAlive)
+    public void CheckGameEnd(int playerCount, bool IsBreaken)
     {
 
         if(playerCount == 0)
         {
 
+            FadeManager.Instance.FadeOn();
             OnGameFinishedClientRPC();
-            WinSystem.Instance.WinServerRPC(EnumWinState.Mafia);
+            WinSystem.Instance. WinServerRPC(IsBreaken == true ? EnumWinState.Player : EnumWinState.Mafia);
 
         }
 

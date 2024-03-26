@@ -138,7 +138,19 @@ public class SoundManager : MonoBehaviour
 
     }
 
+    public static void SettingBgm(float value)
+    {
+        if (value <= -40f) value = -80f;
+        Debug.Log("22");
+        instance.mainMixer.SetFloat("BGM", value);
+    }
 
+    public static void SettingSfx(float value)
+    {
+        if (value <= -40f) value = -80f;
+
+        instance.mainMixer.SetFloat("SFX", value);
+    }
 
     private static IEnumerator SFXDestroyCo(float lenght, GameObject obj)
     {
