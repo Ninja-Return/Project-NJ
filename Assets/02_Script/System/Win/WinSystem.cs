@@ -9,8 +9,8 @@ public enum EnumWinState
 {
 
     None,
-    Player,
-    Mafia,
+    Escape,
+    Fail,
 
 }
 

@@ -67,10 +67,10 @@ public class WinUIController : NetworkBehaviour
             case EnumWinState.None:
                 controller.EscapeFail();
                 break;
-            case EnumWinState.Player:
+            case EnumWinState.Escape:
                 controller.EscapeClear();
                 break;
-            case EnumWinState.Mafia:
+            case EnumWinState.Fail:
                 controller.EscapeFail();
                 break;
 
