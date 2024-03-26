@@ -24,7 +24,7 @@ public class SettingUI : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P) && !Setting)
+        if (Input.GetKeyDown(KeyCode.Escape) && !Setting)
         {
             Support.SettingCursorVisable(isShow);
             mapPanel.DOLocalMove(Vector2.zero, 0.5f).SetEase(Ease.InExpo);
@@ -40,9 +40,12 @@ public class SettingUI : MonoBehaviour
 
     public void PanelUp()
     {
-        Support.SettingCursorVisable(!isShow);
-        mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
-        Setting = false;
+        if (Setting)
+        {
+            Support.SettingCursorVisable(!isShow);
+            mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
+            Setting = false;
+        }
     }
 
     public void GameExit()
