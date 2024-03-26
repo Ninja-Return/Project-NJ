@@ -4,6 +4,8 @@ using FSM_System.Netcode;
 using Cinemachine;
 using System;
 using Unity.Netcode;
+using DG.Tweening;
+using UnityEngine.UI;
 
 public enum EnumPlayerState
 {
@@ -30,6 +32,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     public Vector3 targetCameraPosition;
     public float changeTime = 1f;
     public Vector3 originalCameraPosition;
+    public Slider SensitivitySlider;
 
     public bool IsMeeting { get; set; }
 
@@ -74,6 +77,8 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
         Input = Input.Init();
         Data = Instantiate(Data);
+
+        
 
         if(PlayerManager.Instance != null)
         {
@@ -126,8 +131,8 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
         if (!IsOwner && !debug) return;
 
-        
-
+        Data.LookSensitive.SetValue(SensitivitySlider.value);
+        Debug.Log(Data.LookSensitive.Value);
         base.Update();
 
 #if UNITY_EDITOR

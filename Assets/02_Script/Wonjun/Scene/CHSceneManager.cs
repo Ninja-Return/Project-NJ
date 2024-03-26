@@ -83,9 +83,9 @@ public class CHSceneManager : MonoBehaviour
 
             if (percentage >= 90)
             {
-                percentage = Mathf.Lerp(percentage, 100, past_time);
+                percentage = Mathf.Lerp(percentage, 218, past_time);
 
-                if (percentage == 100)
+                if (percentage == 218)
                 {
                     async.allowSceneActivation = true; //씬 전환 준비 완료
                 }

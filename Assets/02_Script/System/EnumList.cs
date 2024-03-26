@@ -13,6 +13,7 @@ namespace EnumList
     {
         Mafia,
         Monster,
-        Vote
+        Vote,
+        Escape,
     }
 }

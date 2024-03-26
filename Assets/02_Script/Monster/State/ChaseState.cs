@@ -28,14 +28,17 @@ public class ChaseState : MonsterStateRoot
     {
         if (!IsServer) return;
 
-        Vector3 playerPos = monsterFSM.targetPlayer.transform.position;
-        nav.SetDestination(playerPos);
+        //Vector3 playerPos = monsterFSM.targetPlayer.transform.position;
+        //nav.SetDestination(playerPos);
 
         Collider player = monsterFSM.CirclePlayer(radius);
 
         if (player != null)
         {
             monsterFSM.targetPlayer = player;
+
+            Vector3 playerPos = monsterFSM.targetPlayer.transform.position;
+            nav.SetDestination(playerPos);
         }
         else
         {

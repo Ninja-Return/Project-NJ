@@ -5,80 +5,97 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
 public class ResultUIController : MonoBehaviour
 {
+    [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] private Image resuitPanel;
     [SerializeField] private TextMeshProUGUI winnerText;
     [SerializeField] private Transform players;
     [SerializeField] private MeetingProfile playerPrefab;
 
     [Header("FeedbackText")]
-    [SerializeField] private TextMeshProUGUI clearAreaText;
-    [SerializeField] private TextMeshProUGUI mafiaKillText;
-    [SerializeField] private TextMeshProUGUI monsterKillText;
+    [SerializeField] private TMP_Text escapePlayerText;
+    [SerializeField] private TMP_Text failPlayerText;
     [SerializeField] private TMP_Text winText;
+
+    private NetworkVariable<float> escapePlayerCnt = new NetworkVariable<float>();
+    private NetworkVariable<float> failPlayerCnt = new NetworkVariable<float>();
 
     private void Start()
     {
         Cursor.visible = true;
+        DOFadeResult();
+
+        escapePlayerCnt.OnValueChanged += SetEscapeText;
+        failPlayerCnt.OnValueChanged += SetFailText;
     }
 
-    public void MafiaWin()
+    private void DOFadeResult()
+    {
+        canvasGroup.DOFade(1, 2);
+    }
+
+    public void EscapeFail()
     {
         resuitPanel.color = Color.red;
         winnerText.color = Color.red;
 
-        if (HostSingle.Instance.GameManager.gameMode == GameMode.Single)
-            winText.text = "Å»Ãâ ½ÇÆĞ";
-        else
-            winText.text = "¸¶ÇÇ¾Æ ½Â¸®";
+        winText.text = "íƒˆì¶œ ì‹¤íŒ¨";
 
-        ModeSet();
+        //if (HostSingle.Instance.GameManager.gameMode == GameMode.Single)
+        //    winText.text = "Å»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½";
+        //else
+        //    winText.text = "ï¿½ï¿½ï¿½Ç¾ï¿½ ï¿½Â¸ï¿½";
 
     }
 
-    public void HumanWin()
+    public void EscapeClear()
     {
         Color skyColor = new Color(0, 0.6f, 1, 1);
         resuitPanel.color = skyColor;
         winnerText.color = skyColor;
 
         if (HostSingle.Instance.GameManager.gameMode == GameMode.Tutorial)
-            winText.text = "Æ©Åä¸®¾ó ¿Ï¼ö";
-        else if(HostSingle.Instance.GameManager.gameMode == GameMode.Single)
-            winText.text = "Å»Ãâ ¼º°ø";
+            winText.text = "íŠœí† ë¦¬ì–¼ ì™„ë£Œ";
         else
-            winText.text = "»ıÁ¸ÀÚ ½Â¸®";
-
-        ModeSet();
+            winText.text = "í”Œë ˆì´ ê²°ê³¼";
 
     }
 
-    private void ModeSet()
+    public void SpawnPanel(ulong clientId, string userName, bool isOwner, bool isBreak)
     {
-        if (HostSingle.Instance.GameManager.gameMode == GameMode.Single)
+        var panel = Instantiate(playerPrefab, players);
+        panel.Setting(clientId, userName, isOwner, false);
+
+        if (isBreak)
         {
-            mafiaKillText.gameObject.SetActive(false);
-            monsterKillText.gameObject.SetActive(false);
+            escapePlayerCnt.Value++;
+            panel.ColorChange(Color.blue);
+        }
+        else
+        {
+            failPlayerCnt.Value++;
+            panel.ColorChange(Color.red);
         }
     }
 
-    public void SpawnPanel(ulong clientId, string userName, bool isOwner)
+    private void SetEscapeText(float oldCnt, float newCnt)
     {
-        var panel = Instantiate(playerPrefab, players);
+        escapePlayerText.text = $"íƒˆì¶œí•œ í”Œë ˆì´ì–´ : {newCnt}ëª…";
+    }
 
-        panel.Setting(clientId, userName, isOwner, false);
-
-        if (userName == PlayerPrefs.GetString("MafiaNickName"))
-            panel.ColorChange(Color.red);
-        else
-            panel.ColorChange(Color.blue);
-
+    private void SetFailText(float oldCnt, float newCnt)
+    {
+        failPlayerText.text = $"ì£½ì€ í”Œë ˆì´ì–´ : {newCnt}ëª…";
     }
 
     public void BackMain()
     {
+        escapePlayerCnt.OnValueChanged -= SetEscapeText;
+        failPlayerCnt.OnValueChanged -= SetFailText;
+
         SceneManager.LoadScene(SceneList.LobbySelectScene);
     }
 
