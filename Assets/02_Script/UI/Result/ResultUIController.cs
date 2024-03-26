@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class ResultUIController : MonoBehaviour
 {
+    [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] private Image resuitPanel;
     [SerializeField] private TextMeshProUGUI winnerText;
     [SerializeField] private Transform players;
@@ -22,6 +23,12 @@ public class ResultUIController : MonoBehaviour
     private void Start()
     {
         Cursor.visible = true;
+        DOFadeResult();
+    }
+
+    private void DOFadeResult()
+    {
+        canvasGroup.DOFade(1, 2);
     }
 
     public void EscapeFail()
@@ -29,12 +36,12 @@ public class ResultUIController : MonoBehaviour
         resuitPanel.color = Color.red;
         winnerText.color = Color.red;
 
-        winText.text = "Å»Ãâ ½ÇÆÐ";
+        winText.text = "Å»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½";
 
         //if (HostSingle.Instance.GameManager.gameMode == GameMode.Single)
-        //    winText.text = "Å»Ãâ ½ÇÆÐ";
+        //    winText.text = "Å»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½";
         //else
-        //    winText.text = "¸¶ÇÇ¾Æ ½Â¸®";
+        //    winText.text = "ï¿½ï¿½ï¿½Ç¾ï¿½ ï¿½Â¸ï¿½";
 
     }
 
@@ -45,9 +52,9 @@ public class ResultUIController : MonoBehaviour
         winnerText.color = skyColor;
 
         if (HostSingle.Instance.GameManager.gameMode == GameMode.Tutorial)
-            winText.text = "Æ©Åä¸®¾ó ¿Ï¼ö";
+            winText.text = "Æ©ï¿½ä¸®ï¿½ï¿½ ï¿½Ï¼ï¿½";
         else
-            winText.text = "ÇÃ·¹ÀÌ °á°ú";
+            winText.text = "ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½";
 
     }
 

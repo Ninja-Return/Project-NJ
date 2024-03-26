@@ -38,7 +38,7 @@ public class PlayerSoundController : NetworkBehaviour
         if(controller.Input.MoveVecter != Vector2.zero &&
             controller.CurrentState == EnumPlayerState.Move &&
             groundSencer.IsGround &&
-            walkSource.isPlaying == false)
+            walkSource.isPlaying == false && controller.isSittingDown == false)
         {
 
             walkSource.Play();
@@ -47,7 +47,7 @@ public class PlayerSoundController : NetworkBehaviour
         else if(walkSource.isPlaying == true && 
             (!groundSencer.IsGround ||
             controller.CurrentState != EnumPlayerState.Move ||
-            controller.Input.MoveVecter == Vector2.zero))
+            controller.Input.MoveVecter == Vector2.zero) || controller.isSittingDown == true)
         {
 
             walkSource.Stop();
