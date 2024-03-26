@@ -46,6 +46,11 @@ public class LobbySelectUIController : MonoBehaviour
         roomSeleteUI.DOLocalMoveY(0, 0.5f);
     }
 
+    public void CloseRoomSetting()
+    {
+        roomSeleteUI.DOLocalMoveY(-900f, 0.5f);
+    }
+
     public async void CreateRoom()
     {
 
