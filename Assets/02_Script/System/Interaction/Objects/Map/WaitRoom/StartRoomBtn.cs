@@ -1,13 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class StartRoomBtn : InteractionObject
 {
-
-    [SerializeField] private GameObject uiPanel1;
-    [SerializeField] private GameObject uiPanel2;
 
     protected override void DoInteraction()
     {
@@ -16,8 +14,7 @@ public class StartRoomBtn : InteractionObject
 
         WaitRoomManager.Instance.IsRunningGame.Value = true;
 
-        uiPanel1.SetActive(false);
-        uiPanel2.SetActive(false);
+        WaitRoomManager.Instance.UnActivePanelServerRpc();
 
         NetworkManager.SceneManager.LoadScene("Room", LoadSceneMode.Additive);
 
