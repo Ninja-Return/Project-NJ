@@ -48,12 +48,12 @@ public class IntroSceneUIController : MonoBehaviour
 
     public void BgmSetting(Slider slider)
     {
-
+        SoundManager.SettingBgm(slider.value);
     }
 
     public void SfxSetting(Slider slider)
     {
-
+        SoundManager.SettingSfx(slider.value);
     }
 
     public void LangaugeSetting()
