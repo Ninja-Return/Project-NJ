@@ -40,20 +40,20 @@ public class WinUIController : NetworkBehaviour
             if (data != null)
             {
 
-                SpawnPanelClientRPC(item, data.Value.nickName);
+                SpawnPanelClientRPC(item, data.Value.nickName, data.Value.isBreak);
 
             }
 
         }
 
-        PlayerPrefs.SetString("MafiaNickName", "");
+        //PlayerPrefs.SetString("MafiaNickName", "");
     }
 
     [ClientRpc]
-    private void SpawnPanelClientRPC(ulong clientId, string userName)
+    private void SpawnPanelClientRPC(ulong clientId, string userName, bool isBreak)
     {
 
-        controller.SpawnPanel(clientId, userName, clientId == NetworkManager.LocalClientId);
+        controller.SpawnPanel(clientId, userName, clientId == NetworkManager.LocalClientId, isBreak);
 
     }
 
@@ -65,13 +65,13 @@ public class WinUIController : NetworkBehaviour
         {
 
             case EnumWinState.None:
-                controller.MafiaWin();
+                controller.EscapeFail();
                 break;
             case EnumWinState.Player:
-                controller.HumanWin();
+                controller.EscapeClear();
                 break;
             case EnumWinState.Mafia:
-                controller.MafiaWin();
+                controller.EscapeFail();
                 break;
 
         }

@@ -257,10 +257,17 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
     [ClientRpc]
     private void JumpScareClientRPC(ulong playerId)
     {
-        var player = PlayerManager.Instance.FindPlayerControllerToID(playerId);
-        player.enabled = false;
-        player.cvcam.transform.DOLookAt(transform.position + new Vector3(0, 1.5f, 0), 0.1f);
+        PlayerController[] playerControllers = FindObjectsOfType<PlayerController>();
+        foreach (PlayerController player in playerControllers)
+        {
+            if (player.OwnerClientId == playerId)
+            {
+                player.enabled = false;
+                player.cvcam.transform.DOLookAt(transform.position + new Vector3(0, 1.5f, 0), 0.1f);
+            }
+        }
     }
+
 
     public void SetMonsterDeath()
     {
