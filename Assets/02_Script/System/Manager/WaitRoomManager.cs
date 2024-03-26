@@ -8,6 +8,8 @@ public class WaitRoomManager : NetworkBehaviour
 {
 
     [SerializeField] private PlayerController prefab;
+    [SerializeField] private GameObject uiPanel1;
+    [SerializeField] private GameObject uiPanel2;
 
     public NetworkVariable<bool> IsRunningGame;
 
@@ -20,6 +22,20 @@ public class WaitRoomManager : NetworkBehaviour
         IsRunningGame = new();
 
     }
-    
+
+    [ServerRpc]
+    public void UnActivePanelServerRpc()
+    {
+        UnActivePanelClientRpc();
+    }
+
+    [ClientRpc]
+    public void UnActivePanelClientRpc()
+    {
+
+        uiPanel1.SetActive(false);
+        uiPanel2.SetActive(false);
+
+    }
 
 }
