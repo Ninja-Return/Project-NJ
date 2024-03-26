@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using Unity.Netcode;
 using FSM_System.Netcode;
 using DG.Tweening;
+using Cinemachine;
 
 public enum MonsterState
 {
@@ -92,7 +93,8 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
 
     public void SetAnimation(string name, bool value)
     {
-        SetAnimationServerRpc(name, value);
+        SetAnimationClientRpc(name, value);
+        //SetAnimationServerRpc(name, value);
     }
 
     [ServerRpc]
@@ -260,10 +262,20 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
         PlayerController[] playerControllers = FindObjectsOfType<PlayerController>();
         foreach (PlayerController player in playerControllers)
         {
+            Debug.Log(player.name);
             if (player.OwnerClientId == playerId)
             {
-                player.enabled = false;
+                Debug.Log("turn");
+                if (player.cvcam == null)
+                {
+                    player.cvcam = player.transform.Find("PlayerCamera").GetComponent<CinemachineVirtualCamera>();
+                }
+
+                Debug.Log(player.cvcam);
                 player.cvcam.transform.DOLookAt(transform.position + new Vector3(0, 1.5f, 0), 0.1f);
+                player.enabled = false;
+
+                break;
             }
         }
     }

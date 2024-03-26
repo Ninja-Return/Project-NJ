@@ -7601,6 +7601,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1482757845762507575, guid: be87b92f95c193243ab4ae1edc5a3b50, type: 3}
+      propertyPath: m_Name
+      value: ClearBox
+      objectReference: {fileID: 0}
     - target: {fileID: 2096489777372062544, guid: be87b92f95c193243ab4ae1edc5a3b50, type: 3}
       propertyPath: m_Name
       value: WatchingUI
@@ -7856,6 +7860,7 @@ MonoBehaviour:
   diePlayerPrefab: {fileID: 1466623001085861326, guid: e99383170a4b4ed4cb7dc7b518e66f06, type: 3}
   alivePanelRoot: {fileID: 463257133}
   diePlayerRoot: {fileID: 463257132}
+  clearPanel: {fileID: 1812828512}
 --- !u!224 &463257135 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7827444974065714861, guid: be87b92f95c193243ab4ae1edc5a3b50, type: 3}
@@ -29498,6 +29503,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1810018602}
   m_CullTransparentMesh: 1
+--- !u!224 &1812828512 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8529452774646176415, guid: be87b92f95c193243ab4ae1edc5a3b50, type: 3}
+  m_PrefabInstance: {fileID: 463257130}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1813869290
 PrefabInstance:
   m_ObjectHideFlags: 0
