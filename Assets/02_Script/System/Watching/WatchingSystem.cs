@@ -78,6 +78,8 @@ public class WatchingSystem : NetworkBehaviour
     public void StartWatching()
     {
 
+        if (isWatching) return;
+
         //HandleChattingOpen();
 
         // 일반 음성 채널 조인
