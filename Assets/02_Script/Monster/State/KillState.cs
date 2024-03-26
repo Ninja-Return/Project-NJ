@@ -29,7 +29,7 @@ public class KillState : MonsterStateRoot
     {
         if (!IsServer) return;
 
-        if (currentTime >= 0.6f) //1f => animTime
+        if (currentTime >= 0.2f) //1f => animTime
         {
             controller.ChangeState(MonsterState.Idle);
         }
