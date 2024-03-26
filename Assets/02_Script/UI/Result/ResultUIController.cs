@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class ResultUIController : MonoBehaviour
 {
+    [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] private Image resuitPanel;
     [SerializeField] private TextMeshProUGUI winnerText;
     [SerializeField] private Transform players;
@@ -22,6 +23,12 @@ public class ResultUIController : MonoBehaviour
     private void Start()
     {
         Cursor.visible = true;
+        DOFadeResult();
+    }
+
+    private void DOFadeResult()
+    {
+        canvasGroup.DOFade(1, 2);
     }
 
     public void MafiaWin()
@@ -46,7 +53,7 @@ public class ResultUIController : MonoBehaviour
 
         if (HostSingle.Instance.GameManager.gameMode == GameMode.Tutorial)
             winText.text = "Æ©Åä¸®¾ó ¿Ï¼ö";
-        else if(HostSingle.Instance.GameManager.gameMode == GameMode.Single)
+        else if (HostSingle.Instance.GameManager.gameMode == GameMode.Single)
             winText.text = "Å»Ãâ ¼º°ø";
         else
             winText.text = "»ýÁ¸ÀÚ ½Â¸®";
