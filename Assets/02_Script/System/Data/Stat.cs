@@ -5,43 +5,36 @@ using UnityEngine;
 [System.Serializable]
 public class Stat
 {
-
     [SerializeField] private float value;
-    public float Value 
-    { 
-
+    public float Value
+    {
         get
         {
+            float returnValue = value;
 
-            float returnVel = value;
-
-            foreach(var v in modify)
+            foreach (var mod in modify)
             {
-
-                returnVel += v;
-
+                returnValue += mod;
             }
 
-            return returnVel;
-
+            return returnValue;
         }
-
     }
 
-    private List<float> modify = new();
+    private List<float> modify = new List<float>();
 
-    public void AddMod(float value)
+    public void SetValue(float newValue)
     {
-
-        modify.Add(value);
-
+        value = newValue;
     }
 
-    public void RemoveMod(float value)
+    public void AddMod(float modifier)
     {
-
-        modify.Remove(value);
-
+        modify.Add(modifier);
     }
 
+    public void RemoveMod(float modifier)
+    {
+        modify.Remove(modifier);
+    }
 }
