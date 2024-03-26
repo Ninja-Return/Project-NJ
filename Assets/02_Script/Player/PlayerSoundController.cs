@@ -8,6 +8,7 @@ public class PlayerSoundController : NetworkBehaviour
 
     [SerializeField] private NetworkAudioSource walkSource;
     [SerializeField] private GroundSencer groundSencer;
+    [SerializeField] private PlayerController playerController;
 
     private PlayerController controller;
 
@@ -47,7 +48,7 @@ public class PlayerSoundController : NetworkBehaviour
         else if(walkSource.isPlaying == true && 
             (!groundSencer.IsGround ||
             controller.CurrentState != EnumPlayerState.Move ||
-            controller.Input.MoveVecter == Vector2.zero))
+            controller.Input.MoveVecter == Vector2.zero) && playerController.isSittingDown == true)
         {
 
             walkSource.Stop();
