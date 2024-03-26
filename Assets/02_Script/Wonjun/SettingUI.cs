@@ -9,6 +9,7 @@ public class SettingUI : MonoBehaviour
 {
     [SerializeField] private RectTransform mapPanel;
     [SerializeField] private Slider sensitivitySlider;
+    [SerializeField] private Slider SoundSlider;
     [SerializeField] private PlayerDataSO playerData;
     private bool Setting = false;
     private bool isShow = true;
@@ -67,5 +68,8 @@ public class SettingUI : MonoBehaviour
         playerData.LookSensitive.SetValue(sensitivitySlider.value);
     }
 
-    
+    public void SoundChange()
+    {
+        SoundManager.SettingBgm(SoundSlider.value);
+    }
 }
