@@ -11,6 +11,7 @@ public class SettingUI : MonoBehaviour
     [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private Slider SoundSlider;
     [SerializeField] private PlayerDataSO playerData;
+    private float panelTime = 0;
     private bool Setting = false;
     private bool isShow = true;
     private float mouseSensitivity = 100f; 
@@ -25,27 +26,31 @@ public class SettingUI : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !Setting)
+        panelTime += Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.T) && !Setting && panelTime > 1f)
         {
             Support.SettingCursorVisable(isShow);
-            mapPanel.DOLocalMove(Vector2.zero, 0.5f).SetEase(Ease.InExpo);
             Setting = true;
+            mapPanel.DOLocalMove(Vector2.zero, 0.5f).SetEase(Ease.InExpo);
+            panelTime = 0;
         }
-        else if (Input.GetKeyDown(KeyCode.Escape) && Setting)
+        else if (Input.GetKeyDown(KeyCode.T) && Setting && panelTime > .5f)
         {
             Support.SettingCursorVisable(!isShow);
-            mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
             Setting = false;
+            mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
+            panelTime = 0;
         }
     }
 
     public void PanelUp()
     {
-        if (Setting)
+        if (Setting && panelTime > .5f)
         {
             Support.SettingCursorVisable(!isShow);
-            mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
             Setting = false;
+            mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
+            panelTime = 0;
         }
     }
 
