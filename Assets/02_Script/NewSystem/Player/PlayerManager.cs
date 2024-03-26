@@ -24,6 +24,7 @@ public class PlayerManager : NetworkBehaviour
     public NetworkList<LiveData> diePlayer { get; private set; }
 
     public bool IsDie { get; private set; }
+    private bool IsBreaken;
     private int joinCount;
 
     private void Awake()
@@ -115,6 +116,15 @@ public class PlayerManager : NetworkBehaviour
 
         if(player == null) return;
 
+        if (type == EnumList.DeadType.Escape)
+        {
+            var data = HostSingle.Instance.NetServer.GetUserDataByClientID(clientId).Value;
+            data.isBreak = true;
+            HostSingle.Instance.NetServer.SetUserDataByClientId(clientId, data);
+
+            IsBreaken = true;
+        }
+
         players.Remove(player);
         player.NetworkObject.Despawn();
 
@@ -154,8 +164,8 @@ public class PlayerManager : NetworkBehaviour
 
         New_GameManager.Instance.CheckGameEnd
             (
-            players.Count, 
-            PlayerRoleManager.Instance.FindMafiaId() != null
+            players.Count,
+            IsBreaken
             );
 
 

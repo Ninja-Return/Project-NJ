@@ -48,6 +48,7 @@ public class IntroSceneUIController : MonoBehaviour
 
     public void BgmSetting(Slider slider)
     {
+        Debug.Log("11");
         SoundManager.SettingBgm(slider.value);
     }
 

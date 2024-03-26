@@ -14,9 +14,9 @@ public class ResultUIController : MonoBehaviour
     [SerializeField] private MeetingProfile playerPrefab;
 
     [Header("FeedbackText")]
-    [SerializeField] private TextMeshProUGUI clearAreaText;
-    [SerializeField] private TextMeshProUGUI mafiaKillText;
-    [SerializeField] private TextMeshProUGUI monsterKillText;
+    //[SerializeField] private TextMeshProUGUI clearAreaText;
+    //[SerializeField] private TextMeshProUGUI mafiaKillText;
+    //[SerializeField] private TextMeshProUGUI monsterKillText;
     [SerializeField] private TMP_Text winText;
 
     private void Start()
@@ -24,21 +24,21 @@ public class ResultUIController : MonoBehaviour
         Cursor.visible = true;
     }
 
-    public void MafiaWin()
+    public void EscapeFail()
     {
         resuitPanel.color = Color.red;
         winnerText.color = Color.red;
 
-        if (HostSingle.Instance.GameManager.gameMode == GameMode.Single)
-            winText.text = "탈출 실패";
-        else
-            winText.text = "마피아 승리";
+        winText.text = "탈출 실패";
 
-        ModeSet();
+        //if (HostSingle.Instance.GameManager.gameMode == GameMode.Single)
+        //    winText.text = "탈출 실패";
+        //else
+        //    winText.text = "마피아 승리";
 
     }
 
-    public void HumanWin()
+    public void EscapeClear()
     {
         Color skyColor = new Color(0, 0.6f, 1, 1);
         resuitPanel.color = skyColor;
@@ -46,34 +46,20 @@ public class ResultUIController : MonoBehaviour
 
         if (HostSingle.Instance.GameManager.gameMode == GameMode.Tutorial)
             winText.text = "튜토리얼 완수";
-        else if(HostSingle.Instance.GameManager.gameMode == GameMode.Single)
-            winText.text = "탈출 성공";
         else
-            winText.text = "생존자 승리";
-
-        ModeSet();
+            winText.text = "플레이 결과";
 
     }
 
-    private void ModeSet()
-    {
-        if (HostSingle.Instance.GameManager.gameMode == GameMode.Single)
-        {
-            mafiaKillText.gameObject.SetActive(false);
-            monsterKillText.gameObject.SetActive(false);
-        }
-    }
-
-    public void SpawnPanel(ulong clientId, string userName, bool isOwner)
+    public void SpawnPanel(ulong clientId, string userName, bool isOwner, bool isBreak)
     {
         var panel = Instantiate(playerPrefab, players);
-
         panel.Setting(clientId, userName, isOwner, false);
 
-        if (userName == PlayerPrefs.GetString("MafiaNickName"))
-            panel.ColorChange(Color.red);
-        else
+        if (isBreak)
             panel.ColorChange(Color.blue);
+        else
+            panel.ColorChange(Color.red);
 
     }
 

@@ -10,6 +10,7 @@ public struct UserData
     public string authId;
     public List<AttachedItem> attachedItem;
     public bool isDie;
+    public bool isBreak;
     public Color color;
 
 }
