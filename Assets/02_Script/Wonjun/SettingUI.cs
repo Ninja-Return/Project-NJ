@@ -99,6 +99,6 @@ public class SettingUI : MonoBehaviour
 
     public void SoundChange()
     {
-        SoundManager.SettingBgm(SoundSlider.value);
+        SoundManager.SettingSfx(SoundSlider.value);
     }
 }
