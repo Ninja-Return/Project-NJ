@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
 public class IntroSceneUIController : MonoBehaviour
 {
@@ -19,6 +20,11 @@ public class IntroSceneUIController : MonoBehaviour
         introSequence.Append(introPanel.DOColor(Color.white, 0.1f));
         introSequence.Append(introPanel.DOFade(0, 0.5f));
         introSequence.Append(transform.DOLocalMove(Vector2.zero, 0.1f).OnComplete(() => { introPanel.gameObject.SetActive(false); }));
+
+        if (PlayerPrefs.GetString("PlayerName") == "")
+        {
+            PlayerPrefs.SetString("PlayerName", $"Player{Random.Range(1, 1000)}");
+        }
     }
 
     public void GameobjectActiveTrue(GameObject obj)
@@ -96,6 +102,12 @@ public class IntroSceneUIController : MonoBehaviour
             .SetEase(Ease.Linear));
 
         sequence.Play();
+    }
+
+    public void NameSetting(TMP_Text newNameText)
+    {
+        Debug.Log(newNameText.text);
+        PlayerPrefs.SetString("PlayerName", newNameText.text);
     }
 
     public void Quit()
