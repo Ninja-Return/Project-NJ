@@ -24,6 +24,7 @@ public class StartGameText : NetworkBehaviour
     private void HandleGameStarted()
     {
 
+        NetworkSoundManager.Play2DSound("GameStart");
         StartCoroutine(StartAlert());
 
     }

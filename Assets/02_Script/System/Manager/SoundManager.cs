@@ -141,7 +141,6 @@ public class SoundManager : MonoBehaviour
     public static void SettingBgm(float value)
     {
         if (value <= -40f) value = -80f;
-        Debug.Log("22");
         instance.mainMixer.SetFloat("BGM", value);
     }
 

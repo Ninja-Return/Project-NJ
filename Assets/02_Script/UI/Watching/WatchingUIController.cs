@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using TMPro;
 
 public class WatchingUIController : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class WatchingUIController : MonoBehaviour
     [SerializeField] private DiePlayerPanel diePlayerPrefab;
     [SerializeField] private Transform alivePanelRoot;
     [SerializeField] private Transform diePlayerRoot;
+    [SerializeField] private Transform clearPanel;
+
+    private TMP_Text clearText;
 
     private List<AlivePlayerPanel> alivePlayers = new();
 
@@ -18,6 +22,20 @@ public class WatchingUIController : MonoBehaviour
     {
 
         PlayerManager.Instance.alivePlayer.OnListChanged += HandleAliveChanged;
+
+        clearText = clearPanel.GetComponentInChildren<TMP_Text>();
+
+        var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(PlayerManager.Instance.OwnerClientId);
+        if (data.Value.isBreak)
+        {
+            clearText.text = "Å»ÃâÇÏ¼Ì½À´Ï´Ù";
+        }
+        else
+        {
+            clearText.text = "Á×À¸¼Ì½À´Ï´Ù";
+        }
+
+        StartCoroutine(StartClear());
 
         foreach (var player in PlayerManager.Instance.alivePlayer)
         {
@@ -58,6 +76,17 @@ public class WatchingUIController : MonoBehaviour
                 }
 
         }
+
+    }
+
+    private IEnumerator StartClear()
+    {
+
+        clearPanel.transform.TVEffect(true);
+
+        yield return new WaitForSeconds(2f);
+
+        clearPanel.transform.TVEffect(false);
 
     }
 

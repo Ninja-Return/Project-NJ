@@ -52,15 +52,19 @@ public class CHSceneManager : MonoBehaviour
 
     public void ChangeScene(string changeScene)
     {
-        Fade_img.DOFade(1, fadeDuration)
-        .OnStart(() =>
-        {
-            Fade_img.blocksRaycasts = true; 
-        })
-        .OnComplete(() =>
-        {
-            StartCoroutine("LoadScene", changeScene); /// 씬 로드 코루틴 실행 ///
-        });
+        Fade_img.alpha = 1f;
+        Fade_img.blocksRaycasts = true;
+        StartCoroutine("LoadScene", changeScene);
+
+        //Fade_img.DOFade(1, 0.01f)
+        //.OnStart(() =>
+        //{
+        //    Fade_img.blocksRaycasts = true;
+        //})
+        //.OnComplete(() =>
+        //{
+        //    StartCoroutine("LoadScene", changeScene); /// 씬 로드 코루틴 실행 ///
+        //});
     }
     public GameObject Loading;
     public TextMeshProUGUI Loading_text; //퍼센트 표시할 텍스트

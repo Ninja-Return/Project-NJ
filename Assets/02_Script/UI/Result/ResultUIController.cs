@@ -9,7 +9,6 @@ using Unity.Netcode;
 
 public class ResultUIController : MonoBehaviour
 {
-    [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] private Image resuitPanel;
     [SerializeField] private TextMeshProUGUI winnerText;
     [SerializeField] private Transform players;
@@ -20,21 +19,12 @@ public class ResultUIController : MonoBehaviour
     [SerializeField] private TMP_Text failPlayerText;
     [SerializeField] private TMP_Text winText;
 
-    private NetworkVariable<float> escapePlayerCnt = new NetworkVariable<float>();
-    private NetworkVariable<float> failPlayerCnt = new NetworkVariable<float>();
+    private float escapePlayerCnt = 0f;
+    private float failPlayerCnt = 0f;
 
     private void Start()
     {
         Cursor.visible = true;
-        DOFadeResult();
-
-        escapePlayerCnt.OnValueChanged += SetEscapeText;
-        failPlayerCnt.OnValueChanged += SetFailText;
-    }
-
-    private void DOFadeResult()
-    {
-        canvasGroup.DOFade(1, 2);
     }
 
     public void EscapeFail()
@@ -43,12 +33,6 @@ public class ResultUIController : MonoBehaviour
         winnerText.color = Color.red;
 
         winText.text = "탈출 실패";
-
-        //if (HostSingle.Instance.GameManager.gameMode == GameMode.Single)
-        //    winText.text = "Ż�� ����";
-        //else
-        //    winText.text = "���Ǿ� �¸�";
-
     }
 
     public void EscapeClear()
@@ -71,32 +55,35 @@ public class ResultUIController : MonoBehaviour
 
         if (isBreak)
         {
-            escapePlayerCnt.Value++;
+            PlayerCountServerRpc(1f, 0f);
             panel.ColorChange(Color.blue);
         }
         else
         {
-            failPlayerCnt.Value++;
+            PlayerCountServerRpc(0f, 1f);
             panel.ColorChange(Color.red);
         }
     }
 
-    private void SetEscapeText(float oldCnt, float newCnt)
+    [ServerRpc]
+    private void PlayerCountServerRpc(float escapeCnt, float failCnt)
     {
-        escapePlayerText.text = $"탈출한 플레이어 : {newCnt}명";
+        escapePlayerCnt += escapeCnt;
+        failPlayerCnt += failCnt;
+        FeedbackSettingClientRpc(escapePlayerCnt, failPlayerCnt);
     }
 
-    private void SetFailText(float oldCnt, float newCnt)
+    [ClientRpc]
+    private void FeedbackSettingClientRpc(float escapeCnt, float failCnt)
     {
-        failPlayerText.text = $"죽은 플레이어 : {newCnt}명";
+        escapePlayerText.text = $"탈출한 플레이어 : {escapeCnt}명";
+        failPlayerText.text = $"죽은 플레이어 : {failCnt}명";
     }
 
     public void BackMain()
     {
-        escapePlayerCnt.OnValueChanged -= SetEscapeText;
-        failPlayerCnt.OnValueChanged -= SetFailText;
-
         SceneManager.LoadScene(SceneList.LobbySelectScene);
+        Debug.LogError("123123123123");
     }
 
 }

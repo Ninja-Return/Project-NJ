@@ -66,7 +66,7 @@ public class New_GameManager : NetworkBehaviour
 
             FadeManager.Instance.FadeOn();
             OnGameFinishedClientRPC();
-            WinSystem.Instance. WinServerRPC(IsBreaken == true ? EnumWinState.Player : EnumWinState.Mafia);
+            WinSystem.Instance. WinServerRPC(IsBreaken == true ? EnumWinState.Escape : EnumWinState.Fail);
 
         }
 

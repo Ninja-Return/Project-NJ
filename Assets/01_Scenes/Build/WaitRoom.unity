@@ -4287,8 +4287,6 @@ MonoBehaviour:
   <rpcOfLocalClient>k__BackingField: 1
   <interactionAbleItemName>k__BackingField: 
   interactionAble: 1
-  uiPanel1: {fileID: 0}
-  uiPanel2: {fileID: 0}
 --- !u!1001 &253537810
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4973,7 +4971,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -5031,13 +5029,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 284337452}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.86444026, y: -0.115484454, z: 0.23162603, w: 0.4309939}
+  m_LocalRotation: {x: -0.6830127, y: -0.18301266, z: -0.18301266, w: 0.6830127}
   m_LocalPosition: {x: -3.0109172, y: 106.543686, z: 12.435154}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 127, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: -30, z: 0}
 --- !u!114 &284337456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7603,6 +7601,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1482757845762507575, guid: be87b92f95c193243ab4ae1edc5a3b50, type: 3}
+      propertyPath: m_Name
+      value: ClearBox
+      objectReference: {fileID: 0}
     - target: {fileID: 2096489777372062544, guid: be87b92f95c193243ab4ae1edc5a3b50, type: 3}
       propertyPath: m_Name
       value: WatchingUI
@@ -7858,6 +7860,7 @@ MonoBehaviour:
   diePlayerPrefab: {fileID: 1466623001085861326, guid: e99383170a4b4ed4cb7dc7b518e66f06, type: 3}
   alivePanelRoot: {fileID: 463257133}
   diePlayerRoot: {fileID: 463257132}
+  clearPanel: {fileID: 1812828512}
 --- !u!224 &463257135 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7827444974065714861, guid: be87b92f95c193243ab4ae1edc5a3b50, type: 3}
@@ -16366,6 +16369,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 4498147838486822712, guid: 6fe2fb5096ef5d349bb4dc3093a0a9af, type: 3}
+  uiPanel1: {fileID: 546655359}
+  uiPanel2: {fileID: 702047296}
   IsRunningGame:
     m_InternalValue: 0
 --- !u!114 &977788737
@@ -21386,7 +21391,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1306807973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28374,8 +28379,6 @@ MonoBehaviour:
   <rpcOfLocalClient>k__BackingField: 1
   <interactionAbleItemName>k__BackingField: 
   interactionAble: 1
-  uiPanel1: {fileID: 546655359}
-  uiPanel2: {fileID: 702047296}
 --- !u!4 &1744440955 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5738090200795362192, guid: 7ee86819290aa5a45b191271a04e7727, type: 3}
@@ -29500,6 +29503,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1810018602}
   m_CullTransparentMesh: 1
+--- !u!224 &1812828512 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8529452774646176415, guid: be87b92f95c193243ab4ae1edc5a3b50, type: 3}
+  m_PrefabInstance: {fileID: 463257130}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1813869290
 PrefabInstance:
   m_ObjectHideFlags: 0
