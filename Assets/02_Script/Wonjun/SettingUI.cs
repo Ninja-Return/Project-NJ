@@ -97,8 +97,8 @@ public class SettingUI : MonoBehaviour
         playerData.LookSensitive.SetValue(sensitivitySlider.value);
     }
 
-    public void SoundChange()
+    public void SoundChange(Slider slider)
     {
-        SoundManager.SettingSfx(SoundSlider.value);
+        SoundManager.SettingSfx(slider.value);
     }
 }

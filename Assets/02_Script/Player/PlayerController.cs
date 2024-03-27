@@ -136,12 +136,11 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
 #if UNITY_EDITOR
 
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+        /*if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
         {
 
             HostSingle.Instance.GameManager.ShutdownAsync();
-
-        }
+        }*/
 
 #endif
 
