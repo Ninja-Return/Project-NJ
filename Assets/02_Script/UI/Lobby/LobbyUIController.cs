@@ -6,6 +6,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class LobbyUIController : NetworkBehaviour
 {
@@ -135,6 +136,22 @@ public class LobbyUIController : NetworkBehaviour
         else
         {
             mapPanel.DOLocalMove(Vector2.zero, 0.5f).SetEase(Ease.InExpo);
+        }
+    }
+
+    public void BackLobby()
+    {
+        Debug.Log("click");
+        if (IsHost)
+        {
+            Debug.Log("hostclick");
+            HostSingle.Instance.GameManager.ShutdownAsync();
+            SceneManager.LoadScene(SceneList.LobbySelectScene);
+        }
+        else
+        {
+            Debug.Log("clientclick");
+            ClientSingle.Instance.GameManager.Disconnect();
         }
     }
 
