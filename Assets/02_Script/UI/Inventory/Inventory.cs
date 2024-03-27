@@ -13,8 +13,8 @@ public class Inventory : NetworkBehaviour
 {
     public static Inventory Instance { get; private set; }
 
-    public event SlotChange OnSlotClickEvt; //��ȣ�ۿ뿡�� ������ �տ���� �Լ� �־���� �����
-    public event SlotChange OnSlotDropEvt; //��� ������ �����鼭 ������ �Լ� �־���
+    public event SlotChange OnSlotClickEvt; //��ȣ�ۿ뿡�� ������ �տ����?�Լ� �־����?�����?
+    public event SlotChange OnSlotDropEvt; //���?������ �����鼭 ������ �Լ� �־���
     public event SlotChange OnSlotRemove;
 
     [SerializeField] private GameObject inventoryPanel;
@@ -41,7 +41,7 @@ public class Inventory : NetworkBehaviour
             playerController = GetComponent<PlayerController>();
             slots = GetComponentsInChildren<SlotUI>();
 
-            for (int i = 0; i < slots.Length; i++) //�տ� �� ������ ���� ����� �ϴϱ�
+            for (int i = 0; i < slots.Length; i++) //�տ� �� ������ ���� �����?�ϴϱ�
             {
                 slots[i].slotIndex = i;
             }
@@ -119,7 +119,7 @@ public class Inventory : NetworkBehaviour
         isHold = true;
         slotIdx = idx;
 
-        OnSlotClickEvt?.Invoke(itemObj, idx, extraData); //������ ��� ���� pop�ϰ� ���ο� ������
+        OnSlotClickEvt?.Invoke(itemObj, idx, extraData); //������ ���?���� pop�ϰ� ���ο� ������
     }
 
     public void DropItem(string itemObj, int idx, string extraData)

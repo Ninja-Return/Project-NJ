@@ -14,10 +14,11 @@ public class SettingUI : MonoBehaviour
     private float panelTime = 0;
     private bool Setting = false;
     private bool isShow = true;
-    private float mouseSensitivity = 100f; 
+    private PlayerController playerController;
 
     void Start()
     {
+        playerController = GetComponent<PlayerController>();
         sensitivitySlider.maxValue = 12;
         sensitivitySlider.value = 12;
         playerData.LookSensitive.SetValue(sensitivitySlider.value);
@@ -27,16 +28,34 @@ public class SettingUI : MonoBehaviour
     void Update()
     {
         panelTime += Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.T) && !Setting && panelTime > 1f)
+        if (Input.GetKeyDown(KeyCode.Escape) && !Setting && panelTime > .5f)
         {
+
             Support.SettingCursorVisable(isShow);
+
+            if (PlayerManager.Instance == null)
+                playerController.Active(!isShow);
+            else
+                PlayerManager.Instance.localController.Active(!isShow);
+
+
+
             Setting = true;
             mapPanel.DOLocalMove(Vector2.zero, 0.5f).SetEase(Ease.InExpo);
             panelTime = 0;
         }
-        else if (Input.GetKeyDown(KeyCode.T) && Setting && panelTime > .5f)
+        else if (Input.GetKeyDown(KeyCode.Escape) && Setting && panelTime > .5f)
         {
+
             Support.SettingCursorVisable(!isShow);
+
+            if (PlayerManager.Instance == null)
+                playerController.Active(isShow);
+            else
+                PlayerManager.Instance.localController.Active(isShow);
+
+
+
             Setting = false;
             mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
             panelTime = 0;
@@ -48,6 +67,11 @@ public class SettingUI : MonoBehaviour
         if (Setting && panelTime > .5f)
         {
             Support.SettingCursorVisable(!isShow);
+
+            if (PlayerManager.Instance == null)
+                playerController.Active(isShow);
+            else
+                PlayerManager.Instance.localController.Active(isShow);
             Setting = false;
             mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
             panelTime = 0;
