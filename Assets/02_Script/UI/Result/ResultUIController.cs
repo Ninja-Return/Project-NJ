@@ -9,7 +9,6 @@ using Unity.Netcode;
 
 public class ResultUIController : MonoBehaviour
 {
-    [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] private Image resuitPanel;
     [SerializeField] private TextMeshProUGUI winnerText;
     [SerializeField] private Transform players;
@@ -26,12 +25,6 @@ public class ResultUIController : MonoBehaviour
     private void Start()
     {
         Cursor.visible = true;
-        DOFadeResult();
-    }
-
-    private void DOFadeResult()
-    {
-        canvasGroup.DOFade(1, 2);
     }
 
     public void EscapeFail()
@@ -90,6 +83,7 @@ public class ResultUIController : MonoBehaviour
     public void BackMain()
     {
         SceneManager.LoadScene(SceneList.LobbySelectScene);
+        Debug.LogError("123123123123");
     }
 
 }
