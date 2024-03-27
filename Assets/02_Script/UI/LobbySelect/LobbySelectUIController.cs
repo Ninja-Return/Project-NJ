@@ -57,7 +57,7 @@ public class LobbySelectUIController : MonoBehaviour
         try
         {
 
-            await AppController.Instance.StartHostAsync(Guid.NewGuid().ToString(), roomInputField.text);
+            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text);
 
             HostSingle.Instance.GameManager.gameMode = GameMode.Mutli;
             NetworkManager.Singleton.SceneManager.LoadScene(SceneList.LobbyScene, LoadSceneMode.Single);
@@ -102,7 +102,7 @@ public class LobbySelectUIController : MonoBehaviour
         try
         {
 
-            await AppController.Instance.StartHostAsync(Guid.NewGuid().ToString(), roomInputField.text);
+            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text);
 
             HostSingle.Instance.GameManager.gameMode = GameMode.Tutorial;
             NetworkManager.Singleton.SceneManager.LoadScene(SceneList.TutorialScene, LoadSceneMode.Single);
@@ -121,7 +121,7 @@ public class LobbySelectUIController : MonoBehaviour
         try
         {
 
-            await AppController.Instance.StartHostAsync(Guid.NewGuid().ToString(), roomInputField.text);
+            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text);
 
             isRoomLook = true;
             HostSingle.Instance.GameManager.gameMode = GameMode.Single;
