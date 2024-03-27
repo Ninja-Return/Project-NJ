@@ -1,10 +1,8 @@
-using System.Collections;
-using UnityEngine;
-using FSM_System.Netcode;
 using Cinemachine;
-using System;
+using FSM_System.Netcode;
+using System.Collections;
 using Unity.Netcode;
-using DG.Tweening;
+using UnityEngine;
 using UnityEngine.UI;
 
 public enum EnumPlayerState
@@ -33,6 +31,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     public float changeTime = 1f;
     public Vector3 originalCameraPosition;
     public Slider SensitivitySlider;
+    public Rigidbody playerRigidbody;
 
     public bool IsMeeting { get; set; }
 

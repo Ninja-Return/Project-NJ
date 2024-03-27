@@ -25,17 +25,17 @@ public class WatchingUIController : MonoBehaviour
 
         clearText = clearPanel.GetComponentInChildren<TMP_Text>();
 
-        var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(PlayerManager.Instance.OwnerClientId);
-        if (data.Value.isBreak)
-        {
-            clearText.text = "Å»ÃâÇÏ¼Ì½À´Ï´Ù";
-        }
-        else
-        {
-            clearText.text = "Á×À¸¼Ì½À´Ï´Ù";
-        }
+        //var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(PlayerManager.Instance.OwnerClientId);
+        //if (data.Value.isBreak)
+        //{
+        //    clearText.text = "Å»ÃâÇÏ¼Ì½À´Ï´Ù";
+        //}
+        //else
+        //{
+        //    clearText.text = "Á×À¸¼Ì½À´Ï´Ù";
+        //}
 
-        StartCoroutine(StartClear());
+        //StartCoroutine(StartClear());
 
         foreach (var player in PlayerManager.Instance.alivePlayer)
         {

@@ -93,6 +93,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
 
     public void SetAnimation(string name, bool value)
     {
+        anim.SetBool(name, value);
         SetAnimationClientRpc(name, value);
         //SetAnimationServerRpc(name, value);
     }
@@ -271,7 +272,13 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
                     player.cvcam = player.transform.Find("PlayerCamera").GetComponent<CinemachineVirtualCamera>();
                 }
 
+                if (player.playerRigidbody == null)
+                {
+                    player.playerRigidbody = player.GetComponent<Rigidbody>();
+                }
+
                 Debug.Log(player.cvcam);
+                player.playerRigidbody.velocity = Vector3.zero;
                 player.cvcam.transform.DOLookAt(transform.position + new Vector3(0, 1.5f, 0), 0.1f);
                 player.enabled = false;
 
