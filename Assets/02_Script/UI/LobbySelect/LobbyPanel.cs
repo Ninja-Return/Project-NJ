@@ -25,7 +25,7 @@ public class LobbyPanel : MonoBehaviour
     public async void JoinButtonClick()
     {
 
-        await AppController.Instance.StartClientAsync(Guid.NewGuid().ToString(), joinCode);
+        await AppController.Instance.StartClientAsync(PlayerPrefs.GetString("PlayerName"), joinCode);
 
     }
 
