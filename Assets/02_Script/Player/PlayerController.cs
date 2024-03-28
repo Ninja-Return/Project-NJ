@@ -106,6 +106,9 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         var sitDown = new PlayerSitDown(this);
         AddState(sitDown, EnumPlayerState.Move);
 
+        var kill = new PlayerKillState(this);
+        AddState(kill, EnumPlayerState.Move);
+
         ChangeState(startState);
 
         Input.OnInventoryKeyPress += HandleInvenActive;
