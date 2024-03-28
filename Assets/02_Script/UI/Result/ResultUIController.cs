@@ -92,6 +92,9 @@ public class ResultUIController : MonoBehaviour
 
     public void BackMain()
     {
+
+
         SceneManager.LoadScene(SceneList.LobbySelectScene);
+
     }
 }
