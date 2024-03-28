@@ -48,6 +48,8 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         interactionCanvas = GetComponentInChildren<Canvas>();
         meetingObject = GameObject.Find("MeetingObject");
 
+        playerRigidbody = GetComponent<Rigidbody>();
+
     }
 
 
@@ -209,6 +211,8 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     public void Active(bool active, bool disAbleInven = false)
     {
+
+        playerRigidbody.velocity = Vector3.zero;
 
         if (active)
         {

@@ -19,6 +19,8 @@ public class SettingUI : MonoBehaviour
 
     void Start()
     {
+        SoundPanel.SetActive(false);
+        DPIPanel.SetActive(false);
         playerController = GetComponent<PlayerController>();
         sensitivitySlider.maxValue = 12;
         sensitivitySlider.value = 12;
@@ -70,6 +72,8 @@ public class SettingUI : MonoBehaviour
             Support.SettingCursorVisable(!isShow);
 
             Setting = false;
+            mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
+
             if (PlayerManager.Instance == null)
                 playerController.Active(isShow);
             else
@@ -78,7 +82,6 @@ public class SettingUI : MonoBehaviour
             SoundPanel.SetActive(false);
             DPIPanel.SetActive(false);
 
-            mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
             panelTime = 0;
         }
     }
