@@ -29,13 +29,13 @@ public class RandomMapGenerater : NetworkBehaviour
         SpawnRoom();
         CloseAllRoom();
 
-        surface.BuildNavMesh();
-
         //EndSpawnClientRPC();
 
         Resources.UnloadUnusedAssets();
 
         startRoom.OpenAllClientRPC();
+
+        surface.BuildNavMesh();
 
     }
 
