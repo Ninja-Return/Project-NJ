@@ -185,6 +185,7 @@ public class PlayerManager : NetworkBehaviour
         //deathUI.gameObject.SetActive(true);
         //deathUI.PopupDeathUI(type);
 
+        NetworkController.Instance.vivox.Leave3DChannel();
         WatchingSystem.Instance.StartWatching();
 
         IsDie = true;

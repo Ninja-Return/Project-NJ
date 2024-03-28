@@ -10,7 +10,7 @@ public class RandomMapGenerater : NetworkBehaviour
     [SerializeField] private Transform roomRoot;
     [SerializeField] private NavMeshSurface surface;
     [SerializeField] private float subtractValue = 0.01f;
-    [SerializeField] private RoomData constRoom;
+    [SerializeField] private RoomData constRoom, shopRoomFB, shopRoomLR;
 
     private StartRoom startRoom;
     private Dictionary<RoomData.Dir, List<RoomData>> dirByRoom = new();
@@ -97,9 +97,10 @@ public class RandomMapGenerater : NetworkBehaviour
         float per = 1;
 
         bool isControomSpawnd = false;
+        bool isShopSpawn = false;
         int spcnt = 0;
 
-        while(rooms.Count > 0 || !isControomSpawnd)
+        while(rooms.Count > 0 || !isControomSpawnd || isShopSpawn)
         {
 
             var room = rooms.Dequeue();
@@ -120,12 +121,24 @@ public class RandomMapGenerater : NetworkBehaviour
 
                     RoomData cloneRoom;
 
-                    if(!isControomSpawnd && spcnt > 10)
+                    if(!isControomSpawnd && spcnt > 30)
                     {
 
                         isControomSpawnd = true;
                         cloneRoom = Instantiate(
                         constRoom,
+                        vec, Quaternion.identity);
+
+                    }
+                    else if(!isShopSpawn && spcnt > 10)
+                    {
+
+                        var prefab = 
+                            dir == RoomData.Dir.Fwd || dir == RoomData.Dir.Bak ? shopRoomFB : shopRoomLR;
+
+                        isShopSpawn = true;
+                        cloneRoom = Instantiate(
+                        prefab,
                         vec, Quaternion.identity);
 
                     }
