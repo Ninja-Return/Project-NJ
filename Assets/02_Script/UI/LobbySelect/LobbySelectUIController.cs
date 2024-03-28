@@ -79,7 +79,7 @@ public class LobbySelectUIController : MonoBehaviour
         try
         {
 
-            await AppController.Instance.StartClientAsync(Guid.NewGuid().ToString(), joinCodeInputField.text);
+            await AppController.Instance.StartClientAsync(PlayerPrefs.GetString("PlayerName"), joinCodeInputField.text);
 
         }
         catch (Exception ex)

@@ -15,13 +15,14 @@ public class StartGameText : NetworkBehaviour
         if (IsServer)
         {
 
-            New_GameManager.Instance.OnGameStarted += HandleGameStarted;
+            New_GameManager.Instance.OnGameStarted += HandleGameStartedClientRpc;
 
         }
 
     }
 
-    private void HandleGameStarted()
+    [ClientRpc]
+    private void HandleGameStartedClientRpc()
     {
 
         NetworkSoundManager.Play2DSound("GameStart");

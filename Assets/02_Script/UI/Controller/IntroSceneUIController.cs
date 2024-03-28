@@ -10,6 +10,7 @@ using Unity.Netcode;
 public class IntroSceneUIController : MonoBehaviour
 {
     [SerializeField] private Image introPanel;
+    [SerializeField] private TMP_Text nameText;
 
     private FullScreenMode screenMode = FullScreenMode.Windowed;
 
@@ -25,6 +26,8 @@ public class IntroSceneUIController : MonoBehaviour
         {
             PlayerPrefs.SetString("PlayerName", $"Player{Random.Range(1, 1000)}");
         }
+
+        nameText.text = PlayerPrefs.GetString("PlayerName");
     }
 
     public void GameobjectActiveTrue(GameObject obj)
