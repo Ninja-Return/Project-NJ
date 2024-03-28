@@ -5,9 +5,6 @@ using FSM_System.Netcode;
 
 public class KillState : MonsterStateRoot
 {
-    private float animTime;
-    private float currentTime = 0;
-
     public KillState(MonsterFSM controller) : base(controller)
     {
 
@@ -29,13 +26,10 @@ public class KillState : MonsterStateRoot
     {
         if (!IsServer) return;
 
-        if (currentTime >= 0.4f) //1f => animTime
+        if (monsterFSM.IsKill) //1f => animTime
         {
+            monsterFSM.IsKill = false;
             controller.ChangeState(MonsterState.Idle);
-        }
-        else
-        {
-            currentTime += Time.deltaTime;
         }
     }
 
@@ -46,7 +40,5 @@ public class KillState : MonsterStateRoot
         monsterFSM.SetAnimation("Attack", false);
 
         nav.isStopped = false;
-
-        currentTime = 0f;
     }
 }

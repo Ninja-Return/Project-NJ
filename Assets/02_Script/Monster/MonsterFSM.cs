@@ -29,7 +29,8 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
 
     [HideInInspector] public Vector3 pingPos;
     [HideInInspector] public Collider targetPlayer;
-    [HideInInspector] public bool isDead { get; private set; }
+    [HideInInspector] public bool IsDead { get; private set; }
+    [HideInInspector] public bool IsKill;
 
     [Header("Values")]
     [SerializeField] private float moveRadius;
@@ -95,15 +96,9 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
     {
         anim.SetBool(name, value);
         SetAnimationClientRpc(name, value);
-        //SetAnimationServerRpc(name, value);
     }
 
-    [ServerRpc]
-    private void SetAnimationServerRpc(string name, bool value)
-    {
-        anim.SetBool(name, value);
-        SetAnimationClientRpc(name, value);
-    }
+ 
 
     [ClientRpc]
     private void SetAnimationClientRpc(string name, bool value)
@@ -249,6 +244,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
 
         PlayerManager.Instance.PlayerDie(EnumList.DeadType.Monster, player.OwnerClientId);
 
+        IsKill = true;
     }
 
     public void JumpScare() //사실상 애니메이션이 되어 있어서 플레이어가 못 움직이고 괴물을 바라보게 고정만 하면 될 듯?
@@ -279,9 +275,9 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
                 }
 
                 Debug.Log(player.cvcam);
-                player.Input.Disable();
                 player.playerRigidbody.velocity = Vector3.zero;
                 player.cvcam.transform.DOLookAt(transform.position + new Vector3(0, 1.5f, 0), 0.1f);
+                player.Input.Disable();
                 player.enabled = false;
 
                 break;
@@ -294,7 +290,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
     {
         if (!IsServer) return;
 
-        isDead = true;
+        IsDead = true;
     }
 
     [ServerRpc(RequireOwnership = false)]

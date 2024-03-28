@@ -8,7 +8,7 @@ public class DieTransition : MonsterTransitionRoot
 
     protected override bool CheckTransition()
     {
-        if (monsterFSM.isDead)
+        if (monsterFSM.IsDead)
         {
             return true;
         }
