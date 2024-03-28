@@ -8,8 +8,9 @@ using UnityEngine.UI;
 public class SettingUI : MonoBehaviour
 {
     [SerializeField] private RectTransform mapPanel;
+    [SerializeField] private RectTransform SoundPanel;
+    [SerializeField] private RectTransform DPIPanel;
     [SerializeField] private Slider sensitivitySlider;
-    [SerializeField] private Slider SoundSlider;
     [SerializeField] private PlayerDataSO playerData;
     private float panelTime = 0;
     private bool Setting = false;
@@ -97,8 +98,13 @@ public class SettingUI : MonoBehaviour
         playerData.LookSensitive.SetValue(sensitivitySlider.value);
     }
 
-    public void SoundChange(Slider slider)
+    public void SFXChange(Slider slider)
     {
         SoundManager.SettingSfx(slider.value);
+    }
+
+    public void BGMChange(Slider slider)
+    {
+        SoundManager.SettingBgm(slider.value);
     }
 }
