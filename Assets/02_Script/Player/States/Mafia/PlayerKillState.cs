@@ -51,6 +51,7 @@ public class PlayerKillState : PlayerStateRoot
             {
 
                 PlayerManager.Instance.PlayerDie(EnumList.DeadType.Mafia, player.OwnerClientId);
+                Inventory.Instance.Deleteltem();
 
             }
         
@@ -91,7 +92,7 @@ public class PlayerKillState : PlayerStateRoot
                 else
                 {
 
-                    interactionText.text = "E키를 몬스터에게 위치를 제공하세요";
+                    interactionText.text = "";
 
                 }
 

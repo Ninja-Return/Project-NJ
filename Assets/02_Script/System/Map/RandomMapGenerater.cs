@@ -100,7 +100,7 @@ public class RandomMapGenerater : NetworkBehaviour
         bool isShopSpawn = false;
         int spcnt = 0;
 
-        while(rooms.Count > 0 || !isControomSpawnd || isShopSpawn)
+        while(rooms.Count > 0 || !isControomSpawnd || !isShopSpawn)
         {
 
             var room = rooms.Dequeue();
