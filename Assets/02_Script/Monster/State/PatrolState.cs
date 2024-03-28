@@ -49,9 +49,12 @@ public class PatrolState : MonsterStateRoot
 
     private bool RandomPoint(float range, out Vector3 result) //약간 고치기
     {
+        ulong randomPlayer = PlayerManager.Instance.alivePlayer[Random.Range(0, PlayerManager.Instance.alivePlayer.Count)].clientId;
+        PlayerController pc = PlayerManager.Instance.FindPlayerControllerToID(randomPlayer);
+
         for (int i = 0; i < 400; i++)
         {
-            Vector3 randomPoint = monsterFSM.transform.position + (Random.insideUnitSphere * range);
+            Vector3 randomPoint = pc.transform.position + (Random.insideUnitSphere * range);
             NavMeshHit hit;
 
             //Vector3.Distance(monsterFSM.transform.position, hit.position) >= range / 2f
@@ -59,8 +62,7 @@ public class PatrolState : MonsterStateRoot
             //Vector3.Distance(monsterFSM.targetPlayer.transform.position, hit.position) <= range / 4f
             //해당 위치 근처에 플레이어가 잇어야 한다(최대 이동범위의 1/5정도)
 
-            if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas)
-                && Vector3.Distance(monsterFSM.targetPlayer.transform.position, hit.position) <= range / 4f)
+            if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
             {
                 result = hit.position;
                 return true;

@@ -256,33 +256,37 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
     [ClientRpc]
     private void JumpScareClientRPC(ulong playerId)
     {
-        PlayerController[] playerControllers = FindObjectsOfType<PlayerController>();
-        foreach (PlayerController player in playerControllers)
-        {
-            Debug.Log(player.name);
-            if (player.OwnerClientId == playerId)
-            {
-                Debug.Log("turn");
+        PlayerManager.Instance.PlayerLookMonster(playerId);
 
-                if (player.cvcam == null)
-                {
-                    player.cvcam = player.transform.Find("PlayerCamera").GetComponent<CinemachineVirtualCamera>();
-                }
+        //if (playerId != PlayerManager.Instance.OwnerClientId) return;
 
-                if (player.playerRigidbody == null)
-                {
-                    player.playerRigidbody = player.GetComponent<Rigidbody>();
-                }
+        //PlayerController[] playerControllers = FindObjectsOfType<PlayerController>();
+        //foreach (PlayerController player in playerControllers)
+        //{
+        //    Debug.Log(player.name);
+        //    if (player.OwnerClientId == playerId)
+        //    {
+        //        Debug.Log("turn");
 
-                Debug.Log(player.cvcam);
-                player.playerRigidbody.velocity = Vector3.zero;
-                player.cvcam.transform.DOLookAt(transform.position + new Vector3(0, 1.5f, 0), 0.1f);
-                player.Input.Disable();
-                player.enabled = false;
+        //        if (player.cvcam == null)
+        //        {
+        //            player.cvcam = player.transform.Find("PlayerCamera").GetComponent<CinemachineVirtualCamera>();
+        //        }
 
-                break;
-            }
-        }
+        //        if (player.playerRigidbody == null)
+        //        {
+        //            player.playerRigidbody = player.GetComponent<Rigidbody>();
+        //        }
+
+        //        Debug.Log(player.cvcam);
+        //        player.playerRigidbody.velocity = Vector3.zero;
+        //        player.cvcam.transform.DOLookAt(transform.position + new Vector3(0, 1.5f, 0), 0.1f);
+        //        player.Input.Disable();
+        //        player.enabled = false;
+
+        //        break;
+        //    }
+        //}
     }
 
 
