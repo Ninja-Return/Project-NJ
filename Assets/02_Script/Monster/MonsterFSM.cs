@@ -267,6 +267,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
             if (player.OwnerClientId == playerId)
             {
                 Debug.Log("turn");
+
                 if (player.cvcam == null)
                 {
                     player.cvcam = player.transform.Find("PlayerCamera").GetComponent<CinemachineVirtualCamera>();
@@ -278,6 +279,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
                 }
 
                 Debug.Log(player.cvcam);
+                player.Input.Disable();
                 player.playerRigidbody.velocity = Vector3.zero;
                 player.cvcam.transform.DOLookAt(transform.position + new Vector3(0, 1.5f, 0), 0.1f);
                 player.enabled = false;
