@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class MSpawnItem : HandItemRoot
 {
 
-    public GameObject monster;
+    [SerializeField] private NetworkObject monsterPrefab;
 
     public override void DoUse()
     {
-        PlayerManager.Instance.localController.SpawnMonster(monster, 2f);
+        MonsterSpawnSystem.Instance.SpawnMonster(monsterPrefab, 2f);
     }
+
+    
+
 }

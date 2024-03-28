@@ -49,5 +49,18 @@ public class MonsterSpawnSystem : NetworkBehaviour
 
     }
 
+    public void SpawnMonster(NetworkObject monster, float time)
+    {
+
+        StartCoroutine(MonsterSpawn(monster, time));
+
+    }
+
+    private IEnumerator MonsterSpawn(NetworkObject monster, float time)
+    {
+        yield return new WaitForSeconds(time);
+        Instantiate(monster, new Vector3(2, 0, 0), Quaternion.identity).Spawn(true);
+    }
+
 
 }

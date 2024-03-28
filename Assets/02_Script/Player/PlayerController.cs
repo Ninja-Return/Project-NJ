@@ -257,16 +257,5 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     }
 
-    public void SpawnMonster(GameObject monster, float time)
-    {
-
-        StartCoroutine(MonsterSpawn(monster, time));
-
-    }
-
-    private IEnumerator MonsterSpawn(GameObject monster, float time)
-    {
-        yield return new WaitForSeconds(time);
-        Instantiate(monster,transform.position,Quaternion.identity);
-    }
+    
 }
