@@ -144,6 +144,7 @@ public class Inventory : NetworkBehaviour
         if (!isHold) return;
         isHold = false;
 
+        getItemCount--;
         OnSlotRemove?.Invoke("", slotIdx, "");
         slots[slotIdx].ResetSlot();
 

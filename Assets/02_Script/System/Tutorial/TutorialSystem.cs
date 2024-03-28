@@ -16,7 +16,8 @@ public class TutorialSystem : NetworkBehaviour
         Relase, 
         ShowObject,
         Delay,
-        OffObject
+        OffObject,
+        End
 
     }
 
@@ -104,6 +105,7 @@ public class TutorialSystem : NetworkBehaviour
     private Dictionary<string, TutorialObject> tutorialSequenceTutorialObject = new();
 
     private PlayerController player;
+    private bool IsSkipPossible;
 
     private void Awake()
     {
@@ -138,8 +140,8 @@ public class TutorialSystem : NetworkBehaviour
 
         }
 
-        player = Instantiate(playerController, startPos.position, Quaternion.identity);
-        player.NetworkObject.SpawnAsPlayerObject(OwnerClientId);
+        //player = Instantiate(playerController, startPos.position, Quaternion.identity);
+        //player.NetworkObject.SpawnAsPlayerObject(OwnerClientId);
 
     }
 
@@ -229,12 +231,15 @@ public class TutorialSystem : NetworkBehaviour
                         yield return new WaitWhile(() => { return PressSpace(); });
                     }
                     break;
+                case SequenceType.End:
+                    WinSystem.Instance.WinServerRPC(EnumWinState.Escape);
+                    break;
             }
 
             //yield return null;
 
         }
-        WinSystem.Instance.WinServerRPC(EnumWinState.Escape);
+        //WinSystem.Instance.WinServerRPC(EnumWinState.Escape);
         obj.isTutorialOn = true;
 
         yield return null;
@@ -243,8 +248,14 @@ public class TutorialSystem : NetworkBehaviour
 
     private bool PressSpace()
     {
-        if (Input.GetKeyUp(KeyCode.G))
+        if (Input.GetKeyDown(KeyCode.G))
         {
+            IsSkipPossible = true;
+        }
+
+        if (Input.GetKeyUp(KeyCode.G) && IsSkipPossible)
+        {
+            IsSkipPossible = false;
             return false;
         }
         return true;
