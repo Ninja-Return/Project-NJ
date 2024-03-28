@@ -2,6 +2,7 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class StoreUIController : MonoBehaviour
@@ -10,7 +11,7 @@ public class StoreUIController : MonoBehaviour
     [SerializeField] private StorePanel panelPrefab;
     [SerializeField] private Transform storeRoot;
     [SerializeField] private StoreSystem storeSystem;
-    [SerializeField] private CinemachineVirtualCamera vcam;
+    [SerializeField] private Camera vcam;
     [SerializeField] private TMP_Text expText;
     [SerializeField] private Transform uiTrm;
 
@@ -31,7 +32,7 @@ public class StoreUIController : MonoBehaviour
 
         PlayerManager.Instance.Active(true);
         Support.SettingCursorVisable(false);
-        vcam.Priority = -100;
+        vcam.depth = -100;
         StartCoroutine(SetPanelCo(false));
 
     }
@@ -39,7 +40,7 @@ public class StoreUIController : MonoBehaviour
     public void StartSeq()
     {
 
-        vcam.Priority = 100;
+        vcam.depth = 100;
         PlayerManager.Instance.Active(false);
         Support.SettingCursorVisable(true);
         StartCoroutine(SetPanelCo(true));
