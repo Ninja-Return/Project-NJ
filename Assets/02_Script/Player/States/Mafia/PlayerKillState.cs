@@ -53,20 +53,7 @@ public class PlayerKillState : PlayerStateRoot
                 PlayerManager.Instance.PlayerDie(EnumList.DeadType.Mafia, player.OwnerClientId);
 
             }
-            else
-            {
-
-                monsterFSM = Object.FindObjectOfType<MonsterFSM>();
-
-                if (monsterFSM != null)
-                {
-
-                    monsterFSM.PingServerRPC(player.transform.position);
-
-                }
-
-            }
-
+        
 
         }
 
@@ -95,7 +82,7 @@ public class PlayerKillState : PlayerStateRoot
             if (player != null)
             {
 
-                if(hand.CheckHandItem("¿ÀÇÔ¸¶"))
+                if(hand.CheckHandItem("³ì½¼ Ä®"))
                 {
 
                     interactionText.text = "EÅ°¸¦ ´­·¯ ÇÃ·¹ÀÌ¾î¸¦ Á×ÀÌ¼¼¿ä";
