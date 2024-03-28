@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 
 public class MonsterSpawnSystem : NetworkBehaviour
@@ -49,17 +50,20 @@ public class MonsterSpawnSystem : NetworkBehaviour
 
     }
 
-    public void SpawnMonster(NetworkObject monster, float time)
+    [ServerRpc(RequireOwnership = false)]
+    public void SpawnMonsterServerRPC(Vector3 spawnPos, float time)
     {
 
-        StartCoroutine(MonsterSpawn(monster, time));
+        StartCoroutine(MonsterSpawn(spawnPos, time));
 
     }
 
-    private IEnumerator MonsterSpawn(NetworkObject monster, float time)
+    private IEnumerator MonsterSpawn(Vector3 spawnPos, float time)
     {
+
         yield return new WaitForSeconds(time);
-        Instantiate(monster, new Vector3(2, 0, 0), Quaternion.identity).Spawn(true);
+        Instantiate(monsterPrefab, spawnPos + new Vector3(2,0,0), Quaternion.identity).Spawn(true);
+
     }
 
 

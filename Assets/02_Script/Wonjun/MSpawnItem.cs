@@ -5,12 +5,17 @@ using UnityEngine;
 
 public class MSpawnItem : HandItemRoot
 {
-
     [SerializeField] private NetworkObject monsterPrefab;
+    private void Start()
+    {
+    }
 
     public override void DoUse()
     {
-        MonsterSpawnSystem.Instance.SpawnMonster(monsterPrefab, 2f);
+
+        var trmPos = PlayerManager.Instance.localController.transform.position;
+
+        MonsterSpawnSystem.Instance.SpawnMonsterServerRPC(trmPos, 2f);
     }
 
     
