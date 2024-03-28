@@ -56,11 +56,11 @@ public class PatrolState : MonsterStateRoot
 
             //Vector3.Distance(monsterFSM.transform.position, hit.position) >= range / 2f
             //최소 이동거리 양이 정찰범위의 절반은 움직여야 한다.
-            //Vector3.Distance(monsterFSM.targetPlayer.transform.position, hit.position) <= range / 5f
+            //Vector3.Distance(monsterFSM.targetPlayer.transform.position, hit.position) <= range / 4f
             //해당 위치 근처에 플레이어가 잇어야 한다(최대 이동범위의 1/5정도)
 
             if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas)
-                && Vector3.Distance(monsterFSM.transform.position, hit.position) >= range / 2f)
+                && Vector3.Distance(monsterFSM.targetPlayer.transform.position, hit.position) <= range / 4f)
             {
                 result = hit.position;
                 return true;
