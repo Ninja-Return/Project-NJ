@@ -15,11 +15,10 @@ public class CatchPlayerTransition : MonsterTransitionRoot
     protected override bool CheckTransition()
     {
         if (nav.pathPending) return false;
+        
         if (monsterFSM.targetPlayer == null) return false;
-
-        Vector3 targetPlayerPos = monsterFSM.targetPlayer.transform.position;
-        Vector3 playerVec = targetPlayerPos - transform.position;
-        if (monsterFSM.RayPlayer(radius, playerVec) != null)
+        
+        if (monsterFSM.CirclePlayer(radius) != null)
         {
             return true;
         }

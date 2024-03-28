@@ -81,11 +81,6 @@ public class PlayerManager : NetworkBehaviour
 
     }
 
-    public void PlayerLookMonster(ulong clientId)
-    {
-        PlayerLookMonsterServerRPC(clientId);
-    }
-
     public void PlayerDie(EnumList.DeadType type, ulong clientId)
     {
 
@@ -114,18 +109,6 @@ public class PlayerManager : NetworkBehaviour
     }
 
     #region ServerRPC
-
-    [ServerRpc(RequireOwnership = false)]
-    public void PlayerLookMonsterServerRPC(ulong clientId)
-    {
-
-        var player = players.Find(x => x.OwnerClientId == clientId);
-
-        if (player == null) return;
-
-        PlayerLookMonsterClientRPC(clientId);
-
-    }
 
     [ServerRpc(RequireOwnership = false)]
     private void PlayerDieServerRPC(EnumList.DeadType type, ulong clientId) 
@@ -196,25 +179,6 @@ public class PlayerManager : NetworkBehaviour
     #endregion
 
     #region ClientRPC
-
-    [ClientRpc]
-    public void PlayerLookMonsterClientRPC(ulong clientId)
-    {
-        if (localController.OwnerClientId != clientId) return;
-
-        Transform monsterTrs = FindObjectOfType<MonsterFSM>().transform;
-        localController.cvcam = localController.transform.Find("PlayerCamera").GetComponent<CinemachineVirtualCamera>();
-        localController.playerRigidbody = localController.GetComponent<Rigidbody>();
-
-
-        Debug.Log(localController.cvcam);
-        localController.playerRigidbody.velocity = Vector3.zero;
-        localController.cvcam.transform.DOMove(monsterTrs.position, 0.1f);
-        localController.cvcam.transform.DOLookAt(monsterTrs.position + new Vector3(0, 1.5f, 0), 0.1f);
-        localController.Input.Disable();
-        localController.enabled = false;
-
-    }
 
     [ClientRpc]
     private void PlayerDieClientRPC(EnumList.DeadType type, ClientRpcParams param)
