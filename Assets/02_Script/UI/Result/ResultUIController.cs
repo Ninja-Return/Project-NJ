@@ -7,7 +7,7 @@ using DG.Tweening;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 
-public class ResultUIController : MonoBehaviour
+public class ResultUIController : NetworkBehaviour
 {
     [SerializeField] private Image fadePanel;
     [SerializeField] private Image resuitPanel;
@@ -92,6 +92,14 @@ public class ResultUIController : MonoBehaviour
 
     public void BackMain()
     {
-        SceneManager.LoadScene(SceneList.LobbySelectScene);
+        if (IsHost)
+        {
+            HostSingle.Instance.GameManager.ShutdownAsync();
+            SceneManager.LoadScene(SceneList.LobbySelectScene);
+        }
+        else
+        {
+            ClientSingle.Instance.GameManager.Disconnect();
+        }
     }
 }
