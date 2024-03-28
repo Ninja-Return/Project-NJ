@@ -4,19 +4,20 @@ using UnityEngine;
 
 public class TutorialInventory : TutorialObject
 {
+    [SerializeField] private float getItemCount;
     private Inventory inventory;
 
-    private void Start()
+    protected override void Init()
     {
         inventory = FindObjectOfType<Inventory>();
     }
 
     protected override void IsClearTutorial()
     {
-        if (inventory.isShow && inventory.getItemCount > 1)
+        if (inventory.isShow && inventory.getItemCount >= getItemCount)
         {
             isTutorialOn = false;
-            TutorialSystem.Instance.StartSequence("Craft");
+            TutorialSystem.Instance.StartSequence("Item");
         }
     }
 }
