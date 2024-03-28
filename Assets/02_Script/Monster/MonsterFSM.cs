@@ -262,7 +262,6 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
 
         var player = targetPlayer.GetComponent<PlayerController>();
 
-        Time.timeScale = 0;
         PlayerManager.Instance.PlayerDie(EnumList.DeadType.Monster, player.OwnerClientId);
         IsKill = true;
     }
