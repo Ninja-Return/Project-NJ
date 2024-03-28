@@ -70,6 +70,7 @@ public class PlayerAnimationController : NetworkBehaviour
         serverObj.gameObject.SetActive(!IsOwner);
         clientObj.gameObject.SetActive(IsOwner);
 
+        //컨트롤 리그 널
         if (IsOwner)
         {
 
