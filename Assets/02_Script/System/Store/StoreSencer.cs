@@ -19,6 +19,7 @@ public class StoreSencer : MonoBehaviour
             if(pl.OwnerClientId == NetworkManager.Singleton.LocalClientId)
             {
 
+                NetworkSoundManager.Play3DSound("OpenShop", transform.position, 0.01f, 20f);
                 shopTrm.StartSeq();
 
             }

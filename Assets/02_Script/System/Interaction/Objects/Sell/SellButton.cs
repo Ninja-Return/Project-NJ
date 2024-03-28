@@ -12,6 +12,7 @@ public class SellButton : InteractionObject
 
         if (WaitRoomManager.Instance.IsRunningGame.Value == false) return;
 
+        NetworkSoundManager.Play3DSound("Sell", transform.position, 0.01f, 10f);
         sell.Sell(NetworkManager.LocalClientId);
 
     }

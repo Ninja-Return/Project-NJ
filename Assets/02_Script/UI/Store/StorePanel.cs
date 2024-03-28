@@ -29,6 +29,7 @@ public class StorePanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         if (storeSystem.Buy(curItem))
         {
 
+            NetworkSoundManager.Play3DSound("BuyItem", transform.position, 0.01f, 20f);
             Debug.Log("구입 성공");
 
         }

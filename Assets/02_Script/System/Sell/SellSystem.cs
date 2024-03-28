@@ -49,7 +49,6 @@ public class SellSystem : NetworkBehaviour
 
         Debug.Log(2);
 
-
         var player = FindObjectsOfType<PlayerController>().ToList()
             .Find(x => x.OwnerClientId == NetworkManager.LocalClientId);
 

@@ -22,7 +22,9 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
     public Animator anim;
     public NavMeshAgent nav;
     public Transform headTrs;
+    public CinemachineVirtualCamera jsVcamTrs;
     public float angle;
+    public Vector3 lookVec;
     public LayerMask playerMask;
 
     public MonsterState nowState;
@@ -92,6 +94,16 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
         AddState(deathState, MonsterState.Dead);
     }
 
+    private void FixedUpdate()
+    {
+        if (!IsServer) return;
+        if (targetPlayer == null) return;
+
+        Vector3 targetPlayerPos = targetPlayer.transform.position;
+        Vector3 playerVec = (targetPlayerPos - transform.position).normalized;
+        lookVec = playerVec;
+    }
+
     public void SetAnimation(string name, bool value)
     {
         anim.SetBool(name, value);
@@ -106,7 +118,12 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
         anim.SetBool(name, value);
     }
 
-    public Collider RayPlayer(float radius, Vector3 lookVec)
+    private bool RayObstacle(Vector3 pos, Vector3 lookVec, float destance)
+    {
+        return Physics.Raycast(pos, lookVec, destance, obstacleMask);
+    }
+
+    public Collider RayPlayer(float radius)
     {
         Vector3 pos = headTrs.position;
 
@@ -135,7 +152,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
 
         Collider[] allPlayers = Physics.OverlapSphere(pos, radius, playerMask);
         if (allPlayers.Length == 0) return null;
-
+        
         float minDistance = float.MaxValue;
         Collider targetPlayer = null;
         foreach (Collider player in allPlayers)
@@ -146,6 +163,9 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
             }
         }
 
+        //if (IsObstacle && RayObstacle(pos, lookVec, minDistance))
+        //    return null;
+        
         Vector3 targetPos = targetPlayer.transform.position;
         Debug.DrawLine(pos, targetPos, Color.red);
 
@@ -243,7 +263,6 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
         var player = targetPlayer.GetComponent<PlayerController>();
 
         PlayerManager.Instance.PlayerDie(EnumList.DeadType.Monster, player.OwnerClientId);
-
         IsKill = true;
     }
 
@@ -256,37 +275,13 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
     [ClientRpc]
     private void JumpScareClientRPC(ulong playerId)
     {
-        PlayerManager.Instance.PlayerLookMonster(playerId);
+        PlayerController player = PlayerManager.Instance.FindPlayerControllerToID(playerId);
+        if (player.OwnerClientId != playerId)
+            return;
 
-        //if (playerId != PlayerManager.Instance.OwnerClientId) return;
-
-        //PlayerController[] playerControllers = FindObjectsOfType<PlayerController>();
-        //foreach (PlayerController player in playerControllers)
-        //{
-        //    Debug.Log(player.name);
-        //    if (player.OwnerClientId == playerId)
-        //    {
-        //        Debug.Log("turn");
-
-        //        if (player.cvcam == null)
-        //        {
-        //            player.cvcam = player.transform.Find("PlayerCamera").GetComponent<CinemachineVirtualCamera>();
-        //        }
-
-        //        if (player.playerRigidbody == null)
-        //        {
-        //            player.playerRigidbody = player.GetComponent<Rigidbody>();
-        //        }
-
-        //        Debug.Log(player.cvcam);
-        //        player.playerRigidbody.velocity = Vector3.zero;
-        //        player.cvcam.transform.DOLookAt(transform.position + new Vector3(0, 1.5f, 0), 0.1f);
-        //        player.Input.Disable();
-        //        player.enabled = false;
-
-        //        break;
-        //    }
-        //}
+        jsVcamTrs.Priority = 50;
+        player.Input.Disable();
+        player.enabled = false;
     }
 
 
@@ -322,6 +317,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
     {
         Gizmos.color = Color.gray;
         Gizmos.DrawWireSphere(transform.position, moveRadius);
+        Gizmos.DrawWireSphere(transform.position, killRadius);
     }
 #endif
 
