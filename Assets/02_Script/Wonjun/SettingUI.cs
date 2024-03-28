@@ -8,8 +8,8 @@ using UnityEngine.UI;
 public class SettingUI : MonoBehaviour
 {
     [SerializeField] private RectTransform mapPanel;
-    [SerializeField] private RectTransform SoundPanel;
-    [SerializeField] private RectTransform DPIPanel;
+    [SerializeField] private GameObject SoundPanel;
+    [SerializeField] private GameObject DPIPanel;
     [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private PlayerDataSO playerData;
     private float panelTime = 0;
@@ -29,7 +29,7 @@ public class SettingUI : MonoBehaviour
     void Update()
     {
         panelTime += Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.Escape) && !Setting && panelTime > .5f)
+        if (Input.GetKeyDown(KeyCode.Escape) && !Setting && panelTime > .8f)
         {
 
             Support.SettingCursorVisable(isShow);
@@ -38,7 +38,6 @@ public class SettingUI : MonoBehaviour
                 playerController.Active(!isShow);
             else
                 PlayerManager.Instance.localController.Active(!isShow);
-
 
 
             Setting = true;
@@ -55,7 +54,8 @@ public class SettingUI : MonoBehaviour
             else
                 PlayerManager.Instance.localController.Active(isShow);
 
-
+            SoundPanel.SetActive(false);
+            DPIPanel.SetActive(false);
 
             Setting = false;
             mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
@@ -69,11 +69,15 @@ public class SettingUI : MonoBehaviour
         {
             Support.SettingCursorVisable(!isShow);
 
+            Setting = false;
             if (PlayerManager.Instance == null)
                 playerController.Active(isShow);
             else
                 PlayerManager.Instance.localController.Active(isShow);
-            Setting = false;
+
+            SoundPanel.SetActive(false);
+            DPIPanel.SetActive(false);
+
             mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
             panelTime = 0;
         }
