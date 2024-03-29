@@ -60,6 +60,8 @@ public class ResultUIController : NetworkBehaviour
         var panel = Instantiate(playerPrefab, players);
         panel.Setting(clientId, userName, isOwner, false);
 
+        if (!isOwner) return;
+
         if (isBreak)
         {
             PlayerCountServerRpc(1f, 0f);
