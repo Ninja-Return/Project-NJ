@@ -49,6 +49,7 @@ public class WinUIController : NetworkBehaviour
         //PlayerPrefs.SetString("MafiaNickName", "");
     }
 
+
     [ClientRpc]
     private void SpawnPanelClientRPC(ulong clientId, string userName, bool isBreak)
     {

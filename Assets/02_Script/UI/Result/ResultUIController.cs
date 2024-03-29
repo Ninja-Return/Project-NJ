@@ -72,7 +72,7 @@ public class ResultUIController : NetworkBehaviour
         }
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void PlayerCountServerRpc(float escapeCnt, float failCnt)
     {
         escapePlayerCnt += escapeCnt;

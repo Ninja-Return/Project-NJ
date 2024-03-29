@@ -50,7 +50,9 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
 
     public void Disable()
     {
-        
+
+        if (playerInput == null) return;
+
         playerInput.PlayerMovement.SetCallbacks(null);
         playerInput.PlayerMovement.Disable();
 
