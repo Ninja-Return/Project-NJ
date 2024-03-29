@@ -72,19 +72,19 @@ public class ResultUIController : NetworkBehaviour
         }
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void PlayerCountServerRpc(float escapeCnt, float failCnt)
     {
         escapePlayerCnt += escapeCnt;
         failPlayerCnt += failCnt;
 
-        escapePlayerText.text = $"탈출한 플레이어 : {escapeCnt}명";
-        failPlayerText.text = $"죽은 플레이어 : {failCnt}명";
-        FeedbackSettingClientRpc(escapePlayerCnt, failPlayerCnt);
+        escapePlayerText.text = $"탈출한 플레이어 : {escapePlayerCnt}명";
+        failPlayerText.text = $"죽은 플레이어 : {failPlayerCnt}명";
+        PlayerCountClientRpc(escapePlayerCnt, failPlayerCnt);
     }
 
     [ClientRpc]
-    private void FeedbackSettingClientRpc(float escapeCnt, float failCnt)
+    private void PlayerCountClientRpc(float escapeCnt, float failCnt)
     {
         escapePlayerText.text = $"탈출한 플레이어 : {escapeCnt}명";
         failPlayerText.text = $"죽은 플레이어 : {failCnt}명";
