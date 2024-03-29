@@ -11,7 +11,15 @@ public class TutorialItem : TutorialObject
     {
         playerHand = FindObjectOfType<PlayerHand>();
         playerController = FindObjectOfType<PlayerController>();
-        playerController.Input.OnUseObjectKeyPress += () => { TutorialSystem.Instance.StartSequence("Last"); };
+        playerController.Input.OnUseObjectKeyPress += ClickLeft;
+    }
+
+    private void ClickLeft()
+    {
+        Soda handItem = FindObjectOfType<Soda>();
+        if (handItem == null) return;
+
+        TutorialSystem.Instance.StartSequence("Last");
     }
 
     protected override void IsClearTutorial()
