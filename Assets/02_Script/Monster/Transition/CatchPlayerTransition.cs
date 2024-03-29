@@ -20,6 +20,7 @@ public class CatchPlayerTransition : MonsterTransitionRoot
         
         if (monsterFSM.CirclePlayer(radius) != null)
         {
+            monsterFSM.targetPlayer = monsterFSM.CirclePlayer(radius);
             return true;
         }
 

@@ -269,19 +269,18 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
     public void JumpScare() //사실상 애니메이션이 되어 있어서 플레이어가 못 움직이고 괴물을 바라보게 고정만 하면 될 듯?
     {
         var player = targetPlayer.GetComponent<PlayerController>();
-        JumpScareClientRPC(player.OwnerClientId);
+
+        JumpScareClientRPC(player.OwnerClientId.GetRPCParams());
     }
 
     [ClientRpc]
-    private void JumpScareClientRPC(ulong playerId)
+    private void JumpScareClientRPC(ClientRpcParams param)
     {
-        PlayerController player = PlayerManager.Instance.FindPlayerControllerToID(playerId);
-        if (player.OwnerClientId != playerId)
-            return;
-
-        jsVcamTrs.Priority = 50;
-        player.Input.Disable();
-        player.enabled = false;
+        //PlayerController player = PlayerManager.Instance.FindPlayerControllerToID(playerId);
+        //player == null 이게 맞는듯
+        jsVcamTrs.Priority = 500;
+        //player.Input.Disable();
+        //player.enabled = false;
     }
 
 
