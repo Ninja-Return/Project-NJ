@@ -10,6 +10,7 @@ public class WaitRoomManager : NetworkBehaviour
     [SerializeField] private PlayerController prefab;
     [SerializeField] private GameObject uiPanel1;
     [SerializeField] private GameObject uiPanel2;
+    [SerializeField] private GameObject loadingPanel;
 
     public NetworkVariable<bool> IsRunningGame;
 
@@ -35,7 +36,13 @@ public class WaitRoomManager : NetworkBehaviour
 
         uiPanel1.SetActive(false);
         uiPanel2.SetActive(false);
+        loadingPanel.SetActive(true);
 
+    }
+
+    public void UnActiveLoadingPanel()
+    {
+        loadingPanel.SetActive(false);
     }
 
 }
