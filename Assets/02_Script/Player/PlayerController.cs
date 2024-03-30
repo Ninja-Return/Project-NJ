@@ -137,7 +137,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         if (!IsOwner && !debug) return;
 
         Data.LookSensitive.SetValue(SensitivitySlider.value);
-        Debug.Log(Data.LookSensitive.Value);
+
         base.Update();
 
 #if UNITY_EDITOR
