@@ -26,6 +26,7 @@ public class StartGameText : NetworkBehaviour
     {
 
         NetworkSoundManager.Play2DSound("GameStart");
+        WaitRoomManager.Instance.UnActiveLoadingPanel();
         StartCoroutine(StartAlert());
 
     }
