@@ -42,7 +42,13 @@ public class ClientGameManager
 
         }
 
-        NetworkController.Instance.Dispose();
+        if(NetworkController.Instance != null)
+        {
+
+            NetworkController.Instance.Dispose();
+
+        }
+
 
         SceneManager.LoadScene(SceneList.LobbySelectScene);
 
