@@ -13,6 +13,8 @@ public class New_GameManager : NetworkBehaviour
 
     private int joinCount;
 
+    private Dictionary<string, Transform> tpPos = new();
+
     #region Events
 
     public event Action<int> OnWaitTimeChanged;
@@ -32,7 +34,7 @@ public class New_GameManager : NetworkBehaviour
 
     private void Awake()
     {
-        
+
         Instance = this;
 
     }
@@ -43,6 +45,33 @@ public class New_GameManager : NetworkBehaviour
         if (!IsServer) return;
 
         StartCoroutine(StartLogicCo());
+
+    }
+
+    private void Update()
+    {
+
+        //Debug
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+
+            PlayerManager.Instance.localController.transform.position =
+                tpPos["Escape"].position;
+
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+
+            PlayerManager.Instance.localController.transform.position =
+                tpPos["Shop"].position;
+
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+
+            PlayerManager.Instance.localController.GetComponent<CreditSystem>().Credit += 10000;
+
+        }
 
     }
 
@@ -61,12 +90,12 @@ public class New_GameManager : NetworkBehaviour
     public void CheckGameEnd(int playerCount, bool IsBreaken)
     {
 
-        if(playerCount == 0)
+        if (playerCount == 0)
         {
 
             FadeManager.Instance.FadeOn();
             OnGameFinishedClientRPC();
-            WinSystem.Instance. WinServerRPC(IsBreaken == true ? EnumWinState.Escape : EnumWinState.Fail);
+            WinSystem.Instance.WinServerRPC(IsBreaken == true ? EnumWinState.Escape : EnumWinState.Fail);
 
         }
 
@@ -135,6 +164,12 @@ public class New_GameManager : NetworkBehaviour
 
     #endregion
 
+    public void AddPos(string str, Transform pos)
+    {
+
+        tpPos.Add(str, pos);
+
+    }
 
     #region Coroutine
 

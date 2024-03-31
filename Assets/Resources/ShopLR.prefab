@@ -1366,6 +1366,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7009377640021808461}
   - {fileID: 8662311043762954573}
   - {fileID: 6366433750601576117}
   - {fileID: 7195013987823996017}
@@ -1953,6 +1954,51 @@ MonoBehaviour:
   - data: {fileID: 11400000, guid: c1bc5b54ce6e9d84094762781c38e966, type: 2}
     price: 500
     expText: "\uD0C8\uCD9C\uC6A9 \uC5F4\uC1E0"
+--- !u!1 &9131814852307253979
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7009377640021808461}
+  - component: {fileID: 2398384810566045335}
+  m_Layer: 12
+  m_Name: TPP
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7009377640021808461
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9131814852307253979}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.99, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7943681481087130239}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2398384810566045335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9131814852307253979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc2b26c4ad575da4f827fb966fb282eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: Shop
 --- !u!1001 &434687207458039535
 PrefabInstance:
   m_ObjectHideFlags: 0
