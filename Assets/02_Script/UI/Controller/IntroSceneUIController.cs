@@ -12,7 +12,7 @@ public class IntroSceneUIController : MonoBehaviour
     [SerializeField] private Image introPanel;
     [SerializeField] private TMP_Text nameText;
 
-    private FullScreenMode screenMode = FullScreenMode.Windowed;
+    private FullScreenMode screenMode = FullScreenMode.FullScreenWindow;
 
     private void Start()
     {
