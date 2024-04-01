@@ -92,11 +92,13 @@ public class ResultUIController : NetworkBehaviour
         failPlayerText.text = $"죽은 플레이어 : {failCnt}명";
     }
 
-    public void BackMain()
+    public async void BackMain()
     {
         if (IsHost)
         {
-            HostSingle.Instance.GameManager.ShutdownAsync();
+            
+            await HostSingle.Instance.GameManager.ShutdownAsync();
+
             SceneManager.LoadScene(SceneList.LobbySelectScene);
         }
         else
