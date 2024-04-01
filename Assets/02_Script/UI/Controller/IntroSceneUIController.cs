@@ -28,6 +28,7 @@ public class IntroSceneUIController : MonoBehaviour
         }
 
         nameText.text = PlayerPrefs.GetString("PlayerName");
+        nameText.text = "ÀÌ¿ל";
     }
 
     public void GameobjectActiveTrue(GameObject obj)
