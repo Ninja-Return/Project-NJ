@@ -143,16 +143,15 @@ public class TutorialSystem : NetworkBehaviour
         //player = Instantiate(playerController, startPos.position, Quaternion.identity);
         //player.NetworkObject.SpawnAsPlayerObject(OwnerClientId);
 
-        WaitRoomManager.Instance.IsRunningGame.Value = true;
-
     }
 
     private void Start()
     {
-        
+
         //player = Instantiate(playerController, startPos.position, Quaternion.identity);
         //player.NetworkObject.SpawnAsPlayerObject(OwnerClientId);
 
+        WaitRoomManager.Instance.IsRunningGame.Value = true;
         StartSequence("Start");
 
     }
@@ -181,13 +180,13 @@ public class TutorialSystem : NetworkBehaviour
 
     }
 
-    public void ActiveObject(string key)
+    public void ActiveObject(string key, bool active)
     {
 
         if (tutorialObjectContainer.TryGetValue(key, out var obj))
         {
 
-            obj.transform.TVEffect(obj.transform.localScale.x == 0);
+            obj.transform.TVEffect(active);
 
         }
 
@@ -223,7 +222,10 @@ public class TutorialSystem : NetworkBehaviour
                     panel.Release();
                     break;
                 case SequenceType.ShowObject:
-                    ActiveObject(item.commend);
+                    ActiveObject(item.commend, true);
+                    break;
+                case SequenceType.OffObject:
+                    ActiveObject(item.commend, false);
                     break;
                 case SequenceType.Delay:
                     {
