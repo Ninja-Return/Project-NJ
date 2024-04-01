@@ -10,6 +10,7 @@ public class SettingUI : MonoBehaviour
     [SerializeField] private RectTransform mapPanel;
     [SerializeField] private GameObject SoundPanel;
     [SerializeField] private GameObject DPIPanel;
+    [SerializeField] private GameObject GameExitPanel;
     [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private PlayerDataSO playerData;
     private float panelTime = 0;
@@ -21,6 +22,7 @@ public class SettingUI : MonoBehaviour
     {
         SoundPanel.SetActive(false);
         DPIPanel.SetActive(false);
+        GameExitPanel.SetActive(false);
         playerController = GetComponent<PlayerController>();
         sensitivitySlider.maxValue = 12;
         sensitivitySlider.value = 12;
@@ -58,6 +60,7 @@ public class SettingUI : MonoBehaviour
 
             SoundPanel.SetActive(false);
             DPIPanel.SetActive(false);
+            GameExitPanel.SetActive(false);
 
             Setting = false;
             mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
@@ -81,6 +84,7 @@ public class SettingUI : MonoBehaviour
 
             SoundPanel.SetActive(false);
             DPIPanel.SetActive(false);
+            GameExitPanel.SetActive(false);
 
             panelTime = 0;
         }
