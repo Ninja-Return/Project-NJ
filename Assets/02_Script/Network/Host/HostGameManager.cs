@@ -117,7 +117,7 @@ public class HostGameManager : IDisposable
 
     }
 
-    public async void ShutdownAsync()
+    public async Task ShutdownAsync()
     {
 
         try
@@ -148,6 +148,9 @@ public class HostGameManager : IDisposable
 
             NetworkController.Instance.Dispose();
 
+            OnPlayerConnect = null;
+            OnPlayerDisconnect = null;
+
         }
         catch(Exception ex)
         {
@@ -156,6 +159,8 @@ public class HostGameManager : IDisposable
 
         }
 
+
+        //NetworkManager.Singleton.Shutdown();
 
 
     }

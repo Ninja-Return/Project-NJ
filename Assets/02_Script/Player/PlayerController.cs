@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum EnumPlayerState
@@ -142,11 +143,19 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
 #if UNITY_EDITOR
 
-        /*if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
         {
 
-            HostSingle.Instance.GameManager.ShutdownAsync();
-        }*/
+            Stop();
+            
+        }
+
+        if (UnityEngine.Input.GetKeyDown(KeyCode.K))
+        {
+
+            PlayerManager.Instance.PlayerDie(EnumList.DeadType.Escape, OwnerClientId);
+
+        }
 
 #endif
 
@@ -156,6 +165,15 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         //    GameManager.Instance.PlayerDie(EnumList.DeadType.Mafia, OwnerClientId);
         //
         //}
+
+    }
+
+    public async void Stop()
+    {
+
+        await HostSingle.Instance.GameManager.ShutdownAsync();
+
+        SceneManager.LoadScene(SceneList.LobbySelectScene);
 
     }
 

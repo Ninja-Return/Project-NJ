@@ -10,6 +10,8 @@ public class AddTPPos : MonoBehaviour
     private void Start()
     {
 
+        if (New_GameManager.Instance == null) return;
+
         New_GameManager.Instance.AddPos(key, transform);
 
     }

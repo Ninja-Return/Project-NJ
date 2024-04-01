@@ -43,6 +43,7 @@ public class PlayerManager : NetworkBehaviour
     {
 
 
+
         if (IsServer)
         {
 
@@ -215,6 +216,21 @@ public class PlayerManager : NetworkBehaviour
         joinCount++;
 
     }
+
+    public override void OnNetworkDespawn()
+    {
+        if (IsServer)
+        {
+
+            //alivePlayer.Dispose();
+            //diePlayer.Dispose();
+
+            Instance = null;
+
+        }
+
+    }
+
 
     private IEnumerator WaitSpawn()
     {
