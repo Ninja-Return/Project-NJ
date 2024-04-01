@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TutorialItem : TutorialObject
 {
+    [SerializeField] private GameObject soda;
     private PlayerController playerController;
     private PlayerHand playerHand;
 
@@ -12,6 +13,10 @@ public class TutorialItem : TutorialObject
         playerHand = FindObjectOfType<PlayerHand>();
         playerController = FindObjectOfType<PlayerController>();
         playerController.Input.OnUseObjectKeyPress += ClickLeft;
+
+        Vector3 pos = soda.transform.position;
+        pos.y = 3.0f;
+        soda.transform.position = pos;
     }
 
     private void ClickLeft()
@@ -19,7 +24,8 @@ public class TutorialItem : TutorialObject
         Soda handItem = FindObjectOfType<Soda>();
         if (handItem == null) return;
 
-        TutorialSystem.Instance.StartSequence("Last");
+        isTutorialOn = false;
+        TutorialSystem.Instance.StartSequence("Money");
     }
 
     protected override void IsClearTutorial()
