@@ -45,7 +45,7 @@ public class SettingUI : MonoBehaviour
 
 
             Setting = true;
-            mapPanel.DOLocalMove(Vector2.zero, 0.5f).SetEase(Ease.InExpo);
+            mapPanel.DOLocalMove(Vector2.zero, 0.5f).SetEase(Ease.OutExpo);
             panelTime = 0;
         }
         else if (Input.GetKeyDown(KeyCode.Escape) && Setting && panelTime > .5f)
