@@ -143,6 +143,8 @@ public class TutorialSystem : NetworkBehaviour
         //player = Instantiate(playerController, startPos.position, Quaternion.identity);
         //player.NetworkObject.SpawnAsPlayerObject(OwnerClientId);
 
+        WaitRoomManager.Instance.IsRunningGame.Value = true;
+
     }
 
     private void Start()
