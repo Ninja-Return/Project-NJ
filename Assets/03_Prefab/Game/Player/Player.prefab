@@ -619,7 +619,6 @@ GameObject:
   - component: {fileID: 831164406611285271}
   - component: {fileID: 8368381885001768705}
   - component: {fileID: 5310942124214475713}
-  - component: {fileID: 3920526499086814488}
   - component: {fileID: 7716974955627420758}
   - component: {fileID: 5833718061378975261}
   - component: {fileID: 8507690287866354051}
@@ -846,21 +845,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSource: {fileID: 3852334843449199038}
   groundSencer: {fileID: 3469015576801893759}
---- !u!114 &3920526499086814488
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2042499202800047953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90ac56528fa0bdf4081d536005c45cb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ownColor: {r: 0, g: 0, b: 0, a: 0}
-  playerColor:
-    m_InternalValue: {r: 0, g: 1, b: 1, a: 0}
 --- !u!114 &7716974955627420758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -873,7 +857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81b7fcfc260bf2c41a2d5ff2a70ec64e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _colorManager: {fileID: 3920526499086814488}
+  _colorManager: {fileID: 0}
   _displayColorServer: {fileID: 3567290345262549763}
   _displayColorClient: {fileID: 2008904195942601423}
 --- !u!114 &5833718061378975261
