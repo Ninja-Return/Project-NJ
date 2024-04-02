@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class LightMonster : NetworkBehaviour
 {
+
     public void Spawn(Transform targetTrm)
     {
 

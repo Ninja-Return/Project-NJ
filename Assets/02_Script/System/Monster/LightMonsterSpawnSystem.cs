@@ -41,6 +41,7 @@ public class LightMonsterSpawnSystem : NetworkBehaviour
                         Instantiate(monsterPrefab, Random.insideUnitSphere * 3, Quaternion.identity);
 
                     monster.NetworkObject.Spawn(true);
+                    monster.Spawn(item.transform);
 
                 }
                 else
