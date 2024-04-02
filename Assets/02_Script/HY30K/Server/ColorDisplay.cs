@@ -15,8 +15,10 @@ public class ColorDisplay : MonoBehaviour
 
     private void HandlePlayerColorChanged(Color oldColor, Color newColor)
     {
+
         _displayColorServer.material.color = newColor;
         _displayColorClient.material.color = newColor;
+
     }
 
     private void OnDestroy()

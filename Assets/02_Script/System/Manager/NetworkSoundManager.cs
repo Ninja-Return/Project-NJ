@@ -101,7 +101,6 @@ public class NetworkSoundManager : NetworkBehaviour
         SoundPlayType playType = SoundPlayType.Server)
     {
 
-        Debug.Log(instance);
         if (instance == null) return;
 
         if(playType == SoundPlayType.Server)
