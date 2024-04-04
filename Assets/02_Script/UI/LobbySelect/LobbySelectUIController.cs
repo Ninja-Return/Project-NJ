@@ -104,7 +104,6 @@ public class LobbySelectUIController : MonoBehaviour
 
             await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text);
 
-            HostSingle.Instance.GameManager.gameMode = GameMode.Tutorial;
             NetworkManager.Singleton.SceneManager.LoadScene(SceneList.TutorialScene, LoadSceneMode.Single);
 
         }

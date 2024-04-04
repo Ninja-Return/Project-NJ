@@ -14,7 +14,6 @@ using UnityEngine;
 
 public enum GameMode
 {
-    Tutorial,
     Single,
     Mutli
 };
