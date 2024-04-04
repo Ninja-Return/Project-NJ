@@ -36,18 +36,22 @@ public class LightMonsterSpawnSystem : NetworkBehaviour
                 if(1f < Random.value)
                 {
 
-                    //괴물 스폰
-                    var monster =
-                        Instantiate(monsterPrefab, Random.insideUnitSphere * 3, Quaternion.identity);
+                    Debug.Log("스폰되다 괴물");
 
-                    monster.NetworkObject.Spawn(true);
-                    monster.Spawn(item.transform);
+                    //괴물 스폰
+                    //var monster =
+                    //    Instantiate(monsterPrefab, Random.insideUnitSphere * 3, Quaternion.identity);
+                    //
+                    //monster.NetworkObject.Spawn(true);
+                    //monster.Spawn(item.transform);
 
                 }
                 else
                 {
 
                     //이상한 사운드 나오게
+
+                    Debug.Log("나오다 사운드");
 
                 }
 

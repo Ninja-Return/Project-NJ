@@ -26,10 +26,9 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     private GameObject meetingObject;
     private Canvas interactionCanvas;
-    private bool isInsideSafetyRoom = true;
     public CinemachineVirtualCamera cvcam { get; private set; }
     
-
+    public bool isInsideSafetyRoom { get; set; } = true;
     public bool isSittingDown = false; // 현재 앉아 있는지 여부
     public Vector3 targetCameraPosition;
     public float changeTime = 1f;
@@ -260,13 +259,15 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     private IEnumerator ControlPsychosisValueCo()
     {
 
+        psychosisValue.Value = 1;
+
         while (true)
         {
 
             yield return null;
 
             var subValue = isInsideSafetyRoom ? Time.deltaTime : -Time.deltaTime;
-            psychosisValue.Value += subValue / 10;
+            psychosisValue.Value += subValue / 50f;
 
             psychosisValue.Value = Mathf.Clamp(psychosisValue.Value, 0, 1);
 
