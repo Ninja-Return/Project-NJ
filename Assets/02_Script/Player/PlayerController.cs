@@ -25,9 +25,10 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     [field:SerializeField] public PlayerInputDataSO Input { get; private set; }
 
     private GameObject meetingObject;
-    public CinemachineVirtualCamera cvcam;
     private Canvas interactionCanvas;
-    private bool isActive = true;
+    public CinemachineVirtualCamera cvcam { get; private set; }
+    
+    public bool isInsideSafetyRoom { get; set; } = true;
     public bool isSittingDown = false; // 현재 앉아 있는지 여부
     public Vector3 targetCameraPosition;
     public float changeTime = 1f;
@@ -35,6 +36,10 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     public Slider SensitivitySlider;
     public Rigidbody playerRigidbody;
 
+    public NetworkVariable<float> psychosisValue { get; private set; }
+    = new(writePerm: NetworkVariableWritePermission.Owner);
+
+    //사용되지 않음
     public bool IsMeeting { get; set; }
 
     public CinemachineVirtualCamera watchCam { get; private set; }
@@ -51,6 +56,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         meetingObject = GameObject.Find("MeetingObject");
 
         playerRigidbody = GetComponent<Rigidbody>();
+
 
     }
 
@@ -80,8 +86,6 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
         Input = Input.Init();
         Data = Instantiate(Data);
-
-        
 
         if(PlayerManager.Instance != null)
         {
@@ -115,6 +119,8 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
         Input.OnInventoryKeyPress += HandleInvenActive;
 
+        StartCoroutine(ControlPsychosisValueCo());
+
     }
 
     private void HandleInvenActive()
@@ -140,31 +146,6 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         Data.LookSensitive.SetValue(SensitivitySlider.value);
 
         base.Update();
-
-#if UNITY_EDITOR
-
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
-        {
-
-            Stop();
-            
-        }
-
-        if (UnityEngine.Input.GetKeyDown(KeyCode.K))
-        {
-
-            PlayerManager.Instance.PlayerDie(EnumList.DeadType.Escape, OwnerClientId);
-
-        }
-
-#endif
-
-        //if (UnityEngine.Input.GetKeyDown(KeyCode.K))
-        //{
-        //
-        //    GameManager.Instance.PlayerDie(EnumList.DeadType.Mafia, OwnerClientId);
-        //
-        //}
 
     }
 
@@ -275,5 +256,25 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     }
 
-    
+    private IEnumerator ControlPsychosisValueCo()
+    {
+
+        psychosisValue.Value = 1;
+
+        while (true)
+        {
+
+            yield return null;
+
+            var subValue = isInsideSafetyRoom ? Time.deltaTime : -Time.deltaTime;
+            psychosisValue.Value += subValue / 50f;
+
+            psychosisValue.Value = Mathf.Clamp(psychosisValue.Value, 0, 1);
+
+        }
+
+    }
+
+
+
 }

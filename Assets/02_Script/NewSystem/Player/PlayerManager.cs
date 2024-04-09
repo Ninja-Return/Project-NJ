@@ -16,7 +16,7 @@ public class PlayerManager : NetworkBehaviour
     [Header("Die")]
     [SerializeField] private DeathUI deathUI;
 
-    private List<PlayerController> players = new();
+    public List<PlayerController> players { get; private set; } = new();
     public PlayerController localController { get; private set; }
 
     public static PlayerManager Instance { get; private set; }

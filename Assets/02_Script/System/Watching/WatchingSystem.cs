@@ -80,11 +80,6 @@ public class WatchingSystem : NetworkBehaviour
 
         if (isWatching) return;
 
-        //HandleChattingOpen();
-
-        // 일반 음성 채널 조인
-        //JoinVivox();
-
         isWatching = true;
 
         alivePlayers = FindObjectsOfType<PlayerController>().ToList();
@@ -98,47 +93,5 @@ public class WatchingSystem : NetworkBehaviour
 
     }
 
-    private void HandleChattingOpen()
-    {
-
-        PlayerManager.Instance.Active(false);
-
-        //chattingSystem.ClearSpectatorChatting();
-
-        MettingOpenClientRPC();
-
-    }
-
-    [ClientRpc]
-    private void MettingOpenClientRPC()
-    {
-
-        if (PlayerManager.Instance.IsDie) return;
-
-        //JoinChannel();
-
-        SoundManager.Play2DSound("MeetingStart");
-
-        DayManager.instance.TimeSetting(true);
-        chattingUI.gameObject.SetActive(true);
-        chattingUI.ChattingStart();
-
-        PlayerManager.Instance.localController.IsMeeting = true;
-
-    }
-
-    public void CloseChatting()
-    {
-
-        chattingUI.EndSpectatorChat();
-
-    }
-
-    private async void JoinVivox()
-    {
-
-        await NetworkController.Instance.vivox.JoinNormalChannel();
-
-    }
 
 }

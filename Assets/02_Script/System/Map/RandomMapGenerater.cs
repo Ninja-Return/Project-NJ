@@ -29,8 +29,6 @@ public class RandomMapGenerater : NetworkBehaviour
         SpawnRoom();
         CloseAllRoom();
 
-        //EndSpawnClientRPC();
-
         Resources.UnloadUnusedAssets();
 
         startRoom.OpenAllClientRPC();
@@ -200,16 +198,6 @@ public class RandomMapGenerater : NetworkBehaviour
             }
 
         }
-
-    }
-
-    [ClientRpc]
-    private void EndSpawnClientRPC()
-    {
-
-
-        StaticBatchingUtility.Combine(roomRoot.gameObject);
-
 
     }
 
