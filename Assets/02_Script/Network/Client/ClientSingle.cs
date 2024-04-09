@@ -39,4 +39,9 @@ public class ClientSingle : MonoBehaviour
 
     }
 
+    private void OnDestroy()
+    {
+        GameManager.Disconnect();
+    }
+
 }

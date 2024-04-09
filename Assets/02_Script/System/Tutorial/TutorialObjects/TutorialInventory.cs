@@ -28,6 +28,7 @@ public class TutorialInventory : TutorialObject
         if (isCheck && !inventory.isShow)
         {
             isTutorialOn = false;
+            isCheck = false;
             TutorialSystem.Instance.StartSequence("Item");
         }
     }

@@ -24,6 +24,7 @@ public class TutorialItem : TutorialObject
         Soda handItem = FindObjectOfType<Soda>();
         if (handItem == null) return;
 
+        playerController.Input.OnUseObjectKeyPress -= ClickLeft;
         isTutorialOn = false;
         TutorialSystem.Instance.StartSequence("Money");
     }

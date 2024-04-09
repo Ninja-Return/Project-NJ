@@ -48,10 +48,7 @@ public class ResultUIController : NetworkBehaviour
         resuitPanel.color = skyColor;
         winnerText.color = skyColor;
 
-        if (HostSingle.Instance.GameManager.gameMode == GameMode.Tutorial)
-            winText.text = "튜토리얼 완료";
-        else
-            winText.text = "플레이 결과";
+        winText.text = "플레이 결과";
 
     }
 
