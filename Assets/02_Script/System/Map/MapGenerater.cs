@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -23,6 +24,7 @@ public class MapGenerater : MonoBehaviour
 
     private List<MapDataSO> datas = new();
     private Dictionary<DirationType, List<Room>> roomContainer = new();
+    private List<(MapCell cell, Room room)> creationRoomList = new();
 
     private void Start()
     {
@@ -39,6 +41,7 @@ public class MapGenerater : MonoBehaviour
 
         }
 
+        Close();
 
     }
 
@@ -108,6 +111,18 @@ public class MapGenerater : MonoBehaviour
 
     }
 
+    private void Close()
+    {
+
+        foreach(var item in creationRoomList)
+        {
+            
+            item.room.Close(GetCloseData(item.cell, item.room));
+
+        }
+
+    }
+
     private void RotateRoom(Vector2Int originIndex, Vector2Int size, Array2D<MapCell> data, GameObject obj)
     {
 
@@ -123,12 +138,10 @@ public class MapGenerater : MonoBehaviour
 
                 if (data[idx.x, idx.y] == MapCell.None) continue;
 
-
                 var c = data[idx.x, idx.y];
                 if(CheckRotateAble(data[idx.x, idx.y], item, out var rot))
                 {
 
-                    Debug.Log(rot.eulerAngles);
                     obj.transform.rotation = rot;
                     break;
 
@@ -185,11 +198,15 @@ public class MapGenerater : MonoBehaviour
 
         var room = Instantiate(prefab, new Vector3(index.x * 30 + offset.x, 0, -index.y * 30 - offset.y), RotateRoad(dir));
 
+        creationRoomList.Add(((MapCell)dir, room));
+
         if (dirT == DirationType.Room) return room.gameObject;
+
 
         return null;
 
     }
+
 
     private Quaternion RotateRoad(int dir)
     {
@@ -212,6 +229,89 @@ public class MapGenerater : MonoBehaviour
         if (dir == 15) return DirationType.Dir4;
 
         return DirationType.Room;
+
+    }
+
+    private List<Diractions> GetCloseData(MapCell cell, Room room)
+    {
+
+        List<Diractions> dirs = new();
+
+        foreach(MapCell item in Enum.GetValues(typeof(MapCell)))
+        {
+
+            if (item == MapCell.Room || item == MapCell.None || !cell.HasFlag(item)) continue;
+
+            var checkPos = (GetDirByCell(item) * 30) + room.transform.position;
+            var revCell = GetReverceCell(item);
+
+            var obj = creationRoomList.FindIndex(x => 
+            (x.cell.HasFlag(revCell) || x.cell == MapCell.Room)
+            && x.room.transform.position == checkPos);
+            
+
+            if(obj == -1)
+            {
+
+                dirs.Add(GetDirationType(item));
+
+            }
+
+        }
+
+        return dirs;
+
+    }
+
+    private Vector3 GetDirByCell(MapCell cell)
+    {
+
+        return cell switch
+        {
+
+            MapCell.None => Vector3.zero,
+            MapCell.Left => Vector3.left,
+            MapCell.Right => Vector3.right,
+            MapCell.Forward => Vector3.forward,
+            MapCell.Back => Vector3.back,
+            MapCell.Room => Vector3.zero,
+            _ => Vector3.zero
+
+        };
+
+    }
+
+    private MapCell GetReverceCell(MapCell cell)
+    {
+
+        return cell switch
+        {
+
+
+            MapCell.Left => MapCell.Right,
+            MapCell.Right => MapCell.Left,
+            MapCell.Forward => MapCell.Back,
+            MapCell.Back => MapCell.Forward,
+            _ => MapCell.None
+
+        };
+
+    }
+
+    private Diractions GetDirationType(MapCell cell)
+    {
+
+        return cell switch
+        {
+
+
+            MapCell.Left => Diractions.Lft,
+            MapCell.Right => Diractions.Rit,
+            MapCell.Forward => Diractions.Fwd,
+            MapCell.Back => Diractions.Bak,
+            _ => Diractions.Rit
+
+        };
 
     }
 
