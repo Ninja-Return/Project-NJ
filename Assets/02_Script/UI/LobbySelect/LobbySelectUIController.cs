@@ -162,6 +162,8 @@ public class LobbySelectUIController : MonoBehaviour
 
             }
 
+            yield return null;
+
             foreach (var lobby in lobbys.Result)
             {
 
