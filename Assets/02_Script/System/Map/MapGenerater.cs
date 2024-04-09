@@ -22,9 +22,12 @@ public enum DirationType
 public class MapGenerater : MonoBehaviour
 {
 
+    [SerializeField] private List<Room> constRooms = new();
+
     private List<MapDataSO> datas = new();
     private Dictionary<DirationType, List<Room>> roomContainer = new();
     private List<(MapCell cell, Room room)> creationRoomList = new();
+    private List<Room> spawnConstRoom = new();
 
     private void Start()
     {
@@ -36,6 +39,7 @@ public class MapGenerater : MonoBehaviour
         foreach(var item in dirs)
         {
 
+            spawnConstRoom = constRooms.ToList();
             var data = datas.GetRandomListObject();
             LoadData(data, item * data.data.size * 30);
 
@@ -193,8 +197,22 @@ public class MapGenerater : MonoBehaviour
     private GameObject CreateProperObject(int dir, Vector2 index, Vector2 offset)
     {
 
+        Room prefab = null;
         var dirT = GetDirationType(dir);
-        var prefab = roomContainer[dirT].GetRandomListObject();
+
+        if (spawnConstRoom.Count > 0)
+        {
+
+            prefab = spawnConstRoom[0];
+            spawnConstRoom.RemoveAt(0);
+
+        }
+        else
+        {
+
+           prefab = roomContainer[dirT].GetRandomListObject();
+
+        }
 
         var room = Instantiate(prefab, new Vector3(index.x * 30 + offset.x, 0, -index.y * 30 - offset.y), RotateRoad(dir));
 
