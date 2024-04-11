@@ -11,6 +11,7 @@ public class SoundManager : MonoBehaviour
 
     private static SoundManager instance;
 
+    private AudioMixerGroup masterMixer;
     private AudioMixerGroup bgmMixer;
     private AudioMixerGroup sfxMixer;
     private AudioMixer mainMixer; 
@@ -31,6 +32,7 @@ public class SoundManager : MonoBehaviour
         mainMixer = Resources.Load<AudioMixer>("Audio/MainMixer");
         sfxMixer = mainMixer.FindMatchingGroups("SFX")[0];
         bgmMixer = mainMixer.FindMatchingGroups("BGM")[0];
+        masterMixer = mainMixer.FindMatchingGroups("Master")[0];
 
         DontDestroyOnLoad(gameObject);
 
@@ -136,6 +138,12 @@ public class SoundManager : MonoBehaviour
 
         source.Play();
 
+    }
+
+    public static void SettingMaster(float value)
+    {
+        if (value <= -40f) value = -80f;
+        instance.mainMixer.SetFloat("Master", value);
     }
 
     public static void SettingBgm(float value)

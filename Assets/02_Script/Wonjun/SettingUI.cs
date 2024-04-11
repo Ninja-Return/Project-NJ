@@ -118,4 +118,9 @@ public class SettingUI : MonoBehaviour
     {
         SoundManager.SettingBgm(slider.value);
     }
+
+    public void MasterChange(Slider slider)
+    {
+        SoundManager.SettingMaster(slider.value);
+    }
 }

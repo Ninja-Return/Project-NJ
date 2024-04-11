@@ -56,6 +56,11 @@ public class IntroSceneUIController : MonoBehaviour
         CHSceneManager.Instance.ChangeScene(SceneList.LobbySelectScene);
     }
 
+    public void MasterChange(Slider slider)
+    {
+        SoundManager.SettingMaster(slider.value);
+    }
+
     public void BgmSetting(Slider slider)
     {
         Debug.Log("11");
