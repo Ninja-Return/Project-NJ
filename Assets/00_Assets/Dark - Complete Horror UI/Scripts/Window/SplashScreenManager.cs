@@ -29,6 +29,23 @@ namespace Michsky.UI.Dark
         int currentTitleIndex;
         float currentTitleDuration;
 
+        private void Update()
+        {
+            if (Input.anyKeyDown)
+            {
+                Debug.Log("Skip");
+
+                splashScreen.SetActive(false);
+                mainPanelParent.gameObject.SetActive(true);
+                modalWindowParent.SetActive(true);
+                transitionHelper.gameObject.SetActive(true);
+                mainPanelManager.EnableFirstPanel();
+                transitionHelper.location = 0;
+                transitionHelper.DissolveOut();
+                onSplashScreenEnd.Invoke();
+            }
+        }
+
         void OnEnable()
         {
             if (disableSplashScreen == true)
@@ -49,7 +66,7 @@ namespace Michsky.UI.Dark
                 mainPanelParent.gameObject.SetActive(false);
                 transitionHelper.gameObject.SetActive(false);
                 modalWindowParent.SetActive(false);
-                InitializeTitles();         
+                InitializeTitles();
             }
         }
 
@@ -97,7 +114,7 @@ namespace Michsky.UI.Dark
             yield return new WaitForSecondsRealtime(currentTitleDuration);
             currentTitleObj.SetActive(false);
             currentTitleIndex++;
-            
+
             try
             {
                 currentTitleDuration = splashScreenTitles[currentTitleIndex].screenTime;
@@ -106,7 +123,7 @@ namespace Michsky.UI.Dark
                 StartCoroutine("InitializeTitleDuration");
             }
 
-            catch 
+            catch
             {
                 StopCoroutine("InitializeTitleDuration");
             }
