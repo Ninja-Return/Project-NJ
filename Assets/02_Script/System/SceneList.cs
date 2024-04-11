@@ -10,8 +10,8 @@ public class SceneList
     public const string OfficeMap = "WaitRoom";
     public const string TunnelMap = "Tunnel";
     public const string LobbyScene = "Lobby";
-    public const string LobbySelectScene = "LobbySelect";
+    public const string LobbySelectScene = "LobbySelect-HY30K";
     public const string LoadingScene = "Loading";
-    public const string IntroScene = "Intro";
+    public const string IntroScene = "Intro-HY30K";
 
 }

@@ -10,10 +10,6 @@ using Unity.Services.Lobbies.Models;
 
 public class LobbySelectUIController : MonoBehaviour
 {
-    [Header("Panel")]
-    [SerializeField] private RectTransform roomCreateUI;
-    [SerializeField] private RectTransform roomJoinUI;
-
     [Header("UI")]
     [SerializeField] private TMP_InputField roomInputField;
     [SerializeField] private TMP_InputField joinCodeInputField;
@@ -29,11 +25,6 @@ public class LobbySelectUIController : MonoBehaviour
         StartCoroutine(RefreshLobby());
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-
-        Sequence startSequence = DOTween.Sequence();
-        startSequence.Insert(0.75f, roomCreateUI.DOLocalMoveY(0, 0.5f));
-        startSequence.Insert(1f, roomJoinUI.DOLocalMoveY(0, 0.5f));
-
     }
 
     public async void CreateRoom()
