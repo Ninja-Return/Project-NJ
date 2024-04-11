@@ -148,7 +148,6 @@ public class Inventory : NetworkBehaviour
         OnSlotRemove?.Invoke("", slotIdx, "");
         slots[slotIdx].ResetSlot();
 
-
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -164,7 +163,7 @@ public class Inventory : NetworkBehaviour
             Quaternion.identity);
 
         clone.NetworkObject.Spawn();
-        clone.SetUpExtraDataServerRPC(extraData);
+        //clone.SetUpExtraDataServerRPC(extraData);
 
     }
 
@@ -174,6 +173,20 @@ public class Inventory : NetworkBehaviour
         if (idx == -1) return "";
 
         return slots[idx].data.itemName;
+
+    }
+
+    public void DropAllItem()
+    {
+
+        foreach(var item in slots)
+        {
+
+            if (item.slotData == null) continue;
+            var trm = transform.root;
+            ItemSpawnManager.Instance.SpawningItem(trm.position + transform.forward, item.slotData.poolingName);
+
+        }
 
     }
 
