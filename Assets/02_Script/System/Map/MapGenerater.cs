@@ -200,7 +200,7 @@ public class MapGenerater : MonoBehaviour
         Room prefab = null;
         var dirT = GetDirationType(dir);
 
-        if (spawnConstRoom.Count > 0)
+        if (spawnConstRoom.Count > 0 && dirT == DirationType.Room)
         {
 
             prefab = spawnConstRoom[0];

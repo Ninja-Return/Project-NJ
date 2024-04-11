@@ -44,8 +44,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0.2
   lightIntensity:
-    m_OverrideState: 0
-    m_Value: 1
+    m_OverrideState: 1
+    m_Value: 0.5
   densityInLight:
     m_OverrideState: 0
     m_Value: 1
@@ -105,7 +105,7 @@ MonoBehaviour:
     m_Value: 0.3
   noiseTiling:
     m_OverrideState: 0
-    m_Value: 30
+    m_Value: 1
   noiseWindSpeed:
     m_OverrideState: 0
     m_Value: {x: 0, y: -1, z: 0}
@@ -118,7 +118,7 @@ MonoBehaviour:
       frequency: 8
       octaves: 4
       lacunarity: 2
-      gain: 0.35
+      gain: 1
       seed: 0
       noiseType: 2
       noiseQuality: 0
@@ -143,6 +143,7 @@ MonoBehaviour:
   - {fileID: 4406892546266380245}
   - {fileID: 8176257343578105794}
   - {fileID: -7630281161289421070}
+  - {fileID: 5803821326041415068}
 --- !u!114 &2291225285397590039
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -158,25 +159,25 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: -1}
+    m_Value: {x: 1, y: 1, z: 1, w: -0.83138174}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: -0.5951603}
+    m_Value: {x: 1, y: 1, z: 1, w: -0.16159274}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: -0.20217733}
+    m_Value: {x: 1, y: 1, z: 1, w: -0.051521998}
   shadowsStart:
     m_OverrideState: 1
     m_Value: 0
   shadowsEnd:
     m_OverrideState: 1
-    m_Value: 0.85
+    m_Value: 0.49
   highlightsStart:
     m_OverrideState: 1
-    m_Value: 0.55
+    m_Value: 0
   highlightsEnd:
     m_OverrideState: 1
-    m_Value: 1.48
+    m_Value: 0.75
 --- !u!114 &4406892546266380245
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -210,8 +211,8 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.68
-          value: 0.6372093
+          time: 0.535082
+          value: 0.96338063
           inSlope: 1
           outSlope: 1
           tangentMode: 0
@@ -375,6 +376,28 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+--- !u!114 &5803821326041415068
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5485954d14dfb9a4c8ead8edb0ded5b1, type: 3}
+  m_Name: LiftGammaGain
+  m_EditorClassIdentifier: 
+  active: 1
+  lift:
+    m_OverrideState: 0
+    m_Value: {x: 1, y: 1, z: 1, w: -0.037470873}
+  gamma:
+    m_OverrideState: 0
+    m_Value: {x: 1, y: 1, z: 1, w: 0}
+  gain:
+    m_OverrideState: 1
+    m_Value: {x: 1, y: 1, z: 1, w: -0.7447305}
 --- !u!114 &6721701731754507254
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -477,4 +500,4 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 0.135
+    m_Value: 0.07
