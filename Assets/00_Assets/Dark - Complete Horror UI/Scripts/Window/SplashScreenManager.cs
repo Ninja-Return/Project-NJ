@@ -31,18 +31,23 @@ namespace Michsky.UI.Dark
 
         private void Update()
         {
-            if (Input.anyKeyDown)
+            if (disableSplashScreen == false)
             {
-                Debug.Log("Skip");
+                if (Input.anyKeyDown)
+                {
+                    Debug.Log("Skip");
 
-                splashScreen.SetActive(false);
-                mainPanelParent.gameObject.SetActive(true);
-                modalWindowParent.SetActive(true);
-                transitionHelper.gameObject.SetActive(true);
-                mainPanelManager.EnableFirstPanel();
-                transitionHelper.location = 0;
-                transitionHelper.DissolveOut();
-                onSplashScreenEnd.Invoke();
+                    splashScreen.SetActive(false);
+                    mainPanelParent.gameObject.SetActive(true);
+                    modalWindowParent.SetActive(true);
+                    transitionHelper.gameObject.SetActive(true);
+                    mainPanelManager.EnableFirstPanel();
+                    transitionHelper.location = 0;
+                    transitionHelper.DissolveOut();
+                    onSplashScreenEnd.Invoke();
+
+                    disableSplashScreen = true;
+                }
             }
         }
 

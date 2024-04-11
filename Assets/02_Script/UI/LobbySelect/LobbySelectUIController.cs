@@ -11,11 +11,8 @@ using Unity.Services.Lobbies.Models;
 public class LobbySelectUIController : MonoBehaviour
 {
     [Header("Panel")]
-    [SerializeField] private RectTransform lobbySelectUI;
-    [SerializeField] private RectTransform roomSearchUI;
     [SerializeField] private RectTransform roomCreateUI;
     [SerializeField] private RectTransform roomJoinUI;
-    [SerializeField] private RectTransform roomSeleteUI;
 
     [Header("UI")]
     [SerializeField] private TMP_InputField roomInputField;
@@ -34,21 +31,9 @@ public class LobbySelectUIController : MonoBehaviour
         Cursor.visible = true;
 
         Sequence startSequence = DOTween.Sequence();
-        startSequence.Append(lobbySelectUI.DOLocalMoveY(0, 0.5f));
-        startSequence.Append(roomSearchUI.DOLocalMoveX(0, 0.5f));
-        startSequence.Insert(0.75f, roomCreateUI.DOLocalMoveX(0, 0.5f));
-        startSequence.Insert(1f, roomJoinUI.DOLocalMoveX(0, 0.5f));
+        startSequence.Insert(0.75f, roomCreateUI.DOLocalMoveY(0, 0.5f));
+        startSequence.Insert(1f, roomJoinUI.DOLocalMoveY(0, 0.5f));
 
-    }
-
-    public void RoomSetting()
-    {
-        roomSeleteUI.DOLocalMoveY(0, 0.5f);
-    }
-
-    public void CloseRoomSetting()
-    {
-        roomSeleteUI.DOLocalMoveY(-900f, 0.5f);
     }
 
     public async void CreateRoom()
