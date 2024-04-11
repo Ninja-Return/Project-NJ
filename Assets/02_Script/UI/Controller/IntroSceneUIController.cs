@@ -1,26 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
-using UnityEngine.SceneManagement;
-using Unity.Netcode;
 
 public class IntroSceneUIController : MonoBehaviour
 {
-    [SerializeField] private Image introPanel;
     [SerializeField] private TMP_Text nameText;
 
     private FullScreenMode screenMode = FullScreenMode.FullScreenWindow;
 
     private void Start()
     {
-        Sequence introSequence = DOTween.Sequence();
-        introSequence.Append(transform.DOLocalMove(Vector2.zero, 1f));
-        introSequence.Append(introPanel.DOColor(Color.white, 0.1f));
-        introSequence.Append(introPanel.DOFade(0, 0.5f));
-        introSequence.Append(transform.DOLocalMove(Vector2.zero, 0.1f).OnComplete(() => { introPanel.gameObject.SetActive(false); }));
 
         if (PlayerPrefs.GetString("PlayerName") == "")
         {
