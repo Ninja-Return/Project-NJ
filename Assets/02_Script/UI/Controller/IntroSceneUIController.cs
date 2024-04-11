@@ -29,6 +29,8 @@ public class IntroSceneUIController : MonoBehaviour
 
         nameText.text = PlayerPrefs.GetString("PlayerName");
         nameText.text = "이우";
+
+        PlayerPrefs.SetFloat("FOV", 60f);
     }
 
     public void GameobjectActiveTrue(GameObject obj)
@@ -70,6 +72,11 @@ public class IntroSceneUIController : MonoBehaviour
     public void SfxSetting(Slider slider)
     {
         SoundManager.SettingSfx(slider.value);
+    }
+
+    public void FOVSetting(Slider slider) // 50 ~ 70 (처음 60으로 고정)
+    {
+        PlayerPrefs.SetFloat("FOV", slider.value);
     }
 
     public void LangaugeSetting()

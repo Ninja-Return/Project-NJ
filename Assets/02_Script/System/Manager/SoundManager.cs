@@ -142,18 +142,23 @@ public class SoundManager : MonoBehaviour
 
     public static void SettingMaster(float value)
     {
+        value = (value * 40f) - 40f;
         if (value <= -40f) value = -80f;
+
         instance.mainMixer.SetFloat("Master", value);
     }
 
     public static void SettingBgm(float value)
     {
+        value = (value * 40f) - 40f;
         if (value <= -40f) value = -80f;
+
         instance.mainMixer.SetFloat("BGM", value);
     }
 
     public static void SettingSfx(float value)
     {
+        value = (value * 40f) - 40f;
         if (value <= -40f) value = -80f;
 
         instance.mainMixer.SetFloat("SFX", value);

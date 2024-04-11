@@ -94,6 +94,8 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
         }
 
+        Camera.main.fieldOfView = PlayerPrefs.GetFloat("FOV");
+
         var defaultState = new PlayerStateRoot(this);
         AddState(defaultState, EnumPlayerState.Idle);
 
