@@ -14,7 +14,7 @@ public class DronIdleState : DronStateRoot
         if (!IsServer) return;
 
         dronFSM.SetAnimation("Idle", true);
-        NetworkSoundManager.Play3DSound("MonsterHowling", dronFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
+        NetworkSoundManager.Play3DSound("DronHowling", dronFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
     }
 
     protected override void UpdateState()

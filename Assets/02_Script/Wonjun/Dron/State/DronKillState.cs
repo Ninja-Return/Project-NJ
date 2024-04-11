@@ -14,7 +14,7 @@ public class DronKillState : DronStateRoot
         if (!IsServer) return;
 
         dronFSM.SetAnimation("Attack", true);
-        NetworkSoundManager.Play3DSound("MonsterDie", dronFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
+        NetworkSoundManager.Play3DSound("DronKill", dronFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
 
         dronFSM.JumpScare();
 

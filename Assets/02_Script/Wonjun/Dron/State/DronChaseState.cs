@@ -18,7 +18,7 @@ public class DronChaseState : DronStateRoot
         if (!IsServer) return;
 
         dronFSM.SetAnimation("Run", true);
-        NetworkSoundManager.Play3DSound("FindPlayer", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
+        NetworkSoundManager.Play3DSound("DronBite", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
 
         nav.speed = speed;
     }
