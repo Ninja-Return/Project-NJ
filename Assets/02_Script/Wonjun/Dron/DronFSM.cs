@@ -39,6 +39,8 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     [SerializeField] private float killRadius;
     [SerializeField] private float workSpeed;
     [SerializeField] private float runSpeed;
+    [SerializeField] private float lazerTime;
+    [SerializeField] private float stopTime;
     [SerializeField] private LayerMask obstacleMask;
 
     private void Start()
@@ -61,7 +63,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         DronIdleState dronIdleState = new DronIdleState(this);
         DronPatrolState dronPatrolState = new DronPatrolState(this, moveRadius, workSpeed);
         DronPingState dronPingState = new DronPingState(this, workSpeed);
-        DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed);
+        DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed, lazerTime, stopTime);
         DronKillState dronKillState = new DronKillState(this);
         DronDeathState dronDeathState = new DronDeathState(this);
 
@@ -171,6 +173,11 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         return targetPlayer;
     }
 
+    /// <summary>
+    /// 집가서 드론적 시야각 내리는 작업 할 곳
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <returns></returns>
     public Collider ViewingPlayer(float radius)
     {
         List<Collider> players = new List<Collider>();
