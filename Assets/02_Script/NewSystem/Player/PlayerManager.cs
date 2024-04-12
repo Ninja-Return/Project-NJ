@@ -244,6 +244,8 @@ public class PlayerManager : NetworkBehaviour
 
         }
 
+        yield return null;
+
     }
 
 }
