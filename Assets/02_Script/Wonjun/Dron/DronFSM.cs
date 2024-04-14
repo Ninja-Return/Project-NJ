@@ -186,11 +186,11 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         Vector3 eulerAngles = headTrs.eulerAngles;
 
         float lookingAngle = eulerAngles.y;  //Ä³ï¿½ï¿½ï¿½Í°ï¿½ ï¿½Ù¶óº¸´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-        Vector3 rightDir = AngleToDirX(lookingAngle + angle * 0.5f);
-        Vector3 leftDir = AngleToDirX(lookingAngle - angle * 0.5f);
-        Vector3 upDir = AngleToDirY(lookingAngle, true);
-        Vector3 downDir = AngleToDirY(lookingAngle, false);
-        Vector3 lookDir = AngleToDirX(lookingAngle);
+        Vector3 rightDir = AngleToDirX(lookingAngle + angle * 0.5f, 30);
+        Vector3 leftDir = AngleToDirX(lookingAngle - angle * 0.5f, 30);
+        Vector3 upDir = AngleToDirY(lookingAngle, true,35);
+        Vector3 downDir = AngleToDirY(lookingAngle, false,35);
+        Vector3 lookDir = AngleToDirX(lookingAngle, 30);
 
 #if UNITY_EDITOR
         Debug.DrawRay(pos, rightDir * radius, Color.blue);
@@ -230,19 +230,20 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         return targetPlayer;
     }
 
-    private Vector3 AngleToDirX(float angle)
+    private Vector3 AngleToDirX(float angle, float xRotation)
     {
         float radian = angle * Mathf.Deg2Rad;
-        return new Vector3(Mathf.Sin(radian), 0, Mathf.Cos(radian));
+        float y = -Mathf.Sin(xRotation * Mathf.Deg2Rad); // Y ÃàÀ¸·Î ³»·Á°¥ °Å¸®¸¦ °è»ê
+        return new Vector3(Mathf.Sin(radian), y, Mathf.Cos(radian));
     }
 
-    private Vector3 AngleToDirY(float angle1, bool isUp)
+    private Vector3 AngleToDirY(float angle1, bool isUp, float xRotation)
     {
         float radian1 = angle1 * Mathf.Deg2Rad;
         float radian2 = (angle * 0.5f) * Mathf.Deg2Rad;
-
+        float y = -Mathf.Sin(xRotation * Mathf.Deg2Rad); // Y ÃàÀ¸·Î ³»·Á°¥ °Å¸®¸¦ °è»ê
         Vector3 angleVec = isUp == true ? new Vector3(0f, Mathf.Sin(radian2), 0f) : new Vector3(0f, -Mathf.Sin(radian2), 0f);
-        return new Vector3(Mathf.Sin(radian1), 0, Mathf.Cos(radian1)) + angleVec;
+        return new Vector3(Mathf.Sin(radian1), y, Mathf.Cos(radian1)) + angleVec;
     }
 
     public void SetPingPos(Vector3 pos)
