@@ -16,15 +16,7 @@ public class LobbyUIController : NetworkBehaviour
     [SerializeField] private TMP_Text joinCodeText;
     [SerializeField] private GameObject startBtn;
 
-    [Header("Panel")]
-    [SerializeField] private RectTransform peoplePanel;
-    [SerializeField] private RectTransform gameSettingPanel;
     [SerializeField] private RectTransform joinCodePanel;
-    [SerializeField] private RectTransform mapPanel;
-    [SerializeField] private RectTransform gameBarPanel;
-    [SerializeField] private Image[] gameBarBtns;
-
-    private bool IsSingleMode;
 
     private void Start()
     {
@@ -43,26 +35,12 @@ public class LobbyUIController : NetworkBehaviour
 
         joinCodeText.text = $"초대코드 : {NetworkController.Instance.joinCode}";
 
-        SetupPanel();
 
         if (HostSingle.Instance.GameManager.gameMode == GameMode.Single)
         {
             joinCodePanel.gameObject.SetActive(false);
         }
 
-    }
-
-    private void SetupPanel()
-    {
-        Sequence startSequence = DOTween.Sequence();
-        startSequence.Append(peoplePanel.DOLocalMove(Vector2.zero, 0.5f));
-        startSequence.Join(gameSettingPanel.DOLocalMove(Vector2.zero, 0.5f));
-        startSequence.Join(joinCodePanel.DOLocalMove(Vector2.zero, 0.5f));
-        startSequence.Join(gameBarPanel.DOLocalMove(Vector2.zero, 0.5f));
-        for (float i = 0; i < gameBarBtns.Length; i++)
-        {
-            startSequence.Insert(2f + (i * 0.25f), gameBarBtns[(int)i].DOFade(1, 0.5f));
-        }
     }
 
     private void OnPlayerDisconnect(string authId, ulong clientId)
@@ -125,18 +103,6 @@ public class LobbyUIController : NetworkBehaviour
         HostSingle.Instance.GameManager.ChangeLobbyState(true);
         NetworkManager.SceneManager.LoadScene(SceneList.LoadingScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
 
-    }
-
-    public void OnMapPanelMove()
-    {
-        if (mapPanel.localPosition == Vector3.zero)
-        {
-            mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
-        }
-        else
-        {
-            mapPanel.DOLocalMove(Vector2.zero, 0.5f).SetEase(Ease.InExpo);
-        }
     }
 
     public void BackLobby()

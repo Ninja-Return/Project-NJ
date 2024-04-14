@@ -70,7 +70,7 @@ public class PlayerManager : NetworkBehaviour
         vec.y = 3;
 
         var pl = Instantiate(playerPrefab, vec, Quaternion.identity)
-    .GetComponent<PlayerController>();
+            .GetComponent<PlayerController>();
 
         pl.NetworkObject.SpawnWithOwnership(id, true);
 
@@ -119,6 +119,21 @@ public class PlayerManager : NetworkBehaviour
 
         if(player == null) return;
 
+
+        var param = new ClientRpcParams
+        {
+
+            Send = new ClientRpcSendParams
+            {
+
+                TargetClientIds = new[] { clientId },
+
+            }
+
+        };
+
+        PlayerDieClientRPC(type, param);
+
         if (type == EnumList.DeadType.Escape)
         {
             var data = HostSingle.Instance.NetServer.GetUserDataByClientID(clientId).Value;
@@ -151,20 +166,6 @@ public class PlayerManager : NetworkBehaviour
 
         diePlayer.Add(live);
 
-        var param = new ClientRpcParams
-        {
-
-            Send = new ClientRpcSendParams
-            {
-
-                TargetClientIds = new[] { clientId },
-
-            }
-
-        };
-
-        PlayerDieClientRPC(type, param);
-
         New_GameManager.Instance.CheckGameEnd
             (
             players.Count,
@@ -188,8 +189,11 @@ public class PlayerManager : NetworkBehaviour
         //deathUI.gameObject.SetActive(true);
         //deathUI.PopupDeathUI(type);
 
+        Inventory.Instance.DropAllItem();
+
         NetworkController.Instance.vivox.Leave3DChannel();
         WatchingSystem.Instance.StartWatching();
+
 
         IsDie = true;
 
