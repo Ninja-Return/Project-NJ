@@ -18,7 +18,12 @@ public class SculptureChaseState : SculptureStateRoot
         this.frame = frame;
     }
 
-    protected override void EnterState() { }
+    protected override void EnterState()
+    {
+        if (!IsServer) return;
+
+        NetworkSoundManager.Play3DSound("SculptureFindPlayer", sculptureFSM.transform.position, 0.1f, 45f, SoundType.SFX, AudioRolloffMode.Linear);
+    }
 
     protected override void UpdateState()
     {
@@ -26,6 +31,8 @@ public class SculptureChaseState : SculptureStateRoot
 
         if (sculptureFSM.FrameMove(frame, GenerateVector()))
         {
+            NetworkSoundManager.Play3DSound("SculptureChase", sculptureFSM.transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
+
             CatchPlayerRader();
 
             PlayerDarkness player = sculptureFSM.targetPlayer.GetComponent<PlayerDarkness>();
@@ -44,7 +51,7 @@ public class SculptureChaseState : SculptureStateRoot
         {
             sculptureFSM.ChangeState(SculptureState.Kill);
         }
-    }
+    } //KillState
 
     private Vector3 GenerateVector()
     {
@@ -69,5 +76,5 @@ public class SculptureChaseState : SculptureStateRoot
             sculptureFSM.ChangeState(SculptureState.Patrol);
             return Vector3.zero;
         }
-    }
+    }//IdleState
 }

@@ -56,6 +56,8 @@ public class SculpturePatrolState : SculptureStateRoot
 
         if (RandomPoint(radius, out point))
         {
+            NetworkSoundManager.Play3DSound("SculptureMove", sculptureFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
+
             nav.CalculatePath(point, navMeshPath);
             points = sculptureFSM.SamplePathPositions(navMeshPath, interval);
         }

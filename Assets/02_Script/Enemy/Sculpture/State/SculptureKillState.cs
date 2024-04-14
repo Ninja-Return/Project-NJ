@@ -11,7 +11,9 @@ public class SculptureKillState : SculptureStateRoot
     protected override void EnterState()
     {
         if (!IsServer) return;
-        
+
+        NetworkSoundManager.Play3DSound("BoneChuck", sculptureFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
+
         sculptureFSM.KillPlayer();
 
         nav.isStopped = true;

@@ -32,7 +32,8 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>
     [SerializeField] private float chaseInterval;
     [SerializeField] private float moveFrame;
     [SerializeField] private float chaseFrame;
-    [SerializeField] private LayerMask obstacleMask;
+
+    public LayerMask obstacleMask;
 
     readonly float frame = 0.1f;
 
