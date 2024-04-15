@@ -70,12 +70,11 @@ public class PlayerAnimationController : NetworkBehaviour
         serverObj.gameObject.SetActive(!IsOwner);
         clientObj.gameObject.SetActive(IsOwner);
 
-        //컨트롤 리그 널
         if (IsOwner)
         {
 
             controlAnimator = clientObj.GetComponent<Animator>();
-            controlRig = clientObj.Find("Rig 1").GetComponent<Rig>();
+            controlRig = clientObj.Find("Armature").Find("Rig 1").GetComponent<Rig>();
             playerController = GetComponent<PlayerController>();
             groundSencer = GetComponentInChildren<GroundSencer>();
 
