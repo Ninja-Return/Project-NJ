@@ -1,18 +1,20 @@
 using DG.Tweening;
+using Michsky.UI.Dark;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SettingUI : MonoBehaviour
 {
-    [SerializeField] private RectTransform mapPanel;
-    [SerializeField] private GameObject SoundPanel;
-    [SerializeField] private GameObject DPIPanel;
-    [SerializeField] private GameObject GameExitPanel;
     [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private PlayerDataSO playerData;
+    public MainPanelManager mainPanelManager;
+    public UIDissolveEffect dissolveEffect;
+
+    private FullScreenMode screenMode = FullScreenMode.FullScreenWindow;
     private float panelTime = 0;
     private bool Setting = false;
     private bool isShow = true;
@@ -20,9 +22,6 @@ public class SettingUI : MonoBehaviour
 
     void Start()
     {
-        SoundPanel.SetActive(false);
-        DPIPanel.SetActive(false);
-        GameExitPanel.SetActive(false);
         playerController = GetComponent<PlayerController>();
         sensitivitySlider.maxValue = 12;
         sensitivitySlider.value = 12;
@@ -35,6 +34,8 @@ public class SettingUI : MonoBehaviour
         panelTime += Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.Escape) && !Setting && panelTime > .8f)
         {
+            mainPanelManager.OpenPanel("Settings");
+            //dissolveEffect.DissolveIn();
 
             Support.SettingCursorVisable(isShow);
 
@@ -45,11 +46,12 @@ public class SettingUI : MonoBehaviour
 
 
             Setting = true;
-            mapPanel.DOLocalMove(Vector2.zero, 0.5f).SetEase(Ease.OutExpo);
             panelTime = 0;
         }
         else if (Input.GetKeyDown(KeyCode.Escape) && Setting && panelTime > .5f)
         {
+            mainPanelManager.OpenFirstTab();
+            //dissolveEffect.DissolveOut();
 
             Support.SettingCursorVisable(!isShow);
 
@@ -58,36 +60,42 @@ public class SettingUI : MonoBehaviour
             else
                 PlayerManager.Instance.localController.Active(isShow);
 
-            SoundPanel.SetActive(false);
-            DPIPanel.SetActive(false);
-            GameExitPanel.SetActive(false);
-
             Setting = false;
-            mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
             panelTime = 0;
         }
     }
 
-    public void PanelUp()
+    /*public void PanelUp()
     {
         if (Setting && panelTime > .5f)
         {
             Support.SettingCursorVisable(!isShow);
 
             Setting = false;
-            mapPanel.DOLocalMove(new Vector2(0, 1200f), 0.5f).SetEase(Ease.OutExpo);
 
             if (PlayerManager.Instance == null)
                 playerController.Active(isShow);
             else
                 PlayerManager.Instance.localController.Active(isShow);
 
-            SoundPanel.SetActive(false);
-            DPIPanel.SetActive(false);
-            GameExitPanel.SetActive(false);
-
             panelTime = 0;
         }
+    }*/
+
+    public void FOVSetting(Slider slider) // 50 ~ 70 (처음 60으로 고정)
+    {
+        PlayerPrefs.SetFloat("FOV", slider.value);
+    }
+
+    public void ResolutionSetting(TMP_Dropdown dropdown)
+    {
+        int value = dropdown.value;
+        var optionText = dropdown.options[value].text;
+        var textOut = optionText.Split(" x ");
+        int width = int.Parse(textOut[0]);
+        int height = int.Parse(textOut[1]);
+
+        Screen.SetResolution(width, height, screenMode);
     }
 
     public void GameExit()
