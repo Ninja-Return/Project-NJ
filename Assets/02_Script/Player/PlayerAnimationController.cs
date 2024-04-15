@@ -72,9 +72,9 @@ public class PlayerAnimationController : NetworkBehaviour
 
         if (IsOwner)
         {
-
+            //
             controlAnimator = clientObj.GetComponent<Animator>();
-            controlRig = clientObj.Find("Armature").Find("Rig 1").GetComponent<Rig>();
+            controlRig = clientObj.Find("Rig 1").GetComponent<Rig>();
             playerController = GetComponent<PlayerController>();
             groundSencer = GetComponentInChildren<GroundSencer>();
 
