@@ -24,8 +24,7 @@ Material:
   - _MK_OUTLINE_NOISE
   - _MK_PBS_MAP_0
   - _MK_RECEIVE_SHADOWS
-  - _MK_SPECULAR_ISOTROPIC
-  - _MK_WRAPPED_DIFFUSE
+  - _MK_THRESHOLD_MAP
   m_InvalidKeywords:
   - _FRESNELHIGHLIGHTS_ON
   - _METALLICGLOSSMAP
@@ -33,9 +32,8 @@ Material:
   - _NORMALMAP
   - _OCCLUSIONMAP
   - _RECEIVESHADOWS_ON
-  - _WRAPPEDLIGHTING_ON
   m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2000
   stringTagMap:
@@ -75,7 +73,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DiffuseRamp:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: cf37640c4cde76c488451716f98f2e7e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DissolveBorderRamp:
@@ -187,7 +185,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ThresholdMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 3379c3edba3fe1545b7d0379011c7a40, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _VertexAnimationMap:
@@ -209,7 +207,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AddPrecomputedVelocity: 0
-    - _AdvancedTab: 0
+    - _AdvancedTab: 1
     - _AlbedoMapIntensity: 1
     - _AlembicMotionVectors: 0
     - _AlphaClip: 0
@@ -241,7 +239,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _Diffuse: 0
     - _DiffuseSmoothness: 0
-    - _DiffuseThresholdOffset: 0.25
+    - _DiffuseThresholdOffset: 1
     - _Dissolve: 0
     - _DissolveAmount: 0.5
     - _DissolveBorderSize: 0.25
@@ -301,7 +299,7 @@ Material:
     - _SketchMapScale: 1
     - _Smoothness: 0.8
     - _SmoothnessTextureChannel: 0
-    - _Specular: 1
+    - _Specular: 0
     - _SpecularHighlights: 1
     - _SpecularIntensity: 1
     - _SpecularSmoothness: 0
@@ -318,14 +316,14 @@ Material:
     - _StencilZFail: 0
     - _StylizeTab: 1
     - _Surface: 0
-    - _ThresholdMapScale: 1
+    - _ThresholdMapScale: 4
     - _UVSec: 0
     - _VertexAnimation: 0
     - _VertexAnimationIntensity: 0.05
     - _VertexAnimationStutter: 0
     - _Workflow: 0
     - _WorkflowMode: 1
-    - _WrappedLighting: 1
+    - _WrappedLighting: 0
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
