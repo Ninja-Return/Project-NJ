@@ -6,11 +6,13 @@ using TMPro;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
+using Michsky.UI.Dark;
 
 public class ResultUIController : NetworkBehaviour
 {
-    [SerializeField] private Image fadePanel;
-    [SerializeField] private Image resuitPanel;
+    public UIDissolveEffect dissolveEffect;
+    [SerializeField] private Image upImg;
+    [SerializeField] private Image downImg;
     [SerializeField] private TextMeshProUGUI winnerText;
     [SerializeField] private Transform players;
     [SerializeField] private MeetingProfile playerPrefab;
@@ -28,15 +30,14 @@ public class ResultUIController : NetworkBehaviour
 
         Cursor.visible = true;
 
-        Sequence resultSequence = DOTween.Sequence();
-        resultSequence.Append(fadePanel.DOFade(0, 1.5f))
-            .OnComplete(() => fadePanel.gameObject.SetActive(false));
+        dissolveEffect.DissolveOut();
 
     }
 
     public void EscapeFail()
     {
-        resuitPanel.color = Color.red;
+        upImg.color = Color.red;
+        downImg.color = Color.red;
         winnerText.color = Color.red;
 
         winText.text = "탈출 실패";
@@ -45,7 +46,8 @@ public class ResultUIController : NetworkBehaviour
     public void EscapeClear()
     {
         Color skyColor = new Color(0, 0.6f, 1, 1);
-        resuitPanel.color = skyColor;
+        upImg.color = skyColor;
+        downImg.color = skyColor;
         winnerText.color = skyColor;
 
         winText.text = "플레이 결과";
