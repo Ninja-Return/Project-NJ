@@ -339,7 +339,7 @@ MonoBehaviour:
   nav: {fileID: 3092216196906510311}
   headTrs: {fileID: 8758862408537547653}
   jsVcamTrs: {fileID: 1553644040731779040}
-  angle: 360
+  angle: 45
   lookVec: {x: 0, y: 0, z: 0}
   playerMask:
     serializedVersion: 2
@@ -349,10 +349,12 @@ MonoBehaviour:
   targetPlayer: {fileID: 0}
   IsKill: 0
   moveRadius: 20
-  chaseRadius: 7
+  chaseRadius: 10
   killRadius: 0.5
-  workSpeed: 4
-  runSpeed: 6
+  workSpeed: 10
+  runSpeed: 30
+  lazerTime: 0.1
+  stopTime: 5
   obstacleMask:
     serializedVersion: 2
     m_Bits: 1
@@ -382,13 +384,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4402337686147071111}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.18211432, y: -0, z: -0, w: 0.98327744}
   m_LocalPosition: {x: 0, y: 1.905, z: 0.454}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8147409261327041021}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 20.986, y: 0, z: 0}
 --- !u!108 &5618574851690108275
 Light:
   m_ObjectHideFlags: 0
@@ -401,10 +403,10 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 0, b: 0, a: 1}
-  m_Intensity: 49.44
-  m_Range: 14
-  m_SpotAngle: 114.51934
-  m_InnerSpotAngle: 106.32149
+  m_Intensity: 500
+  m_Range: 100
+  m_SpotAngle: 38.108246
+  m_InnerSpotAngle: 22.10846
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
