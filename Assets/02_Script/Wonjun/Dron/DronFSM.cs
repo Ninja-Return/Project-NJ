@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using DG.Tweening;
 
 public enum DronState
 {
@@ -41,6 +42,8 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     [SerializeField] private float runSpeed;
     [SerializeField] private float lazerTime;
     [SerializeField] private float stopTime;
+    [SerializeField] float shakeAmount = 3.0f;
+    [SerializeField] float shakeTime = 1.0f;
     [SerializeField] private LayerMask obstacleMask;
 
     private void Start()
@@ -286,8 +289,25 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         //PlayerController player = PlayerManager.Instance.FindPlayerControllerToID(playerId);
         //player == null �̰� �´µ�
         jsVcamTrs.Priority = 500;
+        transform.DOShakePosition(1.1f);
+        StartCoroutine(Shake(shakeAmount, shakeTime));
         //player.Input.Disable();
         //player.enabled = false;
+    }
+
+    IEnumerator Shake(float ShakeAmount, float ShakeTime)
+    {
+        Vector3 originalPosition = jsVcamTrs.transform.position;
+
+        float timer = 0;
+        while (timer <= ShakeTime)
+        {
+            jsVcamTrs.transform.position = originalPosition + (Vector3)UnityEngine.Random.insideUnitCircle * ShakeAmount;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        jsVcamTrs.transform.position = originalPosition;
     }
 
 
