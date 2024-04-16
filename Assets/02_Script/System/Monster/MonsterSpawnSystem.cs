@@ -8,6 +8,8 @@ public class MonsterSpawnSystem : NetworkBehaviour
 {
 
     [SerializeField] private int monsterMaxSpawn = 5;
+    [SerializeField] private float minSpawnTime;
+    [SerializeField] private float maxSpawnTime;
     [SerializeField] private NetworkObject monsterPrefab;
 
     private List<Transform> spawnTrms = new List<Transform>();
@@ -42,7 +44,7 @@ public class MonsterSpawnSystem : NetworkBehaviour
         for(int i = 0; i < monsterMaxSpawn; i++)
         {
 
-            yield return new WaitForSeconds(Random.Range(60f, 200f));
+            yield return new WaitForSeconds(Random.Range(minSpawnTime, maxSpawnTime));
             Instantiate(monsterPrefab, spawnTrms.GetRandomListObject().position, Quaternion.identity).Spawn(true);
 
 
