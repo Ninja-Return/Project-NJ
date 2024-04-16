@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class LobbyPanel : MonoBehaviour
+public class LobbyPanel : MonoBehaviour, IPointerDownHandler
 {
 
     [SerializeField] private TMP_Text titleText;
@@ -26,6 +27,13 @@ public class LobbyPanel : MonoBehaviour
     {
 
         await AppController.Instance.StartClientAsync(PlayerPrefs.GetString("PlayerName"), joinCode);
+
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+
+        JoinButtonClick();
 
     }
 

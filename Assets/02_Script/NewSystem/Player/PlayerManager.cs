@@ -69,8 +69,6 @@ public class PlayerManager : NetworkBehaviour
         var vec = UnityEngine.Random.insideUnitSphere * 2.5f;
         vec.y = 3;
 
-        Debug.Log(playerPrefab);
-
         var pl = Instantiate(playerPrefab, vec, Quaternion.identity)
             .GetComponent<PlayerController>();
 
