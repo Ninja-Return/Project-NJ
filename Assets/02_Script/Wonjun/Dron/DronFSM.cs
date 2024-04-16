@@ -177,11 +177,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         return targetPlayer;
     }
 
-    /// <summary>
-    /// Áý°¡¼­ µå·ÐÀû ½Ã¾ß°¢ ³»¸®´Â ÀÛ¾÷ ÇÒ °÷
-    /// </summary>
-    /// <param name="radius"></param>
-    /// <returns></returns>
     public Collider ViewingPlayer(float radius)
     {
         List<Collider> players = new List<Collider>();
@@ -285,7 +280,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         //PlayerController player = PlayerManager.Instance.FindPlayerControllerToID(playerId);
         //player == null ï¿½Ì°ï¿½ ï¿½Â´Âµï¿½
         jsVcamTrs.Priority = 500;
-        transform.DOShakePosition(1.1f);
+        transform.DOShakePosition(0.5f);
         StartCoroutine(Shake(shakeAmount, shakeTime));
         //player.Input.Disable();
         //player.enabled = false;
@@ -294,6 +289,8 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     IEnumerator Shake(float ShakeAmount, float ShakeTime)
     {
         Vector3 originalPosition = jsVcamTrs.transform.position;
+
+        headTrs.localRotation = Quaternion.Euler(30f, 0f, 0f);
 
         float timer = 0;
         while (timer <= ShakeTime)
@@ -306,6 +303,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         jsVcamTrs.transform.position = originalPosition;
 
         KillPlayerServerRPC();
+        headTrs.localRotation = Quaternion.Euler(0f, 0f, 0f);
     }
 
     [ServerRpc(RequireOwnership = false)]
