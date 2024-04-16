@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
   m_LocalPosition: {x: 0, y: 0.143, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.9999999, z: 0.9999999}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 401261148395811489}
@@ -172,11 +172,11 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 1, g: 0.76551723, b: 0, a: 1}
-  m_Intensity: 30
+  m_Color: {r: 1, g: 0.936515, b: 0.73018867, a: 1}
+  m_Intensity: 90
   m_Range: 100
-  m_SpotAngle: 71
-  m_InnerSpotAngle: 54.28656
+  m_SpotAngle: 146.34856
+  m_InnerSpotAngle: 47.28984
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -260,7 +260,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inheritDataFromLightComponent: 0
   lightComponent: {fileID: 304023767153407905}
-  areaSizeCached: {x: 0, y: 0, z: 0, w: 0}
+  areaSizeCached: {x: 1, y: 1, z: 0, w: 0}
   lightColor: {r: 1, g: 1, b: 1, a: 1}
   bias: 0
   lightRange: 0

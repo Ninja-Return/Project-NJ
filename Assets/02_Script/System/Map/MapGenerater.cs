@@ -29,6 +29,7 @@ public class MapGenerater : NetworkBehaviour
     private Dictionary<DirationType, List<Room>> roomContainer = new();
     private List<(MapCell cell, Room room)> creationRoomList = new();
     private List<Room> spawnConstRoom = new();
+    private StartRoom start;
     private bool onlyObjSpawn;
 
     private void Start()
@@ -51,6 +52,9 @@ public class MapGenerater : NetworkBehaviour
 
         SpawnNetwork();
         Close();
+
+        var pos = FindObjectOfType<StartingRoom>().startingPos;
+        PlayerManager.Instance.RequstSpawn(pos);
 
     }
 
