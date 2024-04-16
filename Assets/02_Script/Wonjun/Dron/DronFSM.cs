@@ -175,8 +175,8 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         float lookingAngle = eulerAngles.y;  //ĳ���Ͱ� �ٶ󺸴� ������ ����
         Vector3 rightDir = AngleToDirX(lookingAngle + angle * 0.5f, 25);
         Vector3 leftDir = AngleToDirX(lookingAngle - angle * 0.5f, 25);
-        Vector3 upDir = AngleToDirY(lookingAngle, true,30);
-        Vector3 downDir = AngleToDirY(lookingAngle, false,30);
+        Vector3 upDir = AngleToDirY(lookingAngle, true, 30);
+        Vector3 downDir = AngleToDirY(lookingAngle, false, 30);
         Vector3 lookDir = AngleToDirX(lookingAngle, 25);
 
 #if UNITY_EDITOR
@@ -216,6 +216,10 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
 
         return targetPlayer;
     }
+
+
+
+
 
     private Vector3 AngleToDirX(float angle, float xRotation)
     {
