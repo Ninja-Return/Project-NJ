@@ -9,9 +9,23 @@ public class PlayerDarkness : NetworkBehaviour
 
     readonly float darkTime = 0.05f;
 
+    public void Bliend(ulong clientId, bool isBliend)
+    {
+        BliendClientRpc(clientId, isBliend);
+    }
+
     public void Bliend(ulong clientId)
     {
         BliendClientRpc(clientId);
+    }
+
+    [ClientRpc]
+    private void BliendClientRpc(ulong clientId, bool isBliend)
+    {
+        if (clientId != NetworkManager.LocalClientId) return;
+
+        StopAllCoroutines();
+        darkImage.SetActive(isBliend);
     }
 
     [ClientRpc]

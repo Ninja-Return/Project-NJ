@@ -29,7 +29,7 @@ public class SculptureChaseState : SculptureStateRoot
 
         if (sculptureFSM.FrameMove(frame, GenerateVector()))
         {
-            NetworkSoundManager.Play3DSound("SculptureChase", sculptureFSM.transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
+            NetworkSoundManager.Play3DSound("SculptureMove", sculptureFSM.transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
 
             CatchPlayerRader();
 
