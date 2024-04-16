@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using DG.Tweening;
+using Unity.Services.Lobbies.Models;
 
 public enum DronState
 {
@@ -266,26 +267,21 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         }
     }
 
-    public void KillPlayerAnimationEvent() //�ִϸ��̼��� ����ȭ �Ǵϱ� �ڵ��?�Ű� �Ƚᵵ �ɵ�?
-    {
-        if (!IsServer) return;
-
-        var player = targetPlayer.GetComponent<PlayerController>();
-
-        PlayerManager.Instance.PlayerDie(EnumList.DeadType.Monster, player.OwnerClientId);
-        IsKill = true;
-    }
+    
 
     public void JumpScare() //��ǻ�?�ִϸ��̼��� �Ǿ� �־ �÷��̾ �� �����̰� ������ �ٶ󺸰� ������ �ϸ� �� ��?
     {
         var player = targetPlayer.GetComponent<PlayerController>();
 
-        JumpScareClientRPC(player.OwnerClientId.GetRPCParams());
+        JumpScareClientRPC(player.OwnerClientId);
+
     }
 
     [ClientRpc]
-    private void JumpScareClientRPC(ClientRpcParams param)
+    private void JumpScareClientRPC(ulong clientId)
     {
+        if (clientId != NetworkManager.LocalClientId) return;
+
         //PlayerController player = PlayerManager.Instance.FindPlayerControllerToID(playerId);
         //player == null �̰� �´µ�
         jsVcamTrs.Priority = 500;
@@ -308,6 +304,19 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         }
 
         jsVcamTrs.transform.position = originalPosition;
+
+        KillPlayerServerRPC();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void KillPlayerServerRPC()
+    {
+        if (!IsServer) return;
+
+        var player = targetPlayer.GetComponent<PlayerController>();
+
+        PlayerManager.Instance.PlayerDie(EnumList.DeadType.Monster, player.OwnerClientId);
+        IsKill = true;
     }
 
 
