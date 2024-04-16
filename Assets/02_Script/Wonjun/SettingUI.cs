@@ -34,53 +34,44 @@ public class SettingUI : MonoBehaviour
         panelTime += Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.Escape) && !Setting && panelTime > .8f)
         {
-            mainPanelManager.OpenPanel("Settings");
-            //dissolveEffect.DissolveIn();
-
-            Support.SettingCursorVisable(isShow);
-
-            if (PlayerManager.Instance == null)
-                playerController.Active(!isShow);
-            else
-                PlayerManager.Instance.localController.Active(!isShow);
-
-
-            Setting = true;
-            panelTime = 0;
+            SettingOn();
         }
         else if (Input.GetKeyDown(KeyCode.Escape) && Setting && panelTime > .5f)
         {
-            mainPanelManager.OpenFirstTab();
-            //dissolveEffect.DissolveOut();
-
-            Support.SettingCursorVisable(!isShow);
-
-            if (PlayerManager.Instance == null)
-                playerController.Active(isShow);
-            else
-                PlayerManager.Instance.localController.Active(isShow);
-
-            Setting = false;
-            panelTime = 0;
+            SettingOff();
         }
     }
 
-    /*public void PanelUp()
+    public void SettingOn()
     {
-        if (Setting && panelTime > .5f)
-        {
-            Support.SettingCursorVisable(!isShow);
+        mainPanelManager.OpenPanel("Settings");
 
-            Setting = false;
+        Support.SettingCursorVisable(isShow);
 
-            if (PlayerManager.Instance == null)
-                playerController.Active(isShow);
-            else
-                PlayerManager.Instance.localController.Active(isShow);
+        if (PlayerManager.Instance == null)
+            playerController.Active(!isShow);
+        else
+            PlayerManager.Instance.localController.Active(!isShow);
 
-            panelTime = 0;
-        }
-    }*/
+
+        Setting = true;
+        panelTime = 0;
+    }
+
+    public void SettingOff()
+    {
+        mainPanelManager.OpenFirstTab();
+
+        Support.SettingCursorVisable(!isShow);
+
+        if (PlayerManager.Instance == null)
+            playerController.Active(isShow);
+        else
+            PlayerManager.Instance.localController.Active(isShow);
+
+        Setting = false;
+        panelTime = 0;
+    }
 
     public void FOVSetting(Slider slider) // 50 ~ 70 (처음 60으로 고정)
     {
