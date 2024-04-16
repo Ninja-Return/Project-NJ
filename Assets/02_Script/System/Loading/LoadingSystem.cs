@@ -56,7 +56,6 @@ public class LoadingSystem : NetworkBehaviour
 
         }
 
-
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -74,7 +73,7 @@ public class LoadingSystem : NetworkBehaviour
         completeCount == NetworkManager.ConnectedClients.Count);
 
         string sceneName;
-        sceneName = HostSingle.Instance.GameManager.gameMode == GameMode.Single ? SceneList.SingleGameScene : SceneSelectManager.Instance.sceneName;
+        sceneName = SceneSelectManager.Instance.sceneName;
 
         NetworkManager.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
         WaitForSceneToLoad();

@@ -125,31 +125,30 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>
 
     public List<Vector3> SamplePathPositions(NavMeshPath path, float interval)
     {
-        float pathLength = 0f;
-        for (int i = 0; i < path.corners.Length - 1; i++)
+        List<Vector3> sampledPath = new List<Vector3>();
+        foreach (Vector3 vertex in path.corners)
         {
-            pathLength += Vector3.Distance(path.corners[i], path.corners[i + 1]);
+            sampledPath.Add(vertex);
         }
 
-        int numWaypoints = Mathf.CeilToInt(pathLength / interval);
-        List<Vector3> waypoints = new List<Vector3>();
-
-        float distanceAlongPath = 0f;
-
-        for (int i = 0; i < path.corners.Length - 1; i++)
+        for (int i = 0; i < sampledPath.Count - 1; i++)
         {
-            float segmentLength = Vector3.Distance(path.corners[i], path.corners[i + 1]);
-
-            while (distanceAlongPath <= pathLength && waypoints.Count < numWaypoints)
+            float segmentLength = Vector3.Distance(sampledPath[i], sampledPath[i + 1]);
+            if (segmentLength > interval)
             {
-                float ratio = distanceAlongPath / pathLength;
-                waypoints.Add(Vector3.Lerp(path.corners[i], path.corners[i + 1], ratio));
+                int numSegments = Mathf.CeilToInt(segmentLength / interval);
+                Vector3 segmentDirection = (sampledPath[i + 1] - sampledPath[i]).normalized;
+                float segmentInterval = segmentLength / numSegments;
 
-                distanceAlongPath += interval;
+                for (int j = 1; j < numSegments; j++)
+                {
+                    Vector3 newPoint = sampledPath[i] + segmentDirection * (segmentInterval * j);
+                    sampledPath.Insert(i + j, newPoint);
+                }
             }
         }
 
-        return waypoints;
+        return sampledPath;
     }
 
     protected override void Update()
