@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 346970020701437649}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.391, z: -0.558}
+  m_LocalPosition: {x: 0, y: 1.827, z: 0.0036}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -131,12 +131,12 @@ GameObject:
   - component: {fileID: 1101891608566337132}
   - component: {fileID: 3552912527455403678}
   - component: {fileID: 5131666776484042458}
-  - component: {fileID: 6112890541360478917}
+  - component: {fileID: 4787546964279025342}
   - component: {fileID: 3014558827807701294}
   - component: {fileID: 5447604297823840347}
   - component: {fileID: 1123309027101734094}
   - component: {fileID: 5208116522690652033}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sculpture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,7 +153,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 37.2, y: 0, z: 37.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8004145159905634755}
@@ -166,7 +166,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8522698759375760323}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -2035068574203303680, guid: 36c6a6dffba208b4a8e2d5bdf1ad5a09, type: 3}
 --- !u!23 &1101891608566337132
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -187,7 +187,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: -876546973899608171, guid: 36c6a6dffba208b4a8e2d5bdf1ad5a09, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2498839234
+  GlobalObjectIdHash: 2714271357
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -259,7 +259,7 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
---- !u!65 &6112890541360478917
+--- !u!65 &4787546964279025342
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -278,8 +278,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.57218766, y: 1.9873387, z: 0.571848}
+  m_Center: {x: 0, y: 0.9957209, z: -0.12124737}
 --- !u!54 &3014558827807701294
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -354,6 +354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nav: {fileID: 1123309027101734094}
+  headTrs: {fileID: 8004145159905634755}
   playerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -364,8 +365,8 @@ MonoBehaviour:
   moveRadius: 30
   chaseRadius: 15
   killRadius: 0.7
-  moveInterval: 15
-  chaseInterval: 2.7
+  minInterval: 1
+  maxInterval: 2
   moveFrame: 1.5
   chaseFrame: 1.2
   obstacleMask:

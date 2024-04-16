@@ -18,8 +18,8 @@ public class SculptureFindPlayerTransition : SculptureTransitionRoot
         Collider targetPlayer = sculptureFSM.CirclePlayer(radius);
         if (targetPlayer != null)
         {
-            Vector3 pos = sculptureFSM.transform.position;
-            Vector3 dir = targetPlayer.transform.position - sculptureFSM.transform.position;
+            Vector3 pos = sculptureFSM.headTrs.position;
+            Vector3 dir = targetPlayer.transform.position - sculptureFSM.headTrs.position;
             if (Physics.Raycast(pos, dir, radius, obstacleMask))//다른데에 막혀있나
                 return false;
 

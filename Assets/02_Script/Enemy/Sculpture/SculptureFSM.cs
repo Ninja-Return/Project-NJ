@@ -16,9 +16,11 @@ public enum SculptureState
 public class SculptureFSM : FSM_Controller_Netcode<SculptureState>
 {
     public NavMeshAgent nav;
+    public Transform headTrs;
     public LayerMask playerMask;
 
     public SculptureState nowState;
+
 
     [HideInInspector] public Collider targetPlayer;
     [HideInInspector] public bool IsKill;
@@ -28,8 +30,8 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>
     [SerializeField] private float moveRadius;
     [SerializeField] private float chaseRadius;
     [SerializeField] private float killRadius;
-    [SerializeField] private float moveInterval;
-    [SerializeField] private float chaseInterval;
+    [SerializeField] private float minInterval;
+    [SerializeField] private float maxInterval;
     [SerializeField] private float moveFrame;
     [SerializeField] private float chaseFrame;
 
@@ -55,8 +57,8 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>
 
     private void InitializeStates()
     {
-        SculpturePatrolState sculpturePatrolState = new SculpturePatrolState(this, moveRadius, moveInterval, moveFrame);
-        SculptureChaseState sculptureChaseState = new SculptureChaseState(this, chaseRadius, killRadius, chaseInterval, chaseFrame);
+        SculpturePatrolState sculpturePatrolState = new SculpturePatrolState(this, moveRadius, moveFrame);
+        SculptureChaseState sculptureChaseState = new SculptureChaseState(this, chaseRadius, killRadius, chaseFrame);
         SculptureKillState sculptureKillState = new SculptureKillState(this);
 
         SculptureFindPlayerTransition sculptureFindPlayerTransition = new SculptureFindPlayerTransition(this, SculptureState.Chase, chaseRadius);
@@ -123,7 +125,7 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>
         IsKill = true;
     }
 
-    public List<Vector3> SamplePathPositions(NavMeshPath path, float interval)
+    public List<Vector3> SamplePathPositions(NavMeshPath path)
     {
         List<Vector3> sampledPath = new List<Vector3>();
         foreach (Vector3 vertex in path.corners)
@@ -134,9 +136,10 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>
         for (int i = 0; i < sampledPath.Count - 1; i++)
         {
             float segmentLength = Vector3.Distance(sampledPath[i], sampledPath[i + 1]);
-            if (segmentLength > interval)
+
+            if (segmentLength > maxInterval)
             {
-                int numSegments = Mathf.CeilToInt(segmentLength / interval);
+                int numSegments = Mathf.CeilToInt(segmentLength / maxInterval);
                 Vector3 segmentDirection = (sampledPath[i + 1] - sampledPath[i]).normalized;
                 float segmentInterval = segmentLength / numSegments;
 
@@ -146,9 +149,16 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>
                     sampledPath.Insert(i + j, newPoint);
                 }
             }
+            else if (segmentLength < minInterval)
+            {
+                Vector3 nextPoint = sampledPath[i + 1];
+                sampledPath.RemoveAt(i + 1);
+                sampledPath[i] = nextPoint;
+            }
+
         }
 
-        return sampledPath;
+            return sampledPath;
     }
 
     protected override void Update()
@@ -165,6 +175,13 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>
         Gizmos.color = Color.gray;
         Gizmos.DrawWireSphere(transform.position, chaseRadius);
         Gizmos.DrawWireSphere(transform.position, killRadius);
+
+        if (targetPlayer != null)
+        {
+            Vector3 pos = transform.position;
+            Vector3 dir = targetPlayer.transform.position - transform.position;
+            Gizmos.DrawRay(new Ray(pos, dir));
+        }
     }
 #endif
 }

@@ -7,14 +7,12 @@ public class SculptureChaseState : SculptureStateRoot
 {
     private float chaseRadius;
     private float killRadius;
-    private float interval;
     private float frame;
 
-    public SculptureChaseState(SculptureFSM controller, float chaseRadius, float killRadius, float interval, float frame) : base(controller)
+    public SculptureChaseState(SculptureFSM controller, float chaseRadius, float killRadius, float frame) : base(controller)
     {
         this.chaseRadius = chaseRadius;
         this.killRadius = killRadius;
-        this.interval = interval;
         this.frame = frame;
     }
 
@@ -66,10 +64,10 @@ public class SculptureChaseState : SculptureStateRoot
 
             nav.CalculatePath(playerPos, navMeshPath);
 
-            if (sculptureFSM.SamplePathPositions(navMeshPath, interval).Count <= 1)
+            if (sculptureFSM.SamplePathPositions(navMeshPath).Count <= 1)
                 return playerPos;
 
-            return sculptureFSM.SamplePathPositions(navMeshPath, interval)[1];
+            return sculptureFSM.SamplePathPositions(navMeshPath)[1];
         }
         else
         {

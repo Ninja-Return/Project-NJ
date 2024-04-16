@@ -15,8 +15,6 @@ public class SculptureKillState : SculptureStateRoot
         NetworkSoundManager.Play3DSound("BoneChuck", sculptureFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
 
         sculptureFSM.KillPlayer();
-
-        nav.isStopped = true;
     }
 
     protected override void UpdateState()
