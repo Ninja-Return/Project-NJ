@@ -13,7 +13,6 @@ public class DronIdleState : DronStateRoot
     {
         if (!IsServer) return;
 
-        dronFSM.SetAnimation("Idle", true);
         NetworkSoundManager.Play3DSound("DronHowling", dronFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
     }
 
@@ -35,7 +34,6 @@ public class DronIdleState : DronStateRoot
     {
         if (!IsServer) return;
 
-        dronFSM.SetAnimation("Idle", false);
         currentTime = 0;
     }
 }

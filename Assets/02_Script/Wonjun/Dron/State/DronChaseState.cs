@@ -24,7 +24,6 @@ public class DronChaseState : DronStateRoot
     {
         if (!IsServer) return;
 
-        dronFSM.SetAnimation("Run", true);
         NetworkSoundManager.Play3DSound("DronBite", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
 
 
@@ -91,7 +90,6 @@ public class DronChaseState : DronStateRoot
     {
         if (!IsServer) return;
 
-        dronFSM.SetAnimation("Run", false);
         lazer = false;
         nav.SetDestination(dronFSM.transform.position);
     }

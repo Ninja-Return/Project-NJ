@@ -13,7 +13,6 @@ public class DronDeathState : DronStateRoot
     {
         if (!IsServer) return;
 
-        dronFSM.SetAnimation("Death", true);
 
         //죽는 애니메이션
         //리썰처럼 시체 냅두는게 좋을듯?
@@ -28,6 +27,5 @@ public class DronDeathState : DronStateRoot
     {
         if (!IsServer) return;
 
-        dronFSM.SetAnimation("Death", false);
     }
 }

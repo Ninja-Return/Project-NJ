@@ -13,7 +13,6 @@ public class DronKillState : DronStateRoot
     {
         if (!IsServer) return;
 
-        dronFSM.SetAnimation("Attack", true);
         NetworkSoundManager.Play3DSound("DronKill", dronFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
 
         dronFSM.JumpScare();
@@ -36,7 +35,6 @@ public class DronKillState : DronStateRoot
     {
         if (!IsServer) return;
 
-        dronFSM.SetAnimation("Attack", false);
 
         nav.isStopped = false;
     }

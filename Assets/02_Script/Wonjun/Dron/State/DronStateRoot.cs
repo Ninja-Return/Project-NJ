@@ -14,7 +14,6 @@ public class DronStateRoot : FSM_State_Netcode<DronState>
     public DronStateRoot(DronFSM controller) : base(controller)
     {
         this.dronFSM = controller;
-        anim = dronFSM.anim;
         nav = dronFSM.nav;
         playerMask = dronFSM.playerMask;
     }

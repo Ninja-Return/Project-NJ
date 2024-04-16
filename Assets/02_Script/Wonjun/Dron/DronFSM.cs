@@ -20,7 +20,6 @@ public enum DronState
 
 public class DronFSM : FSM_Controller_Netcode<DronState>
 {
-    public Animator anim;
     public UnityEngine.AI.NavMeshAgent nav;
     public Transform headTrs;
     public CinemachineVirtualCamera jsVcamTrs;
@@ -109,19 +108,8 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         lookVec = playerVec;
     }
 
-    public void SetAnimation(string name, bool value)
-    {
-        anim.SetBool(name, value);
-        SetAnimationClientRpc(name, value);
-    }
 
 
-
-    [ClientRpc]
-    private void SetAnimationClientRpc(string name, bool value)
-    {
-        anim.SetBool(name, value);
-    }
 
     private bool RayObstacle(Vector3 pos, Vector3 lookVec, float destance)
     {
@@ -185,11 +173,11 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         Vector3 eulerAngles = headTrs.eulerAngles;
 
         float lookingAngle = eulerAngles.y;  //ĳ���Ͱ� �ٶ󺸴� ������ ����
-        Vector3 rightDir = AngleToDirX(lookingAngle + angle * 0.5f, 30);
-        Vector3 leftDir = AngleToDirX(lookingAngle - angle * 0.5f, 30);
-        Vector3 upDir = AngleToDirY(lookingAngle, true,35);
-        Vector3 downDir = AngleToDirY(lookingAngle, false,35);
-        Vector3 lookDir = AngleToDirX(lookingAngle, 30);
+        Vector3 rightDir = AngleToDirX(lookingAngle + angle * 0.5f, 25);
+        Vector3 leftDir = AngleToDirX(lookingAngle - angle * 0.5f, 25);
+        Vector3 upDir = AngleToDirY(lookingAngle, true,30);
+        Vector3 downDir = AngleToDirY(lookingAngle, false,30);
+        Vector3 lookDir = AngleToDirX(lookingAngle, 25);
 
 #if UNITY_EDITOR
         Debug.DrawRay(pos, rightDir * radius, Color.blue);

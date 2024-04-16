@@ -21,7 +21,6 @@ public class DronPatrolState : DronStateRoot
     {
         if (!IsServer) return;
 
-        dronFSM.SetAnimation("Work", true);
         NetworkSoundManager.Play3DSound("DronHowling", dronFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
 
         nav.speed = speed;
@@ -41,7 +40,6 @@ public class DronPatrolState : DronStateRoot
     {
         if (!IsServer) return;
 
-        dronFSM.SetAnimation("Work", false);
 
         nav.SetDestination(dronFSM.transform.position);
     }
