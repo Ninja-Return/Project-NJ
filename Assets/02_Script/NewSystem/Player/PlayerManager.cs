@@ -15,6 +15,7 @@ public class PlayerManager : NetworkBehaviour
     [SerializeField] private PlayerController playerPrefab;
     [Header("Die")]
     [SerializeField] private DeathUI deathUI;
+    [SerializeField] private bool spawn = true;
 
     public List<PlayerController> players { get; private set; } = new();
     public PlayerController localController { get; private set; }
@@ -42,9 +43,7 @@ public class PlayerManager : NetworkBehaviour
     private void Start()
     {
 
-
-
-        if (IsServer)
+        if (IsServer && spawn)
         {
 
             HostSingle.Instance.GameManager.OnPlayerConnect += HandlePlayerSpawn;
@@ -208,6 +207,30 @@ public class PlayerManager : NetworkBehaviour
         {
 
             JoinSceneServerRPC();
+
+        }
+
+    }
+
+
+    public void RequstSpawn(List<Transform> poss)
+    {
+
+        foreach(var id in NetworkManager.ConnectedClientsIds)
+        {
+
+            var item = poss.GetRandomListObject();
+            var vec = item.transform.position;
+
+            var pl = Instantiate(playerPrefab, vec, Quaternion.identity)
+                .GetComponent<PlayerController>();
+
+            pl.NetworkObject.SpawnWithOwnership(id, true);
+
+            var data = HostSingle.Instance.NetServer.GetUserDataByClientID(id).Value;
+
+            alivePlayer.Add(new LiveData { clientId = id, name = data.nickName });
+            players.Add(pl);
 
         }
 
