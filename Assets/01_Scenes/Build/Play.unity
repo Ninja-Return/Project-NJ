@@ -2992,6 +2992,7 @@ GameObject:
   - component: {fileID: 1985564202}
   - component: {fileID: 1985564201}
   - component: {fileID: 1985564210}
+  - component: {fileID: 1985564211}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -3137,6 +3138,38 @@ MonoBehaviour:
   constRooms:
   - {fileID: 8572196723978947207, guid: ddec4e773790a2f4f848aea37d4d0ced, type: 3}
   onlySpawn: {fileID: 8572196723978947207, guid: d1aa9444dc1a53e4aa692ef373b83f83, type: 3}
+  surface: {fileID: 1985564211}
+--- !u!114 &1985564211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985564200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4096
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.033333335
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 0}
+  m_BuildHeightMesh: 0
 --- !u!1 &2047427413
 GameObject:
   m_ObjectHideFlags: 0

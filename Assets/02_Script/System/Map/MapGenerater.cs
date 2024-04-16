@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Unity.AI.Navigation;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -24,6 +25,7 @@ public class MapGenerater : NetworkBehaviour
 
     [SerializeField] private List<Room> constRooms = new();
     [SerializeField] private Room onlySpawn;
+    [SerializeField] private NavMeshSurface surface;
 
     private List<MapDataSO> datas = new();
     private Dictionary<DirationType, List<Room>> roomContainer = new();
@@ -55,6 +57,8 @@ public class MapGenerater : NetworkBehaviour
 
         var pos = FindObjectOfType<StartingRoom>().startingPos;
         PlayerManager.Instance.RequstSpawn(pos);
+
+        surface.BuildNavMesh();
 
     }
 
