@@ -6,16 +6,14 @@ using UnityEngine.AI;
 public class SculpturePatrolState : SculptureStateRoot
 {
     private float radius;
-    private float interval;
     private float frame;
 
     private Vector3 point;
     private List<Vector3> points = new List<Vector3>();
 
-    public SculpturePatrolState(SculptureFSM controller, float radius, float interval, float frame) : base(controller)
+    public SculpturePatrolState(SculptureFSM controller, float radius, float frame) : base(controller)
     {
         this.radius = radius;
-        this.interval = interval;
         this.frame = frame;
     }
 
@@ -59,7 +57,7 @@ public class SculpturePatrolState : SculptureStateRoot
             NetworkSoundManager.Play3DSound("SculptureMove", sculptureFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
 
             nav.CalculatePath(point, navMeshPath);
-            points = sculptureFSM.SamplePathPositions(navMeshPath, interval);
+            points = sculptureFSM.SamplePathPositions(navMeshPath);
         }
     }
 

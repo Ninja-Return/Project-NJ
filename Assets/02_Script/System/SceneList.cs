@@ -5,9 +5,9 @@ using UnityEngine;
 public class SceneList
 {
 
-    public const string TutorialScene = "TestDron";
+    public const string TutorialScene = "TestMonster";
     public const string SingleGameScene = "Office_Map_Single";
-    public const string OfficeMap = "TestRoomSpawn";
+    public const string OfficeMap = "WaitRoom"; //WaitRoom, TestRoomSpawn
     public const string TunnelMap = "Tunnel";
     public const string LobbyScene = "Lobby-HY30K";
     public const string LobbySelectScene = "LobbySelect-HY30K";
