@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public enum Diractions
@@ -33,7 +34,7 @@ public struct CloseData
 
 }
 
-public class Room : MonoBehaviour
+public class Room : NetworkBehaviour
 {
     
     [field:SerializeField] public DirationType dir { get; private set; }

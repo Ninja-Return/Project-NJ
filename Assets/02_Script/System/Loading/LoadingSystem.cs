@@ -56,7 +56,6 @@ public class LoadingSystem : NetworkBehaviour
 
         }
 
-
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -75,7 +74,6 @@ public class LoadingSystem : NetworkBehaviour
 
         string sceneName;
         sceneName = SceneSelectManager.Instance.sceneName;
-        Debug.Log($"Ω√πﬂ æ¿¿Ã∏ß{sceneName}");
 
         NetworkManager.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
         WaitForSceneToLoad();

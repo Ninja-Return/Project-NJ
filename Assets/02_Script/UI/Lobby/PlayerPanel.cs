@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerPanel : MonoBehaviour
 {
@@ -30,5 +31,7 @@ public class PlayerPanel : MonoBehaviour
         NetworkManager.Singleton.DisconnectClient(ownerId);
 
     }
+
+
 
 }

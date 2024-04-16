@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Unity.VisualScripting;
+using Unity.Netcode;
 using UnityEngine;
 
 public enum DirationType
@@ -19,7 +19,7 @@ public enum DirationType
 }
 
 
-public class MapGenerater : MonoBehaviour
+public class MapGenerater : NetworkBehaviour
 {
 
     [SerializeField] private List<Room> constRooms = new();
@@ -31,6 +31,8 @@ public class MapGenerater : MonoBehaviour
 
     private void Start()
     {
+
+        if (!IsServer) return;
 
         LoadResource();
 
@@ -45,14 +47,29 @@ public class MapGenerater : MonoBehaviour
 
         }
 
+        SpawnNetwork();
         Close();
+
+    }
+
+    private void SpawnNetwork()
+    {
+
+        foreach(var item in creationRoomList)
+        {
+
+            item.room.NetworkObject.Spawn(true);
+
+        }
 
     }
 
     private void LoadResource()
     {
 
-        var datas = Resources.LoadAll<Room>("RoomData");
+        var datas = Resources.LoadAll<Room>("RoomData/Corridor").ToList();
+        datas.AddRange(Resources.LoadAll<Room>("RoomData/Room"));
+
         this.datas = Resources.LoadAll<MapDataSO>("MapData").ToList();
 
         foreach(var item in datas)
@@ -70,7 +87,6 @@ public class MapGenerater : MonoBehaviour
                 roomContainer.Add(item.dir, new() { item });
 
             }
-
 
         }
 
