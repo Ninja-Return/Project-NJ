@@ -67,7 +67,6 @@ public static class Support
 
         var str = Encoding.UTF8.GetString(bytes);
 
-        Debug.Log(str);
 
         return JsonUtility.FromJson<RPCList<T>>(str);
 

@@ -23,11 +23,13 @@ public class MapGenerater : NetworkBehaviour
 {
 
     [SerializeField] private List<Room> constRooms = new();
+    [SerializeField] private Room onlySpawn;
 
     private List<MapDataSO> datas = new();
     private Dictionary<DirationType, List<Room>> roomContainer = new();
     private List<(MapCell cell, Room room)> creationRoomList = new();
     private List<Room> spawnConstRoom = new();
+    private bool onlyObjSpawn;
 
     private void Start()
     {
@@ -136,8 +138,10 @@ public class MapGenerater : NetworkBehaviour
 
         foreach(var item in creationRoomList)
         {
-            
-            item.room.Close(GetCloseData(item.cell, item.room));
+
+            var ls = new RPCList<DirLinks>(GetCloseData(item.cell, item.room));
+
+            item.room.CloseClientRPC(ls.Serialize());
 
         }
 
@@ -216,7 +220,14 @@ public class MapGenerater : NetworkBehaviour
         Room prefab = null;
         var dirT = GetDirationType(dir);
 
-        if (spawnConstRoom.Count > 0 && dirT == DirationType.Room)
+        if (!onlyObjSpawn && dirT == DirationType.Room)
+        {
+
+            prefab = onlySpawn;
+            onlyObjSpawn = true;
+
+        }
+        else if (spawnConstRoom.Count > 0 && dirT == DirationType.Room)
         {
 
             prefab = spawnConstRoom[0];
@@ -266,10 +277,10 @@ public class MapGenerater : NetworkBehaviour
 
     }
 
-    private List<Diractions> GetCloseData(MapCell cell, Room room)
+    private List<DirLinks> GetCloseData(MapCell cell, Room room)
     {
 
-        List<Diractions> dirs = new();
+        List<DirLinks> dirs = new();
 
         foreach(MapCell item in Enum.GetValues(typeof(MapCell)))
         {
@@ -287,7 +298,7 @@ public class MapGenerater : NetworkBehaviour
             if(obj == -1)
             {
 
-                dirs.Add(GetDirationType(item));
+                dirs.Add(new DirLinks() { dir =  GetDirationType(item) });
 
             }
 

@@ -34,19 +34,30 @@ public struct CloseData
 
 }
 
+[System.Serializable]
+public struct DirLinks
+{
+
+    public Diractions dir;
+
+}
+
 public class Room : NetworkBehaviour
 {
     
     [field:SerializeField] public DirationType dir { get; private set; }
     [SerializeField] private List<CloseData> closeDatas;
 
-    public void Close(List<Diractions> closeDirs)
+    [ClientRpc]
+    public void CloseClientRPC(byte[] segment)
     {
+
+        List<DirLinks> closeDirs = segment.Deserialize<DirLinks>().list;
 
         foreach(var item in closeDirs) 
         {
 
-            var eqT = GetEqType(item);
+            var eqT = GetEqType(item.dir);
 
             closeDatas.Find(x => x.dir == eqT).Close();
         
