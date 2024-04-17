@@ -6,7 +6,7 @@ using UnityEngine;
 public class MonsterSpawnTrm : NetworkBehaviour
 {
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
 
         if (IsServer)

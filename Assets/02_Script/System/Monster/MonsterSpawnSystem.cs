@@ -10,7 +10,7 @@ public class MonsterSpawnSystem : NetworkBehaviour
     [SerializeField] private int monsterMaxSpawn = 5;
     [SerializeField] private float minSpawnTime;
     [SerializeField] private float maxSpawnTime;
-    [SerializeField] private NetworkObject monsterPrefab;
+    [SerializeField] private List<NetworkObject> monsterPrefabs;
 
     private List<Transform> spawnTrms = new List<Transform>();
     public static MonsterSpawnSystem Instance { get; private set; } 
@@ -27,6 +27,13 @@ public class MonsterSpawnSystem : NetworkBehaviour
 
         if (!IsServer) return;
 
+        New_GameManager.Instance.OnItemSpawnCall += HandleSpawn;
+
+    }
+
+    private void HandleSpawn()
+    {
+
         StartCoroutine(SpawnCo());
 
     }
@@ -41,11 +48,12 @@ public class MonsterSpawnSystem : NetworkBehaviour
     private IEnumerator SpawnCo()
     {
 
+
         for(int i = 0; i < monsterMaxSpawn; i++)
         {
 
             yield return new WaitForSeconds(Random.Range(minSpawnTime, maxSpawnTime));
-            Instantiate(monsterPrefab, spawnTrms.GetRandomListObject().position, Quaternion.identity).Spawn(true);
+            Instantiate(monsterPrefabs.GetRandomListObject(), spawnTrms.GetRandomListObject().position, Quaternion.identity).Spawn(true);
 
         }
 
@@ -63,7 +71,7 @@ public class MonsterSpawnSystem : NetworkBehaviour
     {
 
         yield return new WaitForSeconds(time);
-        Instantiate(monsterPrefab, spawnPos + new Vector3(2,0,0), Quaternion.identity).Spawn(true);
+        Instantiate(monsterPrefabs.GetRandomListObject(), spawnPos + new Vector3(2,0,0), Quaternion.identity).Spawn(true);
 
     }
 
