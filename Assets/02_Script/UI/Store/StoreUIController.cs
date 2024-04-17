@@ -31,6 +31,7 @@ public class StoreUIController : MonoBehaviour
     {
         PlayerManager.Instance.Active(true);
         Support.SettingCursorVisable(false);
+        vcam.gameObject.SetActive(false);   
         vcam.depth = -100;
         StartCoroutine(SetPanelCo(false));
 
@@ -38,6 +39,7 @@ public class StoreUIController : MonoBehaviour
 
     public void StartSeq()
     {
+        vcam.gameObject.SetActive(true);
         vcam.depth = 100;
         PlayerManager.Instance.Active(false);
         Support.SettingCursorVisable(true);
