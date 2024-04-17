@@ -34,10 +34,10 @@ public class MapGenerater : NetworkBehaviour
     private StartRoom start;
     private bool onlyObjSpawn;
 
-    private void Start()
+    private IEnumerator Start()
     {
 
-        if (!IsServer) return;
+        if (!IsServer) yield break;
 
         LoadResource();
 
@@ -52,13 +52,23 @@ public class MapGenerater : NetworkBehaviour
 
         }
 
+        yield return null;
+
         SpawnNetwork();
+
+        yield return null;
+
         Close();
+
+
+        yield return null;
+
+        surface.BuildNavMesh();
+
+        yield return null;
 
         var pos = FindObjectOfType<StartingRoom>().startingPos;
         PlayerManager.Instance.RequstSpawn(pos);
-
-        surface.BuildNavMesh();
 
     }
 
@@ -147,9 +157,7 @@ public class MapGenerater : NetworkBehaviour
         foreach(var item in creationRoomList)
         {
 
-            var ls = new RPCList<DirLinks>(GetCloseData(item.cell, item.room));
-
-            item.room.CloseClientRPC(ls.Serialize());
+            item.room.Close(GetCloseData(item.cell, item.room));
 
         }
 
@@ -285,10 +293,10 @@ public class MapGenerater : NetworkBehaviour
 
     }
 
-    private List<DirLinks> GetCloseData(MapCell cell, Room room)
+    private List<Diractions> GetCloseData(MapCell cell, Room room)
     {
 
-        List<DirLinks> dirs = new();
+        var dirs = new List<Diractions>();
 
         foreach(MapCell item in Enum.GetValues(typeof(MapCell)))
         {
@@ -306,7 +314,7 @@ public class MapGenerater : NetworkBehaviour
             if(obj == -1)
             {
 
-                dirs.Add(new DirLinks() { dir =  GetDirationType(item) });
+                dirs.Add(GetDirationType(item));
 
             }
 

@@ -33,7 +33,6 @@ public class LobbyPanel : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
 
-        JoinButtonClick();
 
     }
 

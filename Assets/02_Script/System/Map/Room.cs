@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using WebSocketSharp;
 
 public enum Diractions
 {
@@ -48,20 +49,26 @@ public class Room : NetworkBehaviour
     [field:SerializeField] public DirationType dir { get; private set; }
     [SerializeField] private List<CloseData> closeDatas;
 
-    [ClientRpc]
-    public void CloseClientRPC(byte[] segment)
-    {
 
-        List<DirLinks> closeDirs = segment.Deserialize<DirLinks>().list;
+    public void Close(List<Diractions> closeDirs)
+    {
 
         foreach(var item in closeDirs) 
         {
 
-            var eqT = GetEqType(item.dir);
+            var eqT = GetEqType(item);
 
-            closeDatas.Find(x => x.dir == eqT).Close();
+            CloseClientRPC(eqT);
         
         }
+
+    }
+
+    [ClientRpc]
+    private void CloseClientRPC(Diractions eqT)
+    {
+
+        closeDatas.Find(x => x.dir == eqT).Close();
 
     }
 

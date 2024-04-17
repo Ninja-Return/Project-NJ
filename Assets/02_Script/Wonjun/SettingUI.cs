@@ -22,6 +22,7 @@ public class SettingUI : MonoBehaviour
 
     void Start()
     {
+
         playerController = GetComponent<PlayerController>();
         sensitivitySlider.maxValue = 12;
         sensitivitySlider.value = 12;

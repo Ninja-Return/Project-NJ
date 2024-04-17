@@ -8,14 +8,31 @@ public class NetworkObjectBtn : InteractionObject
 
     [SerializeField] private UnityEvent execute;
 
+    private string oldTex;
+
+    private void Awake()
+    {
+
+        oldTex = interactionText;
+
+    }
+
     private void Update()
     {
 
-        if (!IsHost)
+        if (!IsServer)
         {
 
             interactionText = "";
             interactionAble = false;
+
+        }
+        else
+        {
+
+            interactionText = oldTex;
+            interactionAble = true;
+
 
         }
 

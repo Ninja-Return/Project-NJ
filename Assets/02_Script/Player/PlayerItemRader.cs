@@ -14,12 +14,14 @@ public class PlayerItemRader : NetworkBehaviour
     private Canvas itemPanelCanvas;
     private List<ItemPanel> activeItemPanels = new List<ItemPanel>();
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
+
         if (!IsOwner) return;
 
         cam = Camera.main;
         itemPanelCanvas = Instantiate(canvas);
+
     }
 
     private void Update()
