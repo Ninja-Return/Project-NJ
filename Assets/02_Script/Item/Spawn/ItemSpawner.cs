@@ -12,22 +12,22 @@ public class ItemSpawner : NetworkBehaviour
     [SerializeField] private int spawnCount;
     [SerializeField, Range(-1f, 1f)] private float spawnPercentage = 1;
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
 
         if (IsServer)
         {
 
-            New_GameManager.Instance.OnGameStarted += Spawning;
+            New_GameManager.Instance.OnItemSpawnCall += Spawning;
 
         }
-
 
     }
 
     private void Spawning()
     {
 
+        Debug.Log(123);
 
         if (spawnPoss.Count == 0)
         {

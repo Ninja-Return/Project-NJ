@@ -27,6 +27,7 @@ public class New_GameManager : NetworkBehaviour
     #region EventServerOnly
 
     public event Action OnPlayerSpawnCall;
+    public event Action OnItemSpawnCall;
 
     #endregion
 
@@ -42,36 +43,9 @@ public class New_GameManager : NetworkBehaviour
     private void Start()
     {
 
-        if (!IsServer) return;
-
-        StartCoroutine(StartLogicCo());
-
-    }
-
-    private void Update()
-    {
-
-        //Debug
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-
-            PlayerManager.Instance.localController.transform.position =
-                tpPos["Escape"].position;
-
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-
-            PlayerManager.Instance.localController.transform.position =
-                tpPos["Shop"].position;
-
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-
-            PlayerManager.Instance.localController.GetComponent<CreditSystem>().Credit += 10000;
-
-        }
+       //if (!IsServer) return;
+       //
+       //StartCoroutine(StartLogicCo());
 
     }
 
@@ -171,6 +145,13 @@ public class New_GameManager : NetworkBehaviour
 
     }
 
+    public void Spawning()
+    {
+
+        OnItemSpawnCall?.Invoke();
+
+    }
+
     #region Coroutine
 
     private IEnumerator StartLogicCo()
@@ -184,7 +165,7 @@ public class New_GameManager : NetworkBehaviour
 
         yield return null;
 
-        OnPlayerSpawnCall?.Invoke();
+
 
         yield return null;
 

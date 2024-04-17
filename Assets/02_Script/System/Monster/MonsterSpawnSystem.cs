@@ -47,7 +47,6 @@ public class MonsterSpawnSystem : NetworkBehaviour
             yield return new WaitForSeconds(Random.Range(minSpawnTime, maxSpawnTime));
             Instantiate(monsterPrefab, spawnTrms.GetRandomListObject().position, Quaternion.identity).Spawn(true);
 
-
         }
 
     }

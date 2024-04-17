@@ -70,6 +70,8 @@ public class MapGenerater : NetworkBehaviour
         var pos = FindObjectOfType<StartingRoom>().startingPos;
         PlayerManager.Instance.RequstSpawn(pos);
 
+        New_GameManager.Instance.Spawning();
+
     }
 
     private void SpawnNetwork()
