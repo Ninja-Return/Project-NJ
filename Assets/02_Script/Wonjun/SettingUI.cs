@@ -12,7 +12,6 @@ public class SettingUI : MonoBehaviour
     [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private PlayerDataSO playerData;
     public MainPanelManager mainPanelManager;
-    public UIDissolveEffect dissolveEffect;
 
     private FullScreenMode screenMode = FullScreenMode.FullScreenWindow;
     private float panelTime = 0;
