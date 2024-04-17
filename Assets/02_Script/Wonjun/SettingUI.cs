@@ -32,12 +32,11 @@ public class SettingUI : MonoBehaviour
 
     void Update()
     {
-        panelTime += Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.Escape) && !Setting && panelTime > .8f)
+        if (Input.GetKeyDown(KeyCode.Escape) && !Setting)
         {
             SettingOn();
         }
-        else if (Input.GetKeyDown(KeyCode.Escape) && Setting && panelTime > .5f)
+        else if (Input.GetKeyDown(KeyCode.Escape) && Setting)
         {
             SettingOff();
         }
@@ -56,7 +55,6 @@ public class SettingUI : MonoBehaviour
 
 
         Setting = true;
-        panelTime = 0;
     }
 
     public void SettingOff()
@@ -71,7 +69,6 @@ public class SettingUI : MonoBehaviour
             PlayerManager.Instance.localController.Active(isShow);
 
         Setting = false;
-        panelTime = 0;
     }
 
     public void FOVSetting(Slider slider) // 50 ~ 70 (처음 60으로 고정)
