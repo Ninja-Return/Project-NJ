@@ -29,7 +29,6 @@ public class StoreUIController : MonoBehaviour
 
     public void Exit()
     {
-
         PlayerManager.Instance.Active(true);
         Support.SettingCursorVisable(false);
         vcam.depth = -100;
@@ -39,7 +38,6 @@ public class StoreUIController : MonoBehaviour
 
     public void StartSeq()
     {
-
         vcam.depth = 100;
         PlayerManager.Instance.Active(false);
         Support.SettingCursorVisable(true);
@@ -58,7 +56,7 @@ public class StoreUIController : MonoBehaviour
     {
 
         yield return new WaitForSeconds(0.7f);
-        uiTrm.TVEffect(value);
+        uiTrm.TVEffect(value, 0.9f);
 
     }
 

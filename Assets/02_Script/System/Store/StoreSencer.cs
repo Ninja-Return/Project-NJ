@@ -11,7 +11,7 @@ public class StoreSencer : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-        if (WaitRoomManager.Instance.IsRunningGame.Value == false) return;
+        //if (WaitRoomManager.Instance.IsRunningGame.Value == false) return;
 
         if (other.TryGetComponent<PlayerController>(out var pl))
         {
