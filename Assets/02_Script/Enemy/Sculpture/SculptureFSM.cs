@@ -119,10 +119,7 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>
     {
         if (!IsServer) return;
 
-        var player = targetPlayer.GetComponent<PlayerController>();
-
-        PlayerManager.Instance.PlayerDie(EnumList.DeadType.Monster, player.OwnerClientId);
-        IsKill = true;
+        StartCoroutine(KillPlayerCor());
     }
 
     public List<Vector3> SamplePathPositions(NavMeshPath path)
@@ -167,6 +164,17 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>
 
         nowState = currentState;
         base.Update();
+    }
+
+    private IEnumerator KillPlayerCor()
+    {
+        var player = targetPlayer.GetComponent<PlayerDarkness>();
+        player.Bliend(player.OwnerClientId, true);
+
+        yield return new WaitForSeconds(0.5f);
+
+        PlayerManager.Instance.PlayerDie(EnumList.DeadType.Monster, player.OwnerClientId);
+        IsKill = true;
     }
 
 #if UNITY_EDITOR
