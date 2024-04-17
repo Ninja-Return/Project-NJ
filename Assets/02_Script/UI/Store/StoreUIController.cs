@@ -56,7 +56,7 @@ public class StoreUIController : MonoBehaviour
     {
 
         yield return new WaitForSeconds(0.7f);
-        uiTrm.TVEffect(value);
+        uiTrm.TVEffect(value, 0.9f);
 
     }
 
