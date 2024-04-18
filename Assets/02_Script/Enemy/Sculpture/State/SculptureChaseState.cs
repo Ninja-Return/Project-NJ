@@ -20,7 +20,7 @@ public class SculptureChaseState : SculptureStateRoot
     {
         if (!IsServer) return;
 
-        NetworkSoundManager.Play3DSound("SculptureFindPlayer", sculptureFSM.transform.position, 0.1f, 45f, SoundType.SFX, AudioRolloffMode.Linear);
+        NetworkSoundManager.Play3DSound("SculptureRaderPlayer", sculptureFSM.transform.position, 0.1f, 45f, SoundType.SFX, AudioRolloffMode.Linear);
     }
 
     protected override void UpdateState()
