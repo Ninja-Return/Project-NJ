@@ -7,5 +7,6 @@ public class StartGame : MonoBehaviour
     public void GameStart()
     {
         StartGameText.Instance.GameStart();
+        ClearTimeManager.Instance.TimerStarted = true;
     }
 }
