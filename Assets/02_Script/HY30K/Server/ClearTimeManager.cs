@@ -6,8 +6,16 @@ using UnityEngine;
 
 public class ClearTimeManager : NetworkBehaviour
 {
-    public NetworkVariable<int> playerTime = new NetworkVariable<int>();
-    private int time = 0;
+    public NetworkVariable<float> playerTime = new NetworkVariable<float>();
+    public bool TimerStarted { get; set; } = false;
+    private float time = 0;
+
+    public static ClearTimeManager Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -17,8 +25,11 @@ public class ClearTimeManager : NetworkBehaviour
     private void Update()
     {
 
-        playerTime.Value = time;
-        time = time + (int)Time.deltaTime;
+        if (TimerStarted == true)
+        {
+            playerTime.Value = time;
+            time += Time.deltaTime;
+        }
 
     }
 

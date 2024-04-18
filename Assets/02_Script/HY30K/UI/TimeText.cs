@@ -5,14 +5,7 @@ public class TimeText : MonoBehaviour
 {
 
     [SerializeField] private ClearTimeManager clearTimeManager;
-    private TMP_Text text;
-
-    private void Awake()
-    {
-
-        text = GetComponent<TMP_Text>();
-
-    }
+    [SerializeField] private TMP_Text[] text;
 
     private void Start()
     {
@@ -22,10 +15,11 @@ public class TimeText : MonoBehaviour
 
     }
 
-    private void HandleTimeChanged(int oldTime, int time)
+    private void HandleTimeChanged(float oldTime, float time)
     {
 
-        text.text = $"Time: {time}";
+        text[0].text = ((int)time / 60 % 60).ToString() + " Ка";
+        text[1].text = ((int)time % 60).ToString() + " УЪ";
 
     }
 

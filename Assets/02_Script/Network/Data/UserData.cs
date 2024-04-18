@@ -11,7 +11,7 @@ public struct UserData
     public List<AttachedItem> attachedItem;
     public bool isDie;
     public bool isBreak;
-    public int clearTime;
+    public float clearTime;
     public Color color;
 
 }
