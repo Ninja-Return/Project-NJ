@@ -10,7 +10,7 @@ public class DronChaseState : DronStateRoot
     private float lazerTime;
     private float stopTime;
     private bool lazer;
-    private bool is»÷º∫;
+    private bool razerCheck;
 
     public DronChaseState(DronFSM controller, float radius, float speed, float lazerTime, float stopTime) : base(controller)
     {
@@ -23,7 +23,7 @@ public class DronChaseState : DronStateRoot
     protected override void EnterState()
     {
         if (!IsServer) return;
-        Debug.Log("µÈæÓø»");
+        Debug.Log("chaseµÈæÓø»");
         NetworkSoundManager.Play3DSound("DronBite", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
 
 
@@ -46,11 +46,12 @@ public class DronChaseState : DronStateRoot
 
             Vector3 playerPos = dronFSM.targetPlayer.transform.position;
             nav.SetDestination(playerPos);
-            if (lazer && !is»÷º∫)
+            if (lazer && !razerCheck)
             {
 
-                is»÷º∫ = true;
+                razerCheck = true;
                 // Ω√¿€ Ω√∞£∏∂¥Ÿ ƒ⁄∑Á∆æ »£√‚
+                Debug.Log("∏ÿ√Á");
                 StartCoroutine(PlayerStopLazerCoroutine());
 
             }
@@ -58,7 +59,8 @@ public class DronChaseState : DronStateRoot
         }
         else
         {
-            dronFSM.ChangeState(DronState.Idle);
+            dronFSM.ChangeState(DronState.Chase);
+
         }
     }
 
@@ -73,15 +75,15 @@ public class DronChaseState : DronStateRoot
     {
         while (lazer)
         {
-            yield return new WaitForSeconds(lazerTime);
             Debug.Log("«√∑π¿ÃæÓ ∏ÿ√ﬂ∞‘«ÿ", dronFSM.targetPlayer);
             dronFSM.targetPlayer.GetComponent<PlayerController>().Data.MoveSpeed.SetValue(0f);
             yield return new WaitForSeconds(stopTime);
             Debug.Log("¥ŸΩ√ øÚ¡˜ø©", dronFSM.targetPlayer);
             dronFSM.targetPlayer.GetComponent<PlayerController>().Data.MoveSpeed.SetValue(5f);
+            yield return new WaitForSeconds(lazerTime);
         }
 
-        is»÷º∫ = false;
+        razerCheck = false;
 
     }
     #endregion

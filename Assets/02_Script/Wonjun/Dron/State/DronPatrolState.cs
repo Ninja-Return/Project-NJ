@@ -17,7 +17,7 @@ public class DronPatrolState : DronStateRoot
     protected override void EnterState()
     {
         if (!IsServer) return;
-
+        Debug.Log("patrolµé¾î¿È");
         NetworkSoundManager.Play3DSound("DronHowling", dronFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
 
         nav.speed = speed;
