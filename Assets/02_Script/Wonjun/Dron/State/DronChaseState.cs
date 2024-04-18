@@ -23,10 +23,8 @@ public class DronChaseState : DronStateRoot
     protected override void EnterState()
     {
         if (!IsServer) return;
-        Debug.Log("chaseµé¾î¿È");
         NetworkSoundManager.Play3DSound("DronBite", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
-
-
+        Debug.Log("chaseµé¾î¿È");
         nav.speed = speed;
         lazer = true;
     }
@@ -37,13 +35,11 @@ public class DronChaseState : DronStateRoot
 
         //Vector3 playerPos = monsterFSM.targetPlayer.transform.position;
         //nav.SetDestination(playerPos);
-
         Collider player = dronFSM.CirclePlayer(radius);
 
         if (player != null)
         {
             dronFSM.targetPlayer = player;
-
             Vector3 playerPos = dronFSM.targetPlayer.transform.position;
             nav.SetDestination(playerPos);
             if (lazer && !razerCheck)
@@ -59,8 +55,7 @@ public class DronChaseState : DronStateRoot
         }
         else
         {
-            dronFSM.ChangeState(DronState.Chase);
-
+            dronFSM.ChangeState(DronState.Idle);
         }
     }
 
