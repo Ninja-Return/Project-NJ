@@ -19,6 +19,7 @@ public class DronInPlayerTransition : DronTransitionRoot
         if (targetPlayer != null)
         {
             dronFSM.targetPlayer = targetPlayer;
+            Debug.Log("플레이어가 들어와서 상태 바뀜");
             return true;
         }
 

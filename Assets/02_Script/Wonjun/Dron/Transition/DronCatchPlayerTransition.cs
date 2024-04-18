@@ -20,6 +20,7 @@ public class DronCatchPlayerTransition : DronTransitionRoot
         if (dronFSM.CirclePlayer(radius) != null)
         {
             dronFSM.targetPlayer = dronFSM.CirclePlayer(radius);
+            Debug.Log("플레이어가 들어와서 죽음");
             return true;
         }
 

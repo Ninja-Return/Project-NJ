@@ -11,7 +11,6 @@ public enum DronState
 {
     Idle,
     Patrol,
-    Ping,
     Chase,
     Kill,
     Dead
@@ -65,7 +64,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     {
         DronIdleState dronIdleState = new DronIdleState(this);
         DronPatrolState dronPatrolState = new DronPatrolState(this, moveRadius, workSpeed);
-        DronPingState dronPingState = new DronPingState(this, workSpeed);
         DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed, lazerTime, stopTime);
         DronKillState dronKillState = new DronKillState(this);
         DronDeathState dronDeathState = new DronDeathState(this);
@@ -76,23 +74,19 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         DronDieTransition dronDieTransition = new DronDieTransition(this, DronState.Dead);
 
         dronPatrolState.AddTransition(dronMoveTransition);
-        dronPingState.AddTransition(dronMoveTransition);
 
         dronIdleState.AddTransition(dronChasePlayerTransition);
         dronPatrolState.AddTransition(dronChasePlayerTransition);
-        dronPingState.AddTransition(dronChasePlayerTransition);
 
         dronChaseState.AddTransition(dronCatchPlayerTransition);
 
         dronIdleState.AddTransition(dronDieTransition);
         dronPatrolState.AddTransition(dronDieTransition);
-        dronPingState.AddTransition(dronDieTransition);
         dronChaseState.AddTransition(dronDieTransition);
         dronKillState.AddTransition(dronDieTransition);
 
         AddState(dronIdleState, DronState.Idle);
         AddState(dronPatrolState, DronState.Patrol);
-        AddState(dronPingState, DronState.Ping);
         AddState(dronChaseState, DronState.Chase);
         AddState(dronKillState, DronState.Kill);
         AddState(dronDeathState, DronState.Dead);
@@ -167,61 +161,39 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
 
     public Collider ViewingPlayer(float radius)
     {
-        List<Collider> players = new List<Collider>();
-
         Vector3 pos = headTrs.position;
-        Vector3 eulerAngles = headTrs.eulerAngles;
+        Vector3 lookDir = headTrs.forward;
 
-        float lookingAngle = eulerAngles.y;  //Ä³ï¿½ï¿½ï¿½Í°ï¿½ ï¿½Ù¶óº¸´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-        Vector3 rightDir = AngleToDirX(lookingAngle + angle * 0.5f, 25);
-        Vector3 leftDir = AngleToDirX(lookingAngle - angle * 0.5f, 25);
-        Vector3 upDir = AngleToDirY(lookingAngle, true, 30);
-        Vector3 downDir = AngleToDirY(lookingAngle, false, 30);
-        Vector3 lookDir = AngleToDirX(lookingAngle, 25);
+        // ÇÃ·¹ÀÌ¾î °¨Áö¸¦ À§ÇÑ ·¹ÀÌÄ³½ºÆ® ¹æÇâ
+        RaycastHit[] hits = Physics.SphereCastAll(pos, radius, lookDir, 0f, playerMask);
 
-#if UNITY_EDITOR
-        Debug.DrawRay(pos, rightDir * radius, Color.blue);
-        Debug.DrawRay(pos, leftDir * radius, Color.blue);
-        Debug.DrawRay(pos, upDir * radius, Color.blue);
-        Debug.DrawRay(pos, downDir * radius, Color.blue);
-        Debug.DrawRay(pos, lookDir * radius, Color.cyan);
-#endif
+        // °¨ÁöµÈ ÇÃ·¹ÀÌ¾î°¡ ¾øÀ¸¸é null ¹ÝÈ¯
+        if (hits.Length == 0) return null;
 
-        Collider[] allPlayers = Physics.OverlapSphere(pos, radius, playerMask);
-        if (allPlayers.Length == 0) return null;
-        foreach (Collider player in allPlayers)
-        {
-            Vector3 targetPos = player.transform.position;
-            Vector3 targetDir = (targetPos - pos).normalized;
-            float targetAngle = Mathf.Acos(Vector3.Dot(lookDir, targetDir)) * Mathf.Rad2Deg;
-
-            if (targetAngle <= angle * 0.5f)
-            {
-                //player ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-                players.Add(player);
-                Debug.DrawLine(pos, targetPos, Color.red);
-            }
-        }
-        if (players.Count == 0) return null;
-
+        // °¨ÁöµÈ ÇÃ·¹ÀÌ¾î Áß °¡Àå °¡±î¿î ÇÃ·¹ÀÌ¾î Ã£±â
         float minDistance = float.MaxValue;
-        Collider targetPlayer = null;
-        foreach (Collider player in players)
+        Collider nearestPlayer = null;
+        foreach (RaycastHit hit in hits)
         {
-            if (Vector3.Distance(player.transform.position, pos) < minDistance)
+            Collider playerCollider = hit.collider;
+            float distance = Vector3.Distance(playerCollider.transform.position, pos);
+            if (distance < minDistance)
             {
-                targetPlayer = player;
+                minDistance = distance;
+                nearestPlayer = playerCollider;
             }
         }
 
-        return targetPlayer;
+        // ¿¡µðÅÍ¿¡¼­ ·¹ÀÌ¸¦ ±×·ÁÁÖ´Â ÄÚµå
+        Debug.DrawRay(pos, lookDir * radius, Color.blue);
+
+        // °¡Àå °¡±î¿î ÇÃ·¹ÀÌ¾î ¹ÝÈ¯
+        return nearestPlayer;
     }
 
 
 
-
-
-    private Vector3 AngleToDirX(float angle, float xRotation)
+    /*private Vector3 AngleToDirX(float angle, float xRotation)
     {
         float radian = angle * Mathf.Deg2Rad;
         float y = -Mathf.Sin(xRotation * Mathf.Deg2Rad); // Y ÃàÀ¸·Î ³»·Á°¥ °Å¸®¸¦ °è»ê
@@ -235,25 +207,9 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         float y = -Mathf.Sin(xRotation * Mathf.Deg2Rad); // Y ÃàÀ¸·Î ³»·Á°¥ °Å¸®¸¦ °è»ê
         Vector3 angleVec = isUp == true ? new Vector3(0f, Mathf.Sin(radian2), 0f) : new Vector3(0f, -Mathf.Sin(radian2), 0f);
         return new Vector3(Mathf.Sin(radian1), y, Mathf.Cos(radian1)) + angleVec;
-    }
+    }*/
 
-    public void SetPingPos(Vector3 pos)
-    {
-        if (!IsServer) return;
-
-        UnityEngine.AI.NavMeshHit hit;
-
-        if (UnityEngine.AI.NavMesh.SamplePosition(pos, out hit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
-        {
-            pingPos = hit.position;
-
-            if (currentState == DronState.Idle || currentState == DronState.Patrol)
-            {
-                ChangeState(DronState.Ping);
-            }
-        }
-    }
-
+    
     
 
     public void JumpScare() //ï¿½ï¿½Ç»ï¿?ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½Ç¾ï¿½ ï¿½Ö¾î¼­ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶óº¸°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¸ï¿½ ï¿½ï¿½ ï¿½ï¿½?
@@ -317,13 +273,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         IsDead = true;
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void PingServerRPC(Vector3 pos)
-    {
-
-        SetPingPos(pos);
-
-    }
 
     protected override void Update()
     {

@@ -23,7 +23,7 @@ public class DronChaseState : DronStateRoot
     protected override void EnterState()
     {
         if (!IsServer) return;
-
+        Debug.Log("µé¾î¿È");
         NetworkSoundManager.Play3DSound("DronBite", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
 
 
