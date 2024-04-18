@@ -6,38 +6,29 @@ using System;
 using Unity.Netcode;
 using Michsky.UI.Dark;
 
-public class StartGameText : NetworkBehaviour
+public class StartGameText : MonoBehaviour
 {
     //[SerializeField] private GameObject startAlertPanel;
-    public UIDissolveEffect dissolveEffect;
     public MainPanelManager mainPanelManager;
+    public static StartGameText Instance;
 
-    private void Start()
+    private void Awake()
     {
-
-        return;
-
-        //¿Ã∞≈ ≥Œ∂‰
-        dissolveEffect.DissolveOut();
-
+        Instance = this;
     }
 
-    public void DOStart()
-    {
-        if (IsServer)
-        {
-
-            New_GameManager.Instance.OnGameStarted += HandleGameStartedClientRpc;
-
-        }
-    }
-
-    [ClientRpc]
-    private void HandleGameStartedClientRpc()
+    /*public void DOStart()
     {
 
+        New_GameManager.Instance.OnGameStarted += HandleGameStartedClientRpc;
+
+    }*/
+
+    public void GameStart()
+    {
+
+        Debug.Log("StartGame");
         NetworkSoundManager.Play2DSound("GameStart");
-        WaitRoomManager.Instance.UnActiveLoadingPanel();
         StartCoroutine(StartText());
 
     }
