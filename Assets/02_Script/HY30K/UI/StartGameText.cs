@@ -15,6 +15,9 @@ public class StartGameText : NetworkBehaviour
     private void Start()
     {
 
+        return;
+
+        //¿Ã∞≈ ≥Œ∂‰
         dissolveEffect.DissolveOut();
 
     }

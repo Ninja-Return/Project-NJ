@@ -104,7 +104,7 @@ public static class Support
 
     }
 
-    public static void TVEffect(this Transform targetTrm, bool isOn)
+    public static void TVEffect(this Transform targetTrm, bool isOn, float size = 1f)
     {
 
         if (isOn)
@@ -112,9 +112,9 @@ public static class Support
             targetTrm.localScale = new Vector3(0, 0, 1);
 
             Sequence tvSequence = DOTween.Sequence();
-            tvSequence.Append(targetTrm.DOScaleX(0.1f, 0.2f).SetEase(Ease.InCirc));
-            tvSequence.Join(targetTrm.DOScaleY(1f, 0.2f).SetEase(Ease.OutBack));
-            tvSequence.Append(targetTrm.DOScaleX(1f, 0.5f).SetEase(Ease.OutElastic));
+            tvSequence.Append(targetTrm.DOScaleX(size / 10f, 0.2f).SetEase(Ease.InCirc));
+            tvSequence.Join(targetTrm.DOScaleY(size, 0.2f).SetEase(Ease.OutBack));
+            tvSequence.Append(targetTrm.DOScaleX(size, 0.5f).SetEase(Ease.OutElastic));
         }
         else
         {
