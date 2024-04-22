@@ -35,12 +35,13 @@ public class InPlayerTransition : MonsterTransitionRoot
             monsterFSM.targetPlayer = targetPlayer;
             player = targetPlayer.GetComponent<PlayerController>(); //서버의 클라만 정보가 담기니
 
-            Vector2 moveVec = PlayerManager.Instance.players.Find(x => x.OwnerClientId == player.OwnerClientId).Input.MoveVecter;
+            Vector2 moveVec = PlayerManager.Instance.FindPlayerControllerToID(player.OwnerClientId).moveVector.Value;
+            
             if (moveVec != Vector2.zero && currentTime > raderTime)
             {
                 currentTime = 0f;
                 return true;
-            }
+            } 
         }
         else
         {
