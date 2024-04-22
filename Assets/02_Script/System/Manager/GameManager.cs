@@ -44,7 +44,7 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private TMP_Text startText;
     [SerializeField] private GameObject recipeUI;
 
-    private List<PlayerController> players = new();
+    public List<PlayerController> players = new();
     private NetworkVariable<bool> isCompJoin = new();
     private int joinCnt;
     public PlayerController clientPlayer { get; private set; }

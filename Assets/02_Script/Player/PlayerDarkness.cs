@@ -7,6 +7,7 @@ public class PlayerDarkness : NetworkBehaviour
 {
     [SerializeField] private GameObject darkImage;
 
+    private bool isDead;
     readonly float darkTime = 0.05f;
 
     public void Bliend(ulong clientId, bool isBliend)
@@ -24,7 +25,7 @@ public class PlayerDarkness : NetworkBehaviour
     {
         if (clientId != NetworkManager.LocalClientId) return;
 
-        StopAllCoroutines();
+        isDead = true;
         darkImage.SetActive(isBliend);
     }
 
@@ -32,6 +33,7 @@ public class PlayerDarkness : NetworkBehaviour
     private void BliendClientRpc(ulong clientId)
     {
         if (clientId != NetworkManager.LocalClientId) return;
+        if (isDead) return;
 
         StartCoroutine(BliendCor());
     }
