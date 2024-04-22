@@ -24,7 +24,8 @@ public class Inventory : NetworkBehaviour
     private SlotUI[] slots;
     private int slotIdx;
 
-     public bool isShow = false;
+    public bool isShow = false;
+    public bool showingDelay = false;
     [HideInInspector] public bool isHold = false;
     public int getItemCount;
 
@@ -64,6 +65,8 @@ public class Inventory : NetworkBehaviour
     {
         isShow = !isShow;
 
+        showingDelay = true;
+        StartCoroutine(ShowDelay());
 
         if (!notPlayerActiveChange)
         {
@@ -187,6 +190,14 @@ public class Inventory : NetworkBehaviour
             ItemSpawnManager.Instance.SpawningItem(trm.position + transform.forward, item.slotData.poolingName);
 
         }
+
+    }
+
+    private IEnumerator ShowDelay()
+    {
+
+        yield return new WaitForSeconds(0.1f);
+        showingDelay = false;
 
     }
 

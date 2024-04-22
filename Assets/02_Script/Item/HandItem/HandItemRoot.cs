@@ -16,5 +16,6 @@ public abstract class HandItemRoot : MonoBehaviour
     public abstract void DoUse();
 
     public virtual void SetUpExtraData(string extraData) { this.extraData = extraData; }
+    public virtual void DoRelease() { }
 
 }
