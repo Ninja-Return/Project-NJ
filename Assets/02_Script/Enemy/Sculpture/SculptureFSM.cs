@@ -10,10 +10,11 @@ public enum SculptureState
 {
     Patrol,
     Chase,
-    Kill
+    Kill,
+    Dead
 };
 
-public class SculptureFSM : FSM_Controller_Netcode<SculptureState>
+public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterface
 {
     public NavMeshAgent nav;
     public Transform headTrs;
@@ -23,6 +24,7 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>
 
 
     [HideInInspector] public Collider targetPlayer;
+    [HideInInspector] public bool IsDead { get; private set; }
     [HideInInspector] public bool IsKill;
     [HideInInspector] public float currentCoolTime;
 
@@ -60,16 +62,23 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>
         SculpturePatrolState sculpturePatrolState = new SculpturePatrolState(this, moveRadius, moveFrame);
         SculptureChaseState sculptureChaseState = new SculptureChaseState(this, chaseRadius, killRadius, chaseFrame);
         SculptureKillState sculptureKillState = new SculptureKillState(this);
+        SculptureDeathState sculptureDeathState = new SculptureDeathState(this);
 
         SculptureFindPlayerTransition sculptureFindPlayerTransition = new SculptureFindPlayerTransition(this, SculptureState.Chase, chaseRadius);
+        SculptureDieTransition sculptureDieTransition = new SculptureDieTransition(this, SculptureState.Dead);
         //SculptureFindPlayerTransition sculptureCatchPlayerTransition = new SculptureFindPlayerTransition(this, SculptureState.Kill, killRadius);
 
         sculpturePatrolState.AddTransition(sculptureFindPlayerTransition);
         //sculptureChaseState.AddTransition(sculptureCatchPlayerTransition);
 
+        sculpturePatrolState.AddTransition(sculptureDieTransition);
+        sculptureChaseState.AddTransition(sculptureDieTransition);
+        sculptureKillState.AddTransition(sculptureDieTransition);
+
         AddState(sculpturePatrolState, SculptureState.Patrol);
         AddState(sculptureChaseState, SculptureState.Chase);
         AddState(sculptureKillState, SculptureState.Kill);
+        AddState(sculptureDeathState, SculptureState.Dead);
     }
 
     public bool FrameMove(float timer, Vector3 pos)
@@ -164,6 +173,13 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>
 
         nowState = currentState;
         base.Update();
+    }
+
+    public void Death()
+    {
+        if (!IsServer) return;
+
+        IsDead = true;
     }
 
     private IEnumerator KillPlayerCor()

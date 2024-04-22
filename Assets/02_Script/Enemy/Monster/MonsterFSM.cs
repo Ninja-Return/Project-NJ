@@ -17,7 +17,7 @@ public enum MonsterState
     Dead
 }
 
-public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
+public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
 {
     public Animator anim;
     public NavMeshAgent nav;
@@ -283,8 +283,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>
         //player.enabled = false;
     }
 
-
-    public void SetMonsterDeath()
+    public void Death()
     {
         if (!IsServer) return;
 
