@@ -7,6 +7,7 @@ using DG.Tweening;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 using Michsky.UI.Dark;
+using UnityEditor.PackageManager;
 
 public class ResultUIController : NetworkBehaviour
 {
@@ -34,6 +35,8 @@ public class ResultUIController : NetworkBehaviour
 
         dissolveEffect.DissolveOut();
 
+        if(!IsServer)return;
+
     }
 
     public void EscapeFail()
@@ -58,10 +61,19 @@ public class ResultUIController : NetworkBehaviour
 
     public void EscapeTimer()
     {
-        UserData? data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(OwnerClientId);
+        foreach(var item in NetworkManager.ConnectedClientsIds)
+        {
+            UnjiClientRpc(item, HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(item).Value);
+        }
+    }
 
-        text[0].text = ((int)data.Value.clearTime / 60 % 60).ToString() + " 분";
-        text[1].text = ((int)data.Value.clearTime % 60).ToString() + " 초";
+    [ClientRpc]
+    private void UnjiClientRpc(ulong clientId, UserData data)
+    {
+        if (clientId != NetworkManager.LocalClientId) return;
+
+        text[0].text = ((int)data.clearTime / 60 % 60).ToString() + " 분";
+        text[1].text = ((int)data.clearTime % 60).ToString() + " 초";
     }
 
     public void SpawnPanel(ulong clientId, string userName, bool isOwner, bool isBreak)
