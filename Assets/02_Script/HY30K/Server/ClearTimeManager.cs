@@ -24,10 +24,10 @@ public class ClearTimeManager : NetworkBehaviour
 
     private void Update()
     {
+        playerTime.Value = time;
 
         if (TimerStarted == true)
         {
-            playerTime.Value = time;
             time += Time.deltaTime;
         }
 

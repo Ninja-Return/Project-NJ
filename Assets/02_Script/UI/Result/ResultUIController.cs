@@ -21,6 +21,8 @@ public class ResultUIController : NetworkBehaviour
     [SerializeField] private TMP_Text escapePlayerText;
     [SerializeField] private TMP_Text failPlayerText;
     [SerializeField] private TMP_Text winText;
+    [SerializeField] private TMP_Text[] text;
+    public NetworkVariable<float> playerTime = new NetworkVariable<float>();
 
     private float escapePlayerCnt = 0f;
     private float failPlayerCnt = 0f;
@@ -52,6 +54,14 @@ public class ResultUIController : NetworkBehaviour
 
         winText.text = "플레이 결과";
 
+    }
+
+    public void EscapeTimer()
+    {
+        UserData? data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(OwnerClientId);
+
+        text[0].text = ((int)data.Value.clearTime / 60 % 60).ToString() + " 분";
+        text[1].text = ((int)data.Value.clearTime % 60).ToString() + " 초";
     }
 
     public void SpawnPanel(ulong clientId, string userName, bool isOwner, bool isBreak)
@@ -95,7 +105,7 @@ public class ResultUIController : NetworkBehaviour
     {
         if (IsHost)
         {
-            
+
             await HostSingle.Instance.GameManager.ShutdownAsync();
 
             SceneManager.LoadScene(SceneList.LobbySelectScene);
