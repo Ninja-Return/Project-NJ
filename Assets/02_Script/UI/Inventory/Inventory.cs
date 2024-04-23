@@ -63,6 +63,8 @@ public class Inventory : NetworkBehaviour
 
     public void SetActiveInventoryUI(bool notPlayerActiveChange = false) //�÷��̾� ��ǲ�� ����
     {
+
+
         isShow = !isShow;
 
         showingDelay = true;

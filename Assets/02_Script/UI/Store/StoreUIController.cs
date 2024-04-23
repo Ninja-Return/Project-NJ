@@ -30,6 +30,7 @@ public class StoreUIController : MonoBehaviour
     public void Exit()
     {
         PlayerManager.Instance.Active(true);
+        PlayerManager.Instance.localController.Input.Enable();
         Support.SettingCursorVisable(false);
         vcam.gameObject.SetActive(false);   
         vcam.depth = -100;
@@ -40,6 +41,7 @@ public class StoreUIController : MonoBehaviour
     public void StartSeq()
     {
         vcam.gameObject.SetActive(true);
+        PlayerManager.Instance.localController.Input.Disable();
         vcam.depth = 100;
         PlayerManager.Instance.Active(false);
         Support.SettingCursorVisable(true);
