@@ -12,12 +12,7 @@ public class DeathState : MonsterStateRoot
 
     protected override void EnterState()
     {
-        if (!IsServer) return;
-
-        monsterFSM.SetAnimation("Death", true);
-
-        //죽는 애니메이션
-        //리썰처럼 시체 냅두는게 좋을듯?
+        
     }
 
     protected override void UpdateState()
@@ -27,8 +22,6 @@ public class DeathState : MonsterStateRoot
 
     protected override void ExitState()
     {
-        if (!IsServer) return;
-
-        monsterFSM.SetAnimation("Death", false);
+        
     }
 }

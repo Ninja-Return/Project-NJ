@@ -17,7 +17,7 @@ public enum DronState
 }
 
 
-public class DronFSM : FSM_Controller_Netcode<DronState>
+public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
 {
     public UnityEngine.AI.NavMeshAgent nav;
     public Transform headTrs;
@@ -266,10 +266,14 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     }
 
 
-    public void SetMonsterDeath()
+    public void Death()
     {
-        if (!IsServer) return;
+        DeathServerRpc();
+    }
 
+    [ServerRpc]
+    public void DeathServerRpc()
+    {
         IsDead = true;
     }
 
