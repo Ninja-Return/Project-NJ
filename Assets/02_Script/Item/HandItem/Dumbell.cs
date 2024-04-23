@@ -17,7 +17,8 @@ public class Dumbell : HandItemRoot
         Vector3 spawnPosition = transform.position + forwardDirection * spawnDistance;
         NetworkObject newDumbell = Instantiate(dumbellPrefab, spawnPosition, Quaternion.identity);
         newDumbell.Spawn(true);
-
+        NetworkSoundManager.Play3DSound("DumbellShoot", transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
+        
 
         Rigidbody dumbellRigid = newDumbell.GetComponent<Rigidbody>();
         dumbellRigid.AddForce(forwardDirection * firePower, ForceMode.Impulse);

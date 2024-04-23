@@ -9,7 +9,9 @@ public class WallItem : HandItemRoot
     public override void DoUse()
     {
         Debug.Log("∫Æ º“»Ø");
+        NetworkSoundManager.Play3DSound("WallBuild", transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
         Wall = Instantiate(Wall, transform.position, Quaternion.identity);
         Wall.Spawn(true);
+
     }
 }
