@@ -202,7 +202,6 @@ public class PlayerHand : NetworkBehaviour
 
         var obj = Resources.Load<HandItemRoot>($"ItemObj/{objKey}_Hand");
 
-
         currentObject = Instantiate(obj, itemParent);
         currentObject.Spawn(NetworkManager.LocalClientId == ownerId);
         currentObject.transform.localPosition = Vector3.zero + currentObject.handPivot;
