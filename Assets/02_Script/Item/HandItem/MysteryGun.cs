@@ -11,7 +11,7 @@ public class MysteryGun : HandItemRoot
     {
         //NetworkSoundManager.Play3DSound("SodaOpen", transform.position, 0.01f, 15f); ÃÑ ½î´Â ¼Ò¸®
 
-        Camera cam = Camera.main;
+        Camera cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         Vector2 ScreenCenter = new Vector2(cam.pixelWidth / 2, cam.pixelHeight / 2);
         Ray ray = cam.ScreenPointToRay(ScreenCenter);
         RaycastHit hit;
@@ -19,5 +19,13 @@ public class MysteryGun : HandItemRoot
         {
             hit.transform.GetComponent<IEnemyInterface>().Death();
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Camera cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+        Vector2 ScreenCenter = new Vector2(cam.pixelWidth / 2, cam.pixelHeight / 2);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawRay(cam.ScreenPointToRay(ScreenCenter));
     }
 }

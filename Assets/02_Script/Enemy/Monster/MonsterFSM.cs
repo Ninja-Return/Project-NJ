@@ -19,7 +19,7 @@ public enum MonsterState
 
 public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
 {
-    public Animator anim;
+    public MonsterAnimation monsterAnim;
     public NavMeshAgent nav;
     public Transform headTrs;
     public CinemachineVirtualCamera jsVcamTrs;
@@ -28,6 +28,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
     public LayerMask playerMask;
 
     public MonsterState nowState;
+
 
     [HideInInspector] public Vector3 pingPos;
     [HideInInspector] public Collider targetPlayer;
@@ -102,20 +103,6 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
         Vector3 targetPlayerPos = targetPlayer.transform.position;
         Vector3 playerVec = (targetPlayerPos - transform.position).normalized;
         lookVec = playerVec;
-    }
-
-    public void SetAnimation(string name, bool value)
-    {
-        anim.SetBool(name, value);
-        SetAnimationClientRpc(name, value);
-    }
-
- 
-
-    [ClientRpc]
-    private void SetAnimationClientRpc(string name, bool value)
-    {
-        anim.SetBool(name, value);
     }
 
     private bool RayObstacle(Vector3 pos, Vector3 lookVec, float destance)
@@ -285,8 +272,12 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
 
     public void Death()
     {
-        if (!IsServer) return;
+        DeathServerRpc();
+    }
 
+    [ServerRpc]
+    public void DeathServerRpc()
+    {
         IsDead = true;
     }
 
