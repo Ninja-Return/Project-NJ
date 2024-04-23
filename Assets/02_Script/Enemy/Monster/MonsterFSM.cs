@@ -167,13 +167,13 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
         Vector3 eulerAngles = headTrs.eulerAngles;
 
         float lookingAngle = eulerAngles.y;  //캐릭터가 바라보는 방향의 각도
+        Vector3 lookDir = AngleToDirX(lookingAngle);
+#if UNITY_EDITOR
         Vector3 rightDir = AngleToDirX(lookingAngle + angle * 0.5f);
         Vector3 leftDir = AngleToDirX(lookingAngle - angle * 0.5f);
         Vector3 upDir = AngleToDirY(lookingAngle, true);
         Vector3 downDir = AngleToDirY(lookingAngle, false);
-        Vector3 lookDir = AngleToDirX(lookingAngle);
 
-#if UNITY_EDITOR
         Debug.DrawRay(pos, rightDir * radius, Color.blue);
         Debug.DrawRay(pos, leftDir * radius, Color.blue);
         Debug.DrawRay(pos, upDir * radius, Color.blue);
@@ -183,26 +183,31 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
 
         Collider[] allPlayers = Physics.OverlapSphere(pos, radius, playerMask);
         if (allPlayers.Length == 0) return null;
+
         foreach (Collider player in allPlayers)
         {
             Vector3 targetPos = player.transform.position;
             Vector3 targetDir = (targetPos - pos).normalized;
             float targetAngle = Mathf.Acos(Vector3.Dot(lookDir, targetDir)) * Mathf.Rad2Deg;
+            float playerDistance = Vector3.Distance(player.transform.position, pos);
 
-            if (targetAngle <= angle * 0.5f)
+            if (targetAngle <= angle * 0.5f && !Physics.Raycast(pos, targetDir, playerDistance, obstacleMask))
             {
                 //player 감지됨
                 players.Add(player);
                 Debug.DrawLine(pos, targetPos, Color.red);
             }
         }
+
         if (players.Count == 0) return null;
 
+        //가장 가까운 플레이어 감지
         float minDistance = float.MaxValue;
         Collider targetPlayer = null;
         foreach (Collider player in players)
         {
-            if (Vector3.Distance(player.transform.position, pos) < minDistance)
+            float playerDistance = Vector3.Distance(player.transform.position, pos);
+            if (playerDistance < minDistance)
             {
                 targetPlayer = player;
             }

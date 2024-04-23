@@ -177,14 +177,12 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
 
     public void Death()
     {
-        Debug.Log("시네!!!");
         DeathServerRpc();
     }
 
     [ServerRpc]
     public void DeathServerRpc()
     {
-        Debug.Log("시네!!!2");
         IsDead = true;
     }
 

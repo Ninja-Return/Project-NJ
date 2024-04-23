@@ -268,8 +268,12 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
 
     public void Death()
     {
-        if (!IsServer) return;
+        DeathServerRpc();
+    }
 
+    [ServerRpc]
+    public void DeathServerRpc()
+    {
         IsDead = true;
     }
 

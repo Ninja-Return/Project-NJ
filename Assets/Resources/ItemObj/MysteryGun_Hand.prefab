@@ -99,8 +99,14 @@ MonoBehaviour:
   <handRotation>k__BackingField: {x: -136.5, y: 66, z: -21.8}
   <handPivot>k__BackingField: {x: 0.83, y: 0.65, z: 0.15}
   <isLocalUse>k__BackingField: 1
-  <is1Use>k__BackingField: 0
-  distance: 70
+  <is1Use>k__BackingField: 1
+  distance: 30
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 1
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 128
   enemyMask:
     serializedVersion: 2
     m_Bits: 512
