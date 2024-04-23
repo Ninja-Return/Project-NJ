@@ -7,7 +7,6 @@ using DG.Tweening;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 using Michsky.UI.Dark;
-using UnityEditor.PackageManager;
 
 public class ResultUIController : NetworkBehaviour
 {
