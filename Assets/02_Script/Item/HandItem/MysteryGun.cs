@@ -11,6 +11,8 @@ public class MysteryGun : HandItemRoot
 
     public override void DoUse()
     {
+        if (!isOwner) return;
+
         NetworkSoundManager.Play3DSound("GunShot", transform.position, 0.01f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
 
         Camera cam = GameObject.Find("Main Camera").GetComponent<Camera>();
