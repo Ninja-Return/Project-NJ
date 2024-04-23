@@ -7,6 +7,7 @@ using DG.Tweening;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 using Michsky.UI.Dark;
+using UnityEditor.PackageManager;
 
 public class ResultUIController : NetworkBehaviour
 {
@@ -21,6 +22,8 @@ public class ResultUIController : NetworkBehaviour
     [SerializeField] private TMP_Text escapePlayerText;
     [SerializeField] private TMP_Text failPlayerText;
     [SerializeField] private TMP_Text winText;
+    [SerializeField] private TMP_Text[] text;
+    public NetworkVariable<float> playerTime = new NetworkVariable<float>();
 
     private float escapePlayerCnt = 0f;
     private float failPlayerCnt = 0f;
@@ -31,6 +34,8 @@ public class ResultUIController : NetworkBehaviour
         Cursor.visible = true;
 
         dissolveEffect.DissolveOut();
+
+        if (IsServer) EscapeTimer();
 
     }
 
@@ -52,6 +57,23 @@ public class ResultUIController : NetworkBehaviour
 
         winText.text = "플레이 결과";
 
+    }
+
+    public void EscapeTimer()
+    {
+        foreach (var item in NetworkManager.ConnectedClientsIds)
+        {
+            TimerClientRpc(item, HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(item).Value.clearTime);
+        }
+    }
+
+    [ClientRpc]
+    private void TimerClientRpc(ulong clientId, float clearTime)
+    {
+        if (clientId != NetworkManager.LocalClientId) return;
+
+        text[0].text = ((int)clearTime / 60 % 60).ToString() + " 분";
+        text[1].text = ((int)clearTime % 60).ToString() + " 초";
     }
 
     public void SpawnPanel(ulong clientId, string userName, bool isOwner, bool isBreak)
@@ -95,7 +117,7 @@ public class ResultUIController : NetworkBehaviour
     {
         if (IsHost)
         {
-            
+
             await HostSingle.Instance.GameManager.ShutdownAsync();
 
             SceneManager.LoadScene(SceneList.LobbySelectScene);

@@ -67,7 +67,7 @@ public class New_GameManager : NetworkBehaviour
         if (playerCount == 0)
         {
 
-            FadeManager.Instance.FadeOn();
+            //FadeManager.Instance.FadeOn();
             OnGameFinishedClientRPC();
             WinSystem.Instance.WinServerRPC(IsBreaken == true ? EnumWinState.Escape : EnumWinState.Fail);
 

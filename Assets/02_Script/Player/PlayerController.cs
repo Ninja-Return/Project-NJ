@@ -21,13 +21,13 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     [SerializeField] private EnumPlayerState startState;
     [SerializeField] private bool debug;
 
-    [field:SerializeField] public PlayerDataSO Data { get; private set; }
-    [field:SerializeField] public PlayerInputDataSO Input { get; private set; }
+    [field: SerializeField] public PlayerDataSO Data { get; private set; }
+    [field: SerializeField] public PlayerInputDataSO Input { get; private set; }
 
     private GameObject meetingObject;
     private Canvas interactionCanvas;
     public CinemachineVirtualCamera cvcam { get; private set; }
-    
+
     public bool isInsideSafetyRoom { get; set; } = true;
     public bool isSittingDown = false; // 현재 앉아 있는지 여부
     public Vector3 targetCameraPosition;
@@ -37,6 +37,8 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     public Rigidbody playerRigidbody;
 
     public NetworkVariable<float> psychosisValue { get; private set; }
+    = new(writePerm: NetworkVariableWritePermission.Owner);
+    public NetworkVariable<Vector2> moveVector { get; private set; }
     = new(writePerm: NetworkVariableWritePermission.Owner);
 
     //사용되지 않음
@@ -122,7 +124,6 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         Input.OnInventoryKeyPress += HandleInvenActive;
 
         StartCoroutine(ControlPsychosisValueCo());
-
     }
 
     private void HandleInvenActive()
@@ -146,6 +147,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         if (!IsOwner && !debug) return;
 
         //Data.LookSensitive.SetValue(SensitivitySlider.value);
+        moveVector.Value = Input.MoveVecter;
 
         base.Update();
 

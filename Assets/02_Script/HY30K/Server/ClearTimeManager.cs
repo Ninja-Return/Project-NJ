@@ -6,9 +6,7 @@ using UnityEngine;
 
 public class ClearTimeManager : NetworkBehaviour
 {
-    public NetworkVariable<float> playerTime = new NetworkVariable<float>();
     public bool TimerStarted { get; set; } = false;
-    private float time = 0;
 
     public static ClearTimeManager Instance;
 
@@ -17,30 +15,13 @@ public class ClearTimeManager : NetworkBehaviour
         Instance = this;
     }
 
-    private void Start()
-    {
-        playerTime.Value = time;
-    }
-
-    private void Update()
-    {
-
-        if (TimerStarted == true)
-        {
-            playerTime.Value = time;
-            time += Time.deltaTime;
-        }
-
-    }
 
     public override void OnNetworkSpawn()
     {
 
-        if (IsServer)
+        if (IsOwner)
         {
-            UserData? data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(OwnerClientId);
 
-            playerTime.Value = data.Value.clearTime;
         }
 
     }
