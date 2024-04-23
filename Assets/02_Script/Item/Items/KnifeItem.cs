@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -7,23 +8,54 @@ public class KnifeItem : HandItemRoot
 {
 
     private PlayerAnimationController animator;
+    private PlayerEventSystem eventSystem;
     private bool hold;
     private bool coolDown;
 
     private void Start()
     {
 
-        animator = PlayerManager.Instance.localController.GetComponent<PlayerAnimationController>();
+        if (!isOwner) return;
+
+        var player = PlayerManager.Instance.localController;
+
+        animator = player.GetComponent<PlayerAnimationController>();
+        eventSystem = player.GetComponent<PlayerEventSystem>();
+        eventSystem.OnTweenAnimeEvent += HandleAnimeEnd;
+
+    }
+
+    private void HandleAnimeEnd()
+    {
+
+        var players = Physics.OverlapBox(
+            transform.position, Vector3.one / 4, 
+            Quaternion.identity, LayerMask.GetMask("Player"));
+
+        foreach(var item in players)
+        {
+
+            if(item.TryGetComponent<PlayerController>(out var compo))
+            {
+
+                if (compo.IsOwner) continue;
+
+                PlayerManager.Instance.PlayerDie(EnumList.DeadType.Mafia, compo.OwnerClientId);
+
+                break;
+
+            }
+
+        }
 
     }
 
     public override void DoUse()
     {
 
-
         if (coolDown || hold) return;
 
-        animator.InitHandTarget();
+        animator.InitHandTarget();  
         hold = true;
         animator.PlayTweenAnimation("Knife_Hold");
 
@@ -39,6 +71,19 @@ public class KnifeItem : HandItemRoot
         animator.PlayTweenAnimation("Knife_Attack");
 
         StartCoroutine(CoolDownCo());
+
+    }
+
+    private void OnDestroy()
+    {
+
+        if (!isOwner) return;
+        if(eventSystem != null)
+        {
+
+            eventSystem.OnTweenAnimeEvent -= HandleAnimeEnd;
+
+        }
 
     }
 

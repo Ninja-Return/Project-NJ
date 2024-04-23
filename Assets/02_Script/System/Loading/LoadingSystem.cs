@@ -9,6 +9,7 @@ public class LoadingSystem : NetworkBehaviour
 {
 
     private int completeCount;
+    private int joinCurrentScene;
 
     private void Start()
     {
@@ -16,11 +17,11 @@ public class LoadingSystem : NetworkBehaviour
         if (IsServer)
         {
 
-            StartCoroutine(CycleCo());
-
-            JoinChannelClientRPC();
+            StartCoroutine(WaitCo());
 
         }
+
+        CompleteSceneJoinServerRPC();
 
     }
 
@@ -65,6 +66,27 @@ public class LoadingSystem : NetworkBehaviour
         completeCount++;
 
     }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void CompleteSceneJoinServerRPC()
+    {
+
+        joinCurrentScene++;
+
+    }
+    private IEnumerator WaitCo()
+    {
+
+        yield return new WaitUntil(() =>
+        joinCurrentScene == NetworkManager.ConnectedClients.Count);
+
+        JoinChannelClientRPC();
+
+        yield return StartCoroutine(CycleCo());
+
+
+    }
+
 
     private IEnumerator CycleCo()
     {

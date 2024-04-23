@@ -1115,6 +1115,7 @@ GameObject:
   - component: {fileID: 5833718061378975261}
   - component: {fileID: 8507690287866354051}
   - component: {fileID: 3516956034148795912}
+  - component: {fileID: -4216752375915037255}
   m_Layer: 7
   m_Name: Player_Main
   m_TagString: Player
@@ -1390,6 +1391,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   darkImage: {fileID: 4988895745558973999}
+--- !u!114 &-4216752375915037255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042499202800047953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33b27089b8a7807418c303b943701aca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2058347342321233437
 GameObject:
   m_ObjectHideFlags: 0
@@ -4917,7 +4930,7 @@ MonoBehaviour:
   hasOnPlay: 0
   hasOnUpdate: 0
   hasOnStepComplete: 0
-  hasOnComplete: 0
+  hasOnComplete: 1
   hasOnTweenCreated: 0
   hasOnRewind: 0
   onStart:
@@ -4934,7 +4947,19 @@ MonoBehaviour:
       m_Calls: []
   onComplete:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -4216752375915037255}
+        m_TargetAssemblyTypeName: PlayerEventSystem, Assembly-CSharp
+        m_MethodName: TweenAnimeInvoke
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onTweenCreated:
     m_PersistentCalls:
       m_Calls: []
