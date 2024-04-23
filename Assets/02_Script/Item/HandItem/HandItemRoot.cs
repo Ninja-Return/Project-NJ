@@ -11,10 +11,18 @@ public abstract class HandItemRoot : MonoBehaviour
     [field:SerializeField] public bool isLocalUse {  get; protected set; }
     [field:SerializeField] public bool is1Use { get; protected set; }
 
-    public string extraData { get; set; }
+    protected bool isOwner;
 
+    public string extraData { get; set; }
+    public void Spawn(bool isOwner)
+    {
+
+        this.isOwner = isOwner;
+
+    }
     public abstract void DoUse();
 
     public virtual void SetUpExtraData(string extraData) { this.extraData = extraData; }
+    public virtual void DoRelease() { }
 
 }

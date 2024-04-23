@@ -28,6 +28,7 @@ public class PlayerManager : NetworkBehaviour
 
     public float PlayerTime = 0;
     public bool IsDie { get; private set; }
+    public bool active => localController == null ? false : localController.CurrentState != EnumPlayerState.Idle;
     private bool IsBreaken;
     private int joinCount;
 

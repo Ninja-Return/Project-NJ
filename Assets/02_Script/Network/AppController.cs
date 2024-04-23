@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Services.Vivox;
 using Unity.Netcode;
-
+    
 public class AppController : MonoBehaviour
 {
 
