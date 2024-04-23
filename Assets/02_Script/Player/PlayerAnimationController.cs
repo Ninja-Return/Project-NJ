@@ -238,7 +238,7 @@ public class PlayerAnimationController : NetworkBehaviour
 
         }
 
-        //TweenAnimeServerRPC(key);
+        TweenAnimeServerRPC(key);
 
     }
 
@@ -254,6 +254,7 @@ public class PlayerAnimationController : NetworkBehaviour
     {
 
         if (IsOwner) return;
+
         foreach (var tween in serverTweenContainer[key])
         {
 

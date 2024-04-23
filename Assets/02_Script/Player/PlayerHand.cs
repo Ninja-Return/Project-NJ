@@ -207,6 +207,8 @@ public class PlayerHand : NetworkBehaviour
         currentObject.transform.localPosition = Vector3.zero + currentObject.handPivot;
         currentObject.transform.localEulerAngles = currentObject.handRotation;
 
+        controller.InitHandTarget();
+
     }
 
     [ServerRpc]
