@@ -177,7 +177,8 @@ GameObject:
   - component: {fileID: 8929953450323205643}
   - component: {fileID: 3092216196906510311}
   - component: {fileID: 7395570076276389012}
-  m_Layer: 0
+  - component: {fileID: 6036124976114525057}
+  m_Layer: 9
   m_Name: DronMonster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -350,8 +351,8 @@ MonoBehaviour:
   moveRadius: 60
   chaseRadius: 5
   killRadius: 0.5
-  workSpeed: 20
-  runSpeed: 30
+  workSpeed: 30
+  runSpeed: 20
   lazerTime: 0.01
   stopTime: 5
   shakeAmount: 0.1
@@ -359,6 +360,29 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 1
+--- !u!136 &6036124976114525057
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3384258370587905446}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4402337686147071111
 GameObject:
   m_ObjectHideFlags: 0
