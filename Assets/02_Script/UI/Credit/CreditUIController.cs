@@ -20,7 +20,7 @@ public class CreditUIController : MonoBehaviour
     private void HandleCreditChanged(int oldValue, int newValue, int addValue)
     {
 
-        creditText.text = newValue.ToString();
+        creditText.text = "º“¿Ø±›: " + newValue.ToString();
 
     }
 
