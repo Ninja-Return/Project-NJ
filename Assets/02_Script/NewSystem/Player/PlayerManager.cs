@@ -99,6 +99,9 @@ public class PlayerManager : NetworkBehaviour
 
         PlayerDieServerRPC(type, clientId);
 
+        UserData data = HostSingle.Instance.NetServer.GetUserDataByClientID(NetworkManager.LocalClientId).Value;
+        data.clearTime = PlayerTime;
+        HostSingle.Instance.NetServer.SetUserDataByClientId(NetworkManager.LocalClientId, data);
 
     }
 
