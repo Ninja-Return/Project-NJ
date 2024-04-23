@@ -35,7 +35,7 @@ public class ResultUIController : NetworkBehaviour
 
         dissolveEffect.DissolveOut();
 
-        if(!IsServer)return;
+        if (IsServer) EscapeTimer();
 
     }
 
@@ -61,19 +61,19 @@ public class ResultUIController : NetworkBehaviour
 
     public void EscapeTimer()
     {
-        foreach(var item in NetworkManager.ConnectedClientsIds)
+        foreach (var item in NetworkManager.ConnectedClientsIds)
         {
-            UnjiClientRpc(item, HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(item).Value);
+            TimerClientRpc(item, HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(item).Value.clearTime);
         }
     }
 
     [ClientRpc]
-    private void UnjiClientRpc(ulong clientId, UserData data)
+    private void TimerClientRpc(ulong clientId, float clearTime)
     {
         if (clientId != NetworkManager.LocalClientId) return;
 
-        text[0].text = ((int)data.clearTime / 60 % 60).ToString() + " 분";
-        text[1].text = ((int)data.clearTime % 60).ToString() + " 초";
+        text[0].text = ((int)clearTime / 60 % 60).ToString() + " 분";
+        text[1].text = ((int)clearTime % 60).ToString() + " 초";
     }
 
     public void SpawnPanel(ulong clientId, string userName, bool isOwner, bool isBreak)

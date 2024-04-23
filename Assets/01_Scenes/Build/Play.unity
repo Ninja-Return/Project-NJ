@@ -2995,6 +2995,7 @@ GameObject:
   - component: {fileID: 1985564211}
   - component: {fileID: 1985564212}
   - component: {fileID: 1985564213}
+  - component: {fileID: 1985564214}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -3056,6 +3057,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 4498147838486822712, guid: 4d3e29c235d3ad541ab4514310e41fb7, type: 3}
   deathUI: {fileID: 506320499}
   spawn: 0
+  PlayerTime: 0
 --- !u!114 &1985564205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3203,6 +3205,18 @@ MonoBehaviour:
   maxSpawnTime: 5
   monsterPrefabs:
   - {fileID: 8731334441768544532, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
+--- !u!114 &1985564214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985564200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec419e88db2ab4144aece8a618fb9408, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2047427413
 GameObject:
   m_ObjectHideFlags: 0

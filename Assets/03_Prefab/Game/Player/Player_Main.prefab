@@ -1115,6 +1115,7 @@ GameObject:
   - component: {fileID: 5833718061378975261}
   - component: {fileID: 8507690287866354051}
   - component: {fileID: 3516956034148795912}
+  - component: {fileID: 2557879223629082000}
   m_Layer: 7
   m_Name: Player_Main
   m_TagString: Player
@@ -1383,6 +1384,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   darkImage: {fileID: 4988895745558973999}
+--- !u!114 &2557879223629082000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2042499202800047953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e15c0bc91de4d7489944652642545d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text:
+  - {fileID: 719063013573065964}
+  - {fileID: 1683363584639335332}
+  time: 0
 --- !u!1 &2058347342321233437
 GameObject:
   m_ObjectHideFlags: 0
@@ -2188,8 +2205,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec419e88db2ab4144aece8a618fb9408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTime:
-    m_InternalValue: 0
 --- !u!114 &6394122067131413337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2202,10 +2217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e15c0bc91de4d7489944652642545d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clearTimeManager: {fileID: 5122852742755364929}
-  text:
-  - {fileID: 719063013573065964}
-  - {fileID: 1683363584639335332}
+  text: []
+  time: 0
 --- !u!1 &3384296438199547725
 GameObject:
   m_ObjectHideFlags: 0

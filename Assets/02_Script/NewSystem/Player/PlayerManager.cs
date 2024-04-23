@@ -26,6 +26,7 @@ public class PlayerManager : NetworkBehaviour
     public NetworkList<LiveData> alivePlayer { get; private set; }
     public NetworkList<LiveData> diePlayer { get; private set; }
 
+    public float PlayerTime = 0;
     public bool IsDie { get; private set; }
     private bool IsBreaken;
     private int joinCount;
@@ -46,6 +47,8 @@ public class PlayerManager : NetworkBehaviour
         if (IsServer && spawn)
         {
 
+            PlayerTime = 0;
+
             HostSingle.Instance.GameManager.OnPlayerConnect += HandlePlayerSpawn;
 
             StartCoroutine(WaitSpawn());
@@ -53,6 +56,16 @@ public class PlayerManager : NetworkBehaviour
         }
 
 
+    }
+
+    private void Update()
+    {
+        if (ClearTimeManager.Instance.TimerStarted)
+        {
+            Timer time = localController.GetComponent<Timer>();
+            PlayerTime = time.time;
+
+        }
     }
 
     private void HandlePlayerSpawn(string name, ulong id)
@@ -84,8 +97,8 @@ public class PlayerManager : NetworkBehaviour
     public void PlayerDie(EnumList.DeadType type, ulong clientId)
     {
 
-        PlayerDieServerRPC(type,clientId);
-        
+        PlayerDieServerRPC(type, clientId);
+
 
     }
 
@@ -111,12 +124,12 @@ public class PlayerManager : NetworkBehaviour
     #region ServerRPC
 
     [ServerRpc(RequireOwnership = false)]
-    private void PlayerDieServerRPC(EnumList.DeadType type, ulong clientId) 
-    { 
-        
+    private void PlayerDieServerRPC(EnumList.DeadType type, ulong clientId)
+    {
+
         var player = players.Find(x => x.OwnerClientId == clientId);
 
-        if(player == null) return;
+        if (player == null) return;
 
 
         var param = new ClientRpcParams
@@ -216,7 +229,7 @@ public class PlayerManager : NetworkBehaviour
     public void RequstSpawn(List<Transform> poss)
     {
 
-        foreach(var id in NetworkManager.ConnectedClientsIds)
+        foreach (var id in NetworkManager.ConnectedClientsIds)
         {
 
             var item = poss.GetRandomListObject();
