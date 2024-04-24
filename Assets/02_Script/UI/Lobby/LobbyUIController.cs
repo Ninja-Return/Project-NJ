@@ -15,6 +15,7 @@ public class LobbyUIController : NetworkBehaviour
     [SerializeField] private Transform panelRoot;
     [SerializeField] private TMP_Text joinCodeText;
     [SerializeField] private GameObject startBtn;
+    [SerializeField] private GameObject mapBtn;
 
     [SerializeField] private RectTransform joinCodePanel;
 
@@ -32,6 +33,7 @@ public class LobbyUIController : NetworkBehaviour
         }
 
         startBtn.SetActive(IsHost);
+        mapBtn.SetActive(false); //IsHost
 
         joinCodeText.text = $"초대코드 : {NetworkController.Instance.joinCode}";
 

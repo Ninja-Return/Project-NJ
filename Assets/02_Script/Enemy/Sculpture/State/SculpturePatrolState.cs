@@ -31,6 +31,7 @@ public class SculpturePatrolState : SculptureStateRoot
         if (points.Count == 0)
         {
             GeneratePath();
+            return;
         }
 
         if (sculptureFSM.FrameMove(frame, points[0]))
