@@ -180,7 +180,7 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
         DeathServerRpc();
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void DeathServerRpc()
     {
         IsDead = true;
