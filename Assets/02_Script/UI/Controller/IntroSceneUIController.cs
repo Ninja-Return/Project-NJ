@@ -18,7 +18,6 @@ public class IntroSceneUIController : MonoBehaviour
         }
 
         nameText.text = PlayerPrefs.GetString("PlayerName");
-        nameText.text = "ÀÌ¿ל";
 
         PlayerPrefs.SetFloat("FOV", 60f);
     }

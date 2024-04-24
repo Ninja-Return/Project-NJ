@@ -85,11 +85,11 @@ public class CHSceneManager : MonoBehaviour
 
             past_time += Time.deltaTime;
 
-            if (percentage >= 90)
+            if (percentage >= 30)
             {
-                percentage = Mathf.Lerp(percentage, 218, past_time);
+                percentage = Mathf.Lerp(percentage, 100, past_time);
 
-                if (percentage == 218)
+                if (percentage == 100)
                 {
                     async.allowSceneActivation = true; //씬 전환 준비 완료
                 }
@@ -97,7 +97,7 @@ public class CHSceneManager : MonoBehaviour
             else
             {
                 percentage = Mathf.Lerp(percentage, async.progress * 100f, past_time);
-                if (percentage >= 90) past_time = 0;
+                if (percentage >= 30) past_time = 0;
             }
             Loading_text.text = percentage.ToString("0") + "%"; //로딩 퍼센트 표기
         }
