@@ -1,6 +1,8 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -14,6 +16,13 @@ public class PlayerAnimationController : NetworkBehaviour
     private readonly int HASH_Y = Animator.StringToHash("Y");
 
     [SerializeField] private bool debug;
+    [SerializeField] private List<GameObject> tweenAnimationClient = new();
+    [SerializeField] private List<GameObject> tweenAnimationServer = new();
+
+    private Dictionary<string, List<DOTweenAnimation>> clientTweenContainer = new();
+    private Dictionary<string, List<DOTweenAnimation>> serverTweenContainer = new();
+    private Vector3 originTargetPos;
+    private Quaternion originTargetRot;
 
     private NetworkVariable<float> xStateValue = 
         new NetworkVariable<float>(default, 
@@ -42,6 +51,7 @@ public class PlayerAnimationController : NetworkBehaviour
 
     private PlayerController playerController;
     private Animator controlAnimator;
+    private Transform handTarget;
     private Rig controlRig;
     private GroundSencer groundSencer;
     private Vector2 oldInput;
@@ -75,8 +85,16 @@ public class PlayerAnimationController : NetworkBehaviour
             //
             controlAnimator = clientObj.GetComponent<Animator>();
             controlRig = clientObj.Find("Rig 1").GetComponent<Rig>();
+            handTarget = controlRig.transform.GetChild(0);
             playerController = GetComponent<PlayerController>();
             groundSencer = GetComponentInChildren<GroundSencer>();
+
+            foreach(var item in tweenAnimationClient)
+            {
+
+                clientTweenContainer.Add(item.name, item.GetComponents<DOTweenAnimation>().ToList());
+
+            }
 
         }
         else
@@ -84,6 +102,7 @@ public class PlayerAnimationController : NetworkBehaviour
 
             controlAnimator = serverObj.GetComponent<Animator>();
             controlRig = serverObj.Find("Rig 1").GetComponent<Rig>();
+            handTarget = controlRig.transform.GetChild(0);
 
             xStateValue.OnValueChanged += HandleXValueChanged;
             yStateValue.OnValueChanged += HandleYValueChanged;
@@ -91,7 +110,18 @@ public class PlayerAnimationController : NetworkBehaviour
             rigValue.OnValueChanged += HandleRigValueChanged;
             sitDownStateValue.OnValueChanged += HandleSitDownChanged;
 
+            foreach (var item in tweenAnimationServer)
+            {
+
+                serverTweenContainer.Add(item.name, item.GetComponents<DOTweenAnimation>().ToList());
+
+            }
+
+
         }
+
+        originTargetPos = handTarget.transform.localPosition;
+        originTargetRot = handTarget.transform.localRotation;
 
     }
 
@@ -181,6 +211,56 @@ public class PlayerAnimationController : NetworkBehaviour
         var value = isUp ? 1 : 0;
         controlRig.weight = value;
         rigValue.Value = value;
+
+    }
+
+    public void InitHandTarget()
+    {
+
+        handTarget.transform.localPosition = originTargetPos;
+        handTarget.transform.localRotation = originTargetRot;
+
+    }
+
+    public void PlayTweenAnimation(string key)
+    {
+
+        if (IsOwner)
+        {
+
+            foreach (var tween in clientTweenContainer[key])
+            {
+
+                tween.CreateTween();
+
+            }
+
+
+        }
+
+        TweenAnimeServerRPC(key);
+
+    }
+
+    [ServerRpc]
+    private void TweenAnimeServerRPC(string key)
+    {
+
+        TweenAnimeClientRPC(key);
+    }
+
+    [ClientRpc]
+    private void TweenAnimeClientRPC(string key)
+    {
+
+        if (IsOwner) return;
+
+        foreach (var tween in serverTweenContainer[key])
+        {
+
+            tween.CreateTween();
+
+        }
 
     }
 

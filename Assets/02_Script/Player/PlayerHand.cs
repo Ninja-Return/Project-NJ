@@ -32,6 +32,32 @@ public class PlayerHand : NetworkBehaviour
             Inventory.Instance.OnSlotRemove += HandleDrop;
             playerController = GetComponent<PlayerController>();
             playerController.Input.OnUseObjectKeyPress += HandleHandUse;
+            playerController.Input.OnUseObjectKeyUp += HandleHandUp;
+
+        }
+
+    }
+
+    private void HandleHandUp()
+    {
+        if (isDelay) return;
+        if (Inventory.Instance.showingDelay || Inventory.Instance.isShow) return;
+
+        if (currentObject != null)
+        {
+
+            if (currentObject.isLocalUse)
+            {
+
+                currentObject.DoRelease();
+
+            }
+            else
+            {
+
+                HandUpServerRPC();
+
+            }
 
         }
 
@@ -53,7 +79,10 @@ public class PlayerHand : NetworkBehaviour
     private void HandleHandUse()
     {
 
-        if(currentObject != null)
+        if (isDelay) return;
+        if (Inventory.Instance.showingDelay || Inventory.Instance.isShow) return;
+
+        if (currentObject != null)
         {
 
             if (currentObject.isLocalUse)
@@ -106,9 +135,27 @@ public class PlayerHand : NetworkBehaviour
 
     }
 
-    private void HandleHold(string objKey, int idx, string extraData)
+    [ServerRpc]
+    private void HandUpServerRPC()
     {
 
+        HandUpClientRPC();
+
+    }
+
+    [ClientRpc]
+    private void HandUpClientRPC()
+    {
+
+        if (currentObject == null) return;
+        
+        currentObject.DoRelease();
+
+    }
+
+
+    private void HandleHold(string objKey, int idx, string extraData)
+    {
         if (isDelay) return;
 
         StartCoroutine(DelayCo());
@@ -131,32 +178,36 @@ public class PlayerHand : NetworkBehaviour
 
         }
 
-        SpawnItemServerRPC(objKey);
+        SpawnItemServerRPC(objKey, OwnerClientId);
 
         controller.HandControl(true);
 
         currentIdx = idx;
 
+        controller.InitHandTarget();
 
     }
 
     [ServerRpc]
-    private void SpawnItemServerRPC(FixedString128Bytes objKey)
+    private void SpawnItemServerRPC(FixedString128Bytes objKey, ulong ownerId)
     {
 
-        SpawnItemClientRPC(objKey);
+        SpawnItemClientRPC(objKey, ownerId);
 
     }
 
     [ClientRpc]
-    private void SpawnItemClientRPC(FixedString128Bytes objKey)
+    private void SpawnItemClientRPC(FixedString128Bytes objKey, ulong ownerId)
     {
 
         var obj = Resources.Load<HandItemRoot>($"ItemObj/{objKey}_Hand");
 
         currentObject = Instantiate(obj, itemParent);
+        currentObject.Spawn(NetworkManager.LocalClientId == ownerId);
         currentObject.transform.localPosition = Vector3.zero + currentObject.handPivot;
         currentObject.transform.localEulerAngles = currentObject.handRotation;
+
+        controller.InitHandTarget();
 
     }
 
@@ -221,7 +272,7 @@ public class PlayerHand : NetworkBehaviour
 
         isDelay = true;
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.2f);
 
         isDelay = false;
 

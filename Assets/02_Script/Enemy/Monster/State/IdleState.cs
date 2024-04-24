@@ -15,7 +15,7 @@ public class IdleState : MonsterStateRoot
     {
         if (!IsServer) return;
 
-        monsterFSM.SetAnimation("Idle", true);
+        monsterAnim.SetAnimation("Idle", true);
         NetworkSoundManager.Play3DSound("MonsterHowling", monsterFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
     }
 
@@ -37,7 +37,7 @@ public class IdleState : MonsterStateRoot
     {
         if (!IsServer) return;
 
-        monsterFSM.SetAnimation("Idle", false);
+        monsterAnim.SetAnimation("Idle", false);
         currentTime = 0;
     }
 }

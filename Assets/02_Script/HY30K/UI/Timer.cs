@@ -12,7 +12,7 @@ public class Timer : MonoBehaviour
             time += Time.deltaTime;
 
 
-        text[0].text = ((int)time / 60 % 60).ToString() + " 분";
-        text[1].text = ((int)time % 60).ToString() + " 초";
+        text[0].text = ((int)time / 60 % 60).ToString() + "분";
+        text[1].text = ((int)time % 60).ToString() + "초";
     }
 }

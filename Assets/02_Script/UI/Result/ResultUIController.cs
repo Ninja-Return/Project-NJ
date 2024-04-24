@@ -7,7 +7,6 @@ using DG.Tweening;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 using Michsky.UI.Dark;
-using UnityEditor.PackageManager;
 
 public class ResultUIController : NetworkBehaviour
 {
@@ -27,6 +26,7 @@ public class ResultUIController : NetworkBehaviour
 
     private float escapePlayerCnt = 0f;
     private float failPlayerCnt = 0f;
+    private bool isDead = false;
 
     private void Start()
     {
@@ -44,6 +44,7 @@ public class ResultUIController : NetworkBehaviour
         upImg.color = Color.red;
         downImg.color = Color.red;
         winnerText.color = Color.red;
+        isDead = true;
 
         winText.text = "탈출 실패";
     }
@@ -74,6 +75,23 @@ public class ResultUIController : NetworkBehaviour
 
         text[0].text = ((int)clearTime / 60 % 60).ToString() + " 분";
         text[1].text = ((int)clearTime % 60).ToString() + " 초";
+
+        if (!isDead)
+        {
+            if (clearTime < 180 && !isDead)
+                text[2].text = "S";
+            else if (clearTime >= 180 && clearTime < 300 && !isDead)
+                text[2].text = "A";
+            else if (clearTime >= 300 && clearTime < 420 && !isDead)
+                text[2].text = "B";
+            else if (clearTime >= 420 && clearTime < 540 && !isDead)
+                text[2].text = "C";
+            else
+                text[2].text = "D";
+        }
+        else
+            text[2].text = "E";
+
     }
 
     public void SpawnPanel(ulong clientId, string userName, bool isOwner, bool isBreak)

@@ -13,6 +13,7 @@ public class PlayerManager : NetworkBehaviour
 
     [Header("Player")]
     [SerializeField] private PlayerController playerPrefab;
+    [SerializeField] private NetworkObject playerDeadbodyPrefab;
     [Header("Die")]
     [SerializeField] private DeathUI deathUI;
     [SerializeField] private bool spawn = true;
@@ -28,6 +29,7 @@ public class PlayerManager : NetworkBehaviour
 
     public float PlayerTime = 0;
     public bool IsDie { get; private set; }
+    public bool active => localController == null ? false : localController.CurrentState != EnumPlayerState.Idle;
     private bool IsBreaken;
     private int joinCount;
 
@@ -60,7 +62,7 @@ public class PlayerManager : NetworkBehaviour
 
     private void Update()
     {
-        if (ClearTimeManager.Instance.TimerStarted)
+        if (ClearTimeManager.Instance.TimerStarted && !IsDie)
         {
             Timer time = localController.GetComponent<Timer>();
             PlayerTime = time.time;
@@ -96,10 +98,7 @@ public class PlayerManager : NetworkBehaviour
 
     public void PlayerDie(EnumList.DeadType type, ulong clientId)
     {
-
         PlayerDieServerRPC(type, clientId);
-
-
     }
 
     public void SetLocalPlayer(PlayerController controller)
@@ -146,19 +145,24 @@ public class PlayerManager : NetworkBehaviour
 
         PlayerDieClientRPC(type, param);
 
+        var data = HostSingle.Instance.NetServer.GetUserDataByClientID(clientId).Value;
+        data.clearTime = PlayerTime;
+
         if (type == EnumList.DeadType.Escape)
         {
-            var data = HostSingle.Instance.NetServer.GetUserDataByClientID(clientId).Value;
             data.isBreak = true;
-            HostSingle.Instance.NetServer.SetUserDataByClientId(clientId, data);
-
             IsBreaken = true;
         }
+
+        HostSingle.Instance.NetServer.SetUserDataByClientId(clientId, data);
 
         players.Remove(player);
         player.NetworkObject.Despawn();
 
         OnPlayerDie?.Invoke(clientId);
+
+        NetworkObject playerDeadbody = Instantiate(playerDeadbodyPrefab, player.transform.position, player.transform.rotation);
+        playerDeadbody.Spawn();
 
         var live = new LiveData();
 

@@ -14,6 +14,7 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
     public event Action OnObjectMoveKeyUp;
     public event Action OnInventoryKeyPress;
     public event Action OnUseObjectKeyPress;
+    public event Action OnUseObjectKeyUp;
     public event Action OnSitDownKeyPress;
     public event Action OnSitDownKeyUp;
 
@@ -147,6 +148,12 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
         {
 
             OnUseObjectKeyPress?.Invoke();
+
+        }
+        else if (context.canceled)
+        {
+
+            OnUseObjectKeyUp?.Invoke();
 
         }
 

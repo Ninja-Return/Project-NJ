@@ -10,10 +10,6 @@ public class EscapeObject : InteractionObject
 
         PlayerManager.Instance.PlayerDie(EnumList.DeadType.Escape, NetworkManager.LocalClientId);
 
-
-        UserData data = HostSingle.Instance.NetServer.GetUserDataByClientID(NetworkManager.LocalClientId).Value;
-        data.clearTime = PlayerManager.Instance.PlayerTime;
-        HostSingle.Instance.NetServer.SetUserDataByClientId(NetworkManager.LocalClientId, data);
     }
 
 }

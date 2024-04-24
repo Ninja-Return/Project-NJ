@@ -31,7 +31,9 @@ public class SettingUI : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !Setting)
+        if (!PlayerManager.Instance.active) return;
+
+        if (Input.GetKeyDown(KeyCode.Escape) && !Setting )
         {
             SettingOn();
         }
