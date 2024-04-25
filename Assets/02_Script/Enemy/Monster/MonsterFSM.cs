@@ -133,7 +133,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
         return targetPlayer;
     }
 
-    public Collider CirclePlayer(float radius)
+    public Collider CirclePlayer(float radius) //chaseState
     {
         Vector3 pos = headTrs.position;
 
@@ -141,25 +141,25 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
         if (allPlayers.Length == 0) return null;
         
         float minDistance = float.MaxValue;
-        Collider targetPlayer = null;
+        Collider chasePlayer = null;
         foreach (Collider player in allPlayers)
         {
             if (Vector3.Distance(player.transform.position, pos) < minDistance)
             {
-                targetPlayer = player;
+                chasePlayer = player;
             }
         }
 
         //if (IsObstacle && RayObstacle(pos, lookVec, minDistance))
         //    return null;
-        
-        Vector3 targetPos = targetPlayer.transform.position;
+
+        Vector3 targetPos = chasePlayer.transform.position;
         Debug.DrawLine(pos, targetPos, Color.red);
 
-        return targetPlayer;
+        return chasePlayer;
     }
 
-    public Collider ViewingPlayer(float radius)
+    public List<Collider> ViewingPlayer(float radius) //idleState, patrolState
     {
         List<Collider> players = new List<Collider>();
 
@@ -190,8 +190,8 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
             Vector3 targetDir = (targetPos - pos).normalized;
             float targetAngle = Mathf.Acos(Vector3.Dot(lookDir, targetDir)) * Mathf.Rad2Deg;
             float playerDistance = Vector3.Distance(player.transform.position, pos);
-
-            if (targetAngle <= angle * 0.5f && !Physics.Raycast(pos, targetDir, playerDistance, obstacleMask))
+            
+            if (targetAngle <= angle * 0.5f && !RayObstacle(pos, targetDir, playerDistance))
             {
                 //player 감지됨
                 players.Add(player);
@@ -200,20 +200,21 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
         }
 
         if (players.Count == 0) return null;
+        return players;
 
         //가장 가까운 플레이어 감지
-        float minDistance = float.MaxValue;
-        Collider targetPlayer = null;
-        foreach (Collider player in players)
-        {
-            float playerDistance = Vector3.Distance(player.transform.position, pos);
-            if (playerDistance < minDistance)
-            {
-                targetPlayer = player;
-            }
-        }
+        //float minDistance = float.MaxValue;
+        //Collider targetPlayer = null;
+        //foreach (Collider player in players)
+        //{
+        //    float playerDistance = Vector3.Distance(player.transform.position, pos);
+        //    if (playerDistance < minDistance)
+        //    {
+        //        targetPlayer = player;
+        //    }
+        //}
 
-        return targetPlayer;
+        //return targetPlayer;
     }
 
     private Vector3 AngleToDirX(float angle)

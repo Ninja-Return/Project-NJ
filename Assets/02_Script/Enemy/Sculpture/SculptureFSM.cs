@@ -28,7 +28,6 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
     [HideInInspector] public bool IsKill;
     [HideInInspector] public float currentCoolTime;
 
-    [SerializeField] private GameObject pointObj;
     [Header("Values")]
     [SerializeField] private float moveRadius;
     [SerializeField] private float chaseRadius;
@@ -82,18 +81,12 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
         AddState(sculptureDeathState, SculptureState.Dead);
     }
 
-    public bool FrameMove(float timer, Vector3 pos, List<Vector3> s = null)
+    public bool FrameMove(float timer, Vector3 pos)
     {
         currentCoolTime += Time.deltaTime;
         if (currentCoolTime >= timer)
         {
             currentCoolTime = 0f;
-
-            if (s != null)
-            {
-                for (int i = 0; i < s.Count - 1; i++)
-                    Instantiate(pointObj, s[i], Quaternion.identity);
-            }
 
             nav.Warp(pos);
             return true;
@@ -106,6 +99,11 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
         Vector3 lookAtPosition = new Vector3(pos.x, transform.position.y, pos.z);
 
         transform.LookAt(lookAtPosition);
+    }
+
+    public bool RayObstacle(Vector3 pos, Vector3 lookVec, float destance)
+    {
+        return Physics.Raycast(pos, lookVec, destance, obstacleMask);
     }
 
     public Collider CirclePlayer(float radius)
@@ -130,6 +128,14 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
         Debug.DrawLine(transform.position, targetPos, Color.red);
 
         return targetPlayer;
+    }
+
+    public Collider[] CirclePlayers(float radius)
+    {
+        Collider[] allPlayers = Physics.OverlapSphere(transform.position, radius, playerMask);
+        if (allPlayers.Length == 0) return null;
+
+        return allPlayers;
     }
 
     public void KillPlayer()

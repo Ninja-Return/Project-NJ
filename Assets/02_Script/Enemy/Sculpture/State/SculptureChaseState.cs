@@ -27,23 +27,31 @@ public class SculptureChaseState : SculptureStateRoot
     {
         if (!IsServer) return;
 
-        if (sculptureFSM.FrameMove(frame, GenerateVector(), GenerateVectors()))
+        if (sculptureFSM.FrameMove(frame, GenerateVector()))
         {
             NetworkSoundManager.Play3DSound("SculptureMove", sculptureFSM.transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
-
             CatchPlayerRader();
 
-            PlayerDarkness player = sculptureFSM.targetPlayer.GetComponent<PlayerDarkness>();
-            player.Bliend(player.OwnerClientId);
+            foreach (var item in sculptureFSM.CirclePlayers(chaseRadius))
+            {
+                Vector3 pos = sculptureFSM.transform.position;
+                Vector3 dir = (item.transform.position - pos).normalized;
+                float distance = Mathf.Abs(Vector3.Distance(pos, item.transform.position));
 
-            sculptureFSM.LookAt(player.transform.position);
+                PlayerDarkness playerDarkness = item.GetComponent<PlayerDarkness>();
+                playerDarkness.Bliend(playerDarkness.OwnerClientId);
+
+                //if (!sculptureFSM.RayObstacle(pos, dir, distance)) 벽 감지 시
+            }
+
+            sculptureFSM.LookAt(sculptureFSM.targetPlayer.transform.position);
         }
     }
 
     protected override void ExitState() { }
 
     private void CatchPlayerRader()
-    {
+    { 
         Collider targetPlayer = sculptureFSM.CirclePlayer(killRadius);
         if (targetPlayer != null)
         {
@@ -53,7 +61,7 @@ public class SculptureChaseState : SculptureStateRoot
 
     private Vector3 GenerateVector()
     {
-        NavMeshPath navMeshPath = new NavMeshPath();
+        NavMeshPath navMeshPath = new NavMeshPath();  
         Collider player = sculptureFSM.CirclePlayer(chaseRadius);
 
         if (player != null)
@@ -75,25 +83,5 @@ public class SculptureChaseState : SculptureStateRoot
             sculptureFSM.ChangeState(SculptureState.Patrol);
             return Vector3.zero;
         }
-    }//IdleState
-
-    private List<Vector3> GenerateVectors()
-    {
-        NavMeshPath navMeshPath = new NavMeshPath();
-        Collider player = sculptureFSM.CirclePlayer(chaseRadius);
-
-        if (player != null)
-        {
-            sculptureFSM.targetPlayer = player;
-
-            Vector3 playerPos = player.transform.position;
-
-            nav.CalculatePath(playerPos, navMeshPath);
-
-            return sculptureFSM.SamplePathPositions(navMeshPath);
-            //0번째 위치는 무조건 제자리이다
-        }
-        else
-            return null;
     }//IdleState
 }
