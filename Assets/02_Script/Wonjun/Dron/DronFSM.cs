@@ -105,12 +105,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
 
 
 
-    private bool RayObstacle(Vector3 pos, Vector3 lookVec, float destance)
-    {
-        return Physics.Raycast(pos, lookVec, destance, obstacleMask);
-    }
-
-    public Collider RayPlayer(float radius)
+   /* public Collider RayPlayer(float radius)
     {
         Vector3 pos = headTrs.position;
 
@@ -132,7 +127,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
 
         return targetPlayer;
     }
-
+*/
     public Collider CirclePlayer(float radius)
     {
         Vector3 pos = headTrs.position;
@@ -161,39 +156,58 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
 
     public Collider ViewingPlayer(float radius)
     {
+        List<Collider> players = new List<Collider>();
+
         Vector3 pos = headTrs.position;
-        Vector3 lookDir = headTrs.forward;
+        Vector3 eulerAngles = headTrs.eulerAngles;
 
-        // ÇÃ·¹ÀÌ¾î °¨Áö¸¦ À§ÇÑ ·¹ÀÌÄ³½ºÆ® ¹æÇâ
-        RaycastHit[] hits = Physics.SphereCastAll(pos, radius, lookDir, 0f, playerMask);
+        float lookingAngle = eulerAngles.y;  //Ä³¸¯ÅÍ°¡ ¹Ù¶óº¸´Â ¹æÇâÀÇ °¢µµ
+        Vector3 rightDir = AngleToDirX(lookingAngle + angle * 0.5f,25);
+        Vector3 leftDir = AngleToDirX(lookingAngle - angle * 0.5f,25);
+        Vector3 upDir = AngleToDirY(lookingAngle, true,20);
+        Vector3 downDir = AngleToDirY(lookingAngle, false,20);
+        Vector3 lookDir = AngleToDirX(lookingAngle,25);
 
-        // °¨ÁöµÈ ÇÃ·¹ÀÌ¾î°¡ ¾øÀ¸¸é null ¹ÝÈ¯
-        if (hits.Length == 0) return null;
+#if UNITY_EDITOR
+        Debug.DrawRay(pos, rightDir * radius, Color.blue);
+        Debug.DrawRay(pos, leftDir * radius, Color.blue);
+        Debug.DrawRay(pos, upDir * radius, Color.blue);
+        Debug.DrawRay(pos, downDir * radius, Color.blue);
+        Debug.DrawRay(pos, lookDir * radius, Color.cyan);
+#endif
 
-        // °¨ÁöµÈ ÇÃ·¹ÀÌ¾î Áß °¡Àå °¡±î¿î ÇÃ·¹ÀÌ¾î Ã£±â
-        float minDistance = float.MaxValue;
-        Collider nearestPlayer = null;
-        foreach (RaycastHit hit in hits)
+        Collider[] allPlayers = Physics.OverlapSphere(pos, radius, playerMask);
+        if (allPlayers.Length == 0) return null;
+        foreach (Collider player in allPlayers)
         {
-            Collider playerCollider = hit.collider;
-            float distance = Vector3.Distance(playerCollider.transform.position, pos);
-            if (distance < minDistance)
+            Vector3 targetPos = player.transform.position;
+            Vector3 targetDir = (targetPos - pos).normalized;
+            float targetAngle = Mathf.Acos(Vector3.Dot(lookDir, targetDir)) * Mathf.Rad2Deg;
+
+            if (targetAngle <= angle * 0.5f)
             {
-                minDistance = distance;
-                nearestPlayer = playerCollider;
+                //player °¨ÁöµÊ
+                players.Add(player);
+                Debug.DrawLine(pos, targetPos, Color.red);
+            }
+        }
+        if (players.Count == 0) return null;
+
+        float minDistance = float.MaxValue;
+        Collider targetPlayer = null;
+        foreach (Collider player in players)
+        {
+            if (Vector3.Distance(player.transform.position, pos) < minDistance)
+            {
+                targetPlayer = player;
             }
         }
 
-        // ¿¡µðÅÍ¿¡¼­ ·¹ÀÌ¸¦ ±×·ÁÁÖ´Â ÄÚµå
-        Debug.DrawRay(pos, lookDir * radius, Color.blue);
-
-        // °¡Àå °¡±î¿î ÇÃ·¹ÀÌ¾î ¹ÝÈ¯
-        return nearestPlayer;
+        return targetPlayer;
     }
 
 
-
-    /*private Vector3 AngleToDirX(float angle, float xRotation)
+    private Vector3 AngleToDirX(float angle, float xRotation)
     {
         float radian = angle * Mathf.Deg2Rad;
         float y = -Mathf.Sin(xRotation * Mathf.Deg2Rad); // Y ÃàÀ¸·Î ³»·Á°¥ °Å¸®¸¦ °è»ê
@@ -207,10 +221,10 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
         float y = -Mathf.Sin(xRotation * Mathf.Deg2Rad); // Y ÃàÀ¸·Î ³»·Á°¥ °Å¸®¸¦ °è»ê
         Vector3 angleVec = isUp == true ? new Vector3(0f, Mathf.Sin(radian2), 0f) : new Vector3(0f, -Mathf.Sin(radian2), 0f);
         return new Vector3(Mathf.Sin(radian1), y, Mathf.Cos(radian1)) + angleVec;
-    }*/
+    }
 
-    
-    
+
+
 
     public void JumpScare() //ï¿½ï¿½Ç»ï¿?ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½Ç¾ï¿½ ï¿½Ö¾î¼­ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶óº¸°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¸ï¿½ ï¿½ï¿½ ï¿½ï¿½?
     {
