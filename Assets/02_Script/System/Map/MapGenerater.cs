@@ -24,14 +24,14 @@ public class MapGenerater : NetworkBehaviour
 {
 
     [SerializeField] private List<Room> constRooms = new();
-    [SerializeField] private Room onlySpawn;
+    [SerializeField] private Room onlySpawn, rareRoom;
     [SerializeField] private NavMeshSurface surface;
 
     private List<MapDataSO> datas = new();
     private Dictionary<DirationType, List<Room>> roomContainer = new();
     private List<(MapCell cell, Room room)> creationRoomList = new();
     private List<Room> spawnConstRoom = new();
-    private StartRoom start;
+    private float per = 0;
     private bool onlyObjSpawn;
 
     private IEnumerator Start()
@@ -128,6 +128,8 @@ public class MapGenerater : NetworkBehaviour
 
             for(int y = 0; y < my; y++)
             {
+
+                per += 0.01f;
 
                 if (mdata[x, y] == MapCell.None) continue;
 
@@ -250,6 +252,13 @@ public class MapGenerater : NetworkBehaviour
 
             prefab = spawnConstRoom[0];
             spawnConstRoom.RemoveAt(0);
+
+        }
+        else if(per > UnityEngine.Random.value && dirT == DirationType.Room)
+        {
+
+            per = -10;
+            prefab = rareRoom;
 
         }
         else

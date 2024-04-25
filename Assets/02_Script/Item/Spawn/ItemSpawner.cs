@@ -27,8 +27,6 @@ public class ItemSpawner : NetworkBehaviour
     private void Spawning()
     {
 
-        Debug.Log(123);
-
         if (spawnPoss.Count == 0)
         {
 
@@ -60,8 +58,10 @@ public class ItemSpawner : NetworkBehaviour
                 spawnPoss.Remove(pos);
 
                 var itemPrefab = spawnItems.GetRandomListObject();
-                Instantiate(itemPrefab, pos.position, pos.transform.rotation)
-                    .NetworkObject.Spawn(true);
+                var obj = Instantiate(itemPrefab, pos.position, pos.transform.rotation);
+                obj.NetworkObject.Spawn(true);
+
+                OnItemSpawn(obj);
 
             }
 
@@ -70,5 +70,7 @@ public class ItemSpawner : NetworkBehaviour
 
 
     }
+
+    public virtual void OnItemSpawn(ItemRoot item) { }
 
 }
