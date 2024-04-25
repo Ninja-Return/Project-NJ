@@ -27,11 +27,11 @@ public class MonsterSpawnSystem : NetworkBehaviour
 
         if (!IsServer) return;
 
-        New_GameManager.Instance.OnItemSpawnCall += HandleSpawn;
+        //New_GameManager.Instance.OnItemSpawnCall += HandleSpawn;
 
     }
 
-    private void HandleSpawn()
+    public void HandleSpawn()
     {
 
         StartCoroutine(SpawnCo());

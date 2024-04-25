@@ -7,6 +7,7 @@ public class StartGame : MonoBehaviour
     public void GameStart()
     {
         StartGameText.Instance.GameStart();
+        MonsterSpawnSystem.Instance.HandleSpawn();
         ClearTimeManager.Instance.TimerStarted = true;
     }
 }
