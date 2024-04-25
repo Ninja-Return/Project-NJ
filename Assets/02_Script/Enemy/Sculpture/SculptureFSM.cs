@@ -28,6 +28,7 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
     [HideInInspector] public bool IsKill;
     [HideInInspector] public float currentCoolTime;
 
+    [SerializeField] private GameObject pointObj;
     [Header("Values")]
     [SerializeField] private float moveRadius;
     [SerializeField] private float chaseRadius;
@@ -81,12 +82,19 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
         AddState(sculptureDeathState, SculptureState.Dead);
     }
 
-    public bool FrameMove(float timer, Vector3 pos)
+    public bool FrameMove(float timer, Vector3 pos, List<Vector3> s = null)
     {
         currentCoolTime += Time.deltaTime;
         if (currentCoolTime >= timer)
         {
             currentCoolTime = 0f;
+
+            if (s != null)
+            {
+                for (int i = 0; i < s.Count - 1; i++)
+                    Instantiate(pointObj, s[i], Quaternion.identity);
+            }
+
             nav.Warp(pos);
             return true;
         }
@@ -162,14 +170,17 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
                 {
                     Vector3 nextPoint = sampledPath[i + 1];
                     segmentLength = Vector3.Distance(orgPoint, sampledPath[i + 1]);
+
+                    if (segmentLength > maxInterval)
+                        break;
+
                     sampledPath.RemoveAt(i + 1);
                     sampledPath[i] = nextPoint;
                 }
             }
-
         }
-
-            return sampledPath;
+        
+        return sampledPath;
     }
 
     protected override void Update()

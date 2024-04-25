@@ -27,7 +27,7 @@ public class SculptureChaseState : SculptureStateRoot
     {
         if (!IsServer) return;
 
-        if (sculptureFSM.FrameMove(frame, GenerateVector()))
+        if (sculptureFSM.FrameMove(frame, GenerateVector(), GenerateVectors()))
         {
             NetworkSoundManager.Play3DSound("SculptureMove", sculptureFSM.transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
 
@@ -75,5 +75,25 @@ public class SculptureChaseState : SculptureStateRoot
             sculptureFSM.ChangeState(SculptureState.Patrol);
             return Vector3.zero;
         }
+    }//IdleState
+
+    private List<Vector3> GenerateVectors()
+    {
+        NavMeshPath navMeshPath = new NavMeshPath();
+        Collider player = sculptureFSM.CirclePlayer(chaseRadius);
+
+        if (player != null)
+        {
+            sculptureFSM.targetPlayer = player;
+
+            Vector3 playerPos = player.transform.position;
+
+            nav.CalculatePath(playerPos, navMeshPath);
+
+            return sculptureFSM.SamplePathPositions(navMeshPath);
+            //0번째 위치는 무조건 제자리이다
+        }
+        else
+            return null;
     }//IdleState
 }
