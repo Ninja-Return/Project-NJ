@@ -21,8 +21,8 @@ public class InPlayerTransition : MonsterTransitionRoot
     {
         if (nav.pathPending) return false;
 
-        Collider targetPlayer = monsterFSM.ViewingPlayer(radius);
-        if (targetPlayer != null)
+        List<Collider> chasePlayer = monsterFSM.ViewingPlayer(radius);
+        if (chasePlayer != null)
         {
             if (!inRader)
             {
@@ -32,16 +32,19 @@ public class InPlayerTransition : MonsterTransitionRoot
 
             currentTime += Time.deltaTime;
 
-            monsterFSM.targetPlayer = targetPlayer;
-            player = targetPlayer.GetComponent<PlayerController>(); //서버의 클라만 정보가 담기니
-
-            Vector2 moveVec = PlayerManager.Instance.FindPlayerControllerToID(player.OwnerClientId).moveVector.Value;
-            
-            if (moveVec != Vector2.zero && currentTime > raderTime)
+            foreach (var item in chasePlayer)
             {
-                currentTime = 0f;
-                return true;
-            } 
+                monsterFSM.targetPlayer = item;
+                player = item.GetComponent<PlayerController>(); //서버의 클라만 정보가 담기니
+
+                Vector2 moveVec = PlayerManager.Instance.FindPlayerControllerToID(player.OwnerClientId).moveVector.Value;
+
+                if (moveVec != Vector2.zero && currentTime > raderTime)
+                {
+                    currentTime = 0f;
+                    return true;
+                }
+            }
         }
         else
         {

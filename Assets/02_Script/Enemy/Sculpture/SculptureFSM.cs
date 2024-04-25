@@ -87,6 +87,7 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
         if (currentCoolTime >= timer)
         {
             currentCoolTime = 0f;
+
             nav.Warp(pos);
             return true;
         }
@@ -98,6 +99,11 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
         Vector3 lookAtPosition = new Vector3(pos.x, transform.position.y, pos.z);
 
         transform.LookAt(lookAtPosition);
+    }
+
+    public bool RayObstacle(Vector3 pos, Vector3 lookVec, float destance)
+    {
+        return Physics.Raycast(pos, lookVec, destance, obstacleMask);
     }
 
     public Collider CirclePlayer(float radius)
@@ -122,6 +128,14 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
         Debug.DrawLine(transform.position, targetPos, Color.red);
 
         return targetPlayer;
+    }
+
+    public Collider[] CirclePlayers(float radius)
+    {
+        Collider[] allPlayers = Physics.OverlapSphere(transform.position, radius, playerMask);
+        if (allPlayers.Length == 0) return null;
+
+        return allPlayers;
     }
 
     public void KillPlayer()
@@ -162,14 +176,17 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
                 {
                     Vector3 nextPoint = sampledPath[i + 1];
                     segmentLength = Vector3.Distance(orgPoint, sampledPath[i + 1]);
+
+                    if (segmentLength > maxInterval)
+                        break;
+
                     sampledPath.RemoveAt(i + 1);
                     sampledPath[i] = nextPoint;
                 }
             }
-
         }
-
-            return sampledPath;
+        
+        return sampledPath;
     }
 
     protected override void Update()

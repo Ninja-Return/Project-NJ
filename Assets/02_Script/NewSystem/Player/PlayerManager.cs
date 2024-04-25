@@ -64,7 +64,7 @@ public class PlayerManager : NetworkBehaviour
     {
         if (ClearTimeManager.Instance.TimerStarted && !IsDie)
         {
-            Timer time = localController.GetComponent<Timer>();
+            PlayerTimer time = localController.GetComponent<PlayerTimer>();
             PlayerTime = time.time;
 
         }
