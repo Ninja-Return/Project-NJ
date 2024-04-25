@@ -111,7 +111,7 @@ public class New_GameManager : NetworkBehaviour
     [ClientRpc]
     private void OnGameStartClientRPC()
     {
-
+        
         OnGameStarted?.Invoke();
 
     }

@@ -64,10 +64,11 @@ public class SculptureChaseState : SculptureStateRoot
 
             nav.CalculatePath(playerPos, navMeshPath);
 
-            if (sculptureFSM.SamplePathPositions(navMeshPath).Count <= 1)
-                return playerPos;
+            if (sculptureFSM.SamplePathPositions(navMeshPath).Count == 1) //인덱스가 0이 최대다
+                return sculptureFSM.SamplePathPositions(navMeshPath)[0];
 
             return sculptureFSM.SamplePathPositions(navMeshPath)[1];
+            //0번째 위치는 무조건 제자리이다
         }
         else
         {

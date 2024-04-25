@@ -157,9 +157,14 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
             }
             else if (segmentLength < minInterval)
             {
-                Vector3 nextPoint = sampledPath[i + 1];
-                sampledPath.RemoveAt(i + 1);
-                sampledPath[i] = nextPoint;
+                Vector3 orgPoint = sampledPath[i];
+                while (segmentLength < minInterval && !(i + 1 >= sampledPath.Count))
+                {
+                    Vector3 nextPoint = sampledPath[i + 1];
+                    segmentLength = Vector3.Distance(orgPoint, sampledPath[i + 1]);
+                    sampledPath.RemoveAt(i + 1);
+                    sampledPath[i] = nextPoint;
+                }
             }
 
         }
