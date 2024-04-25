@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField] private TMP_Text[] text;
+    [SerializeField] private TMP_Text text;
     public float time = 0;
 
     private void Update()
@@ -11,8 +11,6 @@ public class Timer : MonoBehaviour
         if (ClearTimeManager.Instance.TimerStarted)
             time += Time.deltaTime;
 
-
-        text[0].text = ((int)time / 60 % 60).ToString() + "분";
-        text[1].text = ((int)time % 60).ToString() + "초";
+        text.text = ((int)time / 60 % 60).ToString() + "분 " + ((int)time % 60).ToString() + "초";
     }
 }
