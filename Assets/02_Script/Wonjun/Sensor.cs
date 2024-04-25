@@ -1,13 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class Sensor : HandItemRoot
 {
     [SerializeField] private float sensorRange;
     public LayerMask EnemyLayer;
+    Renderer sensorRen;
 
     [SerializeField] private NetworkObject SensorPrefab;
     [SerializeField] private float firePower;
@@ -29,6 +30,8 @@ public class Sensor : HandItemRoot
 
     private void Start()
     {
+        sensorRen = gameObject.GetComponent<Renderer>();
+        sensorRen.material.color = Color.green;
         OnSensor = false;
     }
 
@@ -41,10 +44,19 @@ public class Sensor : HandItemRoot
         {
             NetworkSoundManager.Play3DSound("Sensor", transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
             Debug.Log("소리");
+            StartCoroutine(renderCH());
             OnSensor = true;
         }
 
 
+    }
+
+
+    IEnumerator renderCH()
+    {
+        sensorRen.material.color = Color.red; // 단일 재질의 색상 변경
+        yield return new WaitForSeconds(3f);
+        sensorRen.material.color = Color.green; // 단일 재질의 색상 변경
     }
 
     void OnDrawGizmosSelected()

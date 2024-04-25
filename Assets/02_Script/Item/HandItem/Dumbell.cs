@@ -1,26 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Dumbell : HandItemRoot
 {
-    [SerializeField] private NetworkObject dumbellPrefab;
-    [SerializeField] private float firePower;
-    [SerializeField] private float spawnDistance = .5f; // 앞으로 스폰할 거리
+    [SerializeField] private float distance;
+    [SerializeField] private LayerMask obstacleMask;
+    [SerializeField] private LayerMask playerMask;
 
     public override void DoUse()
     {
-        Vector3 forwardDirection = Camera.main.transform.forward;
 
-        Debug.Log("덤벨 발사");
-        Vector3 spawnPosition = transform.position + forwardDirection * spawnDistance;
-        NetworkObject newDumbell = Instantiate(dumbellPrefab, spawnPosition, Quaternion.identity);
-        newDumbell.Spawn(true);
+        if(!isOwner) return;
         NetworkSoundManager.Play3DSound("DumbellShoot", transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
-        
 
-        Rigidbody dumbellRigid = newDumbell.GetComponent<Rigidbody>();
-        dumbellRigid.AddForce(forwardDirection * firePower, ForceMode.Impulse);
+        Camera cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+        Vector2 ScreenCenter = new Vector2(cam.pixelWidth / 2, cam.pixelHeight / 2);
+        Ray ray = cam.ScreenPointToRay(ScreenCenter);
+        PlayerCheck(ray);
+        
+    }
+
+    void PlayerCheck(Ray ray)
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, distance, playerMask))
+        {
+            if (CheakObstacle(ray, hit.transform.position)) return;
+
+            PlayerController playerId = hit.transform.GetComponent<PlayerController>();
+            playerId.AddSpeed(-3f, 10f);
+        }
+    }
+
+    //장애물 충돌처리 
+    bool CheakObstacle(Ray ray, Vector3 hitPos)
+    {
+        float checkDistance = Mathf.Abs(Vector3.Distance(ray.origin, hitPos));
+
+        return Physics.Raycast(ray, checkDistance, obstacleMask);
     }
 }

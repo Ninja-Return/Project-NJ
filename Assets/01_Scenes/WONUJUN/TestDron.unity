@@ -412,8 +412,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 4498147838486822712, guid: 4d3e29c235d3ad541ab4514310e41fb7, type: 3}
+  playerDeadbodyPrefab: {fileID: 0}
   deathUI: {fileID: 5626077275282529756, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
   spawn: 1
+  PlayerTime: 0
 --- !u!1 &640868608
 GameObject:
   m_ObjectHideFlags: 0
@@ -712,7 +714,7 @@ Transform:
   m_GameObject: {fileID: 1127808129}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.9649158, z: 0.26255953, w: 0}
-  m_LocalPosition: {x: -1, y: 2.28, z: 13.05}
+  m_LocalPosition: {x: 8, y: 2.28, z: -12.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1411,7 +1413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8147409261327041021, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8147409261327041021, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1419,7 +1421,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8147409261327041021, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12
+      value: -14
       objectReference: {fileID: 0}
     - target: {fileID: 8147409261327041021, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
       propertyPath: m_LocalRotation.w
