@@ -742,9 +742,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
-  far clip plane: 1000
-  field of view: 40
+  near clip plane: 0.15
+  far clip plane: 30
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -856,8 +856,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619981845}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.9649158, z: 0.26255953, w: 0}
-  m_LocalPosition: {x: 0, y: 2.249, z: 1.05}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.648, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3145,6 +3145,7 @@ MonoBehaviour:
   - {fileID: 8572196723978947207, guid: ddec4e773790a2f4f848aea37d4d0ced, type: 3}
   - {fileID: 8572196723978947207, guid: 68cbef1bfb6af4743b16bd1ab883cfdc, type: 3}
   onlySpawn: {fileID: 8572196723978947207, guid: d1aa9444dc1a53e4aa692ef373b83f83, type: 3}
+  rareRoom: {fileID: 8572196723978947207, guid: 9c7d588f7601e6546a9384608275ff39, type: 3}
   surface: {fileID: 1985564211}
 --- !u!114 &1985564211
 MonoBehaviour:

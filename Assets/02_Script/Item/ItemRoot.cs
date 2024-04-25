@@ -22,6 +22,8 @@ public abstract class ItemRoot : InteractionObject
     public string extraData { get; set; }
     public ItemCategory itemCategory { get; protected set; }
 
+    public event Action DestroyCallback;
+
     protected override void DoInteraction()
     {
 
@@ -31,6 +33,13 @@ public abstract class ItemRoot : InteractionObject
             Despawn();
 
         }
+
+    }
+
+    protected override void OnDespawn()
+    {
+
+        DestroyCallback?.Invoke();
 
     }
 
