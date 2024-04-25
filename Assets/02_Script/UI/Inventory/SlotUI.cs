@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using WebSocketSharp;
 
 public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
@@ -13,20 +12,23 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     public bool onCursor { get; private set; } //얘도 참조할 일이 있지 않을까
     public ItemDataSO data {  get; private set; }
 
-    private Image slotImage;
+    [Header("Slot")]
+    private Animator anim;
+
+    [SerializeField] private Image itemImage;
     private string extraData;
 
     private void Awake()
     {
-        slotImage = GetComponent<Image>();
+        anim = GetComponent<Animator>();
     }
 
     public void InsertSlot(ItemDataSO newData, string extraData)
     {
         slotData = newData.slotData;
         data = newData;
-        slotImage.sprite = slotData.slotSprite;
-        slotImage.color = Color.white;
+        itemImage.sprite = slotData.slotSprite;
+        itemImage.color = Color.white;
         this.extraData = extraData;
     }
 
@@ -52,7 +54,7 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     {
         slotData = null;
 
-        slotImage.color = Color.clear;
+        itemImage.color = Color.clear;
         Inventory.Instance.PopItemText("");
     }
 
@@ -67,11 +69,15 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
         }
 
         Inventory.Instance.PopItemText(slotData.slotExplanation);
+
+        anim.SetBool("Hover", true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         onCursor = false;
+
+        anim.SetBool("Hover", false);
 
         //나중에 텍스트 빼도 됨
         //Inventory.Instance.PopItemText("");
