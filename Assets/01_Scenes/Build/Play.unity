@@ -2997,6 +2997,7 @@ GameObject:
   - component: {fileID: 1985564213}
   - component: {fileID: 1985564214}
   - component: {fileID: 1985564215}
+  - component: {fileID: 1985564216}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -3207,7 +3208,9 @@ MonoBehaviour:
   minSpawnTime: 2
   maxSpawnTime: 5
   monsterPrefabs:
-  - {fileID: 3552912527455403678, guid: 3005967c96c11d84893ce30c4153da23, type: 3}
+  - {fileID: 414673305194451298, guid: 37d8bb7b4e9b42844b71a0ae9477d107, type: 3}
+  - {fileID: 8731334441768544532, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
+  statuePrefab: {fileID: 3552912527455403678, guid: 3005967c96c11d84893ce30c4153da23, type: 3}
 --- !u!114 &1985564214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3230,6 +3233,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4e05c9de64391945a1b2accb423ef70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1985564216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985564200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 898a4843d27ffeb48bb3f5786667377d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2047427413

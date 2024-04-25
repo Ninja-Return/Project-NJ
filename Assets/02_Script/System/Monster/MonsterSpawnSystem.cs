@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
+using static UnityEditor.Rendering.ShadowCascadeGUI;
 
 public class MonsterSpawnSystem : NetworkBehaviour
 {
@@ -11,6 +12,7 @@ public class MonsterSpawnSystem : NetworkBehaviour
     [SerializeField] private float minSpawnTime;
     [SerializeField] private float maxSpawnTime;
     [SerializeField] private List<NetworkObject> monsterPrefabs;
+    [SerializeField] private NetworkObject statuePrefab;
 
     private List<Transform> spawnTrms = new List<Transform>();
     public static MonsterSpawnSystem Instance { get; private set; } 
@@ -24,10 +26,23 @@ public class MonsterSpawnSystem : NetworkBehaviour
 
     private void Start()
     {
-
         if (!IsServer) return;
 
-        //New_GameManager.Instance.OnItemSpawnCall += HandleSpawn;
+        New_GameManager.Instance.OnHardEvent += HandleStatueSpawn;
+
+    }
+
+    private void HandleStatueSpawn()
+    {
+
+        int r = Random.Range(1, 6);
+
+        for(int i = 0; i < r; i++)
+        {
+
+            Instantiate(statuePrefab, spawnTrms.GetRandomListObject().position, Quaternion.identity).Spawn(true);
+
+        }
 
     }
 
