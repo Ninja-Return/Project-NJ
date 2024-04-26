@@ -6,37 +6,52 @@ using System;
 using Unity.Netcode;
 using Michsky.UI.Dark;
 
-public class StartGameText : MonoBehaviour
+public class AlertText : MonoBehaviour
 {
     //[SerializeField] private GameObject startAlertPanel;
     public MainPanelManager mainPanelManager;
-    public static StartGameText Instance;
+    public static AlertText Instance;
 
     private void Awake()
     {
         Instance = this;
     }
 
-    /*public void DOStart()
+    public void Start()
     {
 
-        New_GameManager.Instance.OnGameStarted += HandleGameStartedClientRpc;
+        New_GameManager.Instance.OnHardEvent += HardStart;
 
-    }*/
+    }
 
     public void GameStart()
     {
 
         Debug.Log("StartGame");
         NetworkSoundManager.Play2DSound("GameStart");
-        StartCoroutine(StartText());
+        StartCoroutine(OpenText("StartAlert"));
 
     }
 
-    private IEnumerator StartText()
+    public void HardStart()
     {
 
-        mainPanelManager.OpenPanel("Alert");
+        //Invoke("HardStartClientRpc", 2f);
+        HardStartClientRpc();
+
+    }
+
+    [ClientRpc]
+    private void HardStartClientRpc()
+    {
+        NetworkSoundManager.Play2DSound("HardStart");
+        StartCoroutine(OpenText("HardAlert"));
+    }
+
+    private IEnumerator OpenText(string panelName)
+    {
+
+        mainPanelManager.OpenPanel(panelName);
 
         yield return new WaitForSeconds(3f);
 
