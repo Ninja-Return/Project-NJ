@@ -3239,12 +3239,15 @@ MonoBehaviour:
   <storeList>k__BackingField:
   - data: {fileID: 11400000, guid: d456a4dcd8ed86143a8100f8d686706f, type: 2}
     price: 10
+    raise: 0
     expText: "\uC8FC\uBCC0\uC744 \uBC1D\uAC8C \uD574\uC90D\uB2C8\uB2E4"
   - data: {fileID: 11400000, guid: d8d2bb98ed0bc624192e4aa7efd9b404, type: 2}
     price: 20
+    raise: 0
     expText: "\uB204\uAD70\uAC00\uB294 \uC0AC\uC6A9\uD560 \uC218 \uC788\uC744\uC9C0\uB3C4?"
   - data: {fileID: 11400000, guid: 03ec51008d9dcca4792e901b7b33721a, type: 2}
     price: 20
+    raise: 0
     expText: "\uC218\uC0C1\uD55C\uC790\uB97C \uCC3E\uACE0 \uC0AC\uC6A9\uD558\uC138\uC694!"
 --- !u!114 &1985564207
 MonoBehaviour:
@@ -3368,8 +3371,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterMaxSpawn: 10
-  minSpawnTime: 2
-  maxSpawnTime: 5
+  minSpawnTime: 999
+  maxSpawnTime: 9999
   monsterPrefabs:
   - {fileID: 414673305194451298, guid: 37d8bb7b4e9b42844b71a0ae9477d107, type: 3}
   - {fileID: 8731334441768544532, guid: c545cb543b3319d40a880d165d6a320c, type: 3}

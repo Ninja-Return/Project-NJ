@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using Unity.Netcode;
 
-public class StoreUIController : MonoBehaviour
+public class StoreUIController : NetworkBehaviour
 {
 
     [SerializeField] private StorePanel panelPrefab;
@@ -15,16 +16,41 @@ public class StoreUIController : MonoBehaviour
     [SerializeField] private TMP_Text expText;
     [SerializeField] private Transform uiTrm;
 
+    private Dictionary<string, StorePanel> storePanels = new();
+
     private void Awake()
     {
         
-        foreach(var item in storeSystem.storeList)
+        foreach(var item in storeSystem.GetStoreData())
         {
 
-            Instantiate(panelPrefab, storeRoot).SetUp(item, this);
+            StorePanel panel = Instantiate(panelPrefab, storeRoot);
+            panel.SetUp(item, this);
+
+            storePanels[item.data.itemName] = panel;
 
         }
 
+    }
+
+    public void StorePanelRefresh(string itemName)
+    {
+        StorePanelRefreshServerRpc(itemName);
+    }
+
+    [ServerRpc]
+    private void StorePanelRefreshServerRpc(string itemName)
+    {
+        StorePanelRefreshClientRpc(itemName);
+    }
+
+    [ClientRpc]
+    private void StorePanelRefreshClientRpc(string itemName)
+    {
+        if (storePanels.TryGetValue(itemName, out StorePanel value))
+        {
+            value.SetUp(storeSystem.GetStoreData(itemName).Value, this);
+        }
     }
 
     public void Exit()

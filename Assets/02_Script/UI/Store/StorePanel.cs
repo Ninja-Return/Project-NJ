@@ -14,6 +14,7 @@ public class StorePanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private StoreSystem storeSystem;
     private ItemDataSO curItem;
     private StoreUIController storeUI;
+    private int priseItem;
     private string expText;
 
     private void Awake()
@@ -30,6 +31,7 @@ public class StorePanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         {
 
             NetworkSoundManager.Play3DSound("BuyItem", transform.position, 0.01f, 20f);
+            storeUI.StorePanelRefresh(curItem.itemName);
             Debug.Log("구입 성공");
 
         }

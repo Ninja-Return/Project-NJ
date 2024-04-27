@@ -29,7 +29,11 @@ public class PlayerNamePlate : NetworkBehaviour
         }
         else
         {
-            namePlate.transform.LookAt(PlayerManager.Instance.localController.transform);
+            //PlayerManager.Instance.localController.watchCam.transform
+            if (PlayerManager.Instance.localController != null)
+            {
+                namePlate.transform.LookAt(PlayerManager.Instance.localController.transform);
+            }
         }
     }
 
