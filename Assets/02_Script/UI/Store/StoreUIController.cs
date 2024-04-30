@@ -18,10 +18,9 @@ public class StoreUIController : NetworkBehaviour
 
     private Dictionary<string, StorePanel> storePanels = new();
 
-    private void Awake()
+    public override void OnNetworkSpawn()
     {
-        
-        foreach(var item in storeSystem.GetStoreData())
+        foreach (var item in storeSystem.GetStoreData())
         {
 
             StorePanel panel = Instantiate(panelPrefab, storeRoot);
@@ -30,7 +29,6 @@ public class StoreUIController : NetworkBehaviour
             storePanels[item.data.itemName] = panel;
 
         }
-
     }
 
     public void StorePanelRefresh(string itemName)
@@ -38,7 +36,7 @@ public class StoreUIController : NetworkBehaviour
         StorePanelRefreshServerRpc(itemName);
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void StorePanelRefreshServerRpc(string itemName)
     {
         StorePanelRefreshClientRpc(itemName);
@@ -72,7 +70,6 @@ public class StoreUIController : NetworkBehaviour
         PlayerManager.Instance.Active(false);
         Support.SettingCursorVisable(true);
         StartCoroutine(SetPanelCo(true));
-
     }
 
     public void SetExpText(string text)

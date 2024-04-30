@@ -20,26 +20,29 @@ public class StoreSystem : NetworkBehaviour
     [field: SerializeField] public List<StoreSellObject> storeList { get; private set; } = new();
 
     //NetworkVariable은 class를 넣을 수 없다.
-    private Dictionary<string, int> raiseItem = new();
+    //private Dictionary<string, int> raiseItem;
 
     public bool Buy(ItemDataSO buyItem)
     {
 
         var credit = Inventory.Instance.GetComponent<CreditSystem>();
 
-        var curItem = storeList.Find(x => x.data == buyItem);
+        StoreSellObject? curItem = storeList.Find(x => x.data == buyItem);
 
-        raiseItem.TryGetValue(curItem.data.itemName, out int value);
-        int curPrise = curItem.price + value;
+        if (curItem == null) return false;
+
+        RaiseSystem.Instance.raiseItem.TryGetValue(buyItem.itemName, out int value);
+        int curPrise = curItem.Value.price + value;
 
         if (credit.Credit >= curPrise)
         {
 
-            if (Inventory.Instance.ObtainItem(curItem.data, ""))
+            if (Inventory.Instance.ObtainItem(buyItem, ""))
             {
 
                 credit.Credit -= curPrise;
-                RaiseUp(buyItem.itemName);
+
+                RaiseSystem.Instance.RaiseUp(buyItem.itemName, curItem.Value.raise);
 
                 return true;
             }
@@ -70,7 +73,7 @@ public class StoreSystem : NetworkBehaviour
 
     private StoreSellObject ApplyRaiseStoreSellObject(StoreSellObject s)
     {
-        raiseItem.TryGetValue(s.data.itemName, out int raise);
+        RaiseSystem.Instance.raiseItem.TryGetValue(s.data.itemName, out int raise);
 
         return new StoreSellObject
         {
@@ -80,48 +83,4 @@ public class StoreSystem : NetworkBehaviour
             expText = s.expText
         };
     }
-
-    public void RaiseUp(string itemName)
-    {
-        StoreSellObject? curItem = storeList.Find(x => x.data.itemName == itemName);
-        if (curItem == null) return;
-
-        if (raiseItem.TryGetValue(itemName, out int raise))
-        {
-            SetRaiseItemServerRpc(itemName, curItem.Value.raise);
-        }
-        else
-        {
-            SetRaiseItemServerRpc(itemName, curItem.Value.raise, true);
-        }
-    }
-
-    public void RaiseDown(string itemName)
-    {
-        if (raiseItem.TryGetValue(itemName, out int raise))
-        {
-            var curItem = storeList.Find(x => x.data.itemName == itemName);
-            SetRaiseItemServerRpc(itemName, curItem.raise);
-        }
-    }
-
-    [ServerRpc]
-    private void SetRaiseItemServerRpc(string itemName, int value, bool isEmpty = false)
-    {
-        SetRaiseItemClientRpc(itemName, value, isEmpty);
-    }
-
-    [ClientRpc]
-    private void SetRaiseItemClientRpc(string itemName, int value, bool isEmpty = false)
-    {
-        if (isEmpty)
-        {
-            raiseItem[itemName] = value;
-        }
-        else
-        {
-            raiseItem[itemName] += value;
-        }
-    }
-
 }

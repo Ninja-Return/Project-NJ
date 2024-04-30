@@ -124,6 +124,8 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         Input.OnInventoryKeyPress += HandleInvenActive;
 
         StartCoroutine(ControlPsychosisValueCo());
+
+        FindObjectOfType<CreditSystem>().Credit = 9999;
     }
 
     private void HandleInvenActive()
