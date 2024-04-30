@@ -69,8 +69,11 @@ public abstract class InteractionObject : NetworkBehaviour
     private void DespawnServerRPC()
     {
 
+        OnDespawn();
         NetworkObject.Despawn(true);
 
     }
+
+    protected virtual void OnDespawn() { }
 
 }

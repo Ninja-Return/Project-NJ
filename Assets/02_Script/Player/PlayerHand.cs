@@ -127,6 +127,8 @@ public class PlayerHand : NetworkBehaviour
     private void HandDeleteClientRPC()
     {
 
+        controller.InitHandTarget();
+        
         if (currentObject == null) return;
 
         Destroy(currentObject.gameObject);

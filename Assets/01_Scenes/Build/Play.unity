@@ -742,9 +742,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
-  far clip plane: 1000
-  field of view: 40
+  near clip plane: 0.15
+  far clip plane: 30
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -856,8 +856,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619981845}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.9649158, z: 0.26255953, w: 0}
-  m_LocalPosition: {x: 0, y: 2.249, z: 1.05}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.648, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1267,6 +1267,169 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 765466529}
   m_CullTransparentMesh: 1
+--- !u!1 &780939493
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 780939497}
+  - component: {fileID: 780939494}
+  - component: {fileID: 780939495}
+  - component: {fileID: 780939496}
+  m_Layer: 0
+  m_Name: GameBgm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &780939494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780939493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1418766902
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &780939495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780939493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf43d1c6bd692fa4094f0f26893422c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameBgm: {fileID: 780939496}
+--- !u!82 &780939496
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780939493}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 4cc5063cd5bb0464fb54392f270e0d89, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &780939497
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780939493}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &786753643
 GameObject:
   m_ObjectHideFlags: 0
@@ -1596,7 +1759,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -2997,6 +3160,8 @@ GameObject:
   - component: {fileID: 1985564213}
   - component: {fileID: 1985564214}
   - component: {fileID: 1985564215}
+  - component: {fileID: 1985564216}
+  - component: {fileID: 1985564217}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -3075,12 +3240,15 @@ MonoBehaviour:
   <storeList>k__BackingField:
   - data: {fileID: 11400000, guid: d456a4dcd8ed86143a8100f8d686706f, type: 2}
     price: 10
+    raise: 0
     expText: "\uC8FC\uBCC0\uC744 \uBC1D\uAC8C \uD574\uC90D\uB2C8\uB2E4"
   - data: {fileID: 11400000, guid: d8d2bb98ed0bc624192e4aa7efd9b404, type: 2}
     price: 20
+    raise: 0
     expText: "\uB204\uAD70\uAC00\uB294 \uC0AC\uC6A9\uD560 \uC218 \uC788\uC744\uC9C0\uB3C4?"
   - data: {fileID: 11400000, guid: 03ec51008d9dcca4792e901b7b33721a, type: 2}
     price: 20
+    raise: 0
     expText: "\uC218\uC0C1\uD55C\uC790\uB97C \uCC3E\uACE0 \uC0AC\uC6A9\uD558\uC138\uC694!"
 --- !u!114 &1985564207
 MonoBehaviour:
@@ -3145,6 +3313,7 @@ MonoBehaviour:
   - {fileID: 8572196723978947207, guid: ddec4e773790a2f4f848aea37d4d0ced, type: 3}
   - {fileID: 8572196723978947207, guid: 68cbef1bfb6af4743b16bd1ab883cfdc, type: 3}
   onlySpawn: {fileID: 8572196723978947207, guid: d1aa9444dc1a53e4aa692ef373b83f83, type: 3}
+  rareRoom: {fileID: 8572196723978947207, guid: 9c7d588f7601e6546a9384608275ff39, type: 3}
   surface: {fileID: 1985564211}
 --- !u!114 &1985564211
 MonoBehaviour:
@@ -3203,10 +3372,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterMaxSpawn: 10
-  minSpawnTime: 2
-  maxSpawnTime: 5
+  minSpawnTime: 999
+  maxSpawnTime: 9999
   monsterPrefabs:
-  - {fileID: 3552912527455403678, guid: 3005967c96c11d84893ce30c4153da23, type: 3}
+  - {fileID: 414673305194451298, guid: 37d8bb7b4e9b42844b71a0ae9477d107, type: 3}
+  - {fileID: 8731334441768544532, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
+  statuePrefab: {fileID: 3552912527455403678, guid: 3005967c96c11d84893ce30c4153da23, type: 3}
 --- !u!114 &1985564214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3229,6 +3400,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4e05c9de64391945a1b2accb423ef70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1985564216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985564200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 898a4843d27ffeb48bb3f5786667377d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1985564217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985564200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f52ac88d7a7dde4f94a9c45967614c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2047427413
@@ -3400,3 +3595,4 @@ SceneRoots:
   - {fileID: 298241554}
   - {fileID: 2069995843}
   - {fileID: 857400279}
+  - {fileID: 780939497}

@@ -13,7 +13,6 @@ public class New_GameManager : NetworkBehaviour
 
     private int joinCount;
 
-    private Dictionary<string, Transform> tpPos = new();
 
     #region Events
 
@@ -28,6 +27,7 @@ public class New_GameManager : NetworkBehaviour
 
     public event Action OnPlayerSpawnCall;
     public event Action OnItemSpawnCall;
+    public event Action OnHardEvent;
 
     #endregion
 
@@ -40,15 +40,6 @@ public class New_GameManager : NetworkBehaviour
 
     }
 
-    private void Start()
-    {
-
-       //if (!IsServer) return;
-       //
-       //StartCoroutine(StartLogicCo());
-
-    }
-
     public override void OnNetworkSpawn()
     {
 
@@ -56,6 +47,18 @@ public class New_GameManager : NetworkBehaviour
         {
 
             JoinSceneServerRPC();
+
+        }
+
+    }
+
+    private void Update()
+    {
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+
+            GameToHard();
 
         }
 
@@ -137,14 +140,6 @@ public class New_GameManager : NetworkBehaviour
     }
 
     #endregion
-
-    public void AddPos(string str, Transform pos)
-    {
-
-        tpPos.Add(str, pos);
-
-    }
-
     public void Spawning()
     {
 
@@ -152,44 +147,13 @@ public class New_GameManager : NetworkBehaviour
 
     }
 
-    #region Coroutine
-
-    private IEnumerator StartLogicCo()
+    public void GameToHard()
     {
 
-        yield return new WaitUntil(() => joinCount == NetworkManager.ConnectedClients.Count);
-
-        yield return StartCoroutine(WaitLogicCo());
-
-        OnWaitEndClientRPC();
-
-        yield return null;
-
-
-
-        yield return null;
-
-        OnGameStartClientRPC();
+        OnHardEvent?.Invoke();
+        Debug.Log("公攫啊 决没抄 老");
 
     }
 
-    private IEnumerator WaitLogicCo()
-    {
-
-        for (int i = waitDelay; i > 0; i--)
-        {
-
-            yield return new WaitForSeconds(1);
-            OnTimeChangeClientRPC(i);
-
-        }
-
-        OnTimeChangeClientRPC(-1);
-
-    }
-
-
-
-    #endregion
 
 }

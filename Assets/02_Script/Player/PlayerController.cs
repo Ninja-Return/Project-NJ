@@ -124,6 +124,8 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         Input.OnInventoryKeyPress += HandleInvenActive;
 
         StartCoroutine(ControlPsychosisValueCo());
+
+        FindObjectOfType<CreditSystem>().Credit = 9999;
     }
 
     private void HandleInvenActive()
@@ -246,6 +248,14 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     {
 
         StartCoroutine(SpeedCo(value, time));
+
+    }
+
+    [ClientRpc]
+    public void AddSpeedClientRPC(float value, float time)
+    {
+
+        AddSpeed(value, time);
 
     }
 

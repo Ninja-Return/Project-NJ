@@ -6,6 +6,7 @@ using TMPro;
 using EnumList;
 using Unity.Netcode;
 using Unity.Collections;
+using DG.Tweening;
 
 public delegate void SlotChange(string objKey, int idx, string extraData);
 
@@ -47,9 +48,9 @@ public class Inventory : NetworkBehaviour
                 slots[i].slotIndex = i;
             }
 
-            inventoryPanel.SetActive(false);
+            inventoryPanel.transform.localScale = Vector3.zero;
 
-            foreach(var item in firstItem)
+            foreach (var item in firstItem)
             {
 
                 ObtainItem(item, "");
@@ -89,8 +90,10 @@ public class Inventory : NetworkBehaviour
 
         }
 
-
-        inventoryPanel.SetActive(isShow);
+        if (isShow)
+            inventoryPanel.transform.DOScale(new Vector3(1, 1, 1), 0.2f);
+        else if (!isShow)
+            inventoryPanel.transform.DOScale(new Vector3(0, 0, 0), 0.2f);
     }
 
     public void PopItemText(string ex)
@@ -164,7 +167,7 @@ public class Inventory : NetworkBehaviour
         var trm = transform.root;
 
         var clone = Instantiate(item,
-            trm.position + trm.forward, 
+            trm.position + trm.forward,
             Quaternion.identity);
 
         clone.NetworkObject.Spawn();
@@ -184,7 +187,7 @@ public class Inventory : NetworkBehaviour
     public void DropAllItem()
     {
 
-        foreach(var item in slots)
+        foreach (var item in slots)
         {
 
             if (item.slotData == null) continue;
