@@ -15,6 +15,7 @@ public class SmokeItem : HandItemRoot
         if (NetworkManager.Singleton.IsServer)
         {
 
+            NetworkSoundManager.Play3DSound("ItemThrow", transform.position, 0.1f, 10f);
             SpawnSmoke();
 
         }
