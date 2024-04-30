@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
-using static UnityEditor.Rendering.ShadowCascadeGUI;
+
 
 public class MonsterSpawnSystem : NetworkBehaviour
 {
