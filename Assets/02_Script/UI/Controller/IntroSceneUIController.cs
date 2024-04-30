@@ -7,7 +7,7 @@ public class IntroSceneUIController : MonoBehaviour
 {
     [SerializeField] private TMP_Text nameText;
 
-    private FullScreenMode screenMode = FullScreenMode.FullScreenWindow;
+    private FullScreenMode screenMode = UnityEngine.FullScreenMode.FullScreenWindow;
 
     private void Start()
     {
@@ -73,11 +73,18 @@ public class IntroSceneUIController : MonoBehaviour
 
     }
 
-    public void FullScreenSetting(GameObject iconObj)
+    public void WindowedScreenMode()
     {
-        bool nowFullScreen = screenMode == FullScreenMode.Windowed ? true : false;
-        screenMode = nowFullScreen == true ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
-        iconObj.SetActive(nowFullScreen);
+        screenMode = UnityEngine.FullScreenMode.Windowed;
+
+        int width = Screen.width;
+        int height = Screen.height;
+        Screen.SetResolution(width, height, screenMode);
+    }
+
+    public void FullScreenMode()
+    {
+        screenMode = UnityEngine.FullScreenMode.FullScreenWindow;
 
         int width = Screen.width;
         int height = Screen.height;
