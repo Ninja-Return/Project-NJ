@@ -59,7 +59,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
         InitializeStates();
         ChangeState(DronState.Idle);
     }
-
     private void InitializeStates()
     {
         DronIdleState dronIdleState = new DronIdleState(this);
