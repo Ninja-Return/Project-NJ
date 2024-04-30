@@ -52,6 +52,18 @@ public class New_GameManager : NetworkBehaviour
 
     }
 
+    private void Update()
+    {
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+
+            GameToHard();
+
+        }
+
+    }
+
     public void CheckGameEnd(int playerCount, bool IsBreaken)
     {
 
