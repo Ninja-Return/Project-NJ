@@ -72,6 +72,24 @@ public class SettingUI : MonoBehaviour
         Setting = false;
     }
 
+    public void ModeWindowedScreen()
+    {
+        screenMode = UnityEngine.FullScreenMode.Windowed;
+
+        int width = Screen.width;
+        int height = Screen.height;
+        Screen.SetResolution(width, height, screenMode);
+    }
+
+    public void ModeFullScreen()
+    {
+        screenMode = UnityEngine.FullScreenMode.FullScreenWindow;
+
+        int width = Screen.width;
+        int height = Screen.height;
+        Screen.SetResolution(width, height, screenMode);
+    }
+
     public void FOVSetting(Slider slider) // 50 ~ 70 (처음 60으로 고정)
     {
         PlayerPrefs.SetFloat("FOV", slider.value);
