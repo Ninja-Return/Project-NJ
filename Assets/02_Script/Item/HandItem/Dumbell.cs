@@ -4,41 +4,30 @@ using UnityEngine;
 
 public class Dumbell : HandItemRoot
 {
-    [SerializeField] private float distance;
-    [SerializeField] private LayerMask obstacleMask;
-    [SerializeField] private LayerMask playerMask;
+
+    [SerializeField] private float speed;
+    [SerializeField] private ThrowedDumBell dumbellObject;
 
     public override void DoUse()
     {
 
-        if(!isOwner) return;
-        NetworkSoundManager.Play3DSound("DumbellShoot", transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
-
-        Camera cam = GameObject.Find("Main Camera").GetComponent<Camera>();
-        Vector2 ScreenCenter = new Vector2(cam.pixelWidth / 2, cam.pixelHeight / 2);
-        Ray ray = cam.ScreenPointToRay(ScreenCenter);
-        PlayerCheck(ray);
-        
-    }
-
-    void PlayerCheck(Ray ray)
-    {
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, distance, playerMask))
+        if (NetworkManager.Singleton.IsServer)
         {
-            if (CheakObstacle(ray, hit.transform.position)) return;
 
-            PlayerController playerId = hit.transform.GetComponent<PlayerController>();
-            playerId.AddSpeed(-3f, 10f);
+            ThrowDumBell();
+
         }
+
     }
 
-    //厘局拱 面倒贸府 
-    bool CheakObstacle(Ray ray, Vector3 hitPos)
+    private void ThrowDumBell()
     {
-        float checkDistance = Mathf.Abs(Vector3.Distance(ray.origin, hitPos));
 
-        return Physics.Raycast(ray, checkDistance, obstacleMask);
+        var obj = Instantiate(dumbellObject, transform.root.position + new Vector3(0, 0.5f, 0) + transform.root.forward, Quaternion.identity);
+        obj.NetworkObject.Spawn(true);
+        obj.SetUp(transform.root.forward);
+
     }
+
+
 }

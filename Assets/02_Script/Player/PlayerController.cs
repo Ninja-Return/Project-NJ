@@ -249,6 +249,14 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     }
 
+    [ClientRpc]
+    public void AddSpeedClientRPC(float value, float time)
+    {
+
+        AddSpeed(value, time);
+
+    }
+
     private IEnumerator SpeedCo(float speed, float time) 
     {
 

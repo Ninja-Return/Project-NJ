@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 7538688435589501447}
   - component: {fileID: 3449099754553787708}
   - component: {fileID: 590284383554411383}
+  - component: {fileID: -6749273457406664815}
   m_Layer: 0
   m_Name: SmokeShell
   m_TagString: Untagged
@@ -184,7 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1698328778
+  GlobalObjectIdHash: 1075358967
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -206,6 +207,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyTime: 3
   smokeObject: {fileID: 5352109228434479569, guid: 54123977cdaea8a408fbdc8618dd8a20, type: 3}
+--- !u!114 &-6749273457406664815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3442810844120767547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &3477606812903140546
 GameObject:
   m_ObjectHideFlags: 0
