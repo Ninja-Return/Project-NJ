@@ -1,7 +1,6 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 
 public class SellObjectSys : InteractionObject
@@ -10,36 +9,29 @@ public class SellObjectSys : InteractionObject
     [SerializeField] private Transform moveObject;
     [SerializeField] private SellSystem sellSystem;
 
-    private bool isLock;
-
     protected override void DoInteraction()
     {
 
-        if (isLock) return;
-        isLock = true;
-
-        MoveServerRPC(NetworkManager.LocalClientId);
-
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void MoveServerRPC(ulong clickClientId)
-    {
+        NetworkSoundManager.Play3DSound("BoxOpen", transform.position, 0.1f, 10f);
 
         Sequence seq = DOTween.Sequence();
         seq.Append(moveObject.DOLocalMoveZ(-0.6f, 0.3f).SetEase(Ease.OutQuad));
         seq.AppendInterval(1);
-        seq.AppendCallback(() => Selling(clickClientId));
-        seq.AppendInterval(1);
+        seq.AppendCallback(Selling);
+        seq.AppendInterval(1)
+            .OnComplete(() => 
+            {
+                NetworkSoundManager.Play3DSound("BoxClose", transform.position, 0.1f, 10f);
+            });
         seq.Append(moveObject.DOLocalMoveZ(0.47f, 0.3f).SetEase(Ease.OutQuad));
 
     }
 
-    private void Selling(ulong clickClientId)
+    private void Selling()
     {
 
-        sellSystem.Sell(clickClientId);
-        isLock = false;
+        NetworkSoundManager.Play3DSound("Sell", transform.position, 0.01f, 10f);
+        sellSystem.Sell(NetworkManager.LocalClientId);
 
     }
 

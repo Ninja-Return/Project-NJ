@@ -14,6 +14,7 @@ public class Dumbell : HandItemRoot
         if (NetworkManager.Singleton.IsServer)
         {
 
+            NetworkSoundManager.Play3DSound("ItemThrow", transform.position, 0.1f, 10f);
             ThrowDumBell();
 
         }

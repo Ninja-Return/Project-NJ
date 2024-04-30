@@ -16,6 +16,7 @@ public class Smoke : NetworkBehaviour
 
         if (!IsServer) return;
 
+        NetworkSoundManager.Play3DSound("Smoke", transform.position, 0.1f, 20f);
         StartCoroutine(DestoryCo());
 
     }
