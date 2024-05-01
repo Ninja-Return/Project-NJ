@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
-using Unity.Netcode;
 using Michsky.UI.Dark;
 
 public class AlertText : MonoBehaviour
@@ -19,9 +18,7 @@ public class AlertText : MonoBehaviour
 
     public void Start()
     {
-
-        New_GameManager.Instance.OnHardEvent += HardStart;
-
+        
     }
 
     public void GameStart()
@@ -36,16 +33,9 @@ public class AlertText : MonoBehaviour
     public void HardStart()
     {
 
-        //Invoke("HardStartClientRpc", 2f);
-        HardStartClientRpc();
-
-    }
-
-    [ClientRpc]
-    private void HardStartClientRpc()
-    {
         NetworkSoundManager.Play2DSound("HardStart");
         StartCoroutine(OpenText("HardAlert"));
+
     }
 
     private IEnumerator OpenText(string panelName)
@@ -58,15 +48,4 @@ public class AlertText : MonoBehaviour
         mainPanelManager.OpenFirstTab();
 
     }
-
-    /* private IEnumerator StartAlert()
-     {
-
-         startAlertPanel.transform.TVEffect(true);
-
-         yield return new WaitForSeconds(3f);
-
-         startAlertPanel.transform.TVEffect(false);
-
-     }*/
 }

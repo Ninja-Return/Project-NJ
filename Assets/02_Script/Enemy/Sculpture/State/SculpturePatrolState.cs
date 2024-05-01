@@ -62,8 +62,14 @@ public class SculpturePatrolState : SculptureStateRoot
         }
     }
 
-    private bool RandomPoint(float range, out Vector3 result) //�ణ ��ġ��
+    private bool RandomPoint(float range, out Vector3 result)
     {
+        if (PlayerManager.Instance.alivePlayer.Count == 0)
+        {
+            result = Vector3.zero;
+            return false;
+        }
+
         ulong randomPlayer = PlayerManager.Instance.alivePlayer[Random.Range(0, PlayerManager.Instance.alivePlayer.Count)].clientId;
         PlayerController pc = PlayerManager.Instance.FindPlayerControllerToID(randomPlayer);
 
