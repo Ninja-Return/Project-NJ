@@ -9,15 +9,17 @@ public class RaderState : MonsterStateRoot
     private float idleDuration = 3f;
     private float currentTime = 0;
 
+    readonly float raderTime = 0.8f;
+
     public RaderState(MonsterFSM controller) : base(controller) { }
 
     protected override void EnterState()
     {
         if (!IsServer) return;
 
-        player = monsterFSM.targetPlayer.GetComponent<PlayerController>();
-        monsterAnim.SetAnimation("Idle", true);
-        //NetworkSoundManager.Play3DSound("MonsterHowling", monsterFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
+        player = monsterFSM.targetPlayer;
+        monsterAnim.SetAnimation("Idle", true); //Rader
+        NetworkSoundManager.Play3DSound("RaderPlayer", monsterFSM.transform.position, 0.1f, 45f, SoundType.SFX, AudioRolloffMode.Linear);
     }
 
     protected override void UpdateState()
@@ -31,7 +33,8 @@ public class RaderState : MonsterStateRoot
         else
         {
             currentTime += Time.deltaTime;
-            if (player.Input.MoveVecter != Vector2.zero)
+
+            if (monsterFSM.IsPlayerMoving(player) && currentTime > raderTime)
             {
                 controller.ChangeState(MonsterState.Chase);
             }
@@ -42,7 +45,7 @@ public class RaderState : MonsterStateRoot
     {
         if (!IsServer) return;
 
-        monsterAnim.SetAnimation("Idle", false);
+        monsterAnim.SetAnimation("Idle", false); //Rader
         currentTime = 0;
     }
 }

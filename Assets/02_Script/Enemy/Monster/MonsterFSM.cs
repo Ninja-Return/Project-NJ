@@ -12,6 +12,7 @@ public enum MonsterState
     Idle,
     Patrol,
     Ping,
+    Rader,
     Chase,
     Kill,
     Dead
@@ -31,7 +32,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
 
 
     [HideInInspector] public Vector3 pingPos;
-    [HideInInspector] public Collider targetPlayer;
+    [HideInInspector] public PlayerController targetPlayer { get; set; }
     [HideInInspector] public bool IsDead { get; private set; }
     [HideInInspector] public bool IsKill;
 
@@ -63,12 +64,13 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
         IdleState idleState = new IdleState(this);
         PatrolState patrolState = new PatrolState(this, moveRadius, workSpeed);
         PingState pingState = new PingState(this, workSpeed);
+        RaderState raderState = new RaderState(this);
         ChaseState chaseState = new ChaseState(this, chaseRadius, runSpeed);
         KillState killState = new KillState(this);
         DeathState deathState = new DeathState(this);
 
         MoveTransition moveTransition = new MoveTransition(this, MonsterState.Idle);
-        InPlayerTransition chasePlayerTransition = new InPlayerTransition(this, MonsterState.Chase, chaseRadius);
+        InPlayerTransition chasePlayerTransition = new InPlayerTransition(this, MonsterState.Rader, chaseRadius);
         CatchPlayerTransition catchPlayerTransition = new CatchPlayerTransition(this, MonsterState.Kill, killRadius);
         DieTransition dieTransition = new DieTransition(this, MonsterState.Dead);
 
@@ -84,12 +86,14 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
         idleState.AddTransition(dieTransition);
         patrolState.AddTransition(dieTransition);
         pingState.AddTransition(dieTransition);
+        raderState.AddTransition(dieTransition);
         chaseState.AddTransition(dieTransition);
         killState.AddTransition(dieTransition);
 
         AddState(idleState, MonsterState.Idle);
         AddState(patrolState, MonsterState.Patrol);
         AddState(pingState, MonsterState.Ping);
+        AddState(raderState, MonsterState.Rader);
         AddState(chaseState, MonsterState.Chase);
         AddState(killState, MonsterState.Kill);
         AddState(deathState, MonsterState.Dead);
@@ -159,7 +163,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
         return chasePlayer;
     }
 
-    public List<Collider> ViewingPlayer(float radius) //idleState, patrolState
+    public Collider ViewingPlayer(float radius) //idleState, patrolState
     {
         List<Collider> players = new List<Collider>();
 
@@ -191,30 +195,31 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
             float targetAngle = Mathf.Acos(Vector3.Dot(lookDir, targetDir)) * Mathf.Rad2Deg;
             float playerDistance = Vector3.Distance(player.transform.position, pos);
             
-            if (targetAngle <= angle * 0.5f && !RayObstacle(pos, targetDir, playerDistance))
+            if (targetAngle <= angle * 0.5f && !RayObstacle(pos, targetDir, playerDistance)
+                && IsPlayerMoving(player.GetComponent<PlayerController>()))
             {
                 //player 감지됨
                 players.Add(player);
-                Debug.DrawLine(pos, targetPos, Color.red);
+                //Debug.DrawLine(pos, targetPos, Color.red);
             }
         }
 
         if (players.Count == 0) return null;
-        return players;
+        //return players;
 
         //가장 가까운 플레이어 감지
-        //float minDistance = float.MaxValue;
-        //Collider targetPlayer = null;
-        //foreach (Collider player in players)
-        //{
-        //    float playerDistance = Vector3.Distance(player.transform.position, pos);
-        //    if (playerDistance < minDistance)
-        //    {
-        //        targetPlayer = player;
-        //    }
-        //}
+        float minDistance = float.MaxValue;
+        Collider targetPlayer = null;
+        foreach (Collider player in players)
+        {
+            float playerDistance = Vector3.Distance(player.transform.position, pos);
+            if (playerDistance < minDistance)
+            {
+                targetPlayer = player;
+            }
+        }
 
-        //return targetPlayer;
+        return targetPlayer;
     }
 
     private Vector3 AngleToDirX(float angle)
@@ -230,6 +235,17 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
 
         Vector3 angleVec = isUp == true ? new Vector3(0f, Mathf.Sin(radian2), 0f) : new Vector3(0f, -Mathf.Sin(radian2), 0f);
         return new Vector3(Mathf.Sin(radian1), 0, Mathf.Cos(radian1)) + angleVec;
+    }
+
+    public bool IsPlayerMoving(PlayerController player)
+    {
+        Vector2 moveVec = PlayerManager.Instance.FindPlayerControllerToID(player.OwnerClientId).moveVector.Value;
+
+        if (moveVec != Vector2.zero)
+        {
+            return true;
+        }
+        return false;
     }
 
     public void SetPingPos(Vector3 pos)
@@ -253,7 +269,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
     {
         if (!IsServer) return;
 
-        var player = targetPlayer.GetComponent<PlayerController>();
+        var player = targetPlayer;
 
         PlayerManager.Instance.PlayerDie(EnumList.DeadType.Monster, player.OwnerClientId);
         IsKill = true;
@@ -261,7 +277,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
 
     public void JumpScare() //사실상 애니메이션이 되어 있어서 플레이어가 못 움직이고 괴물을 바라보게 고정만 하면 될 듯?
     {
-        var player = targetPlayer.GetComponent<PlayerController>();
+        var player = targetPlayer;
 
         JumpScareClientRPC(player.OwnerClientId.GetRPCParams());
     }

@@ -8,6 +8,11 @@ public class ChaseState : MonsterStateRoot
     private float radius;
     private float speed;
 
+    private float currentTime = 0;
+    private int slowdownCount = 3;
+    readonly private float slowdownTime = 6f;
+    readonly private float slowdownRatio = 0.9f;
+
     public ChaseState(MonsterFSM controller, float radius, float speed) : base(controller)
     {
         this.radius = radius;
@@ -35,7 +40,7 @@ public class ChaseState : MonsterStateRoot
 
         if (player != null)
         {
-            monsterFSM.targetPlayer = player;
+            monsterFSM.targetPlayer = player.GetComponent<PlayerController>();
 
             Vector3 playerPos = player.transform.position;
             nav.SetDestination(playerPos);
@@ -44,6 +49,8 @@ public class ChaseState : MonsterStateRoot
         {
             monsterFSM.ChangeState(MonsterState.Idle);
         }
+
+        SpeedSlowdown();
     }
 
     protected override void ExitState()
@@ -51,7 +58,21 @@ public class ChaseState : MonsterStateRoot
         if (!IsServer) return;
 
         monsterAnim.SetAnimation("Run", false);
+        currentTime = 0f;
 
         nav.SetDestination(monsterFSM.transform.position);
+    }
+
+    private void SpeedSlowdown()
+    {
+        currentTime += Time.deltaTime;
+        if (currentTime > slowdownTime && slowdownCount > 0)
+        {
+            currentTime = 0f;
+            slowdownCount--;
+
+            speed *= slowdownRatio;
+            nav.speed = speed;
+        }
     }
 }
