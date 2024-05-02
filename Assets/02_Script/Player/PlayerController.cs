@@ -26,6 +26,8 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
     private GameObject meetingObject;
     private Canvas interactionCanvas;
+    public PlayerImpulse Impulse { get; private set; }
+
     public CinemachineVirtualCamera cvcam { get; private set; }
 
     public bool isInsideSafetyRoom { get; set; } = true;
@@ -57,8 +59,8 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         interactionCanvas = GetComponentInChildren<Canvas>();
         meetingObject = GameObject.Find("MeetingObject");
 
+        Impulse = GetComponent<PlayerImpulse>();
         playerRigidbody = GetComponent<Rigidbody>();
-
 
     }
 
@@ -116,14 +118,10 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         var sitDown = new PlayerSitDown(this);
         AddState(sitDown, EnumPlayerState.Move);
 
-        var kill = new PlayerKillState(this);
-        AddState(kill, EnumPlayerState.Move);
-
         ChangeState(startState);
 
         Input.OnInventoryKeyPress += HandleInvenActive;
 
-        StartCoroutine(ControlPsychosisValueCo());
     }
 
     private void HandleInvenActive()
@@ -242,6 +240,21 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         }
     }
 
+    public void PlayImpulse(string name)
+    {
+
+        PlayImpulseClientRPC(name);
+
+    }
+
+    [ClientRpc]
+    private void PlayImpulseClientRPC(string name)
+    {
+
+        Impulse.PlayImpulse(name);
+
+    }
+
     public void AddSpeed(float value, float time)
     {
 
@@ -267,26 +280,5 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         Data.MoveSpeed.RemoveMod(speed);
 
     }
-
-    private IEnumerator ControlPsychosisValueCo()
-    {
-
-        psychosisValue.Value = 1;
-
-        while (true)
-        {
-
-            yield return null;
-
-            var subValue = isInsideSafetyRoom ? Time.deltaTime : -Time.deltaTime;
-            psychosisValue.Value += subValue / 50f;
-
-            psychosisValue.Value = Mathf.Clamp(psychosisValue.Value, 0, 1);
-
-        }
-
-    }
-
-
 
 }

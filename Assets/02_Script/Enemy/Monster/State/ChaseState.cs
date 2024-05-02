@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FSM_System.Netcode;
+using Cinemachine;
 
 public class ChaseState : MonsterStateRoot
 {
@@ -12,6 +13,8 @@ public class ChaseState : MonsterStateRoot
     private int slowdownCount = 3;
     readonly private float slowdownTime = 6f;
     readonly private float slowdownRatio = 0.9f;
+
+    private Coroutine walkEffectCo;
 
     public ChaseState(MonsterFSM controller, float radius, float speed) : base(controller)
     {
@@ -25,6 +28,8 @@ public class ChaseState : MonsterStateRoot
 
         monsterAnim.SetAnimation("Run", true);
         NetworkSoundManager.Play3DSound("FindPlayer", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
+
+        walkEffectCo = StartCoroutine(WalkEffect());
 
         nav.speed = speed;
     }
@@ -61,6 +66,23 @@ public class ChaseState : MonsterStateRoot
         currentTime = 0f;
 
         nav.SetDestination(monsterFSM.transform.position);
+
+        StopCoroutine(walkEffectCo);
+
+    }
+
+    private IEnumerator WalkEffect()
+    {
+
+        while (true)
+        {
+
+            (controller as MonsterFSM).MoveEffectServerRPC();
+            NetworkSoundManager.Play3DSound("MonsterWalk", transform.position, 1, 50, SoundType.SFX, AudioRolloffMode.Linear);
+            yield return new WaitForSeconds(0.3f);
+
+        }
+
     }
 
     private void SpeedSlowdown()

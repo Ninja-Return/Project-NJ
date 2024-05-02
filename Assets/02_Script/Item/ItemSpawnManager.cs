@@ -32,7 +32,7 @@ public class ItemSpawnManager : NetworkBehaviour
             pos,
             Quaternion.identity);
 
-        clone.NetworkObject.Spawn();
+        clone.NetworkObject.Spawn(true);
 
     }
 

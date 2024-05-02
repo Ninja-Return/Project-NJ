@@ -44,8 +44,12 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
     [SerializeField] private float runSpeed;
     [SerializeField] private LayerMask obstacleMask;
 
+    private CinemachineImpulseSource source;
     private void Start()
     {
+
+        source = GetComponent<CinemachineImpulseSource>();
+
         if (!IsHost)
         {
             nav.enabled = false;
@@ -135,6 +139,22 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
         Debug.DrawLine(pos, targetPos, Color.black);
 
         return targetPlayer;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void MoveEffectServerRPC()
+    {
+
+        MoveEffectClientRPC();
+
+    }
+
+    [ClientRpc]
+    private void MoveEffectClientRPC()
+    {
+
+        source.GenerateImpulse();
+
     }
 
     public Collider CirclePlayer(float radius) //chaseState

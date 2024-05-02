@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 
+[BurstCompile]
 public struct ChunkLoadJob : IJob
 {
 
@@ -172,6 +174,8 @@ public class ChunkRenderingSystem : MonoBehaviour
 
     private void OnDestroy()
     {
+
+        jobHandle.Complete();
 
         if (chunks.IsCreated)
         {
