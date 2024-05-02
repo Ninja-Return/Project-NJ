@@ -13,7 +13,8 @@ public enum DronState
     Patrol,
     Chase,
     Kill,
-    Dead
+    Dead,
+    Zoom,
 }
 
 
@@ -38,9 +39,13 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
     [SerializeField] private float chaseRadius;
     [SerializeField] private float killRadius;
     [SerializeField] private float workSpeed;
+    [SerializeField] public bool zoom = false;
     [SerializeField] private float runSpeed;
     [SerializeField] private float lazerTime;
+    [SerializeField] private Light dronLight;
+    [SerializeField] private float zoomRange;
     [SerializeField] private float stopTime;
+    [SerializeField] private ParticleSystem Spark;
     [SerializeField] float shakeAmount = 3.0f;
     [SerializeField] float shakeTime = 1.0f;
     [SerializeField] private LayerMask obstacleMask;
@@ -62,13 +67,14 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
     private void InitializeStates()
     {
         DronIdleState dronIdleState = new DronIdleState(this);
-        DronPatrolState dronPatrolState = new DronPatrolState(this, moveRadius, workSpeed);
+        DronPatrolState dronPatrolState = new DronPatrolState(this, moveRadius, workSpeed, Spark);
         DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed, lazerTime, stopTime);
         DronKillState dronKillState = new DronKillState(this);
+        DronZoomState dronZoomState = new DronZoomState(this, zoomRange, dronLight);
         DronDeathState dronDeathState = new DronDeathState(this);
 
-        DronMoveTransition dronMoveTransition = new DronMoveTransition(this, DronState.Idle);
-        DronInPlayerTransition dronChasePlayerTransition = new DronInPlayerTransition(this, DronState.Chase, chaseRadius);
+        DronMoveTransition dronMoveTransition = new DronMoveTransition(this, DronState.Zoom);
+        DronInPlayerTransition dronChasePlayerTransition = new DronInPlayerTransition(this, DronState.Chase, chaseRadius, zoom);
         DronCatchPlayerTransition dronCatchPlayerTransition = new DronCatchPlayerTransition(this, DronState.Kill, killRadius);
         DronDieTransition dronDieTransition = new DronDieTransition(this, DronState.Dead);
 
@@ -76,7 +82,9 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
 
         dronIdleState.AddTransition(dronChasePlayerTransition);
         dronPatrolState.AddTransition(dronChasePlayerTransition);
+        dronZoomState.AddTransition(dronChasePlayerTransition);
 
+        dronZoomState.AddTransition(dronCatchPlayerTransition);
         dronChaseState.AddTransition(dronCatchPlayerTransition);
 
         dronIdleState.AddTransition(dronDieTransition);
@@ -89,6 +97,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
         AddState(dronChaseState, DronState.Chase);
         AddState(dronKillState, DronState.Kill);
         AddState(dronDeathState, DronState.Dead);
+        AddState(dronZoomState, DronState.Zoom);
     }
 
     private void FixedUpdate()
@@ -153,7 +162,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
         return targetPlayer;
     }
 
-    public Collider ViewingPlayer(float radius)
+    public Collider ViewingPlayer(float radius, float angles)
     {
         List<Collider> players = new List<Collider>();
 
@@ -161,11 +170,11 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
         Vector3 eulerAngles = headTrs.eulerAngles;
 
         float lookingAngle = eulerAngles.y;  //캐릭터가 바라보는 방향의 각도
-        Vector3 rightDir = AngleToDirX(lookingAngle + angle * 0.5f,25);
-        Vector3 leftDir = AngleToDirX(lookingAngle - angle * 0.5f,25);
-        Vector3 upDir = AngleToDirY(lookingAngle, true,20);
-        Vector3 downDir = AngleToDirY(lookingAngle, false,20);
-        Vector3 lookDir = AngleToDirX(lookingAngle,25);
+        Vector3 rightDir = AngleToDirX(lookingAngle + angle * 0.5f, angles);
+        Vector3 leftDir = AngleToDirX(lookingAngle - angle * 0.5f, angles);
+        Vector3 upDir = AngleToDirY(lookingAngle, true, angles);
+        Vector3 downDir = AngleToDirY(lookingAngle, false, angles);
+        Vector3 lookDir = AngleToDirX(lookingAngle, angles);
 
 #if UNITY_EDITOR
         Debug.DrawRay(pos, rightDir * radius, Color.blue);
