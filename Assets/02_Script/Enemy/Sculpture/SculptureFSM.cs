@@ -39,7 +39,7 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
 
     public LayerMask obstacleMask;
 
-    readonly float frame = 0.1f;
+    readonly float frame = 0.2f;
 
     private void Start()
     {

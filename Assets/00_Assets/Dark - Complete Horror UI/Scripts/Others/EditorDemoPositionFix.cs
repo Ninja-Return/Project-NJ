@@ -24,6 +24,7 @@ namespace Michsky.UI.Dark
                     LayoutRebuilder.ForceRebuildLayoutImmediate(objectToRepaint[i].GetComponentInParent<RectTransform>());
                     LayoutRebuilder.ForceRebuildLayoutImmediate(objectToRepaint[i]);
                     LayoutRebuilder.ForceRebuildLayoutImmediate(objectToRepaint[i]);
+
                 }
             }
         }

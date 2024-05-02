@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-
 namespace Michsky.UI.Dark
 {
     public class CanvasManager : MonoBehaviour

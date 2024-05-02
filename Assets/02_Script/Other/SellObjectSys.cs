@@ -10,14 +10,7 @@ public class SellObjectSys : InteractionObject
     [SerializeField] private Transform moveObject;
     [SerializeField] private SellSystem sellSystem;
 
-    private NetworkVariable<bool> locked;
-
-    public override void OnNetworkSpawn()
-    {
-
-        locked = new();
-
-    }
+    private NetworkVariable<bool> locked = new();
 
     protected override void DoInteraction()
     {
