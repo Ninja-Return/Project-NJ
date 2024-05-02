@@ -18,6 +18,8 @@ public class WatchingSystem : NetworkBehaviour
     private bool isWatching;
     private List<PlayerController> alivePlayers = new();
 
+    public event Action OnWatchingStarted;
+
     private void Awake()
     {
 
@@ -90,6 +92,8 @@ public class WatchingSystem : NetworkBehaviour
         watchingUI.Init();
 
         New_GameManager.Instance.SettingCursorVisable(true);
+
+        OnWatchingStarted?.Invoke();
 
     }
 

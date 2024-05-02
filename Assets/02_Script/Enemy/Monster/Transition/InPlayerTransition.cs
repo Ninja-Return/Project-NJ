@@ -20,6 +20,7 @@ public class InPlayerTransition : MonsterTransitionRoot
         if (chasePlayer != null)
         {
             monsterFSM.targetPlayer = chasePlayer.GetComponent<PlayerController>();
+            
             return true;
         }
 

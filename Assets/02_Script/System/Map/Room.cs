@@ -72,6 +72,13 @@ public class Room : NetworkBehaviour
 
     }
 
+    private void Start()
+    {
+
+        ChunkRenderingSystem.Instance.AddChunk(transform.position, GetComponentsInChildren<Renderer>());
+
+    }
+
     private Diractions GetEqType(Diractions item)
     {
 

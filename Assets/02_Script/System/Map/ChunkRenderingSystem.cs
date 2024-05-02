@@ -1,25 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 
-public struct ChunkLoadJob : IJobParallelFor
+[BurstCompile]
+public struct ChunkLoadJob : IJob
 {
 
-    public NativeArray<int2> chunks;
+    [ReadOnly] public NativeArray<int2> chunks;
     public NativeList<int2> loadingChunk;
     public int2 playerPos;
 
-    public void Execute(int index)
+    public void Execute()
     {
 
-        if(math.distance(playerPos, chunks[index]) < 30)
+        for(int index = 0; index < chunks.Length; ++index)
         {
 
-            loadingChunk.Add(chunks[index]);
+            if (math.distance(playerPos, chunks[index]) < 30)
+            {
+
+                loadingChunk.Add(chunks[index]);
+
+            }
 
         }
 
@@ -31,11 +38,17 @@ public class ChunkRenderingSystem : MonoBehaviour
 {
 
     private Dictionary<int2, Renderer[]> chunkContainer = new();
+    private NativeArray<int2> chunks;
+    private NativeList<int2> loadingChunk;
+    private JobHandle jobHandle;
+    private int fpsCount;
+    private bool isSchedule;
+    public static ChunkRenderingSystem Instance;
 
-    private void Start()
+    private void Awake()
     {
-
-        StartCoroutine(ChunkCalculateLoop());
+        
+        Instance = this;
 
     }
 
@@ -46,6 +59,8 @@ public class ChunkRenderingSystem : MonoBehaviour
         {
 
             var inc = Include(loadingChunk, item.Key);
+
+            if (item.Value[0].enabled == inc) continue;
 
             foreach (var renderer in item.Value)
             {
@@ -64,7 +79,9 @@ public class ChunkRenderingSystem : MonoBehaviour
         foreach(var item in array)
         {
 
-            if(item.x == value.x && item.y == value.y) return true;
+            var x = item == value;
+
+            if (x.y && x.x) return true;
 
         }
 
@@ -81,57 +98,96 @@ public class ChunkRenderingSystem : MonoBehaviour
 
             chunkContainer.Add(chunkPos, renderers);
 
+
         }
 
     }
 
-    private IEnumerator ChunkCalculateLoop()
+    private void Update()
     {
 
-        while (true)
+        if (PlayerManager.Instance == null ||
+            PlayerManager.Instance.localController == null ||
+            chunkContainer.Count == 0)
         {
 
-            if (PlayerManager.Instance == null ||
-                PlayerManager.Instance.localController == null ||
-                chunkContainer.Count == 0)
-            {
+            return;
+        }
 
-                yield return null;
-                continue;
 
-            }
+        if (!isSchedule)
+        {
 
-            NativeArray<int2> chunks = new NativeArray<int2>(chunkContainer.Keys.ToArray(), Allocator.TempJob);
-            NativeList<int2> loadingChunk = new NativeList<int2>(Allocator.TempJob);
+
+            chunks = new NativeArray<int2>(chunkContainer.Keys.ToArray(), Allocator.TempJob);
+            loadingChunk = new NativeList<int2>(Allocator.TempJob);
             var originPos = PlayerManager.Instance.localController.transform.position;
             int2 playerPos = new int2(Mathf.FloorToInt(originPos.x), Mathf.FloorToInt(originPos.z));
 
-            var job = new ChunkLoadJob 
-            { 
-                
+            var job = new ChunkLoadJob
+            {
+
                 chunks = chunks,
                 loadingChunk = loadingChunk,
                 playerPos = playerPos,
-            
+
             };
 
-            var handle = job.Schedule(chunks.Length, 1);
+            jobHandle = job.Schedule();
 
-            for(int i = 0; i < 4; i++)
-            {
+            isSchedule = true;
 
-                yield return null;
+        }
 
-            }
+    }
 
-            handle.Complete();
+    private void LateUpdate()
+    {
 
-            ApplyChunkRender(loadingChunk);
+        fpsCount++;
+
+
+        if (PlayerManager.Instance == null ||
+            PlayerManager.Instance.localController == null ||
+            chunkContainer.Count == 0)
+        {
+
+            return;
+        }
+
+
+        if (fpsCount != 4 && !isSchedule) return;
+
+
+        jobHandle.Complete();
+
+        ApplyChunkRender(loadingChunk);
+
+        chunks.Dispose();
+        loadingChunk.Dispose();
+
+        isSchedule = false;
+
+
+    }
+
+
+    private void OnDestroy()
+    {
+
+        jobHandle.Complete();
+
+        if (chunks.IsCreated)
+        {
 
             chunks.Dispose();
-            loadingChunk.Dispose();
 
-            yield return null;
+        }
+
+        if (loadingChunk.IsCreated)
+        {
+
+            loadingChunk.Dispose();
 
         }
 
