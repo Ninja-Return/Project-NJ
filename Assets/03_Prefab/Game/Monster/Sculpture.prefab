@@ -329,7 +329,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 999
+  m_Speed: 10
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 999
@@ -366,8 +366,8 @@ MonoBehaviour:
   chaseRadius: 15
   killRadius: 0.7
   minInterval: 2.5
-  maxInterval: 3
-  moveFrame: 1.5
+  maxInterval: 3.5
+  moveFrame: 1
   chaseFrame: 1.2
   obstacleMask:
     serializedVersion: 2

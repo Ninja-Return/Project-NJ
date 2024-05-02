@@ -15,12 +15,13 @@ public class CatchPlayerTransition : MonsterTransitionRoot
     protected override bool CheckTransition()
     {
         if (nav.pathPending) return false;
-        
         if (monsterFSM.targetPlayer == null) return false;
-        
-        if (monsterFSM.CirclePlayer(radius) != null)
+
+        Collider player = monsterFSM.CirclePlayer(radius);
+
+        if (player != null)
         {
-            monsterFSM.targetPlayer = monsterFSM.CirclePlayer(radius);
+            monsterFSM.targetPlayer = player.GetComponent<PlayerController>(); ;
             return true;
         }
 
