@@ -14,14 +14,25 @@ public class DronInPlayerTransition : DronTransitionRoot
     protected override bool CheckTransition()
     {
         if (nav.pathPending) return false;
+        if(dronFSM.zoom)
+        {
+            Collider zoomPlayer = dronFSM.ViewingPlayer(20f, 0);
+            if (zoomPlayer != null)
+            {
+                dronFSM.targetPlayer = zoomPlayer;
+                Debug.Log("줌 상태에서 플레이어가 들어와서 상태 바뀜");
+                return true;
+            }
+        }
 
-        Collider targetPlayer = dronFSM.ViewingPlayer(radius);
+        Collider targetPlayer = dronFSM.ViewingPlayer(radius, 20);
         if (targetPlayer != null)
         {
             dronFSM.targetPlayer = targetPlayer;
             Debug.Log("플레이어가 들어와서 상태 바뀜");
             return true;
         }
+       
 
         return false;
     }

@@ -6,18 +6,20 @@ using UnityEngine;
 public class DronChaseState : DronStateRoot
 {
     private float radius;
+    private LineRenderer lazerLine;
     private float speed;
     private float lazerTime;
     private float stopTime;
     private bool lazer;
     private bool razerCheck;
 
-    public DronChaseState(DronFSM controller, float radius, float speed, float lazerTime, float stopTime) : base(controller)
+    public DronChaseState(DronFSM controller, float radius, float speed, float lazerTime, float stopTime, LineRenderer lazerLine) : base(controller)
     {
         this.radius = radius;
         this.speed = speed;
         this.lazerTime = lazerTime;
         this.stopTime = stopTime;
+        this.lazerLine = lazerLine;
     }
 
     protected override void EnterState()
@@ -70,10 +72,16 @@ public class DronChaseState : DronStateRoot
     {
         while (lazer)
         {
+            lazerLine.SetPosition(0, dronFSM.headTrs.position);
+            lazerLine.SetPosition(1, dronFSM.targetPlayer.transform.position);
             Debug.Log("플레이어 멈추게해", dronFSM.targetPlayer);
             dronFSM.targetPlayer.GetComponent<PlayerController>().Data.MoveSpeed.SetValue(0f);
-            yield return new WaitForSeconds(stopTime);
+            yield return new WaitForSeconds(0.5f);
+            lazerLine.SetPosition(1, dronFSM.headTrs.position);
+            lazerLine.SetPosition(0, dronFSM.headTrs.position);
+            yield return new WaitForSeconds(stopTime-1);
             Debug.Log("다시 움직여", dronFSM.targetPlayer);
+            
             dronFSM.targetPlayer.GetComponent<PlayerController>().Data.MoveSpeed.SetValue(5f);
             yield return new WaitForSeconds(lazerTime);
         }
