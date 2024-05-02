@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 503140508960657246}
   - component: {fileID: 4144533267161449094}
   - component: {fileID: 7372076185244753107}
-  - component: {fileID: 3954887409231185613}
+  - component: {fileID: 7778610864701365356}
   - component: {fileID: 7212067311264327319}
   - component: {fileID: 5119927674645849614}
-  - component: {fileID: 2701068149860756557}
+  - component: {fileID: 6160880031628417110}
   - component: {fileID: 5200951765082825806}
   m_Layer: 3
   m_Name: MysteryGun
@@ -33,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -45,7 +45,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5849196291875105163}
-  m_Mesh: {fileID: 4300080, guid: a4544f3443b35324db34bf13819a2a48, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 4021ae645c4844a41ae19c303a8ad695, type: 3}
 --- !u!23 &7372076185244753107
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4c38d9d7c2c0e78449d6fc8834a385cd, type: 2}
+  - {fileID: 2100000, guid: 3bb9b32806e378548bb0f3059ee6d45c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -88,7 +88,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3954887409231185613
+--- !u!65 &7778610864701365356
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,8 +107,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.13936216, y: 0.32840663, z: 0.35688692}
-  m_Center: {x: -0.5718821, y: 0.7417586, z: 0.35816488}
+  m_Size: {x: 0.025505032, y: 0.11575976, z: 0.14443319}
+  m_Center: {x: -0.0011281287, y: 0.058705017, z: 0.03477045}
 --- !u!54 &7212067311264327319
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -156,7 +156,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &2701068149860756557
+--- !u!114 &6160880031628417110
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
