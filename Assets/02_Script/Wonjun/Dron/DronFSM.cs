@@ -36,11 +36,13 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
 
     [Header("Values")]
     [SerializeField] private float moveRadius;
+    [SerializeField] private float chaseInRadius;
     [SerializeField] private float chaseRadius;
     [SerializeField] private float killRadius;
     [SerializeField] private float workSpeed;
     [SerializeField] public bool zoom = false;
     [SerializeField] private float runSpeed;
+    [SerializeField] private LineRenderer lazerLine;
     [SerializeField] private float lazerTime;
     [SerializeField] private Light dronLight;
     [SerializeField] private float zoomRange;
@@ -68,24 +70,25 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
     {
         DronIdleState dronIdleState = new DronIdleState(this);
         DronPatrolState dronPatrolState = new DronPatrolState(this, moveRadius, workSpeed, Spark);
-        DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed, lazerTime, stopTime);
+        DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed, lazerTime, stopTime, lazerLine);
         DronKillState dronKillState = new DronKillState(this);
         DronZoomState dronZoomState = new DronZoomState(this, zoomRange, dronLight);
         DronDeathState dronDeathState = new DronDeathState(this);
 
         DronMoveTransition dronMoveTransition = new DronMoveTransition(this, DronState.Zoom);
-        DronInPlayerTransition dronChasePlayerTransition = new DronInPlayerTransition(this, DronState.Chase, chaseRadius, zoom);
+        DronInPlayerTransition dronChasePlayerTransition = new DronInPlayerTransition(this, DronState.Chase, chaseInRadius);
         DronCatchPlayerTransition dronCatchPlayerTransition = new DronCatchPlayerTransition(this, DronState.Kill, killRadius);
         DronDieTransition dronDieTransition = new DronDieTransition(this, DronState.Dead);
+        DronZoomInTransition dronZoomInTransition = new DronZoomInTransition(this, DronState.Chase);
 
         dronPatrolState.AddTransition(dronMoveTransition);
 
         dronIdleState.AddTransition(dronChasePlayerTransition);
         dronPatrolState.AddTransition(dronChasePlayerTransition);
-        dronZoomState.AddTransition(dronChasePlayerTransition);
+        dronZoomState.AddTransition(dronZoomInTransition);
 
-        dronZoomState.AddTransition(dronCatchPlayerTransition);
         dronChaseState.AddTransition(dronCatchPlayerTransition);
+
 
         dronIdleState.AddTransition(dronDieTransition);
         dronPatrolState.AddTransition(dronDieTransition);
@@ -185,7 +188,13 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
 #endif
 
         Collider[] allPlayers = Physics.OverlapSphere(pos, radius, playerMask);
-        if (allPlayers.Length == 0) return null;
+
+        if (allPlayers.Length == 0 )
+        {
+                return null;
+        }
+        
+
         foreach (Collider player in allPlayers)
         {
             Vector3 targetPos = player.transform.position;

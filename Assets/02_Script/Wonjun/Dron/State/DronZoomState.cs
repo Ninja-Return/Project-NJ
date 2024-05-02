@@ -35,7 +35,7 @@ public class DronZoomState : DronStateRoot
         {
             zoomtime += Time.deltaTime;
             droneLight.innerSpotAngle = Mathf.Lerp(0, zoomRange, zoomtime / 5f);
-            Collider targetPlayer = dronFSM.ViewingPlayer(Mathf.Lerp(5f, 20f, zoomtime / 5f), 0);
+            Collider targetPlayer = dronFSM.ViewingPlayer(Mathf.Lerp(5f, 10f, zoomtime / 5f), 0);
             if(targetPlayer != null)
             {
                 dronFSM.targetPlayer = targetPlayer;
@@ -49,7 +49,7 @@ public class DronZoomState : DronStateRoot
     {
         if (!IsServer) return;
         droneLight.innerSpotAngle = Mathf.Lerp(zoomRange, 0, zoomtime / 5f);
-        dronFSM.ViewingPlayer(Mathf.Lerp(20f, 5f, 0.5f), 25);
+        dronFSM.ViewingPlayer(Mathf.Lerp(10f, 5f, 0.5f), 20);
         zoomtime = 0;
         dronFSM.zoom = false;
     }
