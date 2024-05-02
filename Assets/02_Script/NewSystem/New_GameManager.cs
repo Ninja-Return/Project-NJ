@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -154,6 +152,4 @@ public class New_GameManager : NetworkBehaviour
         Debug.Log("公攫啊 决没抄 老");
 
     }
-
-
 }

@@ -97,7 +97,7 @@ public class NetworkSoundManager : NetworkBehaviour
     public static void Play3DSound(string clipName, Vector3 position, 
         float minDistance = 1, float maxDistance = 500, 
         SoundType type = SoundType.SFX, 
-        AudioRolloffMode rolloffMode = AudioRolloffMode.Logarithmic, 
+        AudioRolloffMode rolloffMode = AudioRolloffMode.Linear, 
         SoundPlayType playType = SoundPlayType.Server)
     {
 

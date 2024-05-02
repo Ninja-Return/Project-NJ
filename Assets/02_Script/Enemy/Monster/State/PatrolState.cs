@@ -52,7 +52,7 @@ public class PatrolState : MonsterStateRoot
         ulong randomPlayer = PlayerManager.Instance.alivePlayer[Random.Range(0, PlayerManager.Instance.alivePlayer.Count)].clientId;
         PlayerController pc = PlayerManager.Instance.FindPlayerControllerToID(randomPlayer);
 
-        for (int i = 0; i < 400; i++)
+        for (int i = 0; i < range * 15; i++) //감지범위만큼 검사횟수 늘리기
         {
             Vector3 randomPoint = pc.transform.position + (Random.insideUnitSphere * range);
             NavMeshHit hit;
@@ -69,7 +69,6 @@ public class PatrolState : MonsterStateRoot
             }
         }
         result = Vector3.zero;
-        Debug.Log("어라?");
         return false;
     }
 }

@@ -10,36 +10,56 @@ public class SellObjectSys : InteractionObject
     [SerializeField] private Transform moveObject;
     [SerializeField] private SellSystem sellSystem;
 
-    private bool isLock;
+    private NetworkVariable<bool> locked = new();
 
     protected override void DoInteraction()
     {
 
-        if (isLock) return;
-        isLock = true;
+        if (locked.Value) return;
+
+        NetworkSoundManager.Play3DSound("BoxOpen", transform.position, 0.1f, 10f);
 
         MoveServerRPC(NetworkManager.LocalClientId);
 
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void MoveServerRPC(ulong clickClientId)
+    private void MoveServerRPC(ulong buyClientId)
     {
+
+        locked.Value = true;
 
         Sequence seq = DOTween.Sequence();
         seq.Append(moveObject.DOLocalMoveZ(-0.6f, 0.3f).SetEase(Ease.OutQuad));
         seq.AppendInterval(1);
-        seq.AppendCallback(() => Selling(clickClientId));
-        seq.AppendInterval(1);
+        seq.AppendCallback(() => Selling(buyClientId));
+        seq.AppendInterval(1)
+            .OnComplete(() =>
+            {
+                NetworkSoundManager.Play3DSound("BoxClose", transform.position, 0.1f, 10f);
+            });
         seq.Append(moveObject.DOLocalMoveZ(0.47f, 0.3f).SetEase(Ease.OutQuad));
+        seq.AppendCallback(() =>
+        {
+
+            locked.Value = false;
+
+        });
 
     }
 
-    private void Selling(ulong clickClientId)
+    private void Selling(ulong buyClientId)
     {
 
-        sellSystem.Sell(clickClientId);
-        isLock = false;
+        NetworkSoundManager.Play3DSound("Sell", transform.position, 0.01f, 10f);
+        sellSystem.Sell(buyClientId);
+
+    }
+
+    public override void OnNetworkDespawn()
+    {
+
+        locked.Dispose();
 
     }
 
