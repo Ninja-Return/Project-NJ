@@ -150,7 +150,7 @@ public class Room : NetworkBehaviour
             Gizmos.DrawLine(transform.position, transform.position + (-transform.right * 20));
 
         }
-            Gizmos.DrawWireCube(transform.position, new Vector3(30, 3, 30));
+            Gizmos.DrawWireCube(transform.position, new Vector3(15, 6, 15));
 
 
 
