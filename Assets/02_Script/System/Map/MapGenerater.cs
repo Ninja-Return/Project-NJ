@@ -23,6 +23,8 @@ public enum DirationType
 public class MapGenerater : NetworkBehaviour
 {
 
+    private const int MAP_SIZE = 15;
+
     [SerializeField] private List<Room> constRooms = new();
     [SerializeField] private Room onlySpawn, rareRoom;
     [SerializeField] private NavMeshSurface surface;
@@ -48,7 +50,7 @@ public class MapGenerater : NetworkBehaviour
 
             spawnConstRoom = constRooms.ToList();
             var data = datas.GetRandomListObject();
-            LoadData(data, item * data.data.size * 30);
+            LoadData(data, item * data.data.size * MAP_SIZE);
 
         }
 
@@ -89,8 +91,8 @@ public class MapGenerater : NetworkBehaviour
     private void LoadResource()
     {
 
-        var datas = Resources.LoadAll<Room>("RoomData/Corridor").ToList();
-        datas.AddRange(Resources.LoadAll<Room>("RoomData/Room"));
+        var datas = Resources.LoadAll<Room>("NewRoomData/Corridor").ToList();
+        datas.AddRange(Resources.LoadAll<Room>("NewRoomData/Room"));
 
         this.datas = Resources.LoadAll<MapDataSO>("MapData").ToList();
 
@@ -268,7 +270,7 @@ public class MapGenerater : NetworkBehaviour
 
         }
 
-        var room = Instantiate(prefab, new Vector3(index.x * 30 + offset.x, 0, -index.y * 30 - offset.y), RotateRoad(dir));
+        var room = Instantiate(prefab, new Vector3(index.x * MAP_SIZE + offset.x, 0, -index.y * MAP_SIZE - offset.y), RotateRoad(dir));
 
         creationRoomList.Add(((MapCell)dir, room));
 
@@ -314,7 +316,7 @@ public class MapGenerater : NetworkBehaviour
 
             if (item == MapCell.Room || item == MapCell.None || !cell.HasFlag(item)) continue;
 
-            var checkPos = (GetDirByCell(item) * 30) + room.transform.position;
+            var checkPos = (GetDirByCell(item) * MAP_SIZE) + room.transform.position;
             var revCell = GetReverceCell(item);
 
             var obj = creationRoomList.FindIndex(x => 
