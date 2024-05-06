@@ -8,7 +8,7 @@ public class New_GameManager : NetworkBehaviour
     [Header("Wait")]
     [SerializeField] private int waitDelay = 10;
 
-
+    public NetworkVariable<bool> IsLightOff { get; set; } = new();
     private int joinCount;
 
 

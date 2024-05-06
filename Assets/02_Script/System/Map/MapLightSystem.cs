@@ -29,7 +29,7 @@ public class MapLightSystem : NetworkBehaviour
     private void HandleHardLight()
     {
 
-        SetLightClientRPC(false);
+        SetLightServerRPC(false);
 
     }
 
@@ -58,6 +58,7 @@ public class MapLightSystem : NetworkBehaviour
     private void SetLightServerRPC(bool value)
     {
 
+        New_GameManager.Instance.IsLightOff.Value = value;
         SetLightClientRPC(value);
 
     }
