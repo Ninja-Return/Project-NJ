@@ -8,7 +8,7 @@ public class New_GameManager : NetworkBehaviour
     [Header("Wait")]
     [SerializeField] private int waitDelay = 10;
 
-    public NetworkVariable<bool> IsLightOff { get; set; } = new();
+    public NetworkVariable<bool> IsLightOn { get; set; } = new();
     private int joinCount;
 
 
@@ -45,6 +45,13 @@ public class New_GameManager : NetworkBehaviour
         {
 
             JoinSceneServerRPC();
+
+        }
+
+        if (IsServer)
+        {
+
+            IsLightOn.Value = true;    
 
         }
 

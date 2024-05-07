@@ -58,7 +58,7 @@ public class MapLightSystem : NetworkBehaviour
     private void SetLightServerRPC(bool value)
     {
 
-        New_GameManager.Instance.IsLightOff.Value = value;
+        New_GameManager.Instance.IsLightOn.Value = value;
         SetLightClientRPC(value);
 
     }
