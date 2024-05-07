@@ -43,4 +43,17 @@ public class Soda : HandItemRoot
 
     }
 
+    private void OnDestroy()
+    {
+
+        if (!isOwner) return;
+        if (eventSystem != null)
+        {
+
+            eventSystem.OnTweenAnimeEvent -= HandleAnimeEnd;
+
+        }
+
+    }
+
 }
