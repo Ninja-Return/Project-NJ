@@ -17,7 +17,6 @@ public enum EnumPlayerState
 
 public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 {
-
     [SerializeField] private EnumPlayerState startState;
     [SerializeField] private bool debug;
 
@@ -65,7 +64,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     }
 
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
 
         cvcam.Priority = IsOwner || debug ? 10 : 0;
@@ -79,7 +78,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
         interactionCanvas.gameObject.SetActive(IsOwner || debug);
 
-        if(!IsOwner && !debug) return;
+        if (!IsOwner && !debug) return;
 
         if (!debug)
         {
@@ -91,7 +90,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         Input = Input.Init();
         Data = Instantiate(Data);
 
-        if(PlayerManager.Instance != null)
+        if (PlayerManager.Instance != null)
         {
 
             PlayerManager.Instance.SetLocalPlayer(this);
