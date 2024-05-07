@@ -12,7 +12,11 @@ public class DeathState : MonsterStateRoot
 
     protected override void EnterState()
     {
-        
+        if (!IsServer) return;
+
+        monsterFSM.nav.isStopped = true;
+        monsterAnim.SetAnimation("IsDeath");
+        NetworkSoundManager.Play3DSound("MonsterDie", monsterFSM.transform.position, 0.1f, 45f, SoundType.SFX, AudioRolloffMode.Linear);
     }
 
     protected override void UpdateState()
@@ -22,6 +26,9 @@ public class DeathState : MonsterStateRoot
 
     protected override void ExitState()
     {
-        
+        if (!IsServer) return;
+
+        monsterFSM.nav.isStopped = false;
+        monsterAnim.SetAnimation("Death", false); //Rader
     }
 }
