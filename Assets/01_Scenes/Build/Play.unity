@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.000017033939, g: 0.000000025772884, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.000017033932, g: 0.000000025772884, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1333,7 +1333,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -3390,7 +3390,6 @@ MonoBehaviour:
   maxSpawnTime: 10
   monsterPrefabs:
   - {fileID: 414673305194451298, guid: 37d8bb7b4e9b42844b71a0ae9477d107, type: 3}
-  - {fileID: 8731334441768544532, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
   statuePrefab: {fileID: 3552912527455403678, guid: 3005967c96c11d84893ce30c4153da23, type: 3}
 --- !u!114 &1985564214
 MonoBehaviour:

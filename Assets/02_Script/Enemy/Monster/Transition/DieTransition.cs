@@ -10,6 +10,7 @@ public class DieTransition : MonsterTransitionRoot
     {
         if (monsterFSM.IsDead)
         {
+            //monsterFSM.monsterAnim.SetAnimation("Death");
             return true;
         }
         return false;
