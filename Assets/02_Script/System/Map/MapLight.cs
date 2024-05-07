@@ -1,19 +1,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class MapLight : MonoBehaviour
+public class MapLight : NetworkBehaviour
 {
 
     private Light curLight;
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
 
         curLight = GetComponent<Light>();
 
         MapLightSystem.Instance.AddLight(this);
+
 
     }
 
