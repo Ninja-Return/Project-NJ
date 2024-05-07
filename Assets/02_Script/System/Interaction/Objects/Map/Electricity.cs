@@ -27,6 +27,7 @@ public class Electricity : InteractionObject
         {
 
             interactionAble = false;
+            interactionText = "";
 
         }
 
