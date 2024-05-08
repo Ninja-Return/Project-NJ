@@ -81,7 +81,7 @@ public class MapGenerater : NetworkBehaviour
 
     }
 
-    [ServerRpc(RequireOwnership = false)]
+    [ServerRpc(RequireOwnership = false¤º)]
     private void JoinServerRPC()
     {
 
