@@ -72,7 +72,7 @@ public class Room : NetworkBehaviour
 
     }
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
 
         ChunkRenderingSystem.Instance.AddChunk(transform.position, GetComponentsInChildren<Renderer>());

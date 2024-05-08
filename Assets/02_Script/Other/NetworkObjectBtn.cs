@@ -7,6 +7,7 @@ public class NetworkObjectBtn : InteractionObject
 {
 
     [SerializeField] private UnityEvent execute;
+    [SerializeField] private bool isOnceInteraction;
 
     private string oldTex;
 
@@ -42,6 +43,14 @@ public class NetworkObjectBtn : InteractionObject
     {
 
         execute?.Invoke();
+
+        if (isOnceInteraction)
+        {
+
+            gameObject.layer = 0;
+
+
+        }
 
     }
 

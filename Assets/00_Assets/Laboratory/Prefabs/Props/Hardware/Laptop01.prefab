@@ -150,8 +150,6 @@ GameObject:
   - component: {fileID: 9167529504158582431}
   - component: {fileID: 3637830045447693905}
   - component: {fileID: 1914423536754318950}
-  - component: {fileID: 6464489444257908725}
-  - component: {fileID: 7107894344009423677}
   m_Layer: 3
   m_Name: Laptop01
   m_TagString: Untagged
@@ -245,60 +243,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.6008079, y: 1.0186304, z: 0.061295934}
   m_Center: {x: 0, y: -0.021528592, z: 0.030647967}
---- !u!114 &6464489444257908725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7919914770534234101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72757d4d4993eb94ba3452f13d2b679c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <interactionText>k__BackingField: "E\uD0A4\uB97C \uB20C\uB7EC \uD0C8\uCD9C\uC744
-    \uC2DC\uC791"
-  <objectType>k__BackingField: 0
-  <rpcOfLocalClient>k__BackingField: 0
-  <interactionAbleItemName>k__BackingField: 
-  interactionAble: 1
-  execute:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 7107894344009423677}
-        m_TargetAssemblyTypeName: StartGame, Assembly-CSharp
-        m_MethodName: GameStart
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &7107894344009423677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7919914770534234101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ca3613f29ab92f4b885ea6f192ac1e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

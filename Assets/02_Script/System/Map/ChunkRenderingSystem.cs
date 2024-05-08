@@ -41,6 +41,7 @@ public class ChunkRenderingSystem : MonoBehaviour
     private NativeArray<int2> chunks;
     private NativeList<int2> loadingChunk;
     private JobHandle jobHandle;
+    private Vector3 playerPos;
     private int fpsCount;
     private bool isSchedule;
     public static ChunkRenderingSystem Instance;
@@ -49,6 +50,13 @@ public class ChunkRenderingSystem : MonoBehaviour
     {
         
         Instance = this;
+
+    }
+
+    public void SetUpPos(Vector3 pos)
+    {
+
+        playerPos = pos;
 
     }
 
@@ -106,9 +114,7 @@ public class ChunkRenderingSystem : MonoBehaviour
     private void Update()
     {
 
-        if (PlayerManager.Instance == null ||
-            PlayerManager.Instance.localController == null ||
-            chunkContainer.Count == 0)
+        if (chunkContainer.Count == 0)
         {
 
             return;
@@ -121,7 +127,7 @@ public class ChunkRenderingSystem : MonoBehaviour
 
             chunks = new NativeArray<int2>(chunkContainer.Keys.ToArray(), Allocator.TempJob);
             loadingChunk = new NativeList<int2>(Allocator.TempJob);
-            var originPos = PlayerManager.Instance.localController.transform.position;
+            var originPos = this.playerPos;
             int2 playerPos = new int2(Mathf.FloorToInt(originPos.x), Mathf.FloorToInt(originPos.z));
 
             var job = new ChunkLoadJob

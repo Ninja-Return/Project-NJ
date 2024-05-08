@@ -14,19 +14,21 @@ public class PlayerItemRader : NetworkBehaviour
     private Canvas itemPanelCanvas;
     private List<ItemPanel> activeItemPanels = new List<ItemPanel>();
 
-    public override void OnNetworkSpawn()
+    private void Start()
     {
-
         if (!IsOwner) return;
 
         cam = Camera.main;
         itemPanelCanvas = Instantiate(canvas);
-
     }
 
     private void Update()
     {
         if (!IsOwner) return;
+        if (cam == null)
+        {
+            cam = Camera.main;
+        }
 
         Collider[] items = Physics.OverlapSphere(cam.transform.position, raderRadius, itemLayer);
 

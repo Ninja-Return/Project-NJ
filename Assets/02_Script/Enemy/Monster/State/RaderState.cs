@@ -18,8 +18,10 @@ public class RaderState : MonsterStateRoot
         if (!IsServer) return;
 
         player = monsterFSM.targetPlayer;
-        monsterAnim.SetAnimation("Idle", true); //Rader
+        monsterAnim.SetAnimation("Rader", true); //Rader
         NetworkSoundManager.Play3DSound("RaderPlayer", monsterFSM.transform.position, 0.1f, 45f, SoundType.SFX, AudioRolloffMode.Linear);
+
+        monsterFSM.LookAt(player.transform.position);
     }
 
     protected override void UpdateState()
@@ -45,7 +47,7 @@ public class RaderState : MonsterStateRoot
     {
         if (!IsServer) return;
 
-        monsterAnim.SetAnimation("Idle", false); //Rader
+        monsterAnim.SetAnimation("Rader", false); //Rader
         currentTime = 0;
     }
 }

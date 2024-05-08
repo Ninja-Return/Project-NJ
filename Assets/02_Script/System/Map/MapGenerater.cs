@@ -35,11 +35,16 @@ public class MapGenerater : NetworkBehaviour
     private List<Room> spawnConstRoom = new();
     private float per = 0;
     private bool onlyObjSpawn;
+    private int joinCount;
 
     private IEnumerator Start()
     {
 
+        JoinServerRPC();
+
         if (!IsServer) yield break;
+
+        yield return new WaitUntil(() => joinCount == NetworkManager.ConnectedClients.Count);
 
         LoadResource();
 
@@ -73,6 +78,14 @@ public class MapGenerater : NetworkBehaviour
         PlayerManager.Instance.RequstSpawn(pos);
 
         New_GameManager.Instance.Spawning();
+
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void JoinServerRPC()
+    {
+
+        joinCount++;
 
     }
 

@@ -37,16 +37,10 @@ public class SettingUI : MonoBehaviour
         {
             SettingOn();
         }
-        else if (Input.GetKeyDown(KeyCode.Escape) && Setting)
-        {
-            SettingOff();
-        }
     }
 
     public void SettingOn()
     {
-        mainPanelManager.OpenPanel("Settings");
-
         Support.SettingCursorVisable(isShow);
 
         if (PlayerManager.Instance == null)
@@ -54,20 +48,21 @@ public class SettingUI : MonoBehaviour
         else
             PlayerManager.Instance.localController.Active(!isShow);
 
+        mainPanelManager.OpenPanel("Settings");
 
         Setting = true;
     }
 
     public void SettingOff()
     {
-        mainPanelManager.OpenFirstTab();
-
         Support.SettingCursorVisable(!isShow);
 
         if (PlayerManager.Instance == null)
             playerController.Active(isShow);
         else
             PlayerManager.Instance.localController.Active(isShow);
+
+        mainPanelManager.OpenFirstTab();
 
         Setting = false;
     }

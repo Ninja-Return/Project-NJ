@@ -16,7 +16,7 @@ public class Electricity : InteractionObject
 
         if(New_GameManager.Instance == null) return;
 
-        if (!New_GameManager.Instance.IsLightOff.Value)
+        if (!New_GameManager.Instance.IsLightOn.Value)
         {
 
             interactionAble = true;
@@ -27,6 +27,7 @@ public class Electricity : InteractionObject
         {
 
             interactionAble = false;
+            interactionText = "";
 
         }
 

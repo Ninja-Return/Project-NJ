@@ -22,6 +22,9 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
 
     public SculptureState nowState;
 
+    [Header("Prefab")]
+    [SerializeField] private NetworkObject deadBody;
+
 
     [HideInInspector] public Collider targetPlayer;
     [HideInInspector] public bool IsDead { get; private set; }
@@ -40,6 +43,7 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
     public LayerMask obstacleMask;
 
     readonly float frame = 0.2f;
+    readonly Vector3 deadbodyPivot = new Vector3(0, 0.1f, 0);
 
     private void Start()
     {
@@ -200,6 +204,12 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
     public void Death()
     {
         DeathServerRpc();
+    }
+
+    public void CreateDeadbody()
+    {
+        NetworkObject sculptureDeadbody = Instantiate(deadBody, transform.position + deadbodyPivot, transform.rotation);
+        sculptureDeadbody.Spawn();
     }
 
     [ServerRpc(RequireOwnership = false)]

@@ -5,7 +5,8 @@ using TMPro;
 
 public class ItemPanel : MonoBehaviour
 {
-    public TMP_Text itemText;
+    [SerializeField] private TMP_Text itemText;
+    [SerializeField] private TMP_Text priceText;
     public ItemRoot Item { get; private set; }
 
     private RectTransform rectTransform; 
@@ -31,5 +32,6 @@ public class ItemPanel : MonoBehaviour
     {
         Item = itemRoot;
         itemText.text = itemRoot.data.itemName;
+        priceText.text = $"АЁАн : {itemRoot.data.price}";
     }
 }

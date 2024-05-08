@@ -14,6 +14,13 @@ public class PipeHandle : InteractionObject
     public override void OnNetworkSpawn()
     {
 
+        New_GameManager.Instance.OnGameStarted += HandleStarted;
+
+    }
+
+    private void HandleStarted()
+    {
+
         if (IsServer)
         {
 
@@ -28,6 +35,8 @@ public class PipeHandle : InteractionObject
 
         while(true)
         {
+
+            yield return new WaitForSeconds(Random.Range(60, 120));
 
             if (isPipeBreak)
             {
@@ -44,7 +53,6 @@ public class PipeHandle : InteractionObject
 
             }
 
-            yield return new WaitForSeconds(60f);
 
         }
 

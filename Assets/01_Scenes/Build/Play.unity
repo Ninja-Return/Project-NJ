@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.000017033939, g: 0.000000025772884, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.000017033932, g: 0.000000025772884, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -742,11 +742,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
-  far clip plane: 5000
-  field of view: 40
+  near clip plane: 0.15
+  far clip plane: 30
+  field of view: 60.000004
   orthographic: 0
-  orthographic size: 10
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -856,8 +856,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619981845}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -3.7153335, y: 1.454, z: 0.0722388}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.648, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1328,12 +1328,12 @@ AudioSource:
   m_GameObject: {fileID: 780939493}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -864288099306689449, guid: ccf1dbd6f42120e498d23e9d76639d0c, type: 2}
   m_audioClip: {fileID: 8300000, guid: 4cc5063cd5bb0464fb54392f270e0d89, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -3324,8 +3324,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   constRooms:
-  - {fileID: 4624061974639197729, guid: 0d5cf3e21d83cc94fbc038b01ebc808f, type: 3}
   - {fileID: 7082185041766046308, guid: 93f9353f6ef9446458d66592fce7e8b5, type: 3}
+  - {fileID: 3643716918441180841, guid: 7c5803b4f0eaf964b9b7ba90e0372921, type: 3}
   onlySpawn: {fileID: 2264478138329410130, guid: 24b1630bb51a8634297cabf89bf852f3, type: 3}
   rareRoom: {fileID: 5827883379826052229, guid: dd416f58bc1c43f44a069ee286dae345, type: 3}
   surface: {fileID: 1985564211}
@@ -3385,9 +3385,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75196f8c070a4344e8d31115f4f06a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterMaxSpawn: 10
-  minSpawnTime: 5
-  maxSpawnTime: 10
+  monsterMaxSpawn: 8
+  minSpawnTime: 110
+  maxSpawnTime: 150
   monsterPrefabs:
   - {fileID: 414673305194451298, guid: 37d8bb7b4e9b42844b71a0ae9477d107, type: 3}
   - {fileID: 8731334441768544532, guid: c545cb543b3319d40a880d165d6a320c, type: 3}

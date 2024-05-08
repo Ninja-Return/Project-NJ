@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using Unity.Services.Lobbies.Models;
+using Unity.Services.Lobbies;
 
 public class LobbySelectUIController : MonoBehaviour
 {
@@ -137,8 +138,6 @@ public class LobbySelectUIController : MonoBehaviour
 
             }
 
-            yield return null;
-
             foreach (var lobby in lobbys.Result)
             {
 
@@ -146,7 +145,7 @@ public class LobbySelectUIController : MonoBehaviour
 
             }
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(5f);
 
         }
 

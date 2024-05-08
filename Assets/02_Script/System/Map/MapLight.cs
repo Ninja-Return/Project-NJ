@@ -1,19 +1,26 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class MapLight : MonoBehaviour
+public class MapLight : NetworkBehaviour
 {
 
     private Light curLight;
 
-    private void Start()
+    public IEnumerator Start()
     {
+
+        yield return new WaitUntil(() => {
+
+            return MapLightSystem.Instance != null;
+        });
 
         curLight = GetComponent<Light>();
 
         MapLightSystem.Instance.AddLight(this);
+
 
     }
 
