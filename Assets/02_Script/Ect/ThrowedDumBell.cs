@@ -7,6 +7,7 @@ public class ThrowedDumBell : NetworkBehaviour
 {
 
     private Rigidbody rigid;
+    private bool isD;
 
     private void Awake()
     {
@@ -28,17 +29,15 @@ public class ThrowedDumBell : NetworkBehaviour
 
         if (!IsServer) return;
 
-        if (collision.gameObject.layer == LayerMask.GetMask("Player"))
+        if (collision.transform.TryGetComponent<PlayerController>(out var compo) && !isD)
         {
 
-            if (collision.transform.TryGetComponent<PlayerController>(out var compo))
-            {
-
-                compo.AddSpeedClientRPC(-3, 3);
-
-            }
+            isD = true;
+            compo.AddSpeedClientRPC(-3, 5);
 
         }
+
+        if (!IsSpawned) return;
 
         NetworkObject.Despawn();
 
