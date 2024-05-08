@@ -19,8 +19,8 @@ public class LobbyPanel : MonoBehaviour, IPointerDownHandler
 
         joinCode = lobby.Data["JoinCode"].Value;
         titleText.text = lobby.Name;
-        peopleText.text = $"{lobby.Players.Count}/6";
-
+        peopleText.text = $"{6 - lobby.AvailableSlots}/6";
+        
     }
 
     public async void JoinButtonClick()
