@@ -17,6 +17,8 @@ public class DeathState : MonsterStateRoot
         monsterFSM.nav.isStopped = true;
         monsterAnim.SetAnimation("IsDeath");
         NetworkSoundManager.Play3DSound("MonsterDie", monsterFSM.transform.position, 0.1f, 45f, SoundType.SFX, AudioRolloffMode.Linear);
+
+        monsterFSM.gameObject.layer = 0;
     }
 
     protected override void UpdateState()

@@ -324,7 +324,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
         DeathServerRpc();
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void DeathServerRpc()
     {
         IsDead = true;
