@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class PlayerDarkness : NetworkBehaviour
 {
     [SerializeField] private GameObject darkImage;
 
     private bool isDead;
+
     readonly float darkTime = 0.05f;
 
     public void Bliend(ulong clientId, bool isBliend)
@@ -19,6 +22,8 @@ public class PlayerDarkness : NetworkBehaviour
     {
         BliendClientRpc(clientId);
     }
+
+    #region ClientRpc
 
     [ClientRpc]
     private void BliendClientRpc(ulong clientId, bool isBliend)
@@ -38,6 +43,10 @@ public class PlayerDarkness : NetworkBehaviour
         StartCoroutine(BliendCor());
     }
 
+    #endregion
+
+    #region Coroutine
+
     private IEnumerator BliendCor()
     {
         darkImage.SetActive(true);
@@ -46,4 +55,6 @@ public class PlayerDarkness : NetworkBehaviour
 
         darkImage.SetActive(false);
     }
+
+    #endregion
 }

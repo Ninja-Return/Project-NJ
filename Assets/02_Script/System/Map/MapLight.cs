@@ -9,8 +9,13 @@ public class MapLight : NetworkBehaviour
 
     private Light curLight;
 
-    public override void OnNetworkSpawn()
+    public IEnumerator Start()
     {
+
+        yield return new WaitUntil(() => {
+
+            return MapLightSystem.Instance != null;
+        });
 
         curLight = GetComponent<Light>();
 

@@ -57,6 +57,7 @@ public class Sensor : HandItemRoot
         sensorRen.material.color = Color.red; // 단일 재질의 색상 변경
         yield return new WaitForSeconds(3f);
         sensorRen.material.color = Color.green; // 단일 재질의 색상 변경
+        OnSensor = false;
     }
 
     void OnDrawGizmosSelected()

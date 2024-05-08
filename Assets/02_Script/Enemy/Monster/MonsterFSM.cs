@@ -113,6 +113,13 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
         lookVec = playerVec;
     }
 
+    public void LookAt(Vector3 pos)
+    {
+        Vector3 lookAtPosition = new Vector3(pos.x, transform.position.y, pos.z);
+
+        transform.LookAt(lookAtPosition);
+    }
+
     private bool RayObstacle(Vector3 pos, Vector3 lookVec, float destance)
     {
         return Physics.Raycast(pos, lookVec, destance, obstacleMask);
