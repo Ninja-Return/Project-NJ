@@ -77,6 +77,16 @@ public class WatchingSystem : NetworkBehaviour
 
     }
 
+    private void Update()
+    {
+
+        if (!isWatching) return;
+
+        ChunkRenderingSystem.Instance.SetUpPos(alivePlayers.Find(x => x.OwnerClientId == currentWatching).watchCam
+            .transform.position);
+
+    }
+
     public void StartWatching()
     {
 
