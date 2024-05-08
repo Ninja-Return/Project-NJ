@@ -107,7 +107,7 @@ public class ChunkRenderingSystem : MonoBehaviour
     private void Update()
     {
 
-        if (chunkContainer.Count == 0)
+        if (chunkContainer.Count == 0 || !New_GameManager.Instance.GameStarted.Value)
         {
 
             return;
@@ -147,7 +147,7 @@ public class ChunkRenderingSystem : MonoBehaviour
         fpsCount++;
 
 
-        if (chunkContainer.Count == 0)
+        if (chunkContainer.Count == 0 || !New_GameManager.Instance.GameStarted.Value)
         {
 
             return;

@@ -9,6 +9,7 @@ public class New_GameManager : NetworkBehaviour
     [SerializeField] private int waitDelay = 10;
 
     public NetworkVariable<bool> IsLightOn { get; set; } = new();
+    public NetworkVariable<bool> GameStarted { get; private set; } = new();
     private int joinCount;
 
 
@@ -149,6 +150,7 @@ public class New_GameManager : NetworkBehaviour
     {
 
         OnItemSpawnCall?.Invoke();
+        GameStarted.Value = true;
 
     }
 

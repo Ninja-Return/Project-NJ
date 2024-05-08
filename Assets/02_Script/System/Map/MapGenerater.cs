@@ -67,7 +67,6 @@ public class MapGenerater : NetworkBehaviour
 
         Close();
 
-
         yield return null;
 
         surface.BuildNavMesh();
