@@ -8,19 +8,28 @@ public class MysteryGun : HandItemRoot
     [SerializeField] private LayerMask obstacleMask;
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private LayerMask enemyMask;
+    [SerializeField] private ParticleSystem muzzle;
+
+    private bool isUsed;
 
     public override void DoUse()
     {
-        if (!isOwner) return;
+        if (!isOwner || isUsed) return;
+
+        isUsed = true;
 
         NetworkSoundManager.Play3DSound("GunShot", transform.position, 0.01f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
-
+        GetComponentInParent<PlayerImpulse>().PlayImpulse("GunShoot");
         Camera cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         Vector2 ScreenCenter = new Vector2(cam.pixelWidth / 2, cam.pixelHeight / 2);
         Ray ray = cam.ScreenPointToRay(ScreenCenter);
+        muzzle.Play();
 
         EnemyCheck(ray);
         PlayerCheck(ray);
+
+        StartCoroutine(DestroyCo());
+
     }
 
     void EnemyCheck(Ray ray)
@@ -55,4 +64,13 @@ public class MysteryGun : HandItemRoot
 
         return Physics.Raycast(ray, checkDistance, obstacleMask);
     }
+
+    private IEnumerator DestroyCo()
+    {
+
+        yield return new WaitForSeconds(0.07f);
+        Inventory.Instance.Deleteltem();
+
+    }
+
 }
