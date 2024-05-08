@@ -46,6 +46,9 @@ public class ResultUIController : NetworkBehaviour
         winnerText.color = Color.red;
         isDead = true;
 
+
+        EscapeTimer();
+
         winText.text = "탈출 실패";
     }
 
@@ -55,6 +58,8 @@ public class ResultUIController : NetworkBehaviour
         upImg.color = skyColor;
         downImg.color = skyColor;
         winnerText.color = skyColor;
+
+        EscapeTimer();
 
         winText.text = "플레이 결과";
 
