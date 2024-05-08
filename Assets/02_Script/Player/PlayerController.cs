@@ -145,7 +145,6 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
         //Data.LookSensitive.SetValue(SensitivitySlider.value);
         moveVector.Value = Input.MoveVecter;
-        ChunkRenderingSystem.Instance.SetUpPos(transform.position);
 
         base.Update();
 
@@ -199,6 +198,15 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         {
 
             Input.OnInventoryKeyPress -= HandleInvenActive;
+
+        }
+
+        if(IsOwner && Input != null)
+        {
+
+
+            Input.Dispose();
+            Destroy(Input);
 
         }
 
