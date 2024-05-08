@@ -83,4 +83,13 @@ public class MapLightSystem : NetworkBehaviour
 
     }
 
+    public override void OnDestroy()
+    {
+
+        base.OnDestroy();
+
+        Instance = null;
+
+    }
+
 }

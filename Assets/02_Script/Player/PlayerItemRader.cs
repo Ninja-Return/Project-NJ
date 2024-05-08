@@ -25,6 +25,10 @@ public class PlayerItemRader : NetworkBehaviour
     private void Update()
     {
         if (!IsOwner) return;
+        if (cam == null)
+        {
+            cam = Camera.main;
+        }
 
         Collider[] items = Physics.OverlapSphere(cam.transform.position, raderRadius, itemLayer);
 

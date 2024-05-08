@@ -116,29 +116,35 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
 
 
 
-   /* public Collider RayPlayer(float radius)
+    /* public Collider RayPlayer(float radius)
+     {
+         Vector3 pos = headTrs.position;
+
+         RaycastHit[] allPlayers = Physics.RaycastAll(pos, lookVec, radius, playerMask);
+         if (allPlayers.Length == 0) return null;
+
+         float minDistance = float.MaxValue;
+         Collider targetPlayer = null;
+         foreach (RaycastHit player in allPlayers)
+         {
+             if (Vector3.Distance(player.transform.position, pos) < minDistance)
+             {
+                 targetPlayer = player.collider;
+             }
+         }
+
+         Vector3 targetPos = targetPlayer.transform.position;
+         Debug.DrawLine(pos, targetPos, Color.black);
+
+         return targetPlayer;
+     }
+ */
+
+    private bool RayObstacle(Vector3 pos, Vector3 lookVec, float destance)
     {
-        Vector3 pos = headTrs.position;
-
-        RaycastHit[] allPlayers = Physics.RaycastAll(pos, lookVec, radius, playerMask);
-        if (allPlayers.Length == 0) return null;
-
-        float minDistance = float.MaxValue;
-        Collider targetPlayer = null;
-        foreach (RaycastHit player in allPlayers)
-        {
-            if (Vector3.Distance(player.transform.position, pos) < minDistance)
-            {
-                targetPlayer = player.collider;
-            }
-        }
-
-        Vector3 targetPos = targetPlayer.transform.position;
-        Debug.DrawLine(pos, targetPos, Color.black);
-
-        return targetPlayer;
+        return Physics.Raycast(pos, lookVec, destance, obstacleMask);
     }
-*/
+
     public Collider CirclePlayer(float radius)
     {
         Vector3 pos = headTrs.position;
@@ -200,8 +206,9 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
             Vector3 targetPos = player.transform.position;
             Vector3 targetDir = (targetPos - pos).normalized;
             float targetAngle = Mathf.Acos(Vector3.Dot(lookDir, targetDir)) * Mathf.Rad2Deg;
+            float playerDistance = Vector3.Distance(player.transform.position, pos);
 
-            if (targetAngle <= angle * 0.5f)
+            if (targetAngle <= angle * 0.5f && !RayObstacle(pos, targetDir, playerDistance))
             {
                 //player °¨ÁöµÊ
                 players.Add(player);

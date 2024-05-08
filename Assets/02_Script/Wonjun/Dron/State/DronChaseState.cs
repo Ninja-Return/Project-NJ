@@ -25,7 +25,7 @@ public class DronChaseState : DronStateRoot
     protected override void EnterState()
     {
         if (!IsServer) return;
-        NetworkSoundManager.Play3DSound("DronBite", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
+        NetworkSoundManager.Play3DSound("DronKill", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
         Debug.Log("chase들어옴");
         nav.speed = speed;
         lazer = true;
@@ -70,19 +70,27 @@ public class DronChaseState : DronStateRoot
     /// <returns></returns>
     IEnumerator PlayerStopLazerCoroutine()
     {
+        PlayerController targetPlayer;
+
         while (lazer)
         {
+            targetPlayer = dronFSM.targetPlayer.GetComponent<PlayerController>();
+
             lazerLine.SetPosition(0, dronFSM.headTrs.position);
             lazerLine.SetPosition(1, dronFSM.targetPlayer.transform.position);
             Debug.Log("플레이어 멈추게해", dronFSM.targetPlayer);
-            dronFSM.targetPlayer.GetComponent<PlayerController>().Data.MoveSpeed.SetValue(0f);
+
+            targetPlayer.Data.MoveSpeed.SetValue(0f);
+
             yield return new WaitForSeconds(0.5f);
             lazerLine.SetPosition(1, dronFSM.headTrs.position);
             lazerLine.SetPosition(0, dronFSM.headTrs.position);
+
             yield return new WaitForSeconds(stopTime-1);
             Debug.Log("다시 움직여", dronFSM.targetPlayer);
-            
-            dronFSM.targetPlayer.GetComponent<PlayerController>().Data.MoveSpeed.SetValue(5f);
+
+            if (targetPlayer != null)
+                targetPlayer.Data.MoveSpeed.SetValue(5f);
             yield return new WaitForSeconds(lazerTime);
         }
 

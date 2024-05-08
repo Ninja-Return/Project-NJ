@@ -64,7 +64,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
     }
 
 
-    public override void OnNetworkSpawn()
+    private void Start()
     {
 
         cvcam.Priority = IsOwner || debug ? 10 : 0;
