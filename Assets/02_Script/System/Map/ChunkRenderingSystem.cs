@@ -106,9 +106,7 @@ public class ChunkRenderingSystem : MonoBehaviour
     private void Update()
     {
 
-        if (PlayerManager.Instance == null ||
-            PlayerManager.Instance.localController == null ||
-            chunkContainer.Count == 0)
+        if (chunkContainer.Count == 0)
         {
 
             return;
@@ -121,7 +119,7 @@ public class ChunkRenderingSystem : MonoBehaviour
 
             chunks = new NativeArray<int2>(chunkContainer.Keys.ToArray(), Allocator.TempJob);
             loadingChunk = new NativeList<int2>(Allocator.TempJob);
-            var originPos = PlayerManager.Instance.localController.transform.position;
+            var originPos = Camera.main.transform.position;
             int2 playerPos = new int2(Mathf.FloorToInt(originPos.x), Mathf.FloorToInt(originPos.z));
 
             var job = new ChunkLoadJob
