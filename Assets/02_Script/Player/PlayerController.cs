@@ -145,6 +145,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
         //Data.LookSensitive.SetValue(SensitivitySlider.value);
         moveVector.Value = Input.MoveVecter;
+        ChunkRenderingSystem.Instance.SetUpPos(transform.position);
 
         base.Update();
 
