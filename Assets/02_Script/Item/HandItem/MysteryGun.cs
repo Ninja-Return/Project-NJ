@@ -40,7 +40,8 @@ public class MysteryGun : HandItemRoot
         {
             if (CheakObstacle(ray, hit.transform.position)) return;
 
-            hit.transform.GetComponent<IEnemyInterface>().Death();
+            if (hit.transform.TryGetComponent(out IEnemyInterface enemy))
+                enemy.Death();
         }
     }
 

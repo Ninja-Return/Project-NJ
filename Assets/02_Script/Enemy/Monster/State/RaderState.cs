@@ -17,6 +17,7 @@ public class RaderState : MonsterStateRoot
     {
         if (!IsServer) return;
 
+        monsterFSM.nav.isStopped = true;
         player = monsterFSM.targetPlayer;
         monsterAnim.SetAnimation("Rader", true); //Rader
         NetworkSoundManager.Play3DSound("RaderPlayer", monsterFSM.transform.position, 0.1f, 45f, SoundType.SFX, AudioRolloffMode.Linear);
@@ -47,6 +48,7 @@ public class RaderState : MonsterStateRoot
     {
         if (!IsServer) return;
 
+        monsterFSM.nav.isStopped = false;
         monsterAnim.SetAnimation("Rader", false); //Rader
         currentTime = 0;
     }
