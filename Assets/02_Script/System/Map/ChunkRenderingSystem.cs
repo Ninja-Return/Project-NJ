@@ -60,12 +60,16 @@ public class ChunkRenderingSystem : MonoBehaviour
         foreach (var item in chunkContainer)
         {
 
+            if (item.Value[0] == null) return;
+
             var inc = Include(loadingChunk, item.Key);
 
             if (item.Value[0].enabled == inc) continue;
 
             foreach (var renderer in item.Value)
             {
+
+                if (renderer == null) return;
 
                 renderer.enabled = inc;
 
