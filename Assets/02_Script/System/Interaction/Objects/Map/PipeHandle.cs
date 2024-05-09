@@ -14,7 +14,7 @@ public class PipeHandle : InteractionObject
     public override void OnNetworkSpawn()
     {
 
-        New_GameManager.Instance.OnGameStarted += HandleStarted;
+        New_GameManager.Instance.OnItemSpawnCall += HandleStarted;
 
     }
 
@@ -36,7 +36,7 @@ public class PipeHandle : InteractionObject
         while(true)
         {
 
-            yield return new WaitForSeconds(Random.Range(60, 120));
+            yield return new WaitForSeconds(Random.Range(30, 60));
 
             if (isPipeBreak)
             {
@@ -46,7 +46,7 @@ public class PipeHandle : InteractionObject
 
             }
 
-            if(Random.value > 0.2f)
+            if(Random.value < 0.3f)
             {
 
                 PipeBreakClientRPC();
