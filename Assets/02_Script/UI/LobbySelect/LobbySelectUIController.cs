@@ -43,6 +43,7 @@ public class LobbySelectUIController : MonoBehaviour
         catch (Exception ex)
         {
 
+
             Debug.LogException(ex);
 
         }
