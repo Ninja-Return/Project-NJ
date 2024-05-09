@@ -76,7 +76,7 @@ public class KickSystem : NetworkBehaviour
         if(allCnt >= PlayerManager.Instance.alivePlayer.Count / 2)
         {
 
-            PlayerManager.Instance.PlayerDie(EnumList.DeadType.Vote, selectClientId);
+            //PlayerManager.Instance.PlayerDie(EnumList.DeadType.Vote, selectClientId);
 
         }
 

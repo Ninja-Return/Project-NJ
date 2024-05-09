@@ -313,8 +313,6 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
     private void JumpScareClientRPC(ClientRpcParams param)
     {
         jsVcamTrs.Priority = 500;
-
-        Death();
     }
 
     [ClientRpc]

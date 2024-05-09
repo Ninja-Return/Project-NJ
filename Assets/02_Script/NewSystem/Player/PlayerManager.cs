@@ -15,7 +15,7 @@ public class PlayerManager : NetworkBehaviour
     [SerializeField] private PlayerController playerPrefab;
     [SerializeField] private NetworkObject playerDeadbodyPrefab;
     [Header("Die")]
-    [SerializeField] private DeathUI deathUI;
+    [SerializeField] private DeathUISystem deathUI;
     [SerializeField] private bool spawn = true;
 
     public List<PlayerController> players { get; private set; } = new();
@@ -212,8 +212,8 @@ public class PlayerManager : NetworkBehaviour
         Inventory.Instance.DropAllItem();
 
         NetworkController.Instance.vivox.Leave3DChannel();
-        WatchingSystem.Instance.StartWatching();
 
+        DeathUISystem.Instance.PopupDeathUI(type);
 
         IsDie = true;
 

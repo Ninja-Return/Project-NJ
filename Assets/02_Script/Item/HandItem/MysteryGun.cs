@@ -54,7 +54,7 @@ public class MysteryGun : HandItemRoot
             if (CheakObstacle(ray, hit.transform.position)) return;
 
             ulong playerId = hit.transform.GetComponent<PlayerController>().OwnerClientId;
-            PlayerManager.Instance.PlayerDie(EnumList.DeadType.Monster, playerId);
+            PlayerManager.Instance.PlayerDie(EnumList.DeadType.Gun, playerId);
         }
     }
 
