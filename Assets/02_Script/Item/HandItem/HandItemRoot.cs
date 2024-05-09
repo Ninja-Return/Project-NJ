@@ -12,12 +12,15 @@ public abstract class HandItemRoot : MonoBehaviour
     [field:SerializeField] public bool is1Use { get; protected set; }
 
     protected bool isOwner;
+    protected bool isServer;
 
     public string extraData { get; set; }
-    public void Spawn(bool isOwner)
+    public void Spawn(bool isOwner, bool isServer)
     {
 
         this.isOwner = isOwner;
+
+        this.isServer = isServer;
 
     }
     public abstract void DoUse();
