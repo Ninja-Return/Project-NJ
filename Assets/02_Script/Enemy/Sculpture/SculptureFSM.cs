@@ -42,8 +42,11 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
 
     public LayerMask obstacleMask;
 
-    readonly float frame = 0.2f;
+    readonly Vector3 centerPivot = new Vector3(0, 1f, 0);
     readonly Vector3 deadbodyPivot = new Vector3(0, 0.1f, 0);
+    readonly float frame = 0.2f;
+
+    Vector3 pivot;
 
     private void Start()
     {
@@ -56,6 +59,7 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
         base.Awake();
 
         nav.isStopped = true;
+        pivot = transform.position + centerPivot;
 
         InitializeStates();
         ChangeState(SculptureState.Patrol);
@@ -112,14 +116,14 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
 
     public Collider CirclePlayer(float radius)
     {
-        Collider[] allPlayers = Physics.OverlapSphere(transform.position, radius, playerMask);
+        Collider[] allPlayers = Physics.OverlapSphere(pivot, radius, playerMask);
         if (allPlayers.Length == 0) return null;
 
         float minDistance = float.MaxValue;
         Collider targetPlayer = null;
         foreach (Collider player in allPlayers)
         {
-            if (Vector3.Distance(player.transform.position, transform.position) < minDistance)
+            if (Vector3.Distance(player.transform.position, pivot) < minDistance)
             {
                 targetPlayer = player;
             }
@@ -129,14 +133,15 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
         //    return null;
 
         Vector3 targetPos = targetPlayer.transform.position;
-        Debug.DrawLine(transform.position, targetPos, Color.red);
+        Debug.DrawLine(pivot, targetPos, Color.red);
 
         return targetPlayer;
     }
 
     public Collider[] CirclePlayers(float radius)
     {
-        Collider[] allPlayers = Physics.OverlapSphere(transform.position, radius, playerMask);
+
+        Collider[] allPlayers = Physics.OverlapSphere(pivot, radius, playerMask);
         if (allPlayers.Length == 0) return null;
 
         return allPlayers;
@@ -233,14 +238,13 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.gray;
-        Gizmos.DrawWireSphere(transform.position, chaseRadius);
-        Gizmos.DrawWireSphere(transform.position, killRadius);
+        Gizmos.DrawWireSphere(transform.position + centerPivot, chaseRadius);
+        Gizmos.DrawWireSphere(transform.position + centerPivot, killRadius);
 
         if (targetPlayer != null)
         {
-            Vector3 pos = transform.position;
             Vector3 dir = targetPlayer.transform.position - transform.position;
-            Gizmos.DrawRay(new Ray(pos, dir));
+            Gizmos.DrawRay(new Ray(transform.position + centerPivot, dir));
         }
     }
 #endif
