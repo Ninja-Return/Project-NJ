@@ -98,7 +98,9 @@ public class PlayerManager : NetworkBehaviour
 
     public void PlayerDie(EnumList.DeadType type, ulong clientId)
     {
+
         PlayerDieServerRPC(type, clientId);
+
     }
 
     public void SetLocalPlayer(PlayerController controller)
@@ -125,6 +127,8 @@ public class PlayerManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void PlayerDieServerRPC(EnumList.DeadType type, ulong clientId)
     {
+
+        NotificationSystem.Instance.Notification("누군가 사망했습니다");
 
         var player = players.Find(x => x.OwnerClientId == clientId);
 
