@@ -300,7 +300,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
 
         var player = targetPlayer.GetComponent<PlayerController>();
 
-        PlayerManager.Instance.PlayerDie(EnumList.DeadType.Monster, player.OwnerClientId);
+        PlayerManager.Instance.PlayerDie(EnumList.DeadType.Dron, player.OwnerClientId);
         IsKill = true;
     }
 

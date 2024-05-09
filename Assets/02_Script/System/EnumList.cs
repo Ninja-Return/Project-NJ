@@ -11,9 +11,11 @@ namespace EnumList
 
     public enum DeadType
     {
-        Mafia,
         Monster,
-        Vote,
-        Escape,
+        Sculpture,
+        Dron,
+        Gun,
+        Knife,
+        Escape
     }
 }

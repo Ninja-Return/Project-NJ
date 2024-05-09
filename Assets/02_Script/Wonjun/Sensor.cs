@@ -17,15 +17,17 @@ public class Sensor : HandItemRoot
 
     public override void DoUse()
     {
-        Vector3 forwardDirection = Camera.main.transform.forward;
 
-        Vector3 spawnPosition = transform.position + forwardDirection * spawnDistance;
-        NetworkObject newSensor = Instantiate(SensorPrefab, spawnPosition, Quaternion.identity);
-        newSensor.Spawn(true);
+        //Æä±â
+        //Vector3 forwardDirection = Camera.main.transform.forward;
+
+        //Vector3 spawnPosition = transform.position + forwardDirection * spawnDistance;
+        //NetworkObject newSensor = Instantiate(SensorPrefab, spawnPosition, Quaternion.identity);
+        //newSensor.Spawn(true);
 
 
-        Rigidbody seosorRigid = newSensor.GetComponent<Rigidbody>();
-        seosorRigid.AddForce(forwardDirection * firePower, ForceMode.Impulse);
+        //Rigidbody seosorRigid = newSensor.GetComponent<Rigidbody>();
+        //seosorRigid.AddForce(forwardDirection * firePower, ForceMode.Impulse);
     }
 
     private void Start()
