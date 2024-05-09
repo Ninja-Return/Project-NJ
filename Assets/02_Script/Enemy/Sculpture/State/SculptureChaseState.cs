@@ -34,9 +34,9 @@ public class SculptureChaseState : SculptureStateRoot
 
             foreach (var item in sculptureFSM.CirclePlayers(chaseRadius))
             {
-                Vector3 pos = sculptureFSM.transform.position;
-                Vector3 dir = (item.transform.position - pos).normalized;
-                float distance = Mathf.Abs(Vector3.Distance(pos, item.transform.position));
+                //Vector3 pos = sculptureFSM.transform.position;
+                //Vector3 dir = (item.transform.position - pos).normalized;
+                //float distance = Mathf.Abs(Vector3.Distance(pos, item.transform.position));
 
                 PlayerDarkness playerDarkness = item.GetComponent<PlayerDarkness>();
                 playerDarkness.Bliend(playerDarkness.OwnerClientId);
