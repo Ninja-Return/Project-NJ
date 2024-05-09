@@ -66,6 +66,7 @@ public class StoreUIController : NetworkBehaviour
     {
         vcam.gameObject.SetActive(true);
         PlayerManager.Instance.localController.Input.Disable();
+        PlayerManager.Instance.localController.playerRigidbody.velocity = Vector3.zero;
         vcam.depth = 100;
         PlayerManager.Instance.Active(false);
         Support.SettingCursorVisable(true);

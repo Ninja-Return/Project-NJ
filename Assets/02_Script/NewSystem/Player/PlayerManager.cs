@@ -241,6 +241,7 @@ public class PlayerManager : NetworkBehaviour
         {
 
             var item = poss.GetRandomListObject();
+            poss.Remove(item);
             var vec = item.transform.position;
 
             var pl = Instantiate(playerPrefab, vec, Quaternion.identity)
