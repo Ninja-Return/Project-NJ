@@ -16,7 +16,7 @@ public struct MessageData
     public string signStr;
 }
 
-public class DeathUISystem : NetworkBehaviour
+public class DeathUISystem : MonoBehaviour
 {
     public static DeathUISystem Instance;
 
@@ -28,12 +28,9 @@ public class DeathUISystem : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI deadText;
     [SerializeField] private TextMeshProUGUI signText;
 
-    private void Start()
+    private void Awake()
     {
-        if (IsOwner)
-        {
-            Instance = this;
-        }
+        Instance = this;
     }
 
     public void PopupDeathUI(DeadType deadType)
@@ -54,8 +51,9 @@ public class DeathUISystem : NetworkBehaviour
             AppendInterval(1.5f).
             OnComplete(() => 
             {
-                panelObj.SetActive(false);
                 WatchingSystem.Instance.StartWatching();
+
+                panelObj.SetActive(false);
             });
     }
 }

@@ -531,6 +531,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4316685966378215375, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5726928584489310786, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5726928584489310786, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5726928584489310786, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6262505044719510731, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+      propertyPath: m_text
+      value: "\uC0AC\uC778"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6262505044719510731, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+      propertyPath: m_fontSize
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6262505044719510731, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6710064227313563702, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1900
+      objectReference: {fileID: 0}
+    - target: {fileID: 6710064227313563702, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7402644963093115928, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+      propertyPath: m_text
+      value: "\uD301, \uC124\uBA85, \uB9D0\uC7A5\uB09C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7402644963093115928, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+      propertyPath: m_fontSize
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7402644963093115928, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 7475259331455363685, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
       propertyPath: m_Name
       value: DeathUI
@@ -551,13 +599,40 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &506320499 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5626077275282529756, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+  m_CorrespondingSourceObject: {fileID: 5726928584489310786, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
   m_PrefabInstance: {fileID: 506320497}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 551da6a7619969d47a1d2834e2e7045d, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &506320500 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7475259331455363685, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+  m_PrefabInstance: {fileID: 506320497}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &506320501 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7402644963093115928, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+  m_PrefabInstance: {fileID: 506320497}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &506320502 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6262505044719510731, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+  m_PrefabInstance: {fileID: 506320497}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &558569580
@@ -3366,6 +3441,7 @@ GameObject:
   - component: {fileID: 1985564217}
   - component: {fileID: 1985564218}
   - component: {fileID: 1985564219}
+  - component: {fileID: 1985564220}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -3426,7 +3502,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 4498147838486822712, guid: 4d3e29c235d3ad541ab4514310e41fb7, type: 3}
   playerDeadbodyPrefab: {fileID: 2716041886233277145, guid: 794b82064aee32c48979f7d5573e3926, type: 3}
-  deathUI: {fileID: 506320499}
   spawn: 0
   PlayerTime: 0
 --- !u!114 &1985564205
@@ -3655,6 +3730,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notificationUIController: {fileID: 239970405}
+--- !u!114 &1985564220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985564200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 551da6a7619969d47a1d2834e2e7045d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  messageDatas:
+  - deadType: 0
+    deadStr: "\uC778\uC870\uC778\uAC04\uC5D0\uAC8C \uD06C\uAC8C \uBCA0\uC5B4\uBB3C\uB838\uC2B5\uB2C8\uB2E4."
+    signStr: "\uC6C0\uC9C1\uC774\uC9C0 \uC54A\uC558\uC73C\uBA74 \uC548\uB4E4\uCF30\uC744\uD150\uB370
+      \uB9D0\uC774\uC8E0."
+  - deadType: 1
+    deadStr: "\uC2A4\uD1A4\uC2E4\uB7EC\uAC00 \uB2F9\uC2E0\uC758 \uBAA9\uC744 \uAEBE\uC5C8\uC2B5\uB2C8\uB2E4."
+    signStr: "\uC54C\uC740 \uD568\uBD80\uB85C \uAC00\uC838\uAC00\uB294\uAC8C \uC544\uB2D9\uB2C8\uB2E4."
+  - deadType: 2
+    deadStr: "\uC54C\uD130\uB860\uC5D0\uAC8C \uAC78\uB838\uC2B5\uB2C8\uB2E4."
+    signStr: "\uC54C\uD130\uB860\uC758 \uB808\uC774\uB354\uB294 \uD56D\uC0C1 \uBC14\uB2E5\uC744
+      \uBC14\uB77C\uBD05\uB2C8\uB2E4."
+  - deadType: 3
+    deadStr: "\uCD1D\uC5D0 \uB9DE\uC558\uC2B5\uB2C8\uB2E4."
+    signStr: "\uC11D\uC591\uC774 \uC9C4\uB2E4."
+  - deadType: 4
+    deadStr: "\uCE7C\uC5D0 \uCC14\uB838\uC2B5\uB2C8\uB2E4."
+    signStr: "\uCE5C\uAD6C\uB4E4\uC744 \uD568\uBD80\uB85C \uBBFF\uC9C0 \uB9C8\uC138\uC694"
+  - deadType: 5
+    deadStr: "\uD0C8\uCD9C\uD558\uC168\uC2B5\uB2C8\uB2E4."
+    signStr: '  '
+  panelObj: {fileID: 506320500}
+  fadeImage: {fileID: 506320499}
+  deadText: {fileID: 506320502}
+  signText: {fileID: 506320501}
 --- !u!1 &2047427413
 GameObject:
   m_ObjectHideFlags: 0

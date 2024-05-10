@@ -15,7 +15,6 @@ public class PlayerManager : NetworkBehaviour
     [SerializeField] private PlayerController playerPrefab;
     [SerializeField] private NetworkObject playerDeadbodyPrefab;
     [Header("Die")]
-    [SerializeField] private DeathUISystem deathUI;
     [SerializeField] private bool spawn = true;
 
     public List<PlayerController> players { get; private set; } = new();
@@ -147,8 +146,6 @@ public class PlayerManager : NetworkBehaviour
 
         };
 
-        PlayerDieClientRPC(type, param);
-
         var data = HostSingle.Instance.NetServer.GetUserDataByClientID(clientId).Value;
         data.clearTime = PlayerTime;
 
@@ -192,6 +189,7 @@ public class PlayerManager : NetworkBehaviour
             IsBreaken
             );
 
+        PlayerDieClientRPC(type, param);
 
     }
 
@@ -205,9 +203,6 @@ public class PlayerManager : NetworkBehaviour
     [ClientRpc]
     private void PlayerDieClientRPC(EnumList.DeadType type, ClientRpcParams param)
     {
-
-        //deathUI.gameObject.SetActive(true);
-        //deathUI.PopupDeathUI(type);
 
         Inventory.Instance.DropAllItem();
 
