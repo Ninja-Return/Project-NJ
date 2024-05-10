@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using Unity.Services.Lobbies;
 
 public class LobbyUIController : NetworkBehaviour
 {
@@ -49,6 +50,7 @@ public class LobbyUIController : NetworkBehaviour
     {
 
         InitPanel();
+        HostSingle.Instance.GameManager.UpdateLobby();
 
     }
 
@@ -56,6 +58,7 @@ public class LobbyUIController : NetworkBehaviour
     {
 
         InitPanel();
+        HostSingle.Instance.GameManager.UpdateLobby();
 
     }
 
@@ -137,5 +140,6 @@ public class LobbyUIController : NetworkBehaviour
         }
 
     }
+
 
 }

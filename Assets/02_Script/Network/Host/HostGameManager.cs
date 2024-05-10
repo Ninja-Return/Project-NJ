@@ -60,11 +60,17 @@ public class HostGameManager : IDisposable
 
                     "UserName", new DataObject(DataObject.VisibilityOptions.Member, value: userData.nickName)
 
-                }
+                },
+
+                {
+
+                    "Players", new DataObject(visibility: DataObject.VisibilityOptions.Public, value: "1")
+
+                },
 
             };
 
-            Lobby lobby = await Lobbies.Instance.CreateLobbyAsync(lobbyName, MAX_CONNECTIONS, lobbyOptions);
+            Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MAX_CONNECTIONS, lobbyOptions);
             lobbyId = lobby.Id;
 
             HostSingle.Instance.StartCoroutine(HeartbeatLobby(10));
@@ -132,7 +138,7 @@ public class HostGameManager : IDisposable
 
                 try
                 {
-                    await Lobbies.Instance.DeleteLobbyAsync(lobbyId);
+                    await LobbyService.Instance.DeleteLobbyAsync(lobbyId);
                 }
                 catch (LobbyServiceException ex)
                 {
@@ -167,7 +173,38 @@ public class HostGameManager : IDisposable
     public void ChangeLobbyState(bool isLocked)
     {
 
-        Lobbies.Instance.UpdateLobbyAsync(lobbyId, new UpdateLobbyOptions() { IsLocked = isLocked, IsPrivate = isLocked });
+        LobbyService.Instance.UpdateLobbyAsync(lobbyId, new UpdateLobbyOptions() { IsLocked = isLocked, IsPrivate = isLocked });
+
+    }
+
+    public void UpdateLobby()
+    {
+
+        var o = new UpdateLobbyOptions();
+        o.Data = new Dictionary<string, DataObject>()
+        {
+
+            {
+
+                "JoinCode", new DataObject(visibility: DataObject.VisibilityOptions.Public, value: joinCode)
+
+            },
+
+            {
+
+                "UserName", new DataObject(DataObject.VisibilityOptions.Member, value: "")
+
+            },
+
+            {
+
+                "Players", new DataObject(visibility: DataObject.VisibilityOptions.Public, value: NetworkManager.Singleton.ConnectedClients.Count.ToString())
+
+            },
+
+        };
+
+        LobbyService.Instance.UpdateLobbyAsync(lobbyId, o);
 
     }
 

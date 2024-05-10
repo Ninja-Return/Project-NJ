@@ -122,7 +122,7 @@ public class AppController : MonoBehaviour
 
             };
 
-            QueryResponse lobbies = await Lobbies.Instance.QueryLobbiesAsync(options);
+            QueryResponse lobbies = await LobbyService.Instance.QueryLobbiesAsync(options);
             return lobbies.Results;
 
         }
