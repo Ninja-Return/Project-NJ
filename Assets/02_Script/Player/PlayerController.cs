@@ -237,6 +237,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         {
 
             ChangeState(EnumPlayerState.Idle);
+            Input.InitMoveVector();
 
             if(disAbleInven && Inventory.Instance.isShow)
             {

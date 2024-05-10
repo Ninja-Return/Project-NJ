@@ -166,4 +166,11 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
 
     }
 
+    public void InitMoveVector()
+    {
+
+        MoveVecter = Vector3.zero;
+
+    }
+
 }
