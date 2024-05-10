@@ -6570,11 +6570,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8875449794350432198, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.2
+      value: 1.46
       objectReference: {fileID: 0}
     - target: {fileID: 8875449794350432198, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.2
+      value: 1.55
       objectReference: {fileID: 0}
     - target: {fileID: 8875449794350432198, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6582,7 +6582,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8875449794350432198, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.59
+      value: -1.269
       objectReference: {fileID: 0}
     - target: {fileID: 8875449794350432198, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6632,14 +6632,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gate_Small
       objectReference: {fileID: 0}
+    - target: {fileID: 8875449794350654444, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
---- !u!1 &4253245850233388305 stripped
+--- !u!1 &4253245850233388315 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 8875449794350654444, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8875449794350654438, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
   m_PrefabInstance: {fileID: 4624490933990530813}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &4253245850233807163 stripped
@@ -10034,7 +10038,7 @@ MonoBehaviour:
   execute:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4253245850233388305}
+      - m_Target: {fileID: 4253245850233388315}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
