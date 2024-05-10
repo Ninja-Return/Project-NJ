@@ -73,10 +73,10 @@ public class AppController : MonoBehaviour
 
     }
 
-    public async Task<bool> StartHostAsync(string username, string lobbyName)
+    public async Task<bool> StartHostAsync(string username, string lobbyName, bool roomState = false)
     {
 
-        return await HostSingle.Instance.GameManager.StartHostAsync(lobbyName, GetUserData(username));
+        return await HostSingle.Instance.GameManager.StartHostAsync(lobbyName, GetUserData(username), roomState);
 
     }
 
@@ -121,6 +121,7 @@ public class AppController : MonoBehaviour
                     value: "0"),
 
             };
+
 
             QueryResponse lobbies = await LobbyService.Instance.QueryLobbiesAsync(options);
             return lobbies.Results;

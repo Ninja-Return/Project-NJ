@@ -33,7 +33,7 @@ public class HostGameManager : IDisposable
     public event Action<string, ulong> OnPlayerConnect;
     public event Action<string, ulong> OnPlayerDisconnect;
 
-    public async Task<bool> StartHostAsync(string lobbyName, UserData userData)
+    public async Task<bool> StartHostAsync(string lobbyName, UserData userData, bool roomState = false)
     {
 
         try
@@ -69,6 +69,8 @@ public class HostGameManager : IDisposable
                 },
 
             };
+
+            lobbyOptions.IsPrivate = roomState;
 
             Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, MAX_CONNECTIONS, lobbyOptions);
             lobbyId = lobby.Id;
