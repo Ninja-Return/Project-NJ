@@ -189,7 +189,7 @@ public class PlayerManager : NetworkBehaviour
             IsBreaken
             );
 
-        PlayerDieClientRPC(type, param);
+        PlayerDieClientRPC(type, players.Count == 0, param);
 
     }
 
@@ -201,14 +201,18 @@ public class PlayerManager : NetworkBehaviour
     #region ClientRPC
 
     [ClientRpc]
-    private void PlayerDieClientRPC(EnumList.DeadType type, ClientRpcParams param)
+    private void PlayerDieClientRPC(EnumList.DeadType type, bool isLast, ClientRpcParams param)
     {
 
         Inventory.Instance.DropAllItem();
 
         NetworkController.Instance.vivox.Leave3DChannel();
 
-        DeathUISystem.Instance.PopupDeathUI(type);
+        if (!isLast)
+        {
+            DeathUISystem.Instance.PopupDeathUI(type);
+            WatchingSystem.Instance.StartWatching();
+        }
 
         IsDie = true;
 

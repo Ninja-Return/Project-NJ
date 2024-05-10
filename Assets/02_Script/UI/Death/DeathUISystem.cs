@@ -51,8 +51,6 @@ public class DeathUISystem : MonoBehaviour
             AppendInterval(1.5f).
             OnComplete(() => 
             {
-                WatchingSystem.Instance.StartWatching();
-
                 panelObj.SetActive(false);
             });
     }
