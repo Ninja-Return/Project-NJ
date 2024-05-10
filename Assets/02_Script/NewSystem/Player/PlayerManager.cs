@@ -15,7 +15,6 @@ public class PlayerManager : NetworkBehaviour
     [SerializeField] private PlayerController playerPrefab;
     [SerializeField] private NetworkObject playerDeadbodyPrefab;
     [Header("Die")]
-    [SerializeField] private DeathUI deathUI;
     [SerializeField] private bool spawn = true;
 
     public List<PlayerController> players { get; private set; } = new();
@@ -147,8 +146,6 @@ public class PlayerManager : NetworkBehaviour
 
         };
 
-        PlayerDieClientRPC(type, param);
-
         var data = HostSingle.Instance.NetServer.GetUserDataByClientID(clientId).Value;
         data.clearTime = PlayerTime;
 
@@ -192,6 +189,7 @@ public class PlayerManager : NetworkBehaviour
             IsBreaken
             );
 
+        PlayerDieClientRPC(type, players.Count == 0, param);
 
     }
 
@@ -203,17 +201,18 @@ public class PlayerManager : NetworkBehaviour
     #region ClientRPC
 
     [ClientRpc]
-    private void PlayerDieClientRPC(EnumList.DeadType type, ClientRpcParams param)
+    private void PlayerDieClientRPC(EnumList.DeadType type, bool isLast, ClientRpcParams param)
     {
-
-        //deathUI.gameObject.SetActive(true);
-        //deathUI.PopupDeathUI(type);
 
         Inventory.Instance.DropAllItem();
 
         NetworkController.Instance.vivox.Leave3DChannel();
-        WatchingSystem.Instance.StartWatching();
 
+        if (!isLast)
+        {
+            DeathUISystem.Instance.PopupDeathUI(type);
+            WatchingSystem.Instance.StartWatching();
+        }
 
         IsDie = true;
 

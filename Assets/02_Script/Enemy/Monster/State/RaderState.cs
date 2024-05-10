@@ -22,7 +22,7 @@ public class RaderState : MonsterStateRoot
         monsterAnim.SetAnimation("Rader", true); //Rader
         NetworkSoundManager.Play3DSound("RaderPlayer", monsterFSM.transform.position, 0.1f, 45f, SoundType.SFX, AudioRolloffMode.Linear);
 
-        //monsterFSM.LookAt(player.transform.position);
+        monsterFSM.LookAt(player.transform.position);
     }
 
     protected override void UpdateState()

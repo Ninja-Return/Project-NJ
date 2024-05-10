@@ -40,7 +40,7 @@ public class KnifeItem : HandItemRoot
 
                 if (compo.IsOwner) continue;
 
-                PlayerManager.Instance.PlayerDie(EnumList.DeadType.Mafia, compo.OwnerClientId);
+                PlayerManager.Instance.PlayerDie(EnumList.DeadType.Knife, compo.OwnerClientId);
 
                 break;
 

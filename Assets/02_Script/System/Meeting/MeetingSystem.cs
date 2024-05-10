@@ -213,7 +213,7 @@ public class MeetingSystem : NetworkBehaviour
                 var data = HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(maxVoteClient[0]);
                 diePlayerName = data.Value.nickName;
 
-                PlayerManager.Instance.PlayerDie(EnumList.DeadType.Vote, maxVoteClient[0]);
+                //PlayerManager.Instance.PlayerDie(EnumList.DeadType.Vote, maxVoteClient[0]);
 
             }
 
