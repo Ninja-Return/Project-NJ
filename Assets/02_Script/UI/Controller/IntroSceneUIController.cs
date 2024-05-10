@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using Unity.Services.Vivox;
 
 public class IntroSceneUIController : MonoBehaviour
 {
@@ -61,6 +62,13 @@ public class IntroSceneUIController : MonoBehaviour
     public void SfxSetting(Slider slider)
     {
         SoundManager.SettingSfx(slider.value);
+    }
+
+    public void SetVoice(float volume)
+    {
+
+        VivoxService.Instance.SetOutputDeviceVolume((int)volume);
+
     }
 
     public void FOVSetting(Slider slider) // 50 ~ 70 (처음 60으로 고정)
