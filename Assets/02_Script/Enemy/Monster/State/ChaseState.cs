@@ -11,7 +11,7 @@ public class ChaseState : MonsterStateRoot
 
     private float currentTime = 0;
     private int slowdownCount = 3;
-    readonly private float slowdownTime = 6f;
+    readonly private float slowdownTime = 10f;
     readonly private float slowdownRatio = 0.9f;
 
     private Coroutine walkEffectCo;
