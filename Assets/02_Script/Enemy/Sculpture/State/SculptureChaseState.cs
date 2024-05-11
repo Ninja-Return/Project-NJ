@@ -34,9 +34,9 @@ public class SculptureChaseState : SculptureStateRoot
 
             foreach (var item in sculptureFSM.CirclePlayers(chaseRadius))
             {
-                Vector3 pos = sculptureFSM.transform.position;
-                Vector3 dir = (item.transform.position - pos).normalized;
-                float distance = Mathf.Abs(Vector3.Distance(pos, item.transform.position));
+                //Vector3 pos = sculptureFSM.transform.position;
+                //Vector3 dir = (item.transform.position - pos).normalized;
+                //float distance = Mathf.Abs(Vector3.Distance(pos, item.transform.position));
 
                 PlayerDarkness playerDarkness = item.GetComponent<PlayerDarkness>();
                 playerDarkness.Bliend(playerDarkness.OwnerClientId);
@@ -69,11 +69,23 @@ public class SculptureChaseState : SculptureStateRoot
             sculptureFSM.targetPlayer = player;
 
             Vector3 playerPos = player.transform.position;
+            NavMeshHit hit;
+            float range = 1.0f;
+
+            while (true)
+            {
+                if (NavMesh.SamplePosition(playerPos, out hit, range, NavMesh.AllAreas))
+                {
+                    playerPos = hit.position;
+                    break;
+                }
+                range += 1.0f;
+            }
 
             nav.CalculatePath(playerPos, navMeshPath);
 
             if (sculptureFSM.SamplePathPositions(navMeshPath).Count <= 1) //인덱스가 0이 최대다
-                return playerPos;
+                return playerPos; //sculptureFSM.SamplePathPositions(navMeshPath)[1]
 
             return sculptureFSM.SamplePathPositions(navMeshPath)[1];
             //0번째 위치는 무조건 제자리이다

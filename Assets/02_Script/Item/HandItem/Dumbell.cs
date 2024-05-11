@@ -26,6 +26,9 @@ public class Dumbell : HandItemRoot
 
         var obj = Instantiate(dumbellObject, transform.root.position + new Vector3(0, 0.5f, 0) + transform.root.forward, Quaternion.identity);
         obj.NetworkObject.Spawn(true);
+
+        Debug.Log(obj.NetworkObject.IsSpawned);
+
         obj.SetUp(transform.root.forward);
 
     }

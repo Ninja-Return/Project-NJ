@@ -49,6 +49,8 @@ public class MonsterSpawnSystem : NetworkBehaviour
     public void HandleSpawn()
     {
 
+        if (!IsServer) return;
+
         StartCoroutine(SpawnCo());
 
     }

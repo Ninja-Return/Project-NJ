@@ -16,6 +16,7 @@ public class StoreSencer : MonoBehaviour
         if (other.TryGetComponent<PlayerController>(out var pl))
         {
 
+
             if(pl.OwnerClientId == NetworkManager.Singleton.LocalClientId)
             {
 

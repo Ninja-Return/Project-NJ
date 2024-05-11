@@ -82,6 +82,17 @@ public class PlayerInteraction : PlayerStateRoot
         if (hit)
         {
 
+
+            var dest = Vector3.Distance(cameraTrm.position, info.transform.position);
+            if (Physics.Raycast(cameraTrm.position, cameraTrm.forward, dest - 0.1f, ~data.InteractionLayer | ~LayerMask.GetMask("Player")))
+            {
+
+                interactionObject = null;
+                interactionText.text = "";
+                return;
+
+            }
+
             interactionObject = info.transform.GetComponent<InteractionObject>();
 
             if (interactionObject != null && interactionObject.interactionAble)

@@ -10,6 +10,6 @@ public class TutorialEndObject : InteractionObject
         data.isBreak = true;
         HostSingle.Instance.NetServer.SetUserDataByClientId(OwnerClientId, data);
 
-        WinSystem.Instance.WinServerRPC(EnumWinState.Escape);
+        WinSystem.Instance.WinServerRPC();
     }
 }

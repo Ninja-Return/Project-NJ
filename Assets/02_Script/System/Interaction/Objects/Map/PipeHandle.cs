@@ -9,12 +9,15 @@ public class PipeHandle : InteractionObject
 
     [SerializeField] private GameObject pipeHandle;
     [SerializeField] private GameObject smokeObject;
+    [SerializeField] private AudioSource smokeSource;
+    [SerializeField] private AudioSource fixSource;
+
     private bool isPipeBreak = false;
 
     public override void OnNetworkSpawn()
     {
 
-        New_GameManager.Instance.OnGameStarted += HandleStarted;
+        New_GameManager.Instance.OnItemSpawnCall += HandleStarted;
 
     }
 
@@ -36,7 +39,7 @@ public class PipeHandle : InteractionObject
         while(true)
         {
 
-            yield return new WaitForSeconds(Random.Range(60, 120));
+            yield return new WaitForSeconds(Random.Range(120, 240));
 
             if (isPipeBreak)
             {
@@ -46,7 +49,7 @@ public class PipeHandle : InteractionObject
 
             }
 
-            if(Random.value > 0.2f)
+            if(Random.value < 0.1f)
             {
 
                 PipeBreakClientRPC();
@@ -84,6 +87,7 @@ public class PipeHandle : InteractionObject
         isPipeBreak = true;
         pipeHandle.transform.DOLocalRotate(new Vector3(0, 0, 90f), 0.3f);
         smokeObject.SetActive(true);
+        smokeSource.Play();
 
     }
 
@@ -103,6 +107,7 @@ public class PipeHandle : InteractionObject
 
         pipeHandle.transform.DOLocalRotate(Vector3.zero, 0.3f);
         smokeObject.SetActive(false);
+        fixSource.Play();
 
     }
 

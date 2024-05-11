@@ -77,15 +77,6 @@ public class WatchingSystem : NetworkBehaviour
 
     }
 
-    private void Update()
-    {
-
-        if (!isWatching) return;
-
-        ChunkRenderingSystem.Instance.SetUpPos(alivePlayers.Find(x => x.OwnerClientId == currentWatching).watchCam
-            .transform.position);
-
-    }
 
     public void StartWatching()
     {
@@ -104,6 +95,8 @@ public class WatchingSystem : NetworkBehaviour
         New_GameManager.Instance.SettingCursorVisable(true);
 
         OnWatchingStarted?.Invoke();
+
+        Camera.main.depth = 100000;
 
     }
 

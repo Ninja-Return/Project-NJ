@@ -312,11 +312,13 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
     [ClientRpc]
     private void JumpScareClientRPC(ClientRpcParams param)
     {
-        //PlayerController player = PlayerManager.Instance.FindPlayerControllerToID(playerId);
-        //player == null 이게 맞는듯
         jsVcamTrs.Priority = 500;
-        //player.Input.Disable();
-        //player.enabled = false;
+    }
+
+    [ClientRpc]
+    private void StopJumpScareClientRPC(ClientRpcParams param)
+    {
+        jsVcamTrs.Priority = -2;
     }
 
     public void Death()
@@ -324,10 +326,15 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
         DeathServerRpc();
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void DeathServerRpc()
     {
         IsDead = true;
+
+        if (targetPlayer != null)
+        {
+            StopJumpScareClientRPC(targetPlayer.OwnerClientId.GetRPCParams());
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]

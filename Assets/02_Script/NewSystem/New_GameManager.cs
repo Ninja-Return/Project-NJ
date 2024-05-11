@@ -9,6 +9,7 @@ public class New_GameManager : NetworkBehaviour
     [SerializeField] private int waitDelay = 10;
 
     public NetworkVariable<bool> IsLightOn { get; set; } = new();
+    public NetworkVariable<bool> GameStarted { get; private set; } = new();
     private int joinCount;
 
 
@@ -69,7 +70,7 @@ public class New_GameManager : NetworkBehaviour
 
     }
 
-    public void CheckGameEnd(int playerCount, bool IsBreaken)
+    public void CheckGameEnd(int playerCount)
     {
 
         if (playerCount == 0)
@@ -77,7 +78,7 @@ public class New_GameManager : NetworkBehaviour
 
             //FadeManager.Instance.FadeOn();
             OnGameFinishedClientRPC();
-            WinSystem.Instance.WinServerRPC(IsBreaken == true ? EnumWinState.Escape : EnumWinState.Fail);
+            WinSystem.Instance.WinServerRPC();
 
         }
 
@@ -149,6 +150,7 @@ public class New_GameManager : NetworkBehaviour
     {
 
         OnItemSpawnCall?.Invoke();
+        GameStarted.Value = true;
 
     }
 

@@ -18,12 +18,15 @@ public class LobbySelectUIController : MonoBehaviour
     [SerializeField] private LobbyPanel lobbyPrefab;
     [SerializeField] private GameObject checkIcon;
 
+    public bool roomPrivate { get; set; }
+    private bool isCoolDown;
     private bool isRoomLook;
+    private const float refecshCoolDown = 3f;
 
     private void Start()
     {
 
-        StartCoroutine(RefreshLobby());
+        Refresh();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
@@ -34,7 +37,7 @@ public class LobbySelectUIController : MonoBehaviour
         try
         {
 
-            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text);
+            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text, roomPrivate);
 
             HostSingle.Instance.GameManager.gameMode = GameMode.Mutli;
             NetworkManager.Singleton.SceneManager.LoadScene(SceneList.LobbyScene, LoadSceneMode.Single);
@@ -42,6 +45,7 @@ public class LobbySelectUIController : MonoBehaviour
         }
         catch (Exception ex)
         {
+
 
             Debug.LogException(ex);
 
@@ -79,7 +83,7 @@ public class LobbySelectUIController : MonoBehaviour
         try
         {
 
-            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text);
+            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text, roomPrivate);
 
             NetworkManager.Singleton.SceneManager.LoadScene(SceneList.TutorialScene, LoadSceneMode.Single);
 
@@ -118,37 +122,39 @@ public class LobbySelectUIController : MonoBehaviour
         SceneManager.LoadScene(SceneList.IntroScene);
     }
 
-    private IEnumerator RefreshLobby()
+    public async void Refresh()
     {
 
-        while (true)
+        if (isCoolDown) return;
+
+        StartCoroutine(CoolDownCo());
+
+        var lobbys = await AppController.Instance.GetLobbyList();
+
+        var childs = lobbyPanelRoot.GetComponentsInChildren<LobbyPanel>();
+
+        foreach (var child in childs)
         {
 
-
-            var lobbys = AppController.Instance.GetLobbyList();
-
-            yield return new WaitUntil(() => lobbys.IsCompleted);
-
-            var childs = lobbyPanelRoot.GetComponentsInChildren<LobbyPanel>();
-
-            foreach (var child in childs)
-            {
-
-                Destroy(child.gameObject);
-
-            }
-
-            foreach (var lobby in lobbys.Result)
-            {
-
-                Instantiate(lobbyPrefab, lobbyPanelRoot).SetPanel(lobby);
-
-            }
-
-            yield return new WaitForSeconds(5f);
+            Destroy(child.gameObject);
 
         }
 
+        foreach (var lobby in lobbys)
+        {
+
+            Instantiate(lobbyPrefab, lobbyPanelRoot).SetPanel(lobby);
+
+        }
+
+    }
+
+    private IEnumerator CoolDownCo()
+    {
+
+        isCoolDown = true;
+        yield return new WaitForSeconds(refecshCoolDown);
+        isCoolDown = false;
     }
 
 }

@@ -37,6 +37,8 @@ public class PlayerCameraRotate : PlayerStateRoot
         ///
         var vec = new Vector3(-input.MouseDelta.y, input.MouseDelta.x);
 
+        data.LookSensitive.SetValue(PlayerPrefs.GetFloat("LookSenc", 12));
+
         angle += vec * data.LookSensitive.Value * Time.deltaTime;
 
         angle.x = Mathf.Clamp(angle.x, -60, 60);

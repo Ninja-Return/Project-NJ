@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [CreateAssetMenu(menuName = "SO/Player/Data/Input")]
-public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementActions
+public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementActions, IDisposable
 {
 
     public event Action OnJumpKeyPress;
@@ -156,6 +156,20 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
             OnUseObjectKeyUp?.Invoke();
 
         }
+
+    }
+
+    public void Dispose()
+    {
+
+        playerInput.Dispose();
+
+    }
+
+    public void InitMoveVector()
+    {
+
+        MoveVecter = Vector3.zero;
 
     }
 

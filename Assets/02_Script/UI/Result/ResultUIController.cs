@@ -26,7 +26,6 @@ public class ResultUIController : NetworkBehaviour
 
     private float escapePlayerCnt = 0f;
     private float failPlayerCnt = 0f;
-    private bool isDead = false;
 
     private void Start()
     {
@@ -35,7 +34,7 @@ public class ResultUIController : NetworkBehaviour
 
         dissolveEffect.DissolveOut();
 
-        if (IsServer) EscapeTimer();
+        //if (IsServer) EscapeTimer();
 
     }
 
@@ -44,7 +43,6 @@ public class ResultUIController : NetworkBehaviour
         upImg.color = Color.red;
         downImg.color = Color.red;
         winnerText.color = Color.red;
-        isDead = true;
 
         winText.text = "탈출 실패";
     }
@@ -56,35 +54,33 @@ public class ResultUIController : NetworkBehaviour
         downImg.color = skyColor;
         winnerText.color = skyColor;
 
-        winText.text = "플레이 결과";
+        winText.text = "탈출 성공";
 
     }
 
-    public void EscapeTimer()
-    {
-        foreach (var item in NetworkManager.ConnectedClientsIds)
-        {
-            TimerClientRpc(item, HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(item).Value.clearTime);
-        }
-    }
+    //public void EscapeTimer()
+    //{
+    //    foreach (var item in NetworkManager.ConnectedClientsIds)
+    //    {
+    //        TimerClientRpc(item, HostSingle.Instance.GameManager.NetServer.GetUserDataByClientID(item).Value.clearTime);
+    //    }
+    //}
 
-    [ClientRpc]
-    private void TimerClientRpc(ulong clientId, float clearTime)
+    //[ClientRpc]
+    private void Timer(float clearTime, bool isClear)
     {
-        if (clientId != NetworkManager.LocalClientId) return;
-
         text[0].text = ((int)clearTime / 60 % 60).ToString() + " 분";
         text[1].text = ((int)clearTime % 60).ToString() + " 초";
 
-        if (!isDead)
+        if (isClear)
         {
-            if (clearTime < 180 && !isDead)
+            if (clearTime < 180)
                 text[2].text = "S";
-            else if (clearTime >= 180 && clearTime < 300 && !isDead)
+            else if (clearTime >= 180 && clearTime < 300)
                 text[2].text = "A";
-            else if (clearTime >= 300 && clearTime < 420 && !isDead)
+            else if (clearTime >= 300 && clearTime < 420)
                 text[2].text = "B";
-            else if (clearTime >= 420 && clearTime < 540 && !isDead)
+            else if (clearTime >= 420 && clearTime < 540)
                 text[2].text = "C";
             else
                 text[2].text = "D";
@@ -94,21 +90,25 @@ public class ResultUIController : NetworkBehaviour
 
     }
 
-    public void SpawnPanel(ulong clientId, string userName, bool isOwner, bool isBreak)
+    public void SpawnPanel(ulong clientId, bool isOwner, UserData data)
     {
         var panel = Instantiate(playerPrefab, players);
-        panel.Setting(clientId, userName, isOwner, false);
+        panel.Setting(clientId, data.nickName, isOwner, false);
 
         if (!isOwner) return;
 
-        if (isBreak)
+        Timer(data.clearTime, data.isBreak);
+
+        if (data.isBreak)
         {
             PlayerCountServerRpc(1f, 0f);
+            EscapeClear();
             panel.ColorChange(Color.blue);
         }
         else
         {
             PlayerCountServerRpc(0f, 1f);
+            EscapeFail();
             panel.ColorChange(Color.red);
         }
     }

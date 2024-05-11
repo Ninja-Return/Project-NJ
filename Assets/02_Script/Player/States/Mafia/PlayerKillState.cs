@@ -50,7 +50,7 @@ public class PlayerKillState : PlayerStateRoot
             if(hand.CheckHandItem("�콼 Į"))
             {
 
-                PlayerManager.Instance.PlayerDie(EnumList.DeadType.Mafia, player.OwnerClientId);
+                PlayerManager.Instance.PlayerDie(EnumList.DeadType.Knife, player.OwnerClientId);
                 Inventory.Instance.Deleteltem();
 
             }

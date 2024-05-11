@@ -12,6 +12,8 @@ public class SculptureDeathState : SculptureStateRoot
 
     protected override void EnterState()
     {
+        sculptureFSM.gameObject.layer = 0;
+
         sculptureFSM.CreateDeadbody();
         sculptureFSM.NetworkObject.Despawn();
     }

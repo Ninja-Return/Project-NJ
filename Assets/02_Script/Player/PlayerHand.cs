@@ -205,7 +205,7 @@ public class PlayerHand : NetworkBehaviour
         var obj = Resources.Load<HandItemRoot>($"ItemObj/{objKey}_Hand");
 
         currentObject = Instantiate(obj, itemParent);
-        currentObject.Spawn(NetworkManager.LocalClientId == ownerId);
+        currentObject.Spawn(NetworkManager.LocalClientId == ownerId, IsServer);
         currentObject.transform.localPosition = Vector3.zero + currentObject.handPivot;
         currentObject.transform.localEulerAngles = currentObject.handRotation;
 

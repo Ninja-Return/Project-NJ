@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -19,7 +20,7 @@ public class LobbyPanel : MonoBehaviour, IPointerDownHandler
 
         joinCode = lobby.Data["JoinCode"].Value;
         titleText.text = lobby.Name;
-        peopleText.text = $"{6 - lobby.AvailableSlots}/6";
+        peopleText.text = $"{lobby.Data["Players"].Value}/6";
         
     }
 

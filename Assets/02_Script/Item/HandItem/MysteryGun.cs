@@ -18,7 +18,7 @@ public class MysteryGun : HandItemRoot
 
         isUsed = true;
 
-        NetworkSoundManager.Play3DSound("GunShot", transform.position, 0.01f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
+        NetworkSoundManager.Play3DSound("GunShot", transform.position, 0.01f, 300f, SoundType.SFX, AudioRolloffMode.Linear);
         GetComponentInParent<PlayerImpulse>().PlayImpulse("GunShoot");
         Camera cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         Vector2 ScreenCenter = new Vector2(cam.pixelWidth / 2, cam.pixelHeight / 2);
@@ -40,7 +40,8 @@ public class MysteryGun : HandItemRoot
         {
             if (CheakObstacle(ray, hit.transform.position)) return;
 
-            hit.transform.GetComponent<IEnemyInterface>().Death();
+            if (hit.transform.TryGetComponent(out IEnemyInterface enemy))
+                enemy.Death();
         }
     }
 
@@ -53,7 +54,7 @@ public class MysteryGun : HandItemRoot
             if (CheakObstacle(ray, hit.transform.position)) return;
 
             ulong playerId = hit.transform.GetComponent<PlayerController>().OwnerClientId;
-            PlayerManager.Instance.PlayerDie(EnumList.DeadType.Monster, playerId);
+            PlayerManager.Instance.PlayerDie(EnumList.DeadType.Gun, playerId);
         }
     }
 

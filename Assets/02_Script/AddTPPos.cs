@@ -8,6 +8,7 @@ public class AddTPPos : MonoBehaviour
     [SerializeField] private string key;
 
     private void Start()
+
     {
 
         if (New_GameManager.Instance == null) return;

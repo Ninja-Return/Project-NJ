@@ -42,8 +42,8 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
 
     public LayerMask obstacleMask;
 
-    readonly float frame = 0.2f;
     readonly Vector3 deadbodyPivot = new Vector3(0, 0.1f, 0);
+    readonly float frame = 0.2f;
 
     private void Start()
     {
@@ -136,10 +136,11 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
 
     public Collider[] CirclePlayers(float radius)
     {
+
         Collider[] allPlayers = Physics.OverlapSphere(transform.position, radius, playerMask);
-        if (allPlayers.Length == 0) return null;
 
         return allPlayers;
+
     }
 
     public void KillPlayer()
@@ -225,7 +226,7 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
 
         yield return new WaitForSeconds(0.5f);
 
-        PlayerManager.Instance.PlayerDie(EnumList.DeadType.Monster, player.OwnerClientId);
+        PlayerManager.Instance.PlayerDie(EnumList.DeadType.Sculpture, player.OwnerClientId);
         IsKill = true;
     }
 
@@ -238,9 +239,8 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
 
         if (targetPlayer != null)
         {
-            Vector3 pos = transform.position;
             Vector3 dir = targetPlayer.transform.position - transform.position;
-            Gizmos.DrawRay(new Ray(pos, dir));
+            Gizmos.DrawRay(new Ray(transform.position, dir));
         }
     }
 #endif

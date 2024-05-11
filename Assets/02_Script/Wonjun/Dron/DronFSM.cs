@@ -18,7 +18,7 @@ public enum DronState
 }
 
 
-public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
+public class DronFSM : FSM_Controller_Netcode<DronState>
 {
     public UnityEngine.AI.NavMeshAgent nav;
     public Transform headTrs;
@@ -94,6 +94,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
         dronPatrolState.AddTransition(dronDieTransition);
         dronChaseState.AddTransition(dronDieTransition);
         dronKillState.AddTransition(dronDieTransition);
+        dronZoomState.AddTransition(dronDieTransition);
 
         AddState(dronIdleState, DronState.Idle);
         AddState(dronPatrolState, DronState.Patrol);
@@ -299,17 +300,11 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IEnemyInterface
 
         var player = targetPlayer.GetComponent<PlayerController>();
 
-        PlayerManager.Instance.PlayerDie(EnumList.DeadType.Monster, player.OwnerClientId);
+        PlayerManager.Instance.PlayerDie(EnumList.DeadType.Dron, player.OwnerClientId);
         IsKill = true;
     }
 
-
-    public void Death()
-    {
-        DeathServerRpc();
-    }
-
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void DeathServerRpc()
     {
         IsDead = true;

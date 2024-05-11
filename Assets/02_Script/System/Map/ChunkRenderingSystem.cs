@@ -41,22 +41,16 @@ public class ChunkRenderingSystem : MonoBehaviour
     private NativeArray<int2> chunks;
     private NativeList<int2> loadingChunk;
     private JobHandle jobHandle;
-    private Vector3 playerPos;
+    private Transform target;
     private int fpsCount;
     private bool isSchedule;
-    public static ChunkRenderingSystem Instance;
+    public static ChunkRenderingSystem Instance { get; private set; }
 
     private void Awake()
     {
         
         Instance = this;
-
-    }
-
-    public void SetUpPos(Vector3 pos)
-    {
-
-        playerPos = pos;
+        target = Camera.main.transform;
 
     }
 
@@ -66,12 +60,16 @@ public class ChunkRenderingSystem : MonoBehaviour
         foreach (var item in chunkContainer)
         {
 
+            if (item.Value[0] == null) return;
+
             var inc = Include(loadingChunk, item.Key);
 
             if (item.Value[0].enabled == inc) continue;
 
             foreach (var renderer in item.Value)
             {
+
+                if (renderer == null) return;
 
                 renderer.enabled = inc;
 
@@ -106,7 +104,6 @@ public class ChunkRenderingSystem : MonoBehaviour
 
             chunkContainer.Add(chunkPos, renderers);
 
-
         }
 
     }
@@ -114,10 +111,11 @@ public class ChunkRenderingSystem : MonoBehaviour
     private void Update()
     {
 
-        if (chunkContainer.Count == 0)
+        if (chunkContainer.Count == 0 || !New_GameManager.Instance.GameStarted.Value)
         {
 
             return;
+
         }
 
 
@@ -127,7 +125,7 @@ public class ChunkRenderingSystem : MonoBehaviour
 
             chunks = new NativeArray<int2>(chunkContainer.Keys.ToArray(), Allocator.TempJob);
             loadingChunk = new NativeList<int2>(Allocator.TempJob);
-            var originPos = this.playerPos;
+            var originPos = Camera.main.transform.position;
             int2 playerPos = new int2(Mathf.FloorToInt(originPos.x), Mathf.FloorToInt(originPos.z));
 
             var job = new ChunkLoadJob
@@ -153,9 +151,7 @@ public class ChunkRenderingSystem : MonoBehaviour
         fpsCount++;
 
 
-        if (PlayerManager.Instance == null ||
-            PlayerManager.Instance.localController == null ||
-            chunkContainer.Count == 0)
+        if (chunkContainer.Count == 0 || !New_GameManager.Instance.GameStarted.Value)
         {
 
             return;

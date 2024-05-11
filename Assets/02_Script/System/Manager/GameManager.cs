@@ -39,7 +39,7 @@ public class GameManager : NetworkBehaviour
 
     [SerializeField] private NetworkObject player;
     [SerializeField] private bool debug;
-    [SerializeField] private DeathUI deathUI;
+    [SerializeField] private DeathUISystem deathUI;
     [SerializeField] private List<Transform> trms;
     [SerializeField] private TMP_Text startText;
     [SerializeField] private GameObject recipeUI;
@@ -281,7 +281,7 @@ public class GameManager : NetworkBehaviour
             if(alivePlayer.Count <= 2 && alivePlayer.Find(x => x.clientId == id).clientId == id)
             {
 
-                WinSystem.Instance.WinServerRPC(EnumWinState.Fail);
+                WinSystem.Instance.WinServerRPC();
 
             }
 
