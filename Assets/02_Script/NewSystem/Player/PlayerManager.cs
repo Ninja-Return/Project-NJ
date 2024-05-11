@@ -163,7 +163,7 @@ public class PlayerManager : NetworkBehaviour
         OnPlayerDie?.Invoke(clientId);
 
         NetworkObject playerDeadbody = Instantiate(playerDeadbodyPrefab, player.transform.position, player.transform.rotation);
-        playerDeadbody.Spawn();
+        playerDeadbody.Spawn(true);
 
         var live = new LiveData();
 

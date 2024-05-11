@@ -18,7 +18,7 @@ public class MysteryGun : HandItemRoot
 
         isUsed = true;
 
-        NetworkSoundManager.Play3DSound("GunShot", transform.position, 0.01f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
+        NetworkSoundManager.Play3DSound("GunShot", transform.position, 0.01f, 300f, SoundType.SFX, AudioRolloffMode.Linear);
         GetComponentInParent<PlayerImpulse>().PlayImpulse("GunShoot");
         Camera cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         Vector2 ScreenCenter = new Vector2(cam.pixelWidth / 2, cam.pixelHeight / 2);
