@@ -281,7 +281,7 @@ public class GameManager : NetworkBehaviour
             if(alivePlayer.Count <= 2 && alivePlayer.Find(x => x.clientId == id).clientId == id)
             {
 
-                WinSystem.Instance.WinServerRPC(EnumWinState.Fail);
+                WinSystem.Instance.WinServerRPC();
 
             }
 

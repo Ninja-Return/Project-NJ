@@ -29,7 +29,6 @@ public class PlayerManager : NetworkBehaviour
     public float PlayerTime = 0;
     public bool IsDie { get; private set; }
     public bool active => localController == null ? false : localController.CurrentState != EnumPlayerState.Idle;
-    private bool IsBreaken;
     private int joinCount;
 
     private void Awake()
@@ -152,7 +151,6 @@ public class PlayerManager : NetworkBehaviour
         if (type == EnumList.DeadType.Escape)
         {
             data.isBreak = true;
-            IsBreaken = true;
         }
 
         HostSingle.Instance.NetServer.SetUserDataByClientId(clientId, data);
@@ -185,8 +183,7 @@ public class PlayerManager : NetworkBehaviour
 
         New_GameManager.Instance.CheckGameEnd
             (
-            players.Count,
-            IsBreaken
+            players.Count
             );
 
         PlayerDieClientRPC(type, players.Count == 0, param);
