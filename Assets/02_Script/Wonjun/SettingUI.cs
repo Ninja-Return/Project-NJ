@@ -3,6 +3,8 @@ using Michsky.UI.Dark;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
+using Unity.Services.Vivox;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -10,7 +12,6 @@ using UnityEngine.UI;
 public class SettingUI : MonoBehaviour
 {
     [SerializeField] private Slider sensitivitySlider;
-    [SerializeField] private PlayerDataSO playerData;
     public MainPanelManager mainPanelManager;
 
     private FullScreenMode screenMode = FullScreenMode.FullScreenWindow;
@@ -25,7 +26,6 @@ public class SettingUI : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         sensitivitySlider.maxValue = 12;
         sensitivitySlider.value = 12;
-        playerData.LookSensitive.SetValue(sensitivitySlider.value);
         sensitivitySlider.onValueChanged.AddListener(delegate { UpdateSensitivity(); });
     }
 
@@ -112,12 +112,28 @@ public class SettingUI : MonoBehaviour
 
     public void GotoMain()
     {
+
+        if (NetworkManager.Singleton.IsHost)
+        {
+
+            HostSingle.Instance.GameManager.ShutdownAsync();
+
+        }
+        else
+        {
+
+            ClientSingle.Instance.GameManager.Disconnect();
+
+        }
+
         SceneManager.LoadScene(SceneList.LobbySelectScene);
     }
 
     public void UpdateSensitivity()
     {
-        playerData.LookSensitive.SetValue(sensitivitySlider.value);
+
+        PlayerPrefs.SetFloat("LookSenc", sensitivitySlider.value);
+
     }
 
     public void SFXChange(Slider slider)
@@ -134,4 +150,12 @@ public class SettingUI : MonoBehaviour
     {
         SoundManager.SettingMaster(slider.value);
     }
+
+    public void SetVoice(float value)
+    {
+
+        VivoxService.Instance.SetOutputDeviceVolume((int)value);
+
+    }
+
 }

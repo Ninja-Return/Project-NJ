@@ -80,6 +80,13 @@ public class IntroSceneUIController : MonoBehaviour
     {
 
     }
+    
+    public void SetLook(float value)
+    {
+
+        PlayerPrefs.SetFloat("LookSenc", value);
+
+    }
 
     public void WindowedScreenMode()
     {
