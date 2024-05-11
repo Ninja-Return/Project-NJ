@@ -18,6 +18,7 @@ public class LobbySelectUIController : MonoBehaviour
     [SerializeField] private LobbyPanel lobbyPrefab;
     [SerializeField] private GameObject checkIcon;
 
+    public bool roomPrivate { get; set; }
     private bool isCoolDown;
     private bool isRoomLook;
     private const float refecshCoolDown = 3f;
@@ -36,7 +37,7 @@ public class LobbySelectUIController : MonoBehaviour
         try
         {
 
-            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text);
+            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text, roomPrivate);
 
             HostSingle.Instance.GameManager.gameMode = GameMode.Mutli;
             NetworkManager.Singleton.SceneManager.LoadScene(SceneList.LobbyScene, LoadSceneMode.Single);
@@ -82,7 +83,7 @@ public class LobbySelectUIController : MonoBehaviour
         try
         {
 
-            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text);
+            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text, roomPrivate);
 
             NetworkManager.Singleton.SceneManager.LoadScene(SceneList.TutorialScene, LoadSceneMode.Single);
 

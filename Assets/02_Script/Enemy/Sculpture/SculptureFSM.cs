@@ -138,9 +138,9 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
     {
 
         Collider[] allPlayers = Physics.OverlapSphere(transform.position, radius, playerMask);
-        if (allPlayers.Length == 0) return null;
 
         return allPlayers;
+
     }
 
     public void KillPlayer()
