@@ -18,8 +18,8 @@ public class WinUIController : NetworkBehaviour
         if (IsServer)
         {
 
-            EnumWinState state = (EnumWinState)PlayerPrefs.GetInt("WinState");
-            SettingClientRPC(state);
+            //EnumWinState state = (EnumWinState)PlayerPrefs.GetInt("WinState");
+            //SettingClientRPC(state);
 
             PlayerPanelSetting();
 
@@ -39,8 +39,7 @@ public class WinUIController : NetworkBehaviour
 
             if (data != null)
             {
-
-                SpawnPanelClientRPC(item, data.Value.nickName, data.Value.isBreak);
+                SpawnPanelClientRpc(item, data.Value);
 
             }
 
@@ -51,33 +50,33 @@ public class WinUIController : NetworkBehaviour
 
 
     [ClientRpc]
-    private void SpawnPanelClientRPC(ulong clientId, string userName, bool isBreak)
+    private void SpawnPanelClientRpc(ulong clientId, UserData data)
     {
 
-        controller.SpawnPanel(clientId, userName, clientId == NetworkManager.LocalClientId, isBreak);
+        controller.SpawnPanel(clientId, clientId == NetworkManager.LocalClientId, data);
 
     }
 
-    [ClientRpc]
-    private void SettingClientRPC(EnumWinState state)
-    {
+    //[ClientRpc]
+    //private void SettingClientRPC(EnumWinState state)
+    //{
 
-        switch (state)
-        {
+    //    switch (state)
+    //    {
 
-            case EnumWinState.None:
-                controller.EscapeFail();
-                break;
-            case EnumWinState.Escape:
-                controller.EscapeClear();
-                break;
-            case EnumWinState.Fail:
-                controller.EscapeFail();
-                break;
+    //        case EnumWinState.None:
+    //            controller.EscapeFail();
+    //            break;
+    //        case EnumWinState.Escape:
+    //            controller.EscapeClear();
+    //            break;
+    //        case EnumWinState.Fail:
+    //            controller.EscapeFail();
+    //            break;
 
-        }
+    //    }
 
 
-    }
+    //}
 
 }

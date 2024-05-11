@@ -236,7 +236,7 @@ public class TutorialSystem : NetworkBehaviour
                     }
                     break;
                 case SequenceType.End:
-                    WinSystem.Instance.WinServerRPC(EnumWinState.Escape);
+                    WinSystem.Instance.WinServerRPC();
                     break;
             }
 

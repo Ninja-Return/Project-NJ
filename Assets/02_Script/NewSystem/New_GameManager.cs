@@ -70,7 +70,7 @@ public class New_GameManager : NetworkBehaviour
 
     }
 
-    public void CheckGameEnd(int playerCount, bool IsBreaken)
+    public void CheckGameEnd(int playerCount)
     {
 
         if (playerCount == 0)
@@ -78,7 +78,7 @@ public class New_GameManager : NetworkBehaviour
 
             //FadeManager.Instance.FadeOn();
             OnGameFinishedClientRPC();
-            WinSystem.Instance.WinServerRPC(IsBreaken == true ? EnumWinState.Escape : EnumWinState.Fail);
+            WinSystem.Instance.WinServerRPC();
 
         }
 
