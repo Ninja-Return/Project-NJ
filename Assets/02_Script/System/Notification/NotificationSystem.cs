@@ -4,7 +4,7 @@ using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class NotificationSystem : MonoBehaviour
+public class NotificationSystem : NetworkBehaviour
 {
 
     [SerializeField] private NotificationUIController notificationUIController;
