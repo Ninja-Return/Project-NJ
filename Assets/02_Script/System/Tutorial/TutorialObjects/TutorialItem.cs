@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class TutorialItem : TutorialObject
 {
-    [SerializeField] private GameObject soda;
+    [SerializeField] private NetworkObject soda;
+    [SerializeField] private Transform spawnTrs;
+
     private PlayerController playerController;
     private PlayerHand playerHand;
 
@@ -14,9 +17,8 @@ public class TutorialItem : TutorialObject
         playerController = FindObjectOfType<PlayerController>();
         playerController.Input.OnUseObjectKeyPress += ClickLeft;
 
-        Vector3 pos = soda.transform.position;
-        pos.y = 3.0f;
-        soda.transform.position = pos;
+        NetworkObject item = Instantiate(soda, spawnTrs.position, Quaternion.identity);
+        item.Spawn();
     }
 
     private void ClickLeft()
@@ -26,6 +28,7 @@ public class TutorialItem : TutorialObject
 
         playerController.Input.OnUseObjectKeyPress -= ClickLeft;
         isTutorialOn = false;
+
         TutorialSystem.Instance.StartSequence("Money");
     }
 

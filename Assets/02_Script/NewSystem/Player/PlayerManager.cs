@@ -202,7 +202,12 @@ public class PlayerManager : NetworkBehaviour
     private void PlayerDieClientRPC(EnumList.DeadType type, bool isLast, ClientRpcParams param)
     {
 
-        NotificationSystem.Instance.Notification("누군가 사망했습니다");
+        if (NotificationSystem.Instance != null)
+        { 
+            
+            NotificationSystem.Instance.Notification("누군가 사망했습니다");
+
+        }
 
         Inventory.Instance.DropAllItem();
 

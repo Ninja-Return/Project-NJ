@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class TutorialInventory : TutorialObject
 {
-    [SerializeField] private GameObject soda;
-    [SerializeField] private float getItemCount;
+    [SerializeField] private NetworkObject Item;
+    [SerializeField] private Transform spawnTrs;
+    [SerializeField] private string itemName;
+
     private Inventory inventory;
     private bool isCheck;
 
@@ -13,14 +16,13 @@ public class TutorialInventory : TutorialObject
     {
         inventory = FindObjectOfType<Inventory>();
 
-        Vector3 pos = soda.transform.position;
-        pos.y = 3.0f;
-        soda.transform.position = pos;
+        NetworkObject item = Instantiate(Item, spawnTrs.position, Quaternion.identity);
+        item.Spawn();
     }
 
     protected override void IsClearTutorial()
     {
-        if (inventory.isShow && inventory.getItemCount >= getItemCount)
+        if (inventory.isShow && inventory.GetItem(itemName))
         {
             isCheck = true;
         }

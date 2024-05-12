@@ -7,7 +7,7 @@ public abstract class TutorialObject : NetworkBehaviour
 {
     public bool isTutorialOn;
     private bool isStarted;
-
+    
     private void Update()
     {
         if (isTutorialOn)
