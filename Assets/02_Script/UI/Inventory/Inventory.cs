@@ -175,6 +175,18 @@ public class Inventory : NetworkBehaviour
 
     }
 
+    public bool GetItem(string itemName)
+    {
+        foreach (SlotUI slot in slots)
+        {
+            if (slot.data == null) continue;
+            Debug.Log(slot.data.itemName);
+            if (slot.data.itemName == itemName)
+                return true;
+        }
+        return false;
+    }
+
     public string GetItemName(int idx)
     {
 

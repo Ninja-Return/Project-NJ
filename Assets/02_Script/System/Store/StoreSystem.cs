@@ -64,6 +64,7 @@ public class StoreSystem : NetworkBehaviour
     public List<StoreSellObject> GetStoreData()
     {
         List<StoreSellObject> storeItems = new();
+
         foreach (var items in storeList)
         {
             storeItems.Add(ApplyRaiseStoreSellObject(items));
