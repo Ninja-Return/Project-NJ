@@ -161,8 +161,13 @@ public class PlayerManager : NetworkBehaviour
 
         OnPlayerDie?.Invoke(clientId);
 
-        NetworkObject playerDeadbody = Instantiate(playerDeadbodyPrefab, player.transform.position, player.transform.rotation);
-        playerDeadbody.Spawn(true);
+        if(type != EnumList.DeadType.Escape)
+        {
+
+            NetworkObject playerDeadbody = Instantiate(playerDeadbodyPrefab, player.transform.position, player.transform.rotation);
+            playerDeadbody.Spawn(true);
+
+        }
 
         var live = new LiveData();
 
@@ -203,9 +208,10 @@ public class PlayerManager : NetworkBehaviour
     {
 
         if (NotificationSystem.Instance != null)
-        { 
-            
-            NotificationSystem.Instance.Notification("누군가 사망했습니다");
+        {
+
+            var text = type == EnumList.DeadType.Escape ? "누군가 탈출했습니다" : "누군가 사망했습니다";
+            NotificationSystem.Instance.Notification(text);
 
         }
 

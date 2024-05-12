@@ -67,7 +67,8 @@ public class WatchingUIController : MonoBehaviour
             case NetworkListEvent<LiveData>.EventType.Remove:
                 {
 
-                    Instantiate(diePlayerPrefab, diePlayerRoot);
+                    var p = Instantiate(diePlayerPrefab, diePlayerRoot);
+                    p.Spawn(changeEvent.Value.name.ToString());
 
                     Destroy(alivePlayers.Find(x => x.clientId == changeEvent.Value.clientId).gameObject);
 
