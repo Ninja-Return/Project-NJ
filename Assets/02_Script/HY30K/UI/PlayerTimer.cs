@@ -8,6 +8,9 @@ public class PlayerTimer : MonoBehaviour
 
     private void Update()
     {
+
+        if (ClearTimeManager.Instance == null) return;
+
         if (ClearTimeManager.Instance.TimerStarted)
             time += Time.deltaTime;
         

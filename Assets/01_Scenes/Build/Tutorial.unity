@@ -3382,6 +3382,7 @@ MonoBehaviour:
   <storeList>k__BackingField:
   - data: {fileID: 11400000, guid: c1bc5b54ce6e9d84094762781c38e966, type: 2}
     price: 500
+    raise: 0
     expText: "\uD0C8\uCD9C\uC6A9 \uC5F4\uC1E0"
 --- !u!114 &1125052608
 MonoBehaviour:
@@ -6178,7 +6179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5702a5e6cac2b674a99cae3e56f7ea64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 4498147838486822712, guid: 6fe2fb5096ef5d349bb4dc3093a0a9af, type: 3}
+  playerController: {fileID: 4498147838486822712, guid: 4d3e29c235d3ad541ab4514310e41fb7, type: 3}
   panel:
     text: {fileID: 780241742}
     trm: {fileID: 239324436}
@@ -6418,8 +6419,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01cd2319d5e549a4093c92350e25a934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 4498147838486822712, guid: 6fe2fb5096ef5d349bb4dc3093a0a9af, type: 3}
-  deathUI: {fileID: 5626077275282529756, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
+  playerPrefab: {fileID: 4498147838486822712, guid: 4d3e29c235d3ad541ab4514310e41fb7, type: 3}
+  playerDeadbodyPrefab: {fileID: 0}
+  spawn: 1
+  PlayerTime: 0
 --- !u!114 &1747020858
 MonoBehaviour:
   m_ObjectHideFlags: 0

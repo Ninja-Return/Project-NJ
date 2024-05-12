@@ -60,6 +60,9 @@ public class PlayerManager : NetworkBehaviour
 
     private void Update()
     {
+
+        if (ClearTimeManager.Instance == null) return;
+
         if (ClearTimeManager.Instance.TimerStarted && !IsDie)
         {
             PlayerTimer time = localController.GetComponent<PlayerTimer>();
