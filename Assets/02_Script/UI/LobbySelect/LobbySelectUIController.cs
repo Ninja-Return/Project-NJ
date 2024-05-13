@@ -83,7 +83,7 @@ public class LobbySelectUIController : MonoBehaviour
         try
         {
 
-            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text, roomPrivate);
+            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text, true);
 
             NetworkManager.Singleton.SceneManager.LoadScene(SceneList.TutorialScene, LoadSceneMode.Single);
 
