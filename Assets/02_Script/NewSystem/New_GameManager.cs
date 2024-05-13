@@ -58,18 +58,6 @@ public class New_GameManager : NetworkBehaviour
 
     }
 
-    private void Update()
-    {
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-
-            GameToHard();
-
-        }
-
-    }
-
     public void CheckGameEnd(int playerCount)
     {
 
@@ -158,7 +146,6 @@ public class New_GameManager : NetworkBehaviour
     {
 
         OnHardEvent?.Invoke();
-        Debug.Log("公攫啊 决没抄 老");
 
     }
 }
