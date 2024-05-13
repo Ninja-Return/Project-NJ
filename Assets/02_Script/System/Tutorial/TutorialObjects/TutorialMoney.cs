@@ -5,6 +5,7 @@ using Unity.Netcode;
 
 public class TutorialMoney : TutorialObject
 {
+    [SerializeField] private NetworkObject ceilObj;
     [SerializeField] private Transform[] spawnTrs;
     [SerializeField] private NetworkObject[] items;
 
@@ -13,6 +14,9 @@ public class TutorialMoney : TutorialObject
     protected override void Init()
     {
         creditSystem = FindObjectOfType<CreditSystem>();
+
+        ceilObj.gameObject.SetActive(true);
+        ceilObj.Spawn();
 
         foreach (Transform spawn in spawnTrs)
         {

@@ -50,6 +50,8 @@ public class MeetingProfile : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
 
+        if (MeetingSystem.Instance == null) return;
+
         if(MeetingSystem.Instance.Vote(ownerClientId))
         {
 
