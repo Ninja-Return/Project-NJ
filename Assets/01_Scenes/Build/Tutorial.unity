@@ -732,10 +732,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 273014412}
+  - component: {fileID: 273014416}
   - component: {fileID: 273014414}
   - component: {fileID: 273014413}
   - component: {fileID: 273014415}
-  - component: {fileID: 273014416}
   m_Layer: 12
   m_Name: UIScript
   m_TagString: Untagged
@@ -4483,7 +4483,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1753134567
 Transform:
   m_ObjectHideFlags: 0
@@ -5178,6 +5178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isTutorialOn: 0
+  ceilObj: {fileID: 1753134573}
   spawnTrs:
   - {fileID: 1086898408}
   - {fileID: 1423227062}
