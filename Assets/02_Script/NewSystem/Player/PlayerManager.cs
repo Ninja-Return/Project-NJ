@@ -192,6 +192,14 @@ public class PlayerManager : NetworkBehaviour
             players.Count
             );
 
+        if (NotificationSystem.Instance != null)
+        {
+
+            var text = type == EnumList.DeadType.Escape ? "누군가 탈출했습니다" : "누군가 사망했습니다";
+            NotificationSystem.Instance.Notification(text);
+
+        }
+
         PlayerDieClientRPC(type, players.Count == 0, param);
 
     }
@@ -207,13 +215,6 @@ public class PlayerManager : NetworkBehaviour
     private void PlayerDieClientRPC(EnumList.DeadType type, bool isLast, ClientRpcParams param)
     {
 
-        if (NotificationSystem.Instance != null)
-        {
-
-            var text = type == EnumList.DeadType.Escape ? "누군가 탈출했습니다" : "누군가 사망했습니다";
-            NotificationSystem.Instance.Notification(text);
-
-        }
 
         Inventory.Instance.DropAllItem();
 
