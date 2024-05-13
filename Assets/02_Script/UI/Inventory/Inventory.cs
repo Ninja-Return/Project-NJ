@@ -62,7 +62,7 @@ public class Inventory : NetworkBehaviour
 
     }
 
-    public void SetActiveInventoryUI(bool notPlayerActiveChange = false) //�÷��̾� ��ǲ�� ����
+    public void SetActiveInventoryUI(bool notPlayerActiveChange = false)
     {
 
 
@@ -147,7 +147,7 @@ public class Inventory : NetworkBehaviour
         OnSlotDropEvt?.Invoke(itemObj, idx, extraData); //�տ��� ������ ��ô
     }
 
-    public void Deleteltem() //��ȸ�� ������ ������ ��ǥ�� �����ͼ� ����
+    public void Deleteltem()
     {
         if (!isHold) return;
         isHold = false;

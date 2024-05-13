@@ -7,7 +7,14 @@ public class StartHard : NetworkBehaviour
 {
     private void Start()
     {
-        New_GameManager.Instance.OnHardEvent += HardStart;
+
+        if (IsServer)
+        {
+
+            New_GameManager.Instance.OnHardEvent += HardStart;
+
+        }
+
     }
 
     public void HardStart()
@@ -18,6 +25,14 @@ public class StartHard : NetworkBehaviour
     [ClientRpc]
     private void HardStartClientRpc()
     {
-        AlertText.Instance.HardStart();
+
+        if(AlertText.Instance != null)
+        {
+
+            AlertText.Instance.HardStart();
+
+        }
+
     }
+
 }

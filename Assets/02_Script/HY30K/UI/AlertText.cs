@@ -48,4 +48,12 @@ public class AlertText : MonoBehaviour
         mainPanelManager.OpenFirstTab();
 
     }
+
+    private void OnDestroy()
+    {
+
+        Instance = null;
+
+    }
+
 }
