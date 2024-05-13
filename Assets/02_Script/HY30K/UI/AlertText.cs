@@ -16,10 +16,6 @@ public class AlertText : MonoBehaviour
         Instance = this;
     }
 
-    public void Start()
-    {
-        
-    }
 
     public void GameStart()
     {
