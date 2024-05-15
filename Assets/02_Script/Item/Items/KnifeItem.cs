@@ -27,6 +27,7 @@ public class KnifeItem : HandItemRoot
 
     private void HandleAnimeEnd()
     {
+        NetworkSoundManager.Play3DSound("KnifeSound", transform.position, 0.01f, 15f);
 
         var players = Physics.OverlapBox(
             transform.position, Vector3.one / 4, 
