@@ -33,7 +33,7 @@ public class PlayerCameraEvent : MonoBehaviour
 
             var dist = Vector3.Distance(cam.position, item.transform.position);
 
-            if(!Physics.Raycast(cam.position, item.transform.position - cam.position, dist, ~monsterLayer))
+            if(!Physics.Raycast(cam.position, item.transform.position - cam.position, dist, LayerMask.GetMask("Room")))
             {
 
                 if (IsTargetInSight(item.transform) && !surpriseCoolDown)
