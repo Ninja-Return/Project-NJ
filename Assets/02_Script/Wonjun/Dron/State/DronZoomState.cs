@@ -19,6 +19,8 @@ public class DronZoomState : DronStateRoot
         if (!IsServer) return;
         zoomtime = 0;
         dronFSM.zoom = false;
+        nav.isStopped = true;
+
         NetworkSoundManager.Play3DSound("DronHowling", dronFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
     }
 
@@ -29,6 +31,8 @@ public class DronZoomState : DronStateRoot
 
         if (zoomtime >= 5f)
         {
+            nav.isStopped = false;
+
             controller.ChangeState(DronState.Patrol);
         }
         else
@@ -48,6 +52,8 @@ public class DronZoomState : DronStateRoot
     protected override void ExitState()
     {
         if (!IsServer) return;
+        nav.isStopped = false;
+
         droneLight.innerSpotAngle = Mathf.Lerp(zoomRange, 0, zoomtime / 5f);
         dronFSM.ViewingPlayer(Mathf.Lerp(10f, 5f, 0.5f), 20);
         zoomtime = 0;
