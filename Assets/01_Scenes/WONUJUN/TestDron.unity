@@ -352,7 +352,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 4498147838486822712, guid: 4d3e29c235d3ad541ab4514310e41fb7, type: 3}
   playerDeadbodyPrefab: {fileID: 0}
-  deathUI: {fileID: 5626077275282529756, guid: 5ad7de650a997de41a9aa1ca2e652f61, type: 3}
   spawn: 1
   PlayerTime: 0
 --- !u!1 &1039662410
@@ -1143,6 +1142,10 @@ PrefabInstance:
     - target: {fileID: 3384258370587905446, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
       propertyPath: m_Name
       value: DronMonster
+      objectReference: {fileID: 0}
+    - target: {fileID: 7395570076276389012, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
+      propertyPath: chaseRadius
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8147409261327041021, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
       propertyPath: m_LocalPosition.x
