@@ -6,6 +6,7 @@ using Unity.Netcode;
 using UnityEngine;
 using DG.Tweening;
 using Unity.Services.Lobbies.Models;
+using Unity.Mathematics;
 
 public enum DronState
 {
@@ -26,6 +27,8 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     public float angle;
     public Vector3 lookVec;
     public LayerMask playerMask;
+    private CinemachineBasicMultiChannelPerlin noise;
+
 
     public DronState nowState;
 
@@ -67,6 +70,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
 
         InitializeStates();
         ChangeState(DronState.Idle);
+        noise = jsVcamTrs.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
     private void InitializeStates()
     {
@@ -257,34 +261,50 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     public void JumpScare() //ï¿½ï¿½Ç»ï¿?ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½Ç¾ï¿½ ï¿½Ö¾î¼­ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶óº¸°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¸ï¿½ ï¿½ï¿½ ï¿½ï¿½?
     {
         var player = targetPlayer.GetComponent<PlayerController>();
-        JumpScareClientRPC(player.OwnerClientId.GetRPCParams());
+        JumpScareClientRPC(player.OwnerClientId);
+
     }
 
     [ClientRpc]
-    private void JumpScareClientRPC(ClientRpcParams param)
+    private void JumpScareClientRPC(ulong clientId)
     {
+        if (clientId != NetworkManager.LocalClientId) return;
         //PlayerController player = PlayerManager.Instance.FindPlayerControllerToID(playerId);
         //player == null ï¿½Ì°ï¿½ ï¿½Â´Âµï¿½
         jsVcamTrs.Priority = 500;
-        transform.DOShakePosition(0.3f);
-        float time = 0;
-        time += Time.deltaTime;
-        if(time >= 1f)
-        {
-            KillPlayerServerRPC();
-            time = 0;
-        }
+        headTrs.localRotation = Quaternion.Euler(30f, 0f, 0f);
+        StartCoroutine(Shake(0.1f, shakeTime));
         //player.Input.Disable();
         //player.enabled = false;
     }
 
+    IEnumerator Shake(float ShakeAmount, float ShakeTime)
+    {
+        Vector3 originalPosition = jsVcamTrs.transform.position;
+
+        // Èçµé¸²ÀÇ ¼¼±â¸¦ ¼³Á¤
+        noise.m_AmplitudeGain = shakeAmount;
+        noise.m_FrequencyGain = shakeAmount;
+
+        // ÀÏÁ¤ ½Ã°£ µ¿¾È ´ë±â
+        yield return new WaitForSeconds(shakeTime);
+
+        // Èçµé¸² ÇØÁ¦
+        noise.m_FrequencyGain = 0f;
+        noise.m_AmplitudeGain = 0f;
+
+        KillPlayerServerRPC();
+        jsVcamTrs.transform.position = originalPosition;
+
+        headTrs.localRotation = Quaternion.Euler(0f, 0f, 0f);
+    }
 
     [ServerRpc(RequireOwnership = false)]
     public void KillPlayerServerRPC()
     {
         if (!IsServer) return;
 
-        var player = targetPlayer.GetComponent<PlayerController>();
+        var player = targetPlayer;
 
         PlayerManager.Instance.PlayerDie(EnumList.DeadType.Dron, player.OwnerClientId);
         IsKill = true;
