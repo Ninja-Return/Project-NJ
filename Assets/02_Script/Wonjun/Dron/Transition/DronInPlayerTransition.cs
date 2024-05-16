@@ -16,7 +16,7 @@ public class DronInPlayerTransition : DronTransitionRoot
         if (nav.pathPending) return false;
         if(dronFSM.zoom)
         {
-            Collider zoomPlayer = dronFSM.ViewingPlayer(20f, 0);
+            Collider zoomPlayer = dronFSM.ViewingPlayer(radius * 2, 0);
             if (zoomPlayer != null)
             {
                 dronFSM.targetPlayer = zoomPlayer.GetComponent<PlayerController>(); ;

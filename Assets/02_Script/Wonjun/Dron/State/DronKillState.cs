@@ -13,10 +13,10 @@ public class DronKillState : DronStateRoot
     {
         if (!IsServer) return;
 
-        nav.isStopped = true;
         NetworkSoundManager.Play3DSound("DronBite", dronFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
 
         dronFSM.JumpScare();
+        nav.isStopped = true;
 
     }
 

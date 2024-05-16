@@ -48,7 +48,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     [SerializeField] private Light dronLight;
     [SerializeField] private float zoomRange;
     [SerializeField] private ParticleSystem Spark;
-    [SerializeField] float shakeAmount = 1.0f;
+    [SerializeField] float shakeAmount;
     [SerializeField] float shakeTime = 1.0f;
     [SerializeField] private LayerMask obstacleMask;
 
@@ -60,6 +60,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         {
             nav.enabled = false;
         }
+        noise = jsVcamTrs.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
         if (!IsServer) return;
 
@@ -67,7 +68,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
 
         InitializeStates();
         ChangeState(DronState.Idle);
-        noise = jsVcamTrs.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
     private void InitializeStates()
     {
@@ -91,7 +91,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         dronZoomState.AddTransition(dronZoomInTransition);
 
         dronChaseState.AddTransition(dronCatchPlayerTransition);
-
 
         dronIdleState.AddTransition(dronDieTransition);
         dronPatrolState.AddTransition(dronDieTransition);
@@ -270,28 +269,26 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         //player == null ï¿½Ì°ï¿½ ï¿½Â´Âµï¿½
         jsVcamTrs.Priority = 500;
         headTrs.localRotation = Quaternion.Euler(30f, 0f, 0f);
-        StartCoroutine(Shake(0.1f, shakeTime));
+        StartCoroutine(Shake(shakeAmount, shakeTime));
         //player.Input.Disable();
         //player.enabled = false;
     }
 
     IEnumerator Shake(float ShakeAmount, float ShakeTime)
     {
-        Vector3 originalPosition = jsVcamTrs.transform.position;
 
         // Èçµé¸²ÀÇ ¼¼±â¸¦ ¼³Á¤
-        noise.m_AmplitudeGain = shakeAmount;
-        noise.m_FrequencyGain = shakeAmount;
+        noise.m_AmplitudeGain = ShakeAmount;
+        noise.m_FrequencyGain = ShakeAmount;
 
         // ÀÏÁ¤ ½Ã°£ µ¿¾È ´ë±â
-        yield return new WaitForSeconds(shakeTime);
+        yield return new WaitForSeconds(ShakeTime);
 
         // Èçµé¸² ÇØÁ¦
         noise.m_FrequencyGain = 0f;
         noise.m_AmplitudeGain = 0f;
 
         KillPlayerServerRPC();
-        jsVcamTrs.transform.position = originalPosition;
 
         headTrs.localRotation = Quaternion.Euler(0f, 0f, 0f);
     }
@@ -301,27 +298,20 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     {
         if (!IsServer) return;
 
-        var player = targetPlayer;
+        var player = targetPlayer.GetComponent<PlayerController>();
 
         PlayerManager.Instance.PlayerDie(EnumList.DeadType.Dron, player.OwnerClientId);
         IsKill = true;
     }
 
-    [ClientRpc]
-    private void StopJumpScareClientRPC(ClientRpcParams param)
-    {
-        jsVcamTrs.Priority = -2;
-    }
+    
 
     [ServerRpc(RequireOwnership = false)]
     public void DeathServerRpc()
     {
         IsDead = true;
 
-        if (targetPlayer != null)
-        {
-            StopJumpScareClientRPC(targetPlayer.OwnerClientId.GetRPCParams());
-        }
+        
     }
 
 

@@ -17,7 +17,6 @@ public class DronChaseState : DronStateRoot
     {
         this.radius = radius;
         this.speed = speed;
-        this.stopTime = stopTime;
     }
 
     protected override void EnterState()
