@@ -21,7 +21,7 @@ public class CatchPlayerTransition : MonsterTransitionRoot
 
         if (player != null)
         {
-            monsterFSM.targetPlayer = player.GetComponent<PlayerController>(); ;
+            monsterFSM.targetPlayer = player.GetComponent<PlayerController>(); 
             return true;
         }
 

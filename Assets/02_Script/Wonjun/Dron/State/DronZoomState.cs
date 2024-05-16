@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
 
 public class DronZoomState : DronStateRoot
@@ -42,7 +43,8 @@ public class DronZoomState : DronStateRoot
             Collider targetPlayer = dronFSM.ViewingPlayer(Mathf.Lerp(5f, 10f, zoomtime / 5f), 0);
             if(targetPlayer != null)
             {
-                dronFSM.targetPlayer = targetPlayer;
+                dronFSM.targetPlayer = targetPlayer.GetComponent<PlayerController>();
+                Vector3 playerPos = targetPlayer.transform.position;
                 Debug.Log("플레이어가 들어와서 상태 바뀜");
                 dronFSM.zoom = true;
             }

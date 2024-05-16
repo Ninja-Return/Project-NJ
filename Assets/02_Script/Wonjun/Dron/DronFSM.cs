@@ -30,7 +30,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     public DronState nowState;
 
     [HideInInspector] public Vector3 pingPos;
-    [HideInInspector] public Collider targetPlayer;
+    [HideInInspector] public PlayerController targetPlayer;
     [HideInInspector] public bool IsDead { get; private set; }
     [HideInInspector] public bool IsKill;
     [HideInInspector] public bool jCam;

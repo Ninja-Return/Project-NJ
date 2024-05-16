@@ -19,7 +19,7 @@ public class DronInPlayerTransition : DronTransitionRoot
             Collider zoomPlayer = dronFSM.ViewingPlayer(20f, 0);
             if (zoomPlayer != null)
             {
-                dronFSM.targetPlayer = zoomPlayer;
+                dronFSM.targetPlayer = zoomPlayer.GetComponent<PlayerController>(); ;
                 Debug.Log("줌 상태에서 플레이어가 들어와서 상태 바뀜");
                 return true;
             }
@@ -28,7 +28,7 @@ public class DronInPlayerTransition : DronTransitionRoot
         Collider targetPlayer = dronFSM.ViewingPlayer(radius, 20);
         if (targetPlayer != null)
         {
-            dronFSM.targetPlayer = targetPlayer;
+            dronFSM.targetPlayer = targetPlayer.GetComponent<PlayerController>(); ;
             Debug.Log("플레이어가 들어와서 상태 바뀜");
             return true;
         }

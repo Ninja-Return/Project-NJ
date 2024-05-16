@@ -41,8 +41,8 @@ public class DronChaseState : DronStateRoot
 
         if (player != null)
         {
-            dronFSM.targetPlayer = player;
-            Vector3 playerPos = dronFSM.targetPlayer.transform.position;
+            dronFSM.targetPlayer = player.GetComponent<PlayerController>();
+            Vector3 playerPos = player.transform.position;
             nav.SetDestination(playerPos);
             if (lazer && !razerCheck)
             {
