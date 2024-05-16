@@ -12,6 +12,7 @@ public class DronIdleState : DronStateRoot
     protected override void EnterState()
     {
         if (!IsServer) return;
+        nav.isStopped = true;
 
         NetworkSoundManager.Play3DSound("DronHowling", dronFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
     }
@@ -23,6 +24,7 @@ public class DronIdleState : DronStateRoot
         if (currentTime >= idleDuration)
         {
             controller.ChangeState(DronState.Patrol);
+            nav.isStopped = false;
         }
         else
         {
@@ -33,6 +35,7 @@ public class DronIdleState : DronStateRoot
     protected override void ExitState()
     {
         if (!IsServer) return;
+        nav.isStopped = false;
 
         currentTime = 0;
     }
