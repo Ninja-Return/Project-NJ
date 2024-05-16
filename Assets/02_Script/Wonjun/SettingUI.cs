@@ -33,7 +33,7 @@ public class SettingUI : MonoBehaviour
     {
         if (!PlayerManager.Instance.active) return;
 
-        if (Input.GetKeyDown(KeyCode.Escape) && !Setting )
+        if (Input.GetKeyDown(KeyCode.Escape) && !Setting)
         {
             SettingOn();
         }
@@ -154,7 +154,7 @@ public class SettingUI : MonoBehaviour
     public void SetVoice(float value)
     {
 
-        VivoxService.Instance.SetOutputDeviceVolume((int)value);
+        VivoxService.Instance.SetOutputDeviceVolume((int)value - 50);
 
     }
 

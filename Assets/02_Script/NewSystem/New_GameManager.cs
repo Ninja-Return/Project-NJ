@@ -58,6 +58,18 @@ public class New_GameManager : NetworkBehaviour
 
     }
 
+    private void Update()
+    {
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+
+            GameToHardServerRPC();
+
+        }
+
+    }
+
     public void CheckGameEnd(int playerCount)
     {
 
@@ -148,4 +160,13 @@ public class New_GameManager : NetworkBehaviour
         OnHardEvent?.Invoke();
 
     }
+
+    //µð¹ö±×
+    [ServerRpc(RequireOwnership = false)]
+    private void GameToHardServerRPC()
+    {
+
+        GameToHard();
+    }
+
 }

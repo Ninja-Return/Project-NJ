@@ -210,6 +210,13 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
         }
 
+        if(IsServer && PlayerManager.Instance != null)
+        {
+
+            PlayerManager.Instance.PlayerExit(OwnerClientId);
+
+        }
+
     }
 
     [ClientRpc]

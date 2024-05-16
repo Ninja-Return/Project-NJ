@@ -108,6 +108,7 @@ public class PipeHandle : InteractionObject
         pipeHandle.transform.DOLocalRotate(Vector3.zero, 0.3f);
         smokeObject.SetActive(false);
         fixSource.Play();
+        smokeSource.Stop();
 
     }
 
