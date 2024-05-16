@@ -204,8 +204,27 @@ public class PlayerManager : NetworkBehaviour
 
     }
 
+    public void PlayerExit(ulong clientId)
+    {
 
+        if (players.Find(x => x.OwnerClientId == clientId) == null) return;
 
+        players.Remove(players.Find(x => x.OwnerClientId == clientId));
+        alivePlayer.Remove(alivePlayer.Find(x => x.clientId == clientId));
+
+        New_GameManager.Instance.CheckGameEnd
+        (
+            players.Count
+        );
+
+        if (NotificationSystem.Instance != null)
+        {
+
+            NotificationSystem.Instance.Notification("누군가 탈주닌자가 되었습니다");
+
+        }
+
+    }
 
     #endregion
 

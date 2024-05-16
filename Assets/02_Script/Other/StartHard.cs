@@ -5,7 +5,8 @@ using Unity.Netcode;
 
 public class StartHard : NetworkBehaviour
 {
-    private void Start()
+
+    public override void OnNetworkSpawn()
     {
 
         if (IsServer)
@@ -14,6 +15,7 @@ public class StartHard : NetworkBehaviour
             New_GameManager.Instance.OnHardEvent += HardStart;
 
         }
+
 
     }
 

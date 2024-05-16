@@ -26,7 +26,7 @@ public class Soda : HandItemRoot
     private void HandleAnimeEnd()
     {
 
-        PlayerManager.Instance.localController.AddSpeed(3, 3);
+        PlayerManager.Instance.localController.AddSpeed(3, 8);
         Inventory.Instance.Deleteltem();
 
     }

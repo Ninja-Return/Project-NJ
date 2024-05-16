@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
-using static OccaSoftware.Buto.Runtime.ButoLight;
 
-public class PlayerCameraEvent : MonoBehaviour
+public class PlayerCameraEvent : NetworkBehaviour
 {
 
     [SerializeField] private Transform cam;
@@ -25,6 +25,8 @@ public class PlayerCameraEvent : MonoBehaviour
 
     private void Update()
     {
+
+        if (!IsOwner) return;
 
         var arr = Physics.OverlapSphere(cam.transform.position, lenght, monsterLayer);
 
