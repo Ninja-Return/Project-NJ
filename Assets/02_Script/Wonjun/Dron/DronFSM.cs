@@ -45,11 +45,8 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     [SerializeField] private float workSpeed;
     [SerializeField] public bool zoom = false;
     [SerializeField] private float runSpeed;
-    [SerializeField] private LineRenderer lazerLine;
-    [SerializeField] private float lazerTime;
     [SerializeField] private Light dronLight;
     [SerializeField] private float zoomRange;
-    [SerializeField] private float stopTime;
     [SerializeField] private ParticleSystem Spark;
     [SerializeField] float shakeAmount = 1.0f;
     [SerializeField] float shakeTime = 1.0f;
@@ -76,7 +73,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     {
         DronIdleState dronIdleState = new DronIdleState(this);
         DronPatrolState dronPatrolState = new DronPatrolState(this, moveRadius, workSpeed, Spark);
-        DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed, lazerTime, stopTime, lazerLine);
+        DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed);
         DronKillState dronKillState = new DronKillState(this);
         DronZoomState dronZoomState = new DronZoomState(this, zoomRange, dronLight);
         DronDeathState dronDeathState = new DronDeathState(this);
