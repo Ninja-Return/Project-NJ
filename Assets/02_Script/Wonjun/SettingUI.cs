@@ -153,6 +153,8 @@ public class SettingUI : MonoBehaviour
 
     public void SetVoice(float value)
     {
+        value = (value * 50) - 50;
+        if (value <= -50f) value = -50f;
 
         VivoxService.Instance.SetOutputDeviceVolume((int)value);
 
