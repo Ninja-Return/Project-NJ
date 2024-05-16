@@ -33,9 +33,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     [HideInInspector] public PlayerController targetPlayer;
     [HideInInspector] public bool IsDead { get; private set; }
     [HideInInspector] public bool IsKill;
-    [HideInInspector] public bool jCam;
-    [HideInInspector]
-    public Vector3 originalPosition;
 
     [Header("Values")]
     [SerializeField] private float moveRadius;
@@ -69,9 +66,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         base.Awake();
 
         InitializeStates();
-        jCam = true;
-        originalPosition = new Vector3(0, 1.28f, 1f);
-        Debug.Log(originalPosition);
         ChangeState(DronState.Idle);
     }
     private void InitializeStates()
@@ -117,10 +111,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         if (!IsServer) return;
         if (targetPlayer == null) return;
 
-        if (jCam)
-        {
-            jsVcamTrs.transform.localPosition = originalPosition;
-        }
 
         Vector3 targetPlayerPos = targetPlayer.transform.position;
         Vector3 playerVec = (targetPlayerPos - transform.position).normalized;
@@ -267,43 +257,27 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     public void JumpScare() //��ǻ�?�ִϸ��̼��� �Ǿ� �־ �÷��̾ �� �����̰� ������ �ٶ󺸰� ������ �ϸ� �� ��?
     {
         var player = targetPlayer.GetComponent<PlayerController>();
-        jCam = false;
-        JumpScareClientRPC(player.OwnerClientId);
-
+        JumpScareClientRPC(player.OwnerClientId.GetRPCParams());
     }
 
     [ClientRpc]
-    private void JumpScareClientRPC(ulong clientId)
+    private void JumpScareClientRPC(ClientRpcParams param)
     {
-        if (clientId != NetworkManager.LocalClientId) return;
-
         //PlayerController player = PlayerManager.Instance.FindPlayerControllerToID(playerId);
         //player == null �̰� �´µ�
         jsVcamTrs.Priority = 500;
         transform.DOShakePosition(0.3f);
-        StartCoroutine(Shake(shakeAmount, shakeTime));
+        float time = 0;
+        time += Time.deltaTime;
+        if(time >= 1f)
+        {
+            KillPlayerServerRPC();
+            time = 0;
+        }
         //player.Input.Disable();
         //player.enabled = false;
     }
 
-    IEnumerator Shake(float ShakeAmount, float ShakeTime)
-    {
-        
-
-        headTrs.localRotation = Quaternion.Euler(30f, 0f, 0f);
-
-        float timer = 0;
-        while (timer <= ShakeTime)
-        {
-            jsVcamTrs.transform.localPosition = originalPosition + (Vector3)UnityEngine.Random.insideUnitCircle * ShakeAmount;
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        KillPlayerServerRPC();
-
-        headTrs.localRotation = Quaternion.Euler(0f, 0f, 0f);
-    }
 
     [ServerRpc(RequireOwnership = false)]
     public void KillPlayerServerRPC()
@@ -314,13 +288,23 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
 
         PlayerManager.Instance.PlayerDie(EnumList.DeadType.Dron, player.OwnerClientId);
         IsKill = true;
-        jCam = true;
+    }
+
+    [ClientRpc]
+    private void StopJumpScareClientRPC(ClientRpcParams param)
+    {
+        jsVcamTrs.Priority = -2;
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void DeathServerRpc()
     {
         IsDead = true;
+
+        if (targetPlayer != null)
+        {
+            StopJumpScareClientRPC(targetPlayer.OwnerClientId.GetRPCParams());
+        }
     }
 
 
