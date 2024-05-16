@@ -88,7 +88,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
         }
 
         Input = Input.Init();
-        Data = Instantiate(Data);
+        Data = Data.Copy();
 
         if (PlayerManager.Instance != null)
         {
@@ -203,7 +203,6 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
         if(IsOwner && Input != null)
         {
-
 
             Input.Dispose();
             Destroy(Input);
