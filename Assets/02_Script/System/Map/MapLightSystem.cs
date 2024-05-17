@@ -79,9 +79,11 @@ public class MapLightSystem : NetworkBehaviour
 
             item.SetLight(value);
 
+
         }
 
     }
+
 
     public override void OnDestroy()
     {

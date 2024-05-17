@@ -16,10 +16,11 @@ public class DronCatchPlayerTransition : DronTransitionRoot
         if (nav.pathPending) return false;
 
         if (dronFSM.targetPlayer == null) return false;
+        Collider player = dronFSM.CirclePlayer(radius);
 
-        if (dronFSM.CirclePlayer(radius) != null)
+        if (player != null)
         {
-            dronFSM.targetPlayer = dronFSM.CirclePlayer(radius);
+            dronFSM.targetPlayer = player.GetComponent<PlayerController>(); 
             Debug.Log("플레이어가 들어와서 죽음");
             return true;
         }

@@ -128,6 +128,7 @@ GameObject:
   m_Component:
   - component: {fileID: 763527890940596606}
   - component: {fileID: 3934641566230030412}
+  - component: {fileID: 8409454896202618609}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -162,6 +163,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8409454896202618609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3137564608857355355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 0
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &3384258370587905446
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2618720083
+  GlobalObjectIdHash: 427746164
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -352,18 +370,15 @@ MonoBehaviour:
   IsKill: 0
   moveRadius: 20
   chaseInRadius: 5
-  chaseRadius: 10
+  chaseRadius: 20
   killRadius: 0.5
-  workSpeed: 15
+  workSpeed: 10
   zoom: 0
-  runSpeed: 20
-  lazerLine: {fileID: 6063639385596148084}
-  lazerTime: 0.01
+  runSpeed: 15
   dronLight: {fileID: 5618574851690108275}
   zoomRange: 20
-  stopTime: 5
   Spark: {fileID: 6675195792886450186}
-  shakeAmount: 0.1
+  shakeAmount: 2
   shakeTime: 1
   obstacleMask:
     serializedVersion: 2
@@ -668,14 +683,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7965528340226190236}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.9649158, z: 0.26255953, w: 0}
-  m_LocalPosition: {x: 0, y: 1.28, z: 1.05}
+  m_LocalRotation: {x: 0, y: 0.9659259, z: 0.258819, w: 0}
+  m_LocalPosition: {x: 0, y: 1.2, z: 1.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 763527890940596606}
   m_Father: {fileID: 8147409261327041021}
-  m_LocalEulerAnglesHint: {x: -30.444, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: -30, y: 180, z: 0}
 --- !u!114 &1553644040731779040
 MonoBehaviour:
   m_ObjectHideFlags: 0

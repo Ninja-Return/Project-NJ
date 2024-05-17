@@ -6,6 +6,7 @@ using Unity.Netcode;
 using UnityEngine;
 using DG.Tweening;
 using Unity.Services.Lobbies.Models;
+using Unity.Mathematics;
 
 public enum DronState
 {
@@ -26,16 +27,15 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     public float angle;
     public Vector3 lookVec;
     public LayerMask playerMask;
+    private CinemachineBasicMultiChannelPerlin noise;
+
 
     public DronState nowState;
 
     [HideInInspector] public Vector3 pingPos;
-    [HideInInspector] public Collider targetPlayer;
+    [HideInInspector] public PlayerController targetPlayer;
     [HideInInspector] public bool IsDead { get; private set; }
     [HideInInspector] public bool IsKill;
-    [HideInInspector] public bool jCam;
-    [HideInInspector]
-    public Vector3 originalPosition;
 
     [Header("Values")]
     [SerializeField] private float moveRadius;
@@ -45,13 +45,10 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     [SerializeField] private float workSpeed;
     [SerializeField] public bool zoom = false;
     [SerializeField] private float runSpeed;
-    [SerializeField] private LineRenderer lazerLine;
-    [SerializeField] private float lazerTime;
     [SerializeField] private Light dronLight;
     [SerializeField] private float zoomRange;
-    [SerializeField] private float stopTime;
     [SerializeField] private ParticleSystem Spark;
-    [SerializeField] float shakeAmount = 1.0f;
+    [SerializeField] float shakeAmount;
     [SerializeField] float shakeTime = 1.0f;
     [SerializeField] private LayerMask obstacleMask;
 
@@ -63,22 +60,20 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         {
             nav.enabled = false;
         }
+        noise = jsVcamTrs.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
         if (!IsServer) return;
 
         base.Awake();
 
         InitializeStates();
-        jCam = true;
-        originalPosition = new Vector3(0, 1.28f, 1f);
-        Debug.Log(originalPosition);
         ChangeState(DronState.Idle);
     }
     private void InitializeStates()
     {
         DronIdleState dronIdleState = new DronIdleState(this);
         DronPatrolState dronPatrolState = new DronPatrolState(this, moveRadius, workSpeed, Spark);
-        DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed, lazerTime, stopTime, lazerLine);
+        DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed);
         DronKillState dronKillState = new DronKillState(this);
         DronZoomState dronZoomState = new DronZoomState(this, zoomRange, dronLight);
         DronDeathState dronDeathState = new DronDeathState(this);
@@ -96,7 +91,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         dronZoomState.AddTransition(dronZoomInTransition);
 
         dronChaseState.AddTransition(dronCatchPlayerTransition);
-
 
         dronIdleState.AddTransition(dronDieTransition);
         dronPatrolState.AddTransition(dronDieTransition);
@@ -117,10 +111,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         if (!IsServer) return;
         if (targetPlayer == null) return;
 
-        if (jCam)
-        {
-            jsVcamTrs.transform.localPosition = originalPosition;
-        }
 
         Vector3 targetPlayerPos = targetPlayer.transform.position;
         Vector3 playerVec = (targetPlayerPos - transform.position).normalized;
@@ -267,7 +257,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     public void JumpScare() //ï¿½ï¿½Ç»ï¿?ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½Ç¾ï¿½ ï¿½Ö¾î¼­ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶óº¸°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¸ï¿½ ï¿½ï¿½ ï¿½ï¿½?
     {
         var player = targetPlayer.GetComponent<PlayerController>();
-        jCam = false;
         JumpScareClientRPC(player.OwnerClientId);
 
     }
@@ -276,11 +265,10 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
     private void JumpScareClientRPC(ulong clientId)
     {
         if (clientId != NetworkManager.LocalClientId) return;
-
         //PlayerController player = PlayerManager.Instance.FindPlayerControllerToID(playerId);
         //player == null ï¿½Ì°ï¿½ ï¿½Â´Âµï¿½
         jsVcamTrs.Priority = 500;
-        transform.DOShakePosition(0.3f);
+        headTrs.localRotation = Quaternion.Euler(30f, 0f, 0f);
         StartCoroutine(Shake(shakeAmount, shakeTime));
         //player.Input.Disable();
         //player.enabled = false;
@@ -288,17 +276,17 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
 
     IEnumerator Shake(float ShakeAmount, float ShakeTime)
     {
-        
 
-        headTrs.localRotation = Quaternion.Euler(30f, 0f, 0f);
+        // Èçµé¸²ÀÇ ¼¼±â¸¦ ¼³Á¤
+        noise.m_AmplitudeGain = ShakeAmount;
+        noise.m_FrequencyGain = ShakeAmount;
 
-        float timer = 0;
-        while (timer <= ShakeTime)
-        {
-            jsVcamTrs.transform.localPosition = originalPosition + (Vector3)UnityEngine.Random.insideUnitCircle * ShakeAmount;
-            timer += Time.deltaTime;
-            yield return null;
-        }
+        // ÀÏÁ¤ ½Ã°£ µ¿¾È ´ë±â
+        yield return new WaitForSeconds(ShakeTime);
+
+        // Èçµé¸² ÇØÁ¦
+        noise.m_FrequencyGain = 0f;
+        noise.m_AmplitudeGain = 0f;
 
         KillPlayerServerRPC();
 
@@ -314,13 +302,16 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
 
         PlayerManager.Instance.PlayerDie(EnumList.DeadType.Dron, player.OwnerClientId);
         IsKill = true;
-        jCam = true;
     }
+
+    
 
     [ServerRpc(RequireOwnership = false)]
     public void DeathServerRpc()
     {
         IsDead = true;
+
+        
     }
 
 

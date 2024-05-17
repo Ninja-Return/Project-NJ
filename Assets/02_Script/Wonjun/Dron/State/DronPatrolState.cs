@@ -19,10 +19,11 @@ public class DronPatrolState : DronStateRoot
 
     protected override void EnterState()
     {
+        spark.Play();
+
         if (!IsServer) return;
         Debug.Log("patrolµé¾î¿È");
         NetworkSoundManager.Play3DSound("DronHowling", dronFSM.transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
-        spark.Play();
 
         nav.speed = speed;
 

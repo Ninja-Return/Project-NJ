@@ -13,13 +13,10 @@ public class DronChaseState : DronStateRoot
     private bool lazer;
     private bool razerCheck;
 
-    public DronChaseState(DronFSM controller, float radius, float speed, float lazerTime, float stopTime, LineRenderer lazerLine) : base(controller)
+    public DronChaseState(DronFSM controller, float radius, float speed) : base(controller)
     {
         this.radius = radius;
         this.speed = speed;
-        this.lazerTime = lazerTime;
-        this.stopTime = stopTime;
-        this.lazerLine = lazerLine;
     }
 
     protected override void EnterState()
@@ -28,7 +25,6 @@ public class DronChaseState : DronStateRoot
         NetworkSoundManager.Play3DSound("DronKill", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
         Debug.Log("chase들어옴");
         nav.speed = speed;
-        lazer = true;
     }
 
     protected override void UpdateState()
@@ -41,19 +37,9 @@ public class DronChaseState : DronStateRoot
 
         if (player != null)
         {
-            dronFSM.targetPlayer = player;
-            Vector3 playerPos = dronFSM.targetPlayer.transform.position;
+            dronFSM.targetPlayer = player.GetComponent<PlayerController>();
+            Vector3 playerPos = player.transform.position;
             nav.SetDestination(playerPos);
-            if (lazer && !razerCheck)
-            {
-
-                razerCheck = true;
-                // 시작 시간마다 코루틴 호출
-                Debug.Log("멈춰");
-                StartCoroutine(PlayerStopLazerCoroutine());
-
-            }
-            
         }
         else
         {
@@ -62,48 +48,12 @@ public class DronChaseState : DronStateRoot
     }
 
 
-    #region 플레이어 로직
-
-    /// <summary>
-    /// 플레이어 멈추기 코루틴
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator PlayerStopLazerCoroutine()
-    {
-        PlayerController targetPlayer;
-
-        while (lazer)
-        {
-            targetPlayer = dronFSM.targetPlayer.GetComponent<PlayerController>();
-
-            lazerLine.SetPosition(0, dronFSM.headTrs.position);
-            lazerLine.SetPosition(1, dronFSM.targetPlayer.transform.position);
-            Debug.Log("플레이어 멈추게해", dronFSM.targetPlayer);
-
-            targetPlayer.Data.MoveSpeed.SetValue(0f);
-
-            yield return new WaitForSeconds(0.5f);
-            lazerLine.SetPosition(1, dronFSM.headTrs.position);
-            lazerLine.SetPosition(0, dronFSM.headTrs.position);
-
-            yield return new WaitForSeconds(stopTime-1);
-            Debug.Log("다시 움직여", dronFSM.targetPlayer);
-
-            if (targetPlayer != null)
-                targetPlayer.Data.MoveSpeed.SetValue(5f);
-            yield return new WaitForSeconds(lazerTime);
-        }
-
-        razerCheck = false;
-
-    }
-    #endregion
+  
 
     protected override void ExitState()
     {
         if (!IsServer) return;
 
-        lazer = false;
         nav.SetDestination(dronFSM.transform.position);
     }
 }
