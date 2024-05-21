@@ -78,6 +78,33 @@ public class LobbySelectUIController : MonoBehaviour
         checkIcon.SetActive(isRoomLook);
     }
 
+    private void Update()
+    {
+
+#if UNITY_EDITOR
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+
+            LoadDebugging();
+
+        }
+
+#endif
+
+    }
+
+    private async void LoadDebugging()
+    {
+
+
+        await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), System.Guid.NewGuid().ToString(), true);
+
+        HostSingle.Instance.GameManager.gameMode = GameMode.Mutli;
+        NetworkManager.Singleton.SceneManager.LoadScene(SceneList.TestScene, LoadSceneMode.Single);
+
+    }
+
     public async void StartTutorial()
     {
         try

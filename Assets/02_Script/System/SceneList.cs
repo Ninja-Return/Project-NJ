@@ -13,5 +13,6 @@ public class SceneList
     public const string LobbySelectScene = "LobbySelect";
     public const string LoadingScene = "Loading";
     public const string IntroScene = "Intro";
+    public const string TestScene = "MonsterTest";
 
 }
