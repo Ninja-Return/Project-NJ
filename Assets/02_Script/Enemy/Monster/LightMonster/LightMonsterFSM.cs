@@ -129,7 +129,7 @@ public class LightMonsterPatrolState : LightMonsterBaseState
 
             }
 
-            yield return new WaitForSeconds(15f);
+            yield return new WaitUntil(() => !controller.MoveController.HasPath);
 
         }
 

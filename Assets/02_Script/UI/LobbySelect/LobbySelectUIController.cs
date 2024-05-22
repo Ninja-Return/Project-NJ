@@ -42,6 +42,7 @@ public class LobbySelectUIController : MonoBehaviour
             HostSingle.Instance.GameManager.gameMode = GameMode.Mutli;
             NetworkManager.Singleton.SceneManager.LoadScene(SceneList.LobbyScene, LoadSceneMode.Single);
 
+
         }
         catch (Exception ex)
         {
