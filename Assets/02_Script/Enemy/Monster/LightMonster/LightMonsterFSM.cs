@@ -11,7 +11,8 @@ public enum LigthMonsterStateType
 
     Patrol,
     Chase,
-    RunAway
+    Stun,
+    Attack,
 
 }
 
@@ -90,7 +91,9 @@ public class LightMonsterPatrolState : LightMonsterBaseState
     protected override void EnterState()
     {
 
+        controller.SetSpeed(5);
         coroutine = StartCoroutine(PatrolCo());
+        controller.ControlAnimator.SetIsWalk(true);
 
     }
 
@@ -106,6 +109,8 @@ public class LightMonsterPatrolState : LightMonsterBaseState
 
         coroutine = null;
 
+        controller.ControlAnimator.SetIsWalk(false);
+
     }
 
     private IEnumerator PatrolCo()
@@ -114,7 +119,6 @@ public class LightMonsterPatrolState : LightMonsterBaseState
         while (true)
         {
 
-            yield return new WaitUntil(() => !controller.MoveController.HasPath);
 
             var pos = GetRandomNavMeshPoint(50, 70);
 
@@ -125,6 +129,7 @@ public class LightMonsterPatrolState : LightMonsterBaseState
 
             }
 
+            yield return new WaitForSeconds(15f);
 
         }
 
@@ -138,6 +143,21 @@ public class LightMonsterChaseState : LightMonsterBaseState
     {
     }
 
+    protected override void EnterState()
+    {
+
+        controller.SetSpeed(8);
+        controller.ControlAnimator.SetIsRun(true);
+
+    }
+
+    protected override void ExitState()
+    {
+
+        controller.ControlAnimator.SetIsRun(false);
+
+    }
+
     protected override void UpdateState()
     {
 
@@ -147,45 +167,96 @@ public class LightMonsterChaseState : LightMonsterBaseState
 
 }
 
-public class LightMonsterRunAwayState : LightMonsterBaseState
+public class LightMonsterStunState : LightMonsterBaseState
 {
-    public LightMonsterRunAwayState(FSM_Controller_Netcode<LigthMonsterStateType> controller) : base(controller)
+    public LightMonsterStunState(FSM_Controller_Netcode<LigthMonsterStateType> controller) : base(controller)
     {
     }
 
     protected override void EnterState()
     {
 
-        var points = GetRandomNavMeshPoints(50, 100);
-        var targetFwd = controller.Target == null ? transform.forward : controller.Target.forward;
-        var targetPos = controller.Target == null ? transform.position : controller.Target.position;
-        var fwdPoints = new List<Vector3>();
+        controller.ControlAnimator.SetStun();
+        controller.ControlAnimator.OnAnimeEnd += HandleAnimeEnd;
+        controller.MoveController.Stop();
 
-        foreach(var item in points)
+    }
+
+    protected override void ExitState()
+    {
+
+        controller.ControlAnimator.OnAnimeEnd -= HandleAnimeEnd;
+        controller.MoveController.Continue();
+
+        if(controller.Target == null)
         {
 
-            var dir = targetPos - item;
+            controller.SetTarget(controller.MoveController.GetClosest(10, LayerMask.GetMask("Player")).transform);
 
-            if(Vector3.Dot(targetFwd, dir.normalized) > 0)
+        }
+
+    }
+
+    private void HandleAnimeEnd()
+    {
+
+        controller.ChangeState(LigthMonsterStateType.Chase);
+
+    }
+
+}
+
+public class LightMonsterJumpAttackState : LightMonsterBaseState
+{
+    public LightMonsterJumpAttackState(FSM_Controller_Netcode<LigthMonsterStateType> controller) : base(controller)
+    {
+    }
+
+}
+
+public class LigthMonsterAttackState : LightMonsterBaseState
+{
+    public LigthMonsterAttackState(FSM_Controller_Netcode<LigthMonsterStateType> controller) : base(controller)
+    {
+    }
+
+    protected override void EnterState()
+    {
+
+        controller.ControlAnimator.SetNormalAttack();
+        controller.ControlAnimator.OnAnimeEnd += HandleEnd;
+        controller.MoveController.Stop();
+
+    }
+
+    protected override void ExitState()
+    {
+
+        controller.ControlAnimator.OnAnimeEnd -= HandleEnd;
+        controller.MoveController.Continue();
+
+    }
+
+    private void HandleEnd()
+    {
+
+        if(controller.Target != null)
+        {
+
+            if(Vector3.Distance(transform.position, controller.Target.transform.position) <= 3)
             {
 
-                fwdPoints.Add(item);
+                var id = controller.Target.GetComponent<PlayerController>().OwnerClientId;
+
+                PlayerManager.Instance.PlayerDie(EnumList.DeadType.Dron, id);
 
             }
 
         }
 
-        if(fwdPoints.Count != 0)
-        {
-
-            controller.MoveController.Move(fwdPoints.GetRandomListObject());
-
-        }
-
-        controller.RemovingTarget();
+        controller.ChangeState(LigthMonsterStateType.Patrol);
 
     }
-
 }
 
 #endregion
@@ -208,8 +279,12 @@ public abstract class LightMonsterTransitionBase : FSM_Transition_Netcode<LigthM
 
 public class LightMonsterTargetCastingTransition : LightMonsterTransitionBase
 {
-    public LightMonsterTargetCastingTransition(FSM_Controller_Netcode<LigthMonsterStateType> controller, LigthMonsterStateType nextState) : base(controller, nextState)
+
+    private bool checkNull = false;
+
+    public LightMonsterTargetCastingTransition(FSM_Controller_Netcode<LigthMonsterStateType> controller, LigthMonsterStateType nextState, bool checkNull) : base(controller, nextState)
     {
+        this.checkNull = checkNull;
     }
 
     protected override bool CheckTransition()
@@ -217,7 +292,7 @@ public class LightMonsterTargetCastingTransition : LightMonsterTransitionBase
 
         controller.CheckTargetting();
 
-        return controller.Target != null;
+        return checkNull ? controller.Target == null : controller.Target != null;
 
     }
 
@@ -241,7 +316,7 @@ public class LightMonsterMoveEndTransition : LightMonsterTransitionBase
 public class LightMonsterLightTransition : LightMonsterTransitionBase
 {
 
-    private bool lightCasted;
+    private int lightCastedCount;
 
     public LightMonsterLightTransition(FSM_Controller_Netcode<LigthMonsterStateType> controller, LigthMonsterStateType nextState) : base(controller, nextState)
     {
@@ -252,7 +327,7 @@ public class LightMonsterLightTransition : LightMonsterTransitionBase
     public override void EnterTransition()
     {
 
-        lightCasted = false;
+        lightCastedCount = 0;
         controller.OnCastedEvent += HandleLightCasted;
 
     }
@@ -260,7 +335,7 @@ public class LightMonsterLightTransition : LightMonsterTransitionBase
     private void HandleLightCasted()
     {
 
-        lightCasted = true;
+        lightCastedCount++;
 
     }
 
@@ -274,7 +349,28 @@ public class LightMonsterLightTransition : LightMonsterTransitionBase
     protected override bool CheckTransition()
     {
 
-        return lightCasted;
+        return lightCastedCount > 0;
+
+    }
+
+}
+
+public class LightMonsterRangeTransition : LightMonsterTransitionBase
+{
+
+    private float range;
+
+    public LightMonsterRangeTransition(FSM_Controller_Netcode<LigthMonsterStateType> controller, LigthMonsterStateType nextState, float range) : base(controller, nextState)
+    {
+        this.range = range;
+    }
+
+    protected override bool CheckTransition()
+    {
+
+        if (controller.Target == null) return false;
+
+        return Vector3.Distance(transform.position, controller.Target.position) <= range;
 
     }
 
@@ -283,6 +379,7 @@ public class LightMonsterLightTransition : LightMonsterTransitionBase
 #endregion
 
 [RequireComponent(typeof(MonsterController))]
+[RequireComponent(typeof(LightMonsterAnimater))]
 public class LightMonsterFSM : FSM_Controller_Netcode<LigthMonsterStateType>, ILightCastable
 {
 
@@ -290,6 +387,7 @@ public class LightMonsterFSM : FSM_Controller_Netcode<LigthMonsterStateType>, IL
     [SerializeField] private LayerMask obstacleMask;
     [SerializeField] private float angle;
 
+    public LightMonsterAnimater ControlAnimator { get; private set; }
     public MonsterController MoveController { get; private set; }
     public Transform Target { get; private set; }
 
@@ -302,8 +400,6 @@ public class LightMonsterFSM : FSM_Controller_Netcode<LigthMonsterStateType>, IL
         InitState();
 
         base.Awake();
-
-        
 
     }
 
@@ -319,22 +415,25 @@ public class LightMonsterFSM : FSM_Controller_Netcode<LigthMonsterStateType>, IL
 
         var patrol = new LightMonsterPatrolState(this);
         var chase = new LightMonsterChaseState(this);
-        var runAway = new LightMonsterRunAwayState(this);
+        var stun = new LightMonsterStunState(this);
+        var attack = new LigthMonsterAttackState(this);
 
-        var goRun = new LightMonsterLightTransition(this, LigthMonsterStateType.RunAway);
-        var goChase = new LightMonsterTargetCastingTransition(this, LigthMonsterStateType.Chase);
-        var goPatrol = new LightMonsterMoveEndTransition(this, LigthMonsterStateType.Patrol);
+        var goRun = new LightMonsterLightTransition(this, LigthMonsterStateType.Stun);
+        var goChase = new LightMonsterTargetCastingTransition(this, LigthMonsterStateType.Chase, false);
+        var goPatrol = new LightMonsterTargetCastingTransition(this, LigthMonsterStateType.Patrol, true);
+        var goAttack = new LightMonsterRangeTransition(this, LigthMonsterStateType.Attack, 3);
 
         patrol.AddTransition(goRun);
         patrol.AddTransition(goChase);
 
         chase.AddTransition(goRun);
-
-        runAway.AddTransition(goPatrol);
+        chase.AddTransition(goPatrol);
+        chase.AddTransition(goAttack);
 
         AddState(patrol, LigthMonsterStateType.Patrol);
         AddState(chase, LigthMonsterStateType.Chase);
-        AddState(runAway, LigthMonsterStateType.RunAway);
+        AddState(stun, LigthMonsterStateType.Stun);
+        AddState(attack, LigthMonsterStateType.Attack);
 
     }
 
@@ -351,21 +450,28 @@ public class LightMonsterFSM : FSM_Controller_Netcode<LigthMonsterStateType>, IL
     {
 
         MoveController = GetComponent<MonsterController>(); 
+        ControlAnimator = GetComponent<LightMonsterAnimater>();
 
     }
 
-    public void Casting()
+    public void Casting(Vector3 trm)
     {
 
-        Debug.Log("OhNO!");
-        OnCastedEvent?.Invoke();
+        var dir = trm - transform.position;
+
+        if(Vector3.Dot(transform.forward, dir) > 0)
+        {
+
+            OnCastedEvent?.Invoke();
+
+        }
 
     }
 
     public void CheckTargetting()
     {
 
-        var target = MoveController.ViewingAndGetClosest(10, angle, targetMask, obstacleMask);
+        var target = MoveController.ViewingAndGetClosest(30, angle, targetMask, obstacleMask);
 
         if(target != null)
         {
@@ -373,6 +479,26 @@ public class LightMonsterFSM : FSM_Controller_Netcode<LigthMonsterStateType>, IL
             Target = target.transform;
 
         }
+        else
+        {
+
+            Target = null;
+
+        }
+
+    }
+
+    public void SetTarget(Transform trm)
+    {
+
+        Target = trm;
+
+    }
+
+    public void SetSpeed(float speed)
+    {
+
+        MoveController.MonsterAgnet.speed = speed;
 
     }
 

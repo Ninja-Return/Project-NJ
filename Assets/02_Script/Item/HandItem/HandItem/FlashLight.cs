@@ -19,8 +19,8 @@ public class FlashLight : HandItemRoot
 
             var cast = Physics.OverlapBox(
                 Camera.main.transform.position + Camera.main.transform.forward * 10f,
-                Vector3.one * 5f,
-                Quaternion.Euler(0, transform.root.eulerAngles.y, 0),
+                Vector3.one * 10f,
+                Quaternion.LookRotation(Camera.main.transform.forward, Camera.main.transform.up),
                 ~obstacleLayer);
 
             foreach(var item in cast)
@@ -34,7 +34,7 @@ public class FlashLight : HandItemRoot
                     if (item.TryGetComponent<ILightCastable>(out var compo))
                     {
 
-                        compo.Casting();
+                        compo.Casting(transform.position);
 
                     }
 
