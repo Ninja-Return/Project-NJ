@@ -15,7 +15,7 @@ public enum EnumPlayerState
    
 }
 
-public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
+public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchTrapInterface
 {
     [SerializeField] private EnumPlayerState startState;
     [SerializeField] private bool debug;
@@ -157,6 +157,11 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>
 
         SceneManager.LoadScene(SceneList.LobbySelectScene);
 
+    }
+
+    public void CaughtTrap(float time) //Server에서 호출
+    {
+        //점프도 안되게
     }
 
     private IEnumerator Update3DPosCo()
