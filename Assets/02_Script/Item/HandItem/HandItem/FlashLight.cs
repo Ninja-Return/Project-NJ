@@ -26,9 +26,10 @@ public class FlashLight : HandItemRoot
             foreach(var item in cast)
             {
 
-                var dir = Camera.main.transform.position - item.transform.position;
+                var dir = item.transform.position - Camera.main.transform.position;
+                var dest = Vector3.Distance(Camera.main.transform.position, item.transform.position);
 
-                if(!Physics.Raycast(Camera.main.transform.position, dir.normalized, 10, obstacleLayer))
+                if(!Physics.Raycast(Camera.main.transform.position, dir.normalized, dest, obstacleLayer))
                 {
 
                     if (item.TryGetComponent<ILightCastable>(out var compo))
