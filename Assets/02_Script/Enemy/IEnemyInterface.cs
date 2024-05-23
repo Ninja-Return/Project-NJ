@@ -5,4 +5,5 @@ using UnityEngine;
 public interface IEnemyInterface
 {
     public void Death();
+    
 }
