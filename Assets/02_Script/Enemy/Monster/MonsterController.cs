@@ -102,6 +102,26 @@ public class MonsterController : ObjectControllerBase
 
         return target;
     }
+
+    public Collider GetClosest(float radius, LayerMask targetMask)
+    {
+        Vector3 pos = transform.position;
+
+        Collider[] allPlayers = Physics.OverlapSphere(pos, radius, targetMask);
+        float minDistance = float.MaxValue;
+        Collider target = null;
+        foreach (Collider cast in allPlayers)
+        {
+            float playerDistance = Vector3.Distance(cast.transform.position, pos);
+            if (playerDistance < minDistance)
+            {
+                target = cast;
+            }
+        }
+
+        return target;
+    }
+
     private bool RayObstacle(Vector3 pos, Vector3 lookVec, float destance, LayerMask obstacleMask)
     {
         return Physics.Raycast(pos, lookVec, destance, obstacleMask);
