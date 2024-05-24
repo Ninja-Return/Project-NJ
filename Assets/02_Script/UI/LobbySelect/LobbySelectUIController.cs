@@ -37,7 +37,17 @@ public class LobbySelectUIController : MonoBehaviour
         try
         {
 
-            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text, roomPrivate);
+
+            var str = roomInputField.text;
+            if (str == string.Empty)
+            {
+
+                str = $"Luckey_{UnityEngine.Random.Range(0, 1000)}";
+
+            }
+
+
+            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), str, roomPrivate);
 
             HostSingle.Instance.GameManager.gameMode = GameMode.Mutli;
             NetworkManager.Singleton.SceneManager.LoadScene(SceneList.LobbyScene, LoadSceneMode.Single);
