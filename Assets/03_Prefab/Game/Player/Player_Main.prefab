@@ -1635,12 +1635,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9372992a5c934e448a7c78dbc8380c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemPanelPrefab: {fileID: 8300396037752972668, guid: b30f152065ed6b644bd6872974b7d394, type: 3}
+  canvas: {fileID: 854034354134861329, guid: f29dd3a88437a074e833dba3a22771c6, type: 3}
   raderRadius: 4
   itemLayer:
     serializedVersion: 2
     m_Bits: 8
-  itemPanelPrefab: {fileID: 8300396037752972668, guid: b30f152065ed6b644bd6872974b7d394, type: 3}
-  canvas: {fileID: 854034354134861329, guid: f29dd3a88437a074e833dba3a22771c6, type: 3}
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 12288
 --- !u!114 &3516956034148795912
 MonoBehaviour:
   m_ObjectHideFlags: 0
