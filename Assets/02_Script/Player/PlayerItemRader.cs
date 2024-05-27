@@ -16,6 +16,8 @@ public class PlayerItemRader : NetworkBehaviour
     private Canvas itemPanelCanvas;
     private List<ItemPanel> activeItemPanels = new List<ItemPanel>();
 
+    readonly Vector3 panelPivot = new Vector3(0f, 0f, 0f);
+
     private void Start()
     {
         if (!IsOwner) return;
@@ -80,6 +82,7 @@ public class PlayerItemRader : NetworkBehaviour
                 if (IsItemBehindCamera(itemRoot))
                 {
                     itemScreenPos += Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up) * 50f;
+                    itemScreenPos += panelPivot;
 
                     ItemPanel panel = Instantiate(itemPanelPrefab, itemScreenPos, Quaternion.identity, itemPanelCanvas.transform);
                     panel.SetItem(itemRoot); // 아이템 정보 설정

@@ -7,6 +7,8 @@ namespace EnumList
     public enum ItemType
     {
         Null,
+        Possible,
+        ImPossible
     }
 
     public enum DeadType
