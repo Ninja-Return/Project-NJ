@@ -98,6 +98,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""InventoryKey"",
+                    ""type"": ""Value"",
+                    ""id"": ""a469360b-e186-4625-a77f-72413e45bcc7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -232,6 +241,94 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""SitDown"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""52f9b2f2-06cf-427d-8a0e-9e2350ebbed0"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InventoryKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""faecebd2-2344-496e-b513-ab70b6236c79"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InventoryKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5a4f8270-de38-4c9b-824e-3c91dedf004b"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InventoryKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bcf246a5-3c18-4722-b9ac-63c934d4d2ab"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InventoryKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c2c4caa1-e671-4e2f-8a9d-71cc3e954e20"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InventoryKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""81af9889-0427-4be8-a94a-919c9bd16e87"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InventoryKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""db175ab3-434a-47dd-b97a-5e442facae4c"",
+                    ""path"": ""<Keyboard>/7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InventoryKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3d233efb-e72e-48d7-abc7-5ea2d577cfdb"",
+                    ""path"": ""<Keyboard>/8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InventoryKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -265,6 +362,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_PlayerMovement_InventoryActive = m_PlayerMovement.FindAction("InventoryActive", throwIfNotFound: true);
         m_PlayerMovement_UseHandObject = m_PlayerMovement.FindAction("UseHandObject", throwIfNotFound: true);
         m_PlayerMovement_SitDown = m_PlayerMovement.FindAction("SitDown", throwIfNotFound: true);
+        m_PlayerMovement_InventoryKey = m_PlayerMovement.FindAction("InventoryKey", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -334,6 +432,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_InventoryActive;
     private readonly InputAction m_PlayerMovement_UseHandObject;
     private readonly InputAction m_PlayerMovement_SitDown;
+    private readonly InputAction m_PlayerMovement_InventoryKey;
     public struct PlayerMovementActions
     {
         private @PlayerInput m_Wrapper;
@@ -346,6 +445,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @InventoryActive => m_Wrapper.m_PlayerMovement_InventoryActive;
         public InputAction @UseHandObject => m_Wrapper.m_PlayerMovement_UseHandObject;
         public InputAction @SitDown => m_Wrapper.m_PlayerMovement_SitDown;
+        public InputAction @InventoryKey => m_Wrapper.m_PlayerMovement_InventoryKey;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -379,6 +479,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @SitDown.started += instance.OnSitDown;
             @SitDown.performed += instance.OnSitDown;
             @SitDown.canceled += instance.OnSitDown;
+            @InventoryKey.started += instance.OnInventoryKey;
+            @InventoryKey.performed += instance.OnInventoryKey;
+            @InventoryKey.canceled += instance.OnInventoryKey;
         }
 
         private void UnregisterCallbacks(IPlayerMovementActions instance)
@@ -407,6 +510,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @SitDown.started -= instance.OnSitDown;
             @SitDown.performed -= instance.OnSitDown;
             @SitDown.canceled -= instance.OnSitDown;
+            @InventoryKey.started -= instance.OnInventoryKey;
+            @InventoryKey.performed -= instance.OnInventoryKey;
+            @InventoryKey.canceled -= instance.OnInventoryKey;
         }
 
         public void RemoveCallbacks(IPlayerMovementActions instance)
@@ -443,5 +549,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnInventoryActive(InputAction.CallbackContext context);
         void OnUseHandObject(InputAction.CallbackContext context);
         void OnSitDown(InputAction.CallbackContext context);
+        void OnInventoryKey(InputAction.CallbackContext context);
     }
 }

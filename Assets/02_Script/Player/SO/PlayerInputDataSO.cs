@@ -12,11 +12,12 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
     public event Action OnInteractionKeyPress;
     public event Action OnObjectMoveKeyPress;
     public event Action OnObjectMoveKeyUp;
-    public event Action OnInventoryKeyPress;
+    public event Action OnInventoryActivePress;
     public event Action OnUseObjectKeyPress;
     public event Action OnUseObjectKeyUp;
     public event Action OnSitDownKeyPress;
     public event Action OnSitDownKeyUp;
+    public event Action<int> OnInventoryKeyPress;
 
     private PlayerInput playerInput;
 
@@ -135,7 +136,7 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
         if (context.performed)
         {
 
-            OnInventoryKeyPress?.Invoke();
+            OnInventoryActivePress?.Invoke();
 
         }
 
@@ -157,6 +158,13 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
 
         }
 
+    }
+
+    public void OnInventoryKey(InputAction.CallbackContext context)
+    {
+        var key = int.Parse(context.control.name);
+
+        OnInventoryKeyPress?.Invoke(key);
     }
 
     public void Dispose()

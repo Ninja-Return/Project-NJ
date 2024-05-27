@@ -14,8 +14,8 @@ public class Inventory : NetworkBehaviour
 {
     public static Inventory Instance { get; private set; }
 
-    public event SlotChange OnSlotClickEvt; //ï¿½ï¿½È£ï¿½Û¿ë¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Õ¿ï¿½ï¿½ï¿½ï¿?ï¿½Ô¼ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿?ï¿½ï¿½ï¿½ï¿½ï¿?
-    public event SlotChange OnSlotDropEvt; //ï¿½ï¿½ï¿?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½é¼­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½
+    public event SlotChange OnSlotClickEvt;
+    public event SlotChange OnSlotDropEvt;
     public event SlotChange OnSlotRemove;
 
     [SerializeField] private GameObject inventoryPanel;
@@ -49,12 +49,14 @@ public class Inventory : NetworkBehaviour
             playerController = GetComponent<PlayerController>();
             slots = GetComponentsInChildren<SlotUI>();
 
-            for (int i = 0; i < slots.Length; i++) //ï¿½Õ¿ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿?ï¿½Ï´Ï±ï¿½
+            playerController.Input.OnInventoryKeyPress += HoldItemToKey;
+
+            inventoryPanel.transform.localScale = Vector3.zero;
+
+            for (int i = 0; i < slots.Length; i++) 
             {
                 slots[i].slotIndex = i;
             }
-
-            inventoryPanel.transform.localScale = Vector3.zero;
 
             foreach (var item in firstItem)
             {
@@ -67,6 +69,8 @@ public class Inventory : NetworkBehaviour
 
 
     }
+
+    #region Public
 
     public void SetActiveInventoryUI(bool notPlayerActiveChange = false)
     {
@@ -162,6 +166,20 @@ public class Inventory : NetworkBehaviour
         OnSlotDropEvt?.Invoke(itemObj, idx, extraData);
     }
 
+    public void DropAllItem()
+    {
+
+        foreach (var item in slots)
+        {
+
+            if (item.slotData == null) continue;
+            var trm = transform.root;
+            ItemSpawnManager.Instance.SpawningItem(trm.position + transform.forward, item.slotData.poolingName);
+
+        }
+
+    }
+
     public void Deleteltem() // ¼Õ¿¡ µç ¾ÆÀÌÅÛ ¼ÒÁø
     {
         if (!isHold) return;
@@ -170,6 +188,15 @@ public class Inventory : NetworkBehaviour
         SlotClear(slotIdx);
 
         OnSlotRemove?.Invoke("", slotIdx, "");
+    }
+
+    #endregion
+
+    #region Private
+
+    private void HoldItemToKey(int value)
+    {
+        slots[value - 1].UseSlot();
     }
 
     private void HandClear()
@@ -199,6 +226,10 @@ public class Inventory : NetworkBehaviour
             slot.SetColor(slot.data.itemType == ItemType.Possible ? orangeColor : whiteColor);
     }
 
+    #endregion
+
+    #region ServerRPC
+
     [ServerRpc(RequireOwnership = false)]
     private void DropItemServerRPC(FixedString128Bytes itemKey, FixedString32Bytes extraData)
     {
@@ -215,6 +246,10 @@ public class Inventory : NetworkBehaviour
         //clone.SetUpExtraDataServerRPC(extraData);
 
     }
+
+    #endregion
+
+    #region Return
 
     public bool GetItem(string itemName)
     {
@@ -237,19 +272,9 @@ public class Inventory : NetworkBehaviour
 
     }
 
-    public void DropAllItem()
-    {
+    #endregion
 
-        foreach (var item in slots)
-        {
-
-            if (item.slotData == null) continue;
-            var trm = transform.root;
-            ItemSpawnManager.Instance.SpawningItem(trm.position + transform.forward, item.slotData.poolingName);
-
-        }
-
-    }
+    #region Coroutine
 
     private IEnumerator ShowDelay()
     {
@@ -258,5 +283,7 @@ public class Inventory : NetworkBehaviour
         showingDelay = false;
 
     }
+
+    #endregion
 
 }

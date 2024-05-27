@@ -119,7 +119,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
 
         ChangeState(startState);
 
-        Input.OnInventoryKeyPress += HandleInvenActive;
+        Input.OnInventoryActivePress += HandleInvenActive;
 
     }
 
@@ -202,7 +202,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
         if(IsOwner && Inventory.Instance != null)
         {
 
-            Input.OnInventoryKeyPress -= HandleInvenActive;
+            Input.OnInventoryActivePress -= HandleInvenActive;
 
         }
 

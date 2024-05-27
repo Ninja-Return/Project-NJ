@@ -114,7 +114,6 @@ public class PlayerItemRader : NetworkBehaviour
                 {
                     panel.SetPanelVisibility(true);
                     panel.UpdatePanelPosition(itemScreenPos + panelPivot);
-                    Debug.Log(itemScreenPos);
                 }
                 else
                 {
