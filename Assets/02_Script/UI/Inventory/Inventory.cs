@@ -20,6 +20,7 @@ public class Inventory : NetworkBehaviour
 
     [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private TMP_Text slotExpText;
+    [SerializeField] private TMP_Text slotUsingText;
 
     private PlayerController playerController;
     private SlotUI[] slots;
@@ -109,7 +110,6 @@ public class Inventory : NetworkBehaviour
     public bool ObtainItem(ItemDataSO data, string extraData) // 아이템 획득
     {
 
-
         for (int idx = 0; idx < slots.Length; idx++)
         {
             if (slots[idx].slotData == null)
@@ -139,6 +139,11 @@ public class Inventory : NetworkBehaviour
         SlotColor(slots[oldIdx]); //전에 집은 슬롯
         SlotColor(slots[slotIdx]); //새로 집는 슬롯
 
+        if (slots[slotIdx].data.itemType == ItemType.Possible)
+        {
+            slotUsingText.text = $"왼 클릭으로 {slots[slotIdx].data.itemName} 사용";
+        }
+
         OnSlotClickEvt?.Invoke(itemObj, idx, extraData);
     }
 
@@ -147,13 +152,10 @@ public class Inventory : NetworkBehaviour
 
         NetworkSoundManager.Play3DSound("DropItem", transform.position, 0.1f, 5);
 
-        slots[idx].ResetSlot();
-        SlotColor(slots[idx]);
-
-        getItemCount--;
-
-        if(idx == slotIdx) isHold = false;
+        if (idx == slotIdx) HandClear();
         if (extraData == null) extraData = " ";
+
+        SlotClear(idx);
 
         DropItemServerRPC(itemObj, extraData);
 
@@ -163,13 +165,24 @@ public class Inventory : NetworkBehaviour
     public void Deleteltem() // 손에 든 아이템 소진
     {
         if (!isHold) return;
-        isHold = false;
 
-        getItemCount--;
+        HandClear();
+        SlotClear(slotIdx);
+
         OnSlotRemove?.Invoke("", slotIdx, "");
-        slots[slotIdx].ResetSlot();
-        SlotColor(slots[slotIdx]);
+    }
 
+    private void HandClear()
+    {
+        isHold = false;
+        slotUsingText.text = "";
+    }
+
+    private void SlotClear(int idx) //해당 인덱스의 아이템을 인벤토리에서 없엠 처리
+    {
+        getItemCount--;
+        slots[idx].ResetSlot();
+        SlotColor(slots[idx]);
     }
 
     private void SlotColor(SlotUI slot)
