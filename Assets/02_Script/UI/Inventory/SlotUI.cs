@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using EnumList;
+using Unity.VisualScripting;
 
 public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
@@ -12,21 +14,23 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     public bool onCursor { get; private set; } //얘도 참조할 일이 있지 않을까
     public ItemDataSO data {  get; private set; }
 
-    [Header("Slot")]
-    private Animator anim;
-
     [SerializeField] private Image itemImage;
+    private Animator anim;
+    private Image slotImg;
+
     private string extraData;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        slotImg = GetComponent<Image>();
     }
 
     public void InsertSlot(ItemDataSO newData, string extraData)
     {
         slotData = newData.slotData;
         data = newData;
+
         itemImage.sprite = slotData.slotSprite;
         itemImage.color = Color.white;
         this.extraData = extraData;
@@ -53,9 +57,15 @@ public class SlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, 
     public void ResetSlot() //아이템 소진시(슬롯 비우기)
     {
         slotData = null;
+        data = null;
 
         itemImage.color = Color.clear;
         Inventory.Instance.PopItemText("");
+    }
+
+    public void SetColor(Color color)
+    {
+        slotImg.color = color;
     }
 
     public void OnPointerEnter(PointerEventData eventData) //마우스포인터 닿으면 설명
