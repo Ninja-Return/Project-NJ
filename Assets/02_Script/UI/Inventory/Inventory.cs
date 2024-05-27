@@ -19,7 +19,8 @@ public class Inventory : NetworkBehaviour
     public event SlotChange OnSlotRemove;
 
     [SerializeField] private GameObject inventoryPanel;
-    [SerializeField] private TextMeshProUGUI slotExpText;
+    [SerializeField] private TMP_Text slotExpText;
+    [SerializeField] private TMP_Text slotUsingText;
 
     private PlayerController playerController;
     private SlotUI[] slots;
@@ -31,6 +32,11 @@ public class Inventory : NetworkBehaviour
     public int getItemCount;
 
     [SerializeField] private List<ItemDataSO> firstItem = new();
+
+    readonly Color grayColor = new Color(0.5f, 0.5f, 0.5f, 0.8f);
+    readonly Color whiteColor = new Color(0.8f, 0.8f, 0.8f, 0.8f);
+    readonly Color orangeColor = new Color(1f, 0.5f, 0f, 0.8f);
+    readonly Color blueColor = new Color(0f, 0f, 1f, 0.8f);
 
     private void Start()
     {
@@ -101,61 +107,96 @@ public class Inventory : NetworkBehaviour
         slotExpText.text = $"\"{ex}\"";
     }
 
-    public bool ObtainItem(ItemDataSO data, string extraData) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½
+    public bool ObtainItem(ItemDataSO data, string extraData) // ¾ÆÀÌÅÛ È¹µæ
     {
 
-
-        for (int i = 0; i < slots.Length; i++)
+        for (int idx = 0; idx < slots.Length; idx++)
         {
-            if (slots[i].slotData == null)
+            if (slots[idx].slotData == null)
             {
                 getItemCount++;
-                slots[i].InsertSlot(data, extraData);
+                slots[idx].InsertSlot(data, extraData);
+                SlotColor(slots[idx]);
 
                 NetworkSoundManager.Play3DSound("GetItem", transform.position, 0.1f, 5);
-                //slots[i].TouchSlot(); //ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì°É·ï¿½
+                //slots[i].TouchSlot(); 
                 return true;
             }
         }
 
-        //ï¿½ï¿½ï¿½â¼­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½È¸Ô¾ï¿½ï¿½ï¿½ï¿½Ù´Â°ï¿½ ï¿½Ë·ï¿½ï¿½Ù¼ï¿½ï¿½ï¿½ ï¿½Ö°ï¿½
         return false;
     }
 
-    public void HoldItem(string itemObj, int idx, string extraData)
+    public void HoldItem(string itemObj, int idx, string extraData) //¾ÆÀÌÅÛ ¼Õ¿¡ Áý±â
     {
+        if (slotIdx == idx && isHold) return;
+
         isHold = true;
+
+        int oldIdx = slotIdx;
         slotIdx = idx;
 
-        OnSlotClickEvt?.Invoke(itemObj, idx, extraData); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿?ï¿½ï¿½ï¿½ï¿½ popï¿½Ï°ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        SlotColor(slots[oldIdx]); //Àü¿¡ ÁýÀº ½½·Ô
+        SlotColor(slots[slotIdx]); //»õ·Î Áý´Â ½½·Ô
+
+        if (slots[slotIdx].data.itemType == ItemType.Possible)
+        {
+            slotUsingText.text = $"¿Þ Å¬¸¯À¸·Î {slots[slotIdx].data.itemName} »ç¿ë";
+        }
+
+        OnSlotClickEvt?.Invoke(itemObj, idx, extraData);
     }
 
-    public void DropItem(string itemObj, int idx, string extraData)
+    public void DropItem(string itemObj, int idx, string extraData) //¾ÆÀÌÅÛ ¶³±¸±â
     {
 
         NetworkSoundManager.Play3DSound("DropItem", transform.position, 0.1f, 5);
 
-        slotIdx = idx;
-        slots[slotIdx].ResetSlot();
-
-        getItemCount--;
-
+        if (idx == slotIdx) HandClear();
         if (extraData == null) extraData = " ";
+
+        SlotClear(idx);
 
         DropItemServerRPC(itemObj, extraData);
 
-        OnSlotDropEvt?.Invoke(itemObj, idx, extraData); //ï¿½Õ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã´
+        OnSlotDropEvt?.Invoke(itemObj, idx, extraData);
     }
 
-    public void Deleteltem()
+    public void Deleteltem() // ¼Õ¿¡ µç ¾ÆÀÌÅÛ ¼ÒÁø
     {
         if (!isHold) return;
-        isHold = false;
 
-        getItemCount--;
+        HandClear();
+        SlotClear(slotIdx);
+
         OnSlotRemove?.Invoke("", slotIdx, "");
-        slots[slotIdx].ResetSlot();
+    }
 
+    private void HandClear()
+    {
+        isHold = false;
+        slotUsingText.text = "";
+    }
+
+    private void SlotClear(int idx) //ÇØ´ç ÀÎµ¦½ºÀÇ ¾ÆÀÌÅÛÀ» ÀÎº¥Åä¸®¿¡¼­ ¾ø¿¥ Ã³¸®
+    {
+        getItemCount--;
+        slots[idx].ResetSlot();
+        SlotColor(slots[idx]);
+    }
+
+    private void SlotColor(SlotUI slot)
+    {
+        if (slot.slotData == null)
+        {
+            slot.SetColor(grayColor);
+            return;
+        }
+
+        if (slot == slots[slotIdx] && isHold)
+            slot.SetColor(blueColor);
+        else
+            slot.SetColor(slot.data.itemType == ItemType.Possible ? orangeColor : whiteColor);
     }
 
     [ServerRpc(RequireOwnership = false)]

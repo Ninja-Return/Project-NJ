@@ -18,7 +18,7 @@ public enum MonsterState
     Dead
 }
 
-public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
+public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface, ICatchTrapInterface
 {
     public MonsterAnimation monsterAnim;
     public NavMeshAgent nav;
@@ -326,6 +326,11 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
         DeathServerRpc();
     }
 
+    public void CaughtTrap(float time)
+    {
+        StartCoroutine(MonsterStopCor(time));
+    }
+
     [ServerRpc(RequireOwnership = false)]
     public void DeathServerRpc()
     {
@@ -343,6 +348,15 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface
 
         SetPingPos(pos);
 
+    }
+
+    private IEnumerator MonsterStopCor(float time)
+    {
+        nav.isStopped = true;
+
+        yield return new WaitForSeconds(time);
+
+        nav.isStopped = false;
     }
 
     protected override void Update()

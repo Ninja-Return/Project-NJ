@@ -37,10 +37,21 @@ public class LobbySelectUIController : MonoBehaviour
         try
         {
 
-            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text, roomPrivate);
+
+            var str = roomInputField.text;
+            if (str == string.Empty)
+            {
+
+                str = $"Luckey_{UnityEngine.Random.Range(0, 1000)}";
+
+            }
+
+
+            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), str, roomPrivate);
 
             HostSingle.Instance.GameManager.gameMode = GameMode.Mutli;
             NetworkManager.Singleton.SceneManager.LoadScene(SceneList.LobbyScene, LoadSceneMode.Single);
+
 
         }
         catch (Exception ex)
@@ -76,6 +87,33 @@ public class LobbySelectUIController : MonoBehaviour
     {
         isRoomLook = !isRoomLook;
         checkIcon.SetActive(isRoomLook);
+    }
+
+    private void Update()
+    {
+
+#if UNITY_EDITOR
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+
+            LoadDebugging();
+
+        }
+
+#endif
+
+    }
+
+    private async void LoadDebugging()
+    {
+
+
+        await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), System.Guid.NewGuid().ToString(), true);
+
+        HostSingle.Instance.GameManager.gameMode = GameMode.Mutli;
+        NetworkManager.Singleton.SceneManager.LoadScene(SceneList.TestScene, LoadSceneMode.Single);
+
     }
 
     public async void StartTutorial()

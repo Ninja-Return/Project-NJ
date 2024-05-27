@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -53,18 +54,6 @@ public class New_GameManager : NetworkBehaviour
         {
 
             IsLightOn.Value = true;    
-
-        }
-
-    }
-
-    private void Update()
-    {
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-
-            GameToHardServerRPC();
 
         }
 

@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerDataSO : ScriptableObject
 {
 
-    [field:SerializeField] public Stat MoveSpeed { get; private set; }
+    [field: SerializeField] public Stat MoveSpeed { get; private set; }
     [field:SerializeField] public Stat SitSpeed { get; private set; }
     [field:SerializeField] public Stat JumpPower { get; private set; }
     [field:SerializeField] public Stat LookSensitive { get; private set; }

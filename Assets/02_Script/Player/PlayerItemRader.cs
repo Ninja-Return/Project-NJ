@@ -5,14 +5,18 @@ using Unity.Netcode;
 
 public class PlayerItemRader : NetworkBehaviour
 {
-    [SerializeField] private float raderRadius = 5f;
-    [SerializeField] private LayerMask itemLayer;
     [SerializeField] private ItemPanel itemPanelPrefab;
     [SerializeField] private Canvas canvas;
+
+    [SerializeField] private float raderRadius = 5f;
+    [SerializeField] private LayerMask itemLayer;
+    [SerializeField] private LayerMask obstacleLayer;
 
     private Camera cam;
     private Canvas itemPanelCanvas;
     private List<ItemPanel> activeItemPanels = new List<ItemPanel>();
+
+    readonly Vector3 panelPivot = new Vector3(0f, 0f, 0f);
 
     private void Start()
     {
@@ -30,13 +34,11 @@ public class PlayerItemRader : NetworkBehaviour
             cam = Camera.main;
         }
 
-        Collider[] items = Physics.OverlapSphere(cam.transform.position, raderRadius, itemLayer);
-
         List<ItemRoot> existingItems = GetExistingItems(); // 이미 생성된 아이템을 추적하기 위한 리스트
-        List<ItemRoot> raderItems = GetRaderItems(items); // 감지 범위 안의 아이템을 추적하기 위한 리스트
+        List<ItemRoot> raderItems = GetRaderItems(); // 감지 범위 안의 아이템을 추적하기 위한 리스트
 
-        InstantiatePanels(existingItems, raderItems);
-        UpdateExistingPanels(existingItems, raderItems);
+        InstantiatePanels(existingItems, raderItems); // 아이템 패널 생성
+        UpdateExistingPanels(existingItems, raderItems); // 이미 생성된 아이템 패널 관리
     }
 
     private List<ItemRoot> GetExistingItems()
@@ -51,13 +53,16 @@ public class PlayerItemRader : NetworkBehaviour
         return existingItems;
     }
 
-    private List<ItemRoot> GetRaderItems(Collider[] items)
+    private List<ItemRoot> GetRaderItems()
     {
         List<ItemRoot> raderItems = new List<ItemRoot>();
+        Collider[] items = Physics.OverlapSphere(cam.transform.position, raderRadius, itemLayer);
 
         foreach (Collider item in items)
         {
-            if (item.TryGetComponent<ItemRoot>(out ItemRoot itemRoot))
+            bool isObstacle = IsHideToObstacle(item.transform.position);
+
+            if (item.TryGetComponent<ItemRoot>(out ItemRoot itemRoot) && !isObstacle)
             {
                 raderItems.Add(itemRoot);
             }
@@ -77,6 +82,7 @@ public class PlayerItemRader : NetworkBehaviour
                 if (IsItemBehindCamera(itemRoot))
                 {
                     itemScreenPos += Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up) * 50f;
+                    itemScreenPos += panelPivot;
 
                     ItemPanel panel = Instantiate(itemPanelPrefab, itemScreenPos, Quaternion.identity, itemPanelCanvas.transform);
                     panel.SetItem(itemRoot); // 아이템 정보 설정
@@ -88,15 +94,6 @@ public class PlayerItemRader : NetworkBehaviour
                 }
             }
         }
-    }
-
-    private bool IsItemBehindCamera(ItemRoot itemRoot)
-    {
-        Vector3 fromItemToCamera = cam.transform.position - itemRoot.transform.position;
-        Vector3 cameraForward = cam.transform.forward;
-        float dot = Vector3.Dot(cameraForward, fromItemToCamera);
-
-        return dot < 0f;
     }
 
     private void UpdateExistingPanels(List<ItemRoot> existingItems, List<ItemRoot> raderItems)
@@ -124,5 +121,25 @@ public class PlayerItemRader : NetworkBehaviour
                 }
             }
         }
+    }
+
+    private bool IsHideToObstacle(Vector3 pos)
+    {
+        Vector3 itemDir = pos - cam.transform.position;
+        Ray ray = new Ray(cam.transform.position, itemDir.normalized);
+
+        float distance = Vector3.Distance(cam.transform.position, pos);
+        bool isObstacle = Physics.Raycast(ray, distance, obstacleLayer);
+
+        return isObstacle;
+    }
+
+    private bool IsItemBehindCamera(ItemRoot itemRoot) //앞 뒤 구분
+    {
+        Vector3 fromItemToCamera = cam.transform.position - itemRoot.transform.position;
+        Vector3 cameraForward = cam.transform.forward;
+        float dot = Vector3.Dot(cameraForward, fromItemToCamera);
+
+        return dot < 0f;
     }
 }

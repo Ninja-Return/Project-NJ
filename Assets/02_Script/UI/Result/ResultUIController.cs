@@ -74,13 +74,13 @@ public class ResultUIController : NetworkBehaviour
 
         if (isClear)
         {
-            if (clearTime < 180)
+            if (clearTime < 60) // 1분
                 text[2].text = "S";
-            else if (clearTime >= 180 && clearTime < 300)
+            else if (clearTime >= 60 && clearTime < 180) // 1분 ~ 3분
                 text[2].text = "A";
-            else if (clearTime >= 300 && clearTime < 420)
+            else if (clearTime >= 180 && clearTime < 240) // 3분 ~ 4분
                 text[2].text = "B";
-            else if (clearTime >= 420 && clearTime < 540)
+            else if (clearTime >= 240 && clearTime < 360) // 4분 ~ 6분
                 text[2].text = "C";
             else
                 text[2].text = "D";

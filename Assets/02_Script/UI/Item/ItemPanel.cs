@@ -6,6 +6,7 @@ using TMPro;
 public class ItemPanel : MonoBehaviour
 {
     [SerializeField] private TMP_Text itemText;
+    [SerializeField] private TMP_Text usingText;
     [SerializeField] private TMP_Text priceText;
     public ItemRoot Item { get; private set; }
 
@@ -30,8 +31,11 @@ public class ItemPanel : MonoBehaviour
 
     public void SetItem(ItemRoot itemRoot)
     {
+        string isUsing = itemRoot.data.itemType == EnumList.ItemType.Possible ? "0" : "X";
         Item = itemRoot;
+
         itemText.text = itemRoot.data.itemName;
+        usingText.text = $"사용 여부 : {isUsing}";
         priceText.text = $"가격 : {itemRoot.data.price}";
     }
 }
