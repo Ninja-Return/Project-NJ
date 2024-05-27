@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using Unity.Netcode;
+using System;
 
 public class StoreUIController : NetworkBehaviour
 {
@@ -31,6 +32,18 @@ public class StoreUIController : NetworkBehaviour
         }
     }
 
+    private void Update()
+    {
+        
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+
+            Exit();
+
+        }
+
+    }
+
     public void StorePanelRefresh(string itemName)
     {
         StorePanelRefreshServerRpc(itemName);
@@ -53,12 +66,12 @@ public class StoreUIController : NetworkBehaviour
 
     public void Exit()
     {
-        PlayerManager.Instance.Active(true);
+        
         PlayerManager.Instance.localController.Input.Enable();
         Support.SettingCursorVisable(false);
         vcam.gameObject.SetActive(false);   
         vcam.depth = -100;
-        StartCoroutine(SetPanelCo(false));
+        StartCoroutine(SetPanelCo(false, () => PlayerManager.Instance.Active(true)));
 
     }
 
@@ -80,11 +93,12 @@ public class StoreUIController : NetworkBehaviour
 
     }
 
-    private IEnumerator SetPanelCo(bool value)
+    private IEnumerator SetPanelCo(bool value, Action endCallback = null)
     {
 
         yield return new WaitForSeconds(0.7f);
         uiTrm.TVEffect(value, 0.9f);
+        endCallback?.Invoke();
 
     }
 
