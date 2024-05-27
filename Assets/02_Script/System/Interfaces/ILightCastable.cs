@@ -7,6 +7,6 @@ public interface ILightCastable
 {
 
     public event Action OnCastedEvent;
-    public void Casting();
+    public void Casting(Vector3 trm);
 
 }
