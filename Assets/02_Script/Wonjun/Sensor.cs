@@ -8,7 +8,7 @@ public class Sensor : HandItemRoot
 {
     [SerializeField] private float sensorRange;
     public LayerMask EnemyLayer;
-    Renderer sensorRen;
+    Light sensorlight;
 
     [SerializeField] private NetworkObject SensorPrefab;
     [SerializeField] private float firePower;
@@ -32,8 +32,8 @@ public class Sensor : HandItemRoot
 
     private void Start()
     {
-        sensorRen = gameObject.GetComponent<Renderer>();
-        sensorRen.material.color = Color.green;
+        sensorlight = gameObject.GetComponent<Light>();
+        sensorlight.color = Color.green;
         OnSensor = false;
     }
 
@@ -56,9 +56,9 @@ public class Sensor : HandItemRoot
 
     IEnumerator renderCH()
     {
-        sensorRen.material.color = Color.red; // 단일 재질의 색상 변경
+        sensorlight.color = Color.red;
         yield return new WaitForSeconds(3f);
-        sensorRen.material.color = Color.green; // 단일 재질의 색상 변경
+        sensorlight.color = Color.green;
         OnSensor = false;
     }
 
