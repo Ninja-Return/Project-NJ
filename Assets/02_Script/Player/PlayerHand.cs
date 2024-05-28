@@ -161,8 +161,8 @@ public class PlayerHand : NetworkBehaviour
         if (isDelay) return;
 
         StartCoroutine(DelayCo());
-        Inventory.Instance.SetActiveInventoryUI();
 
+        if (Inventory.Instance.isShow) Inventory.Instance.SetActiveInventoryUI();
 
         if (currentIdx == idx && currentObject != null)
         {

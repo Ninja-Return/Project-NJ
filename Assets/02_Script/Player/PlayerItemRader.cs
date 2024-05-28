@@ -16,7 +16,7 @@ public class PlayerItemRader : NetworkBehaviour
     private Canvas itemPanelCanvas;
     private List<ItemPanel> activeItemPanels = new List<ItemPanel>();
 
-    readonly Vector3 panelPivot = new Vector3(0f, 0f, 0f);
+    readonly Vector3 panelPivot = new Vector3(0f, 100f, 0f);
 
     private void Start()
     {
@@ -78,11 +78,11 @@ public class PlayerItemRader : NetworkBehaviour
             if (!existingItems.Contains(itemRoot))
             {
                 Vector3 itemScreenPos = cam.WorldToScreenPoint(itemRoot.transform.position);
+                Debug.Log(itemScreenPos);
 
                 if (IsItemBehindCamera(itemRoot))
                 {
                     itemScreenPos += Vector3.ProjectOnPlane(cam.transform.forward, Vector3.up) * 50f;
-                    itemScreenPos += panelPivot;
 
                     ItemPanel panel = Instantiate(itemPanelPrefab, itemScreenPos, Quaternion.identity, itemPanelCanvas.transform);
                     panel.SetItem(itemRoot); // 아이템 정보 설정
@@ -113,7 +113,7 @@ public class PlayerItemRader : NetworkBehaviour
                 if (IsItemBehindCamera(panel.Item))
                 {
                     panel.SetPanelVisibility(true);
-                    panel.UpdatePanelPosition(itemScreenPos);
+                    panel.UpdatePanelPosition(itemScreenPos + panelPivot);
                 }
                 else
                 {

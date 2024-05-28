@@ -14,8 +14,8 @@ public class Inventory : NetworkBehaviour
 {
     public static Inventory Instance { get; private set; }
 
-    public event SlotChange OnSlotClickEvt; //ï¿½ï¿½È£ï¿½Û¿ë¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Õ¿ï¿½ï¿½ï¿½ï¿?ï¿½Ô¼ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿?ï¿½ï¿½ï¿½ï¿½ï¿?
-    public event SlotChange OnSlotDropEvt; //ï¿½ï¿½ï¿?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½é¼­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½
+    public event SlotChange OnSlotClickEvt;
+    public event SlotChange OnSlotDropEvt;
     public event SlotChange OnSlotRemove;
 
     [SerializeField] private GameObject inventoryPanel;
@@ -27,9 +27,10 @@ public class Inventory : NetworkBehaviour
     private int slotIdx;
 
     public bool isShow = false;
-    public bool showingDelay = false;
-    [HideInInspector] public bool isHold = false;
-    public int getItemCount;
+    [HideInInspector] public bool showingDelay = false;
+    [HideInInspector] public bool keyPressDelay = false;
+    [HideInInspector] public bool isHold = false; //ÀÏ´Ü ¹«¾ùÀÎ°¡ µé°í ÀÖ´Ù.
+    [HideInInspector] public int getItemCount;
 
     [SerializeField] private List<ItemDataSO> firstItem = new();
 
@@ -37,6 +38,9 @@ public class Inventory : NetworkBehaviour
     readonly Color whiteColor = new Color(0.8f, 0.8f, 0.8f, 0.8f);
     readonly Color orangeColor = new Color(1f, 0.5f, 0f, 0.8f);
     readonly Color blueColor = new Color(0f, 0f, 1f, 0.8f);
+
+    readonly float showDelay = 0.1f;
+    readonly float keyDelay = 0.3f;
 
     private void Start()
     {
@@ -49,12 +53,14 @@ public class Inventory : NetworkBehaviour
             playerController = GetComponent<PlayerController>();
             slots = GetComponentsInChildren<SlotUI>();
 
-            for (int i = 0; i < slots.Length; i++) //ï¿½Õ¿ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿?ï¿½Ï´Ï±ï¿½
+            playerController.Input.OnInventoryKeyPress += HoldItemToKey;
+
+            inventoryPanel.transform.localScale = Vector3.zero;
+
+            for (int i = 0; i < slots.Length; i++) 
             {
                 slots[i].slotIndex = i;
             }
-
-            inventoryPanel.transform.localScale = Vector3.zero;
 
             foreach (var item in firstItem)
             {
@@ -67,6 +73,8 @@ public class Inventory : NetworkBehaviour
 
 
     }
+
+    #region Public
 
     public void SetActiveInventoryUI(bool notPlayerActiveChange = false)
     {
@@ -129,7 +137,7 @@ public class Inventory : NetworkBehaviour
 
     public void HoldItem(string itemObj, int idx, string extraData) //¾ÆÀÌÅÛ ¼Õ¿¡ Áý±â
     {
-        if (slotIdx == idx && isHold) return;
+        if (NowHandItem(idx) && isHold) return;
 
         isHold = true;
 
@@ -143,6 +151,10 @@ public class Inventory : NetworkBehaviour
         {
             slotUsingText.text = $"¿Þ Å¬¸¯À¸·Î {slots[slotIdx].data.itemName} »ç¿ë";
         }
+        else
+        {
+            slotUsingText.text = "";
+        }
 
         OnSlotClickEvt?.Invoke(itemObj, idx, extraData);
     }
@@ -152,7 +164,7 @@ public class Inventory : NetworkBehaviour
 
         NetworkSoundManager.Play3DSound("DropItem", transform.position, 0.1f, 5);
 
-        if (idx == slotIdx) HandClear();
+        if (NowHandItem(idx)) HandClear();
         if (extraData == null) extraData = " ";
 
         SlotClear(idx);
@@ -160,6 +172,20 @@ public class Inventory : NetworkBehaviour
         DropItemServerRPC(itemObj, extraData);
 
         OnSlotDropEvt?.Invoke(itemObj, idx, extraData);
+    }
+
+    public void DropAllItem()
+    {
+
+        foreach (var item in slots)
+        {
+
+            if (item.slotData == null) continue;
+            var trm = transform.root;
+            ItemSpawnManager.Instance.SpawningItem(trm.position + transform.forward, item.slotData.poolingName);
+
+        }
+
     }
 
     public void Deleteltem() // ¼Õ¿¡ µç ¾ÆÀÌÅÛ ¼ÒÁø
@@ -170,6 +196,21 @@ public class Inventory : NetworkBehaviour
         SlotClear(slotIdx);
 
         OnSlotRemove?.Invoke("", slotIdx, "");
+    }
+
+    #endregion
+
+    #region Private
+
+    private void HoldItemToKey(int value)
+    {
+        if (keyPressDelay) return;
+
+        keyPressDelay = true;
+        StopCoroutine(KeyDelay());
+        StartCoroutine(KeyDelay());
+
+        slots[value - 1].UseSlot();
     }
 
     private void HandClear()
@@ -199,6 +240,10 @@ public class Inventory : NetworkBehaviour
             slot.SetColor(slot.data.itemType == ItemType.Possible ? orangeColor : whiteColor);
     }
 
+    #endregion
+
+    #region ServerRPC
+
     [ServerRpc(RequireOwnership = false)]
     private void DropItemServerRPC(FixedString128Bytes itemKey, FixedString32Bytes extraData)
     {
@@ -214,6 +259,15 @@ public class Inventory : NetworkBehaviour
         clone.NetworkObject.Spawn();
         //clone.SetUpExtraDataServerRPC(extraData);
 
+    }
+
+    #endregion
+
+    #region Return
+
+    public bool NowHandItem(int idx)
+    {
+        return idx == slotIdx;
     }
 
     public bool GetItem(string itemName)
@@ -237,26 +291,24 @@ public class Inventory : NetworkBehaviour
 
     }
 
-    public void DropAllItem()
-    {
+    #endregion
 
-        foreach (var item in slots)
-        {
-
-            if (item.slotData == null) continue;
-            var trm = transform.root;
-            ItemSpawnManager.Instance.SpawningItem(trm.position + transform.forward, item.slotData.poolingName);
-
-        }
-
-    }
+    #region Coroutine
 
     private IEnumerator ShowDelay()
     {
-
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(showDelay);
         showingDelay = false;
+    }
+
+    private IEnumerator KeyDelay()
+    {
+
+        yield return new WaitForSeconds(keyDelay);
+        keyPressDelay = false;
 
     }
+
+    #endregion
 
 }
