@@ -27,9 +27,10 @@ public class Inventory : NetworkBehaviour
     private int slotIdx;
 
     public bool isShow = false;
-    public bool showingDelay = false;
-    [HideInInspector] public bool isHold = false;
-    public int getItemCount;
+    [HideInInspector] public bool showingDelay = false;
+    [HideInInspector] public bool keyPressDelay = false;
+    [HideInInspector] public bool isHold = false; //일단 무엇인가 들고 있다.
+    [HideInInspector] public int getItemCount;
 
     [SerializeField] private List<ItemDataSO> firstItem = new();
 
@@ -37,6 +38,9 @@ public class Inventory : NetworkBehaviour
     readonly Color whiteColor = new Color(0.8f, 0.8f, 0.8f, 0.8f);
     readonly Color orangeColor = new Color(1f, 0.5f, 0f, 0.8f);
     readonly Color blueColor = new Color(0f, 0f, 1f, 0.8f);
+
+    readonly float showDelay = 0.1f;
+    readonly float keyDelay = 0.3f;
 
     private void Start()
     {
@@ -133,7 +137,7 @@ public class Inventory : NetworkBehaviour
 
     public void HoldItem(string itemObj, int idx, string extraData) //아이템 손에 집기
     {
-        if (slotIdx == idx && isHold) return;
+        if (NowHandItem(idx) && isHold) return;
 
         isHold = true;
 
@@ -147,6 +151,10 @@ public class Inventory : NetworkBehaviour
         {
             slotUsingText.text = $"왼 클릭으로 {slots[slotIdx].data.itemName} 사용";
         }
+        else
+        {
+            slotUsingText.text = "";
+        }
 
         OnSlotClickEvt?.Invoke(itemObj, idx, extraData);
     }
@@ -156,7 +164,7 @@ public class Inventory : NetworkBehaviour
 
         NetworkSoundManager.Play3DSound("DropItem", transform.position, 0.1f, 5);
 
-        if (idx == slotIdx) HandClear();
+        if (NowHandItem(idx)) HandClear();
         if (extraData == null) extraData = " ";
 
         SlotClear(idx);
@@ -196,6 +204,12 @@ public class Inventory : NetworkBehaviour
 
     private void HoldItemToKey(int value)
     {
+        if (keyPressDelay) return;
+
+        keyPressDelay = true;
+        StopCoroutine(KeyDelay());
+        StartCoroutine(KeyDelay());
+
         slots[value - 1].UseSlot();
     }
 
@@ -251,6 +265,11 @@ public class Inventory : NetworkBehaviour
 
     #region Return
 
+    public bool NowHandItem(int idx)
+    {
+        return idx == slotIdx;
+    }
+
     public bool GetItem(string itemName)
     {
         foreach (SlotUI slot in slots)
@@ -278,9 +297,15 @@ public class Inventory : NetworkBehaviour
 
     private IEnumerator ShowDelay()
     {
-
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(showDelay);
         showingDelay = false;
+    }
+
+    private IEnumerator KeyDelay()
+    {
+
+        yield return new WaitForSeconds(keyDelay);
+        keyPressDelay = false;
 
     }
 

@@ -16,7 +16,7 @@ public class PlayerItemRader : NetworkBehaviour
     private Canvas itemPanelCanvas;
     private List<ItemPanel> activeItemPanels = new List<ItemPanel>();
 
-    readonly Vector3 panelPivot = new Vector3(0f, 120f, 0f);
+    readonly Vector3 panelPivot = new Vector3(0f, 100f, 0f);
 
     private void Start()
     {
