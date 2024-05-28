@@ -36,6 +36,8 @@ public class MSpawnItem : HandItemRoot
 
     private void Update()
     {
+        if (!isOwner) return;
+
         playerTransform = PlayerManager.Instance.localController.transform;
 
         spawnMonsterPosition = playerTransform.position + playerTransform.forward * spawnDistance;
