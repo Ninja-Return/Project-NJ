@@ -24,7 +24,7 @@ public class StoreUIController : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
 
-        maxPage = storePanels.Count / 6;
+        maxPage = storeSystem.GetStoreData().Count / 6;
         SetPanel();
 
     }
@@ -86,8 +86,9 @@ public class StoreUIController : NetworkBehaviour
     public void Next()
     {
 
-        if(!(page + 1 == maxPage))
+        if(!(page + 1 > maxPage))
         {
+
 
             Clear();
             page++;

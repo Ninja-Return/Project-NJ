@@ -22,7 +22,7 @@ public class SellSystem : NetworkBehaviour
     private void SellServerRPC(ulong sellId)
     {
 
-        var objs = Physics.OverlapBox(sellAreaTrm.position , boxSize / 2, Quaternion.identity, itemLayer);
+        var objs = Physics.OverlapBox(sellAreaTrm.position , boxSize / 2, transform.root.rotation, itemLayer);
 
         int price = 0;
 
