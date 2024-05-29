@@ -149,7 +149,7 @@ public class Inventory : NetworkBehaviour
 
         if (slots[slotIdx].data.itemType == ItemType.Possible)
         {
-            slotUsingText.text = $"왼 클릭으로 {slots[slotIdx].data.itemName} 사용";
+            slotUsingText.text = $"좌클릭으로 {slots[slotIdx].data.itemName} 사용";
         }
         else
         {
