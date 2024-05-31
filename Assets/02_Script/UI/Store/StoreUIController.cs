@@ -18,18 +18,15 @@ public class StoreUIController : NetworkBehaviour
     [SerializeField] private Transform uiTrm;
 
     private Dictionary<string, StorePanel> storePanels = new();
+    private int page;
+    private int maxPage;
 
     public override void OnNetworkSpawn()
     {
-        foreach (var item in storeSystem.GetStoreData())
-        {
 
-            StorePanel panel = Instantiate(panelPrefab, storeRoot);
-            panel.SetUp(item, this);
+        maxPage = storeSystem.GetStoreData().Count / 6;
+        SetPanel();
 
-            storePanels[item.data.itemName] = panel;
-
-        }
     }
 
     private void Update()
@@ -84,6 +81,73 @@ public class StoreUIController : NetworkBehaviour
         PlayerManager.Instance.Active(false);
         Support.SettingCursorVisable(true);
         StartCoroutine(SetPanelCo(true));
+    }
+
+    public void Next()
+    {
+
+        if(!(page + 1 > maxPage))
+        {
+
+
+            Clear();
+            page++;
+            SetPanel();
+
+        }
+
+    }
+
+    public void Previous()
+    {
+
+        if (!(page - 1 == -1))
+        {
+
+            Clear();
+            page--;
+            SetPanel();
+
+        }
+
+    }
+
+    private void SetPanel()
+    {
+
+        int offset = page * 6;
+
+        var data = storeSystem.GetStoreData();
+
+        for (int i = 0; i < 6; i++)
+        {
+
+            if (data.Count <= i + offset) return;
+
+            var item = data[i + offset];
+
+            StorePanel panel = Instantiate(panelPrefab, storeRoot);
+            panel.SetUp(item, this);
+
+            storePanels[item.data.itemName] = panel;
+
+        }
+
+
+    }
+
+    private void Clear()
+    {
+
+        int cnt = storeRoot.childCount;
+
+        for(int i = 0; i < cnt; i++)
+        {
+
+            Destroy(storeRoot.GetChild(i).gameObject);
+
+        }
+
     }
 
     public void SetExpText(string text)
