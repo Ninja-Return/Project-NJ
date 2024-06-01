@@ -236,7 +236,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
     public void Active(bool active, bool disAbleInven = false)
     {
 
-        playerRigidbody.velocity = Vector3.zero;
+        playerRigidbody.velocity = new Vector3(0f, playerRigidbody.velocity.y, 0f);
 
         if (active)
         {

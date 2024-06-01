@@ -21,6 +21,7 @@ public class Inventory : NetworkBehaviour
     [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private TMP_Text slotExpText;
     [SerializeField] private TMP_Text slotUsingText;
+    [SerializeField] private GameObject invenMaxText;
 
     private PlayerController playerController;
     private SlotUI[] slots;
@@ -37,7 +38,7 @@ public class Inventory : NetworkBehaviour
     readonly Color grayColor = new Color(0.5f, 0.5f, 0.5f, 0.8f);
     readonly Color whiteColor = new Color(0.8f, 0.8f, 0.8f, 0.8f);
     readonly Color orangeColor = new Color(1f, 0.5f, 0f, 0.8f);
-    readonly Color blueColor = new Color(0f, 0f, 1f, 0.8f);
+    readonly Color greenColor = new Color(0f, 1f, 0f, 0.8f);
 
     readonly float showDelay = 0.1f;
     readonly float keyDelay = 0.3f;
@@ -72,6 +73,30 @@ public class Inventory : NetworkBehaviour
         }
 
 
+    }
+
+    private void Update()
+    {
+        //커서&움직임 제어
+        if (isShow)
+        {
+            Support.SettingCursorVisable(isShow);
+
+            if (PlayerManager.Instance == null)
+                playerController.Active(!isShow);
+            else
+                PlayerManager.Instance.localController.Active(!isShow);
+        }
+
+        //갯수 확인
+        if (getItemCount >= 8)
+        {
+            invenMaxText.SetActive(true);
+        }
+        else
+        {
+            invenMaxText.SetActive(false);
+        }
     }
 
     #region Public
@@ -149,7 +174,7 @@ public class Inventory : NetworkBehaviour
 
         if (slots[slotIdx].data.itemType == ItemType.Possible)
         {
-            slotUsingText.text = $"왼 클릭으로 {slots[slotIdx].data.itemName} 사용";
+            slotUsingText.text = $"좌클릭으로 {slots[slotIdx].data.itemName} 사용";
         }
         else
         {
@@ -235,7 +260,7 @@ public class Inventory : NetworkBehaviour
         }
 
         if (slot == slots[slotIdx] && isHold)
-            slot.SetColor(blueColor);
+            slot.SetColor(greenColor);
         else
             slot.SetColor(slot.data.itemType == ItemType.Possible ? orangeColor : whiteColor);
     }
