@@ -380,7 +380,7 @@ public class LightMonsterRangeTransition : LightMonsterTransitionBase
 
 [RequireComponent(typeof(MonsterController))]
 [RequireComponent(typeof(LightMonsterAnimater))]
-public class LightMonsterFSM : FSM_Controller_Netcode<LigthMonsterStateType>, ILightCastable
+public class LightMonsterFSM : FSM_Controller_Netcode<LigthMonsterStateType>, ILightCastable, ICatchTrapInterface
 {
 
     [SerializeField] private LayerMask targetMask;
@@ -507,6 +507,20 @@ public class LightMonsterFSM : FSM_Controller_Netcode<LigthMonsterStateType>, IL
 
         Target = null;
 
+    }
+
+    public void CaughtTrap(float time)
+    {
+        StartCoroutine(MonsterStopCor(time));
+    }
+
+    private IEnumerator MonsterStopCor(float time)
+    {
+        MoveController.MonsterAgnet.isStopped = true;
+
+        yield return new WaitForSeconds(time);
+
+        MoveController.MonsterAgnet.isStopped = false;
     }
 
 }

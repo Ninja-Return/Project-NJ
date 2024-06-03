@@ -103,6 +103,18 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
         AddState(deathState, MonsterState.Dead);
     }
 
+    protected override void Update()
+    {
+
+        if (!IsServer) return;
+
+        nowState = currentState;
+
+        base.Update();
+
+
+    }
+
     private void FixedUpdate()
     {
         if (!IsServer) return;
@@ -358,18 +370,6 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
         yield return new WaitForSeconds(time);
 
         nav.isStopped = false;
-    }
-
-    protected override void Update()
-    {
-
-        if (!IsServer) return;
-
-        nowState = currentState;
-
-        base.Update();
-
-
     }
 
 #if UNITY_EDITOR
