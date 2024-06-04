@@ -3805,9 +3805,13 @@ MonoBehaviour:
   monsterMaxSpawn: 6
   minSpawnTime: 110
   maxSpawnTime: 150
-  monsterPrefabs:
-  - {fileID: 414673305194451298, guid: 37d8bb7b4e9b42844b71a0ae9477d107, type: 3}
-  - {fileID: 8731334441768544532, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
+  monsterDatas:
+  - monster: {fileID: 414673305194451298, guid: 37d8bb7b4e9b42844b71a0ae9477d107, type: 3}
+    spawnRatio: 3
+  - monster: {fileID: 8731334441768544532, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
+    spawnRatio: 3
+  - monster: {fileID: 3720445057992388078, guid: 5c06fc5c9479e97459bf75e6efe7d9f0, type: 3}
+    spawnRatio: 1
   statuePrefab: {fileID: 3552912527455403678, guid: 3005967c96c11d84893ce30c4153da23, type: 3}
 --- !u!114 &1985564214
 MonoBehaviour:
