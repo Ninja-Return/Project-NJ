@@ -50,12 +50,11 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
 
         source = GetComponent<CinemachineImpulseSource>();
 
-        if (!IsHost)
+        if (!IsServer)
         {
             nav.enabled = false;
+            return;
         }
-
-        if (!IsServer) return;
 
         base.Awake();
 
@@ -111,7 +110,6 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
         nowState = currentState;
 
         base.Update();
-
 
     }
 
@@ -365,11 +363,12 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
 
     private IEnumerator MonsterStopCor(float time)
     {
-        nav.isStopped = true;
+        float defaultSpeed = nowState == MonsterState.Chase ? runSpeed : workSpeed;
+        nav.speed = defaultSpeed / 3f;
 
         yield return new WaitForSeconds(time);
 
-        nav.isStopped = false;
+        nav.speed = defaultSpeed;
     }
 
 #if UNITY_EDITOR

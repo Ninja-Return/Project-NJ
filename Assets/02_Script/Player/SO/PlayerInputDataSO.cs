@@ -18,6 +18,7 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
     public event Action OnSitDownKeyPress;
     public event Action OnSitDownKeyUp;
     public event Action<int> OnInventoryKeyPress;
+    public event Action<int> OnEmotionkeyPress;
 
     private PlayerInput playerInput;
 
@@ -167,6 +168,13 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
         OnInventoryKeyPress?.Invoke(key);
     }
 
+    public void OnEmotionKey(InputAction.CallbackContext context)
+    {
+        var key = int.Parse(context.control.name.Replace("F", ""));
+
+        OnEmotionkeyPress?.Invoke(key);
+    }
+
     public void Dispose()
     {
 
@@ -180,5 +188,4 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
         MoveVecter = Vector3.zero;
 
     }
-
 }

@@ -159,10 +159,18 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
 
     }
 
-    public void CaughtTrap(float time) //Server에서 호출
-    {
-        //점프도 안되게
-    }
+    //public void CaughtTrap(float time) //Server에서 호출
+    //{
+    //    //점프도 안되게
+    //    //ClientRPC 호출(메게인자 Parma 추가(오너만)) => 움직임 멈춰!
+    //    CaughtTrapClientRpc(OwnerClientId.GetRPCParams(), time);
+    //}
+
+    //[ClientRpc]
+    //private void CaughtTrapClientRpc(ClientRpcParams param, float time)
+    //{
+    //    StartCoroutine(PlayerStopCor(time));
+    //}
 
     private IEnumerator Update3DPosCo()
     {
@@ -290,6 +298,17 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
 
     }
 
+    public void CaughtTrap(float time)
+    {
+        CaughtTrapClientRpc(time, OwnerClientId.GetRPCParams());
+    }
+
+    [ClientRpc]
+    private void CaughtTrapClientRpc(float time, ClientRpcParams param)
+    {
+        StartCoroutine(PlayerStopCor(time));
+    }
+
     private IEnumerator SpeedCo(float speed, float time) 
     {
 
@@ -301,4 +320,19 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
 
     }
 
+    private IEnumerator PlayerStopCor(float time)
+    {
+        float slowSpeed = 0.5f;
+        float moveSpeed = Data.MoveSpeed.DefaultValue;
+        float jumpSpeed = Data.JumpPower.DefaultValue;
+
+        Data.MoveSpeed.SetValue(slowSpeed);
+        Data.JumpPower.SetValue(slowSpeed);
+
+        yield return new WaitForSeconds(time);
+
+        Data.MoveSpeed.SetValue(moveSpeed);
+        Data.JumpPower.SetValue(jumpSpeed);
+
+    }
 }

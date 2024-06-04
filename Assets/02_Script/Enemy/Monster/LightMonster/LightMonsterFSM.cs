@@ -516,11 +516,12 @@ public class LightMonsterFSM : FSM_Controller_Netcode<LigthMonsterStateType>, IL
 
     private IEnumerator MonsterStopCor(float time)
     {
-        MoveController.MonsterAgnet.isStopped = true;
+        float defaultSpeed = MoveController.MonsterAgnet.speed;
+        MoveController.MonsterAgnet.speed = defaultSpeed / 3f;
 
         yield return new WaitForSeconds(time);
 
-        MoveController.MonsterAgnet.isStopped = false;
+        MoveController.MonsterAgnet.speed = defaultSpeed;
     }
 
 }

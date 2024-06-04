@@ -107,6 +107,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""EmotionKey"",
+                    ""type"": ""Value"",
+                    ""id"": ""649c37e9-a8d1-4981-9ca9-8409e07ec569"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -329,6 +338,39 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""InventoryKey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""af4c2017-9c85-4bff-ac38-321513b42262"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EmotionKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""29ee6c09-3ee4-4867-bece-7e3a1dab6e47"",
+                    ""path"": ""<Keyboard>/f2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EmotionKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""66b8af99-645a-4bf7-b1b6-184fa68909e7"",
+                    ""path"": ""<Keyboard>/f3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EmotionKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -363,6 +405,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_PlayerMovement_UseHandObject = m_PlayerMovement.FindAction("UseHandObject", throwIfNotFound: true);
         m_PlayerMovement_SitDown = m_PlayerMovement.FindAction("SitDown", throwIfNotFound: true);
         m_PlayerMovement_InventoryKey = m_PlayerMovement.FindAction("InventoryKey", throwIfNotFound: true);
+        m_PlayerMovement_EmotionKey = m_PlayerMovement.FindAction("EmotionKey", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -433,6 +476,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_UseHandObject;
     private readonly InputAction m_PlayerMovement_SitDown;
     private readonly InputAction m_PlayerMovement_InventoryKey;
+    private readonly InputAction m_PlayerMovement_EmotionKey;
     public struct PlayerMovementActions
     {
         private @PlayerInput m_Wrapper;
@@ -446,6 +490,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @UseHandObject => m_Wrapper.m_PlayerMovement_UseHandObject;
         public InputAction @SitDown => m_Wrapper.m_PlayerMovement_SitDown;
         public InputAction @InventoryKey => m_Wrapper.m_PlayerMovement_InventoryKey;
+        public InputAction @EmotionKey => m_Wrapper.m_PlayerMovement_EmotionKey;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -482,6 +527,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @InventoryKey.started += instance.OnInventoryKey;
             @InventoryKey.performed += instance.OnInventoryKey;
             @InventoryKey.canceled += instance.OnInventoryKey;
+            @EmotionKey.started += instance.OnEmotionKey;
+            @EmotionKey.performed += instance.OnEmotionKey;
+            @EmotionKey.canceled += instance.OnEmotionKey;
         }
 
         private void UnregisterCallbacks(IPlayerMovementActions instance)
@@ -513,6 +561,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @InventoryKey.started -= instance.OnInventoryKey;
             @InventoryKey.performed -= instance.OnInventoryKey;
             @InventoryKey.canceled -= instance.OnInventoryKey;
+            @EmotionKey.started -= instance.OnEmotionKey;
+            @EmotionKey.performed -= instance.OnEmotionKey;
+            @EmotionKey.canceled -= instance.OnEmotionKey;
         }
 
         public void RemoveCallbacks(IPlayerMovementActions instance)
@@ -550,5 +601,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnUseHandObject(InputAction.CallbackContext context);
         void OnSitDown(InputAction.CallbackContext context);
         void OnInventoryKey(InputAction.CallbackContext context);
+        void OnEmotionKey(InputAction.CallbackContext context);
     }
 }
