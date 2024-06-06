@@ -37,16 +37,27 @@ public class SettingUI : MonoBehaviour
         {
             SettingOn();
         }
+
+        //커서&움직임 제어
+        if (Setting)
+        {
+            Support.SettingCursorVisable(isShow);
+
+            if (PlayerManager.Instance == null)
+                playerController.Active(!isShow);
+            else
+                PlayerManager.Instance.localController.Active(!isShow);
+        }
     }
 
     public void SettingOn()
     {
-        Support.SettingCursorVisable(isShow);
+        //Support.SettingCursorVisable(isShow);
 
-        if (PlayerManager.Instance == null)
-            playerController.Active(!isShow);
-        else
-            PlayerManager.Instance.localController.Active(!isShow);
+        //if (PlayerManager.Instance == null)
+        //    playerController.Active(!isShow);
+        //else
+        //    PlayerManager.Instance.localController.Active(!isShow);
 
         mainPanelManager.OpenPanel("Settings");
 

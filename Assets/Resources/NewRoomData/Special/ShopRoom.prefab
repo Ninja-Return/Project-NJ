@@ -28,7 +28,7 @@ RectTransform:
   m_GameObject: {fileID: 225747155711402825}
   m_LocalRotation: {x: 0, y: 0.99984777, z: -0.01745245, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: -0.138}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7049086226019869004}
@@ -723,8 +723,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.15
-  m_fontSizeBase: 0.15
+  m_fontSize: 0.1
+  m_fontSizeBase: 0.1
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3299,18 +3299,20 @@ MonoBehaviour:
     price: 30
     raise: 4
     expText: "\uBE60\uB974\uAC8C \uB2EC\uB824\uC694!"
-  - data: {fileID: 11400000, guid: ae4bea8a6e77b1b44a9515b13d60ca71, type: 2}
+  - data: {fileID: 11400000, guid: 6d2d4a50b528ff74ab6d2a332652b567, type: 2}
     price: 70
     raise: 20
-    expText: "\uD50C\uB808\uC774\uC5B4 \uC18D\uB3C4 \uC800\uD558"
+    expText: "\uB367\uC785\uB2C8\uB2E4. \"\uAC78\uC5B4\uB2E4\uB2C8\uB294 \uBAA8\uB4E0\uAC83\"\uC744
+      \uB178\uB9BD\uB2C8\uB2E4."
   - data: {fileID: 11400000, guid: 7d8b14334d1af8944b46bea98c3bf7e3, type: 2}
     price: 80
     raise: 20
     expText: "\uC548\uAC1C\uAC00 \uC2DC\uC57C\uB97C \uAC00\uB9BD\uB2C8\uB2E4."
   - data: {fileID: 11400000, guid: 38538da5c6a591c46b8cfff7f6388ee2, type: 2}
-    price: 100
+    price: 90
     raise: 30
-    expText: "\uAE38\uC744 \uD45C\uC2DC\uD560 \uC218 \uC788\uB294 \uC2A4\uD504\uB808\uC774"
+    expText: "\uAE38\uC744 \uC678\uC6B0\uAE30 \uC2EB\uC73C\uBA74 \uD45C\uC2DC\uB97C
+      \uD574\uC57C\uACA0\uC8E0?"
   - data: {fileID: 11400000, guid: 2a967dec229f78b40a2e48ae725022de, type: 2}
     price: 120
     raise: 0
@@ -3693,7 +3695,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5a3a40270c0ca5b4ca9328e520ddea97, type: 2}
+  - {fileID: 2100000, guid: 8e047d3c85f0757499ba7275285fbbc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4260,8 +4262,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.15
-  m_fontSizeBase: 0.15
+  m_fontSize: 0.1
+  m_fontSizeBase: 0.1
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

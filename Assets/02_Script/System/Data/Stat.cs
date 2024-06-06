@@ -22,6 +22,13 @@ public class Stat
             return returnValue;
         }
     }
+    public float DefaultValue
+    {
+        get
+        {
+            return value;
+        }
+    }
 
     private List<float> modify = new List<float>();
 

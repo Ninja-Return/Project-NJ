@@ -872,11 +872,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.15
-  far clip plane: 30
-  field of view: 60.000004
+  near clip plane: 0.1
+  far clip plane: 5000
+  field of view: 40
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -986,8 +986,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619981845}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.648, z: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -8.071355, y: 1.454, z: 7.7836833}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3802,13 +3802,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75196f8c070a4344e8d31115f4f06a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterMaxSpawn: 8
-  minSpawnTime: 60
-  maxSpawnTime: 120
-  monsterPrefabs:
-  - {fileID: 414673305194451298, guid: 37d8bb7b4e9b42844b71a0ae9477d107, type: 3}
-  - {fileID: 8731334441768544532, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
-  - {fileID: 3197877189507246895, guid: eda2dc040b6593440bd4e53a83fc35bc, type: 3}
+  monsterMaxSpawn: 6
+  minSpawnTime: 110
+  maxSpawnTime: 150
+  monsterDatas:
+  - monster: {fileID: 414673305194451298, guid: 37d8bb7b4e9b42844b71a0ae9477d107, type: 3}
+    spawnRatio: 3
+  - monster: {fileID: 8731334441768544532, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
+    spawnRatio: 3
+  - monster: {fileID: 3720445057992388078, guid: 5c06fc5c9479e97459bf75e6efe7d9f0, type: 3}
+    spawnRatio: 1
   statuePrefab: {fileID: 3552912527455403678, guid: 3005967c96c11d84893ce30c4153da23, type: 3}
 --- !u!114 &1985564214
 MonoBehaviour:

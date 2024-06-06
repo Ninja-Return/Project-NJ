@@ -46,7 +46,8 @@ public class TrapDrop : NetworkBehaviour
 
                 catchTrap.CaughtTrap(stunTime);
 
-                StartCoroutine(DestoryCor());
+                NetworkObject.Despawn();
+                //StartCoroutine(DestoryCor());
             }
         }
     }

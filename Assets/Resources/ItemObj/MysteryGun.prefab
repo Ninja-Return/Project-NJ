@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5849196291875105163
+--- !u!1 &5702695817202214449
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,51 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 503140508960657246}
-  - component: {fileID: 4144533267161449094}
-  - component: {fileID: 7372076185244753107}
-  - component: {fileID: 7778610864701365356}
-  - component: {fileID: 7212067311264327319}
-  - component: {fileID: 5119927674645849614}
-  - component: {fileID: 6160880031628417110}
-  - component: {fileID: 5200951765082825806}
-  m_Layer: 3
-  m_Name: MysteryGun
+  - component: {fileID: 7305637968607616556}
+  - component: {fileID: 7485252511943858019}
+  - component: {fileID: 3975167819495103781}
+  m_Layer: 0
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &503140508960657246
+--- !u!4 &7305637968607616556
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5849196291875105163}
+  m_GameObject: {fileID: 5702695817202214449}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_LocalPosition: {x: 0, y: -0.05, z: 0.01}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 503140508960657246}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4144533267161449094
+--- !u!33 &7485252511943858019
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5849196291875105163}
+  m_GameObject: {fileID: 5702695817202214449}
   m_Mesh: {fileID: 4300000, guid: 4021ae645c4844a41ae19c303a8ad695, type: 3}
---- !u!23 &7372076185244753107
+--- !u!23 &3975167819495103781
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5849196291875105163}
+  m_GameObject: {fileID: 5702695817202214449}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -88,6 +83,43 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5849196291875105163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 503140508960657246}
+  - component: {fileID: 7778610864701365356}
+  - component: {fileID: 7212067311264327319}
+  - component: {fileID: 5119927674645849614}
+  - component: {fileID: 6160880031628417110}
+  - component: {fileID: 5200951765082825806}
+  m_Layer: 3
+  m_Name: MysteryGun
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &503140508960657246
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5849196291875105163}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7305637968607616556}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &7778610864701365356
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -107,8 +139,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.025505032, y: 0.11575976, z: 0.14443319}
-  m_Center: {x: -0.0011281287, y: 0.058705017, z: 0.03477045}
+  m_Size: {x: 0.03, y: 0.12, z: 0.15}
+  m_Center: {x: 0, y: 0, z: 0.03}
 --- !u!54 &7212067311264327319
 Rigidbody:
   m_ObjectHideFlags: 0
