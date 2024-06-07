@@ -16,6 +16,7 @@ public class TrapperFSM : FSM_Controller_Netcode<TrapperState>, IEnemyInterface
 {
     public MonsterAnimation trapperAnim;
     public NavMeshAgent nav;
+    public NetworkObject playerDeadbodyPrefab;
 
     [SerializeField] private TMP_Text namePlate;
     [SerializeField] private Transform trapSpawnTrs;
@@ -38,6 +39,7 @@ public class TrapperFSM : FSM_Controller_Netcode<TrapperState>, IEnemyInterface
         base.Awake();
 
         InitializeStates();
+        NameSetting();
         ChangeState(TrapperState.Move);
     }
 
@@ -53,6 +55,15 @@ public class TrapperFSM : FSM_Controller_Netcode<TrapperState>, IEnemyInterface
 
         AddState(trapperMoveState, TrapperState.Move);
         AddState(trapperDieState, TrapperState.Dead);
+    }
+
+    private void NameSetting()
+    {
+        int idx = Random.Range(0, NetworkManager.ConnectedClientsIds.Count);
+        ulong playerId = NetworkManager.ConnectedClientsIds[idx];
+        string playerName = HostSingle.Instance.NetServer.GetUserDataByClientID(playerId).Value.nickName;
+
+        NameSettingClientRpc(playerName);
     }
 
     protected override void Update()
@@ -88,8 +99,18 @@ public class TrapperFSM : FSM_Controller_Netcode<TrapperState>, IEnemyInterface
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void DeathServerRpc()
+    private void DeathServerRpc()
     {
-        IsDead = true;
+        //IsDead = true;
+
+        NetworkObject deathBody = Instantiate(playerDeadbodyPrefab, transform.position, transform.rotation);
+        deathBody.Spawn(true);
+        NetworkObject.Despawn();
+    }
+
+    [ClientRpc]
+    private void NameSettingClientRpc(string name)
+    {
+        namePlate.text = name;
     }
 }
