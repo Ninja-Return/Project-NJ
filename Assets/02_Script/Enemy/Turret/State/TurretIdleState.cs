@@ -52,10 +52,10 @@ public class TurretIdleState : TurretStateRoot
 
         while (true)
         {
-            turretFSM.headTrs.DORotate(new Vector3(0f, angle, 0f), spinSpeed);
+            turretFSM.headTrs.DORotate(new Vector3(0f, angle, 0f), spinSpeed).SetEase(Ease.Linear);
             yield return new WaitForSeconds(delay);
 
-            turretFSM.headTrs.DORotate(new Vector3(0f, -angle, 0f), spinSpeed);
+            turretFSM.headTrs.DORotate(new Vector3(0f, -angle, 0f), spinSpeed).SetEase(Ease.Linear);
             yield return new WaitForSeconds(delay);
         }
     }

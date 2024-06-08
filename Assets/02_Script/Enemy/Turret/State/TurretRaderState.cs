@@ -15,6 +15,9 @@ public class TurretRaderState : TurretStateRoot
     protected override void EnterState()
     {
         if (!IsServer) return;
+
+        turretFSM.lightObj.SetActive(true);
+        turretFSM.lineRenderer.enabled = true;
     }
 
     protected override void UpdateState()
@@ -23,7 +26,6 @@ public class TurretRaderState : TurretStateRoot
 
         if (currentTime >= delay)
         {
-            turretFSM.playerTrs = null;
             controller.ChangeState(TurretState.Fire);
         }
         else
@@ -32,6 +34,9 @@ public class TurretRaderState : TurretStateRoot
 
             Vector3 dir = (turretFSM.playerTrs.position - turretFSM.headTrs.position).normalized;
             turretFSM.headTrs.rotation = Quaternion.LookRotation(dir);
+
+            turretFSM.lineRenderer.SetPosition(0, turretFSM.fireTrs.position);
+            turretFSM.lineRenderer.SetPosition(1, turretFSM.playerTrs.position);
         }
     }
 
@@ -39,6 +44,8 @@ public class TurretRaderState : TurretStateRoot
     {
         if (!IsServer) return;
 
+        turretFSM.lightObj.SetActive(false);
+        turretFSM.lineRenderer.enabled = false; 
         currentTime = 0f;
     }
 }

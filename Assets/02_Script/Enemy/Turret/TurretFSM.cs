@@ -14,11 +14,13 @@ public enum TurretState
 
 public class TurretFSM : FSM_Controller_Netcode<TurretState>
 {
-    //미사일
     public Transform headTrs;
-    //빛
-    //발사 파티클
+    public Transform fireTrs;
+    public GameObject lightObj;
+    public LineRenderer lineRenderer;
+    public ParticleSystem fireParticle;
 
+    [SerializeField] private Missile missileObj;
     [SerializeField] private float range;
     [SerializeField] private float angle;
     [SerializeField] private float raderTime;
@@ -37,6 +39,7 @@ public class TurretFSM : FSM_Controller_Netcode<TurretState>
         InitializeStates();
         ChangeState(TurretState.Idle);
 
+        lineRenderer.enabled = false;
         transform.Rotate(0f, Random.Range(0f, 360f), 0f);
     }
 
@@ -86,5 +89,10 @@ public class TurretFSM : FSM_Controller_Netcode<TurretState>
 
     public void FireMissile() //미사일 발사함수
     {
+        Missile missile = Instantiate(missileObj, fireTrs.position, Quaternion.identity);
+        missile.NetworkObject.Spawn(true);
+
+        Vector3 dir = (playerTrs.position - fireTrs.position).normalized;
+        missile.FireMove(dir);
     }
 }

@@ -20,10 +20,11 @@ public class MysteryGun : HandItemRoot
 
         NetworkSoundManager.Play3DSound("GunShot", transform.position, 0.01f, 300f, SoundType.SFX, AudioRolloffMode.Linear);
         GetComponentInParent<PlayerImpulse>().PlayImpulse("GunShoot");
+        muzzle.Play();
+
         Camera cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         Vector2 ScreenCenter = new Vector2(cam.pixelWidth / 2, cam.pixelHeight / 2);
         Ray ray = cam.ScreenPointToRay(ScreenCenter);
-        muzzle.Play();
 
         EnemyCheck(ray);
         PlayerCheck(ray);

@@ -16,6 +16,8 @@ namespace EnumList
         Monster,
         Sculpture,
         Dron,
+        Light,
+        Turret,
         Gun,
         Knife,
         Escape

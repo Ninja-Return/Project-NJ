@@ -12,6 +12,9 @@ public class TurretFireState : TurretStateRoot
     {
         if (!IsServer) return;
 
+        turretFSM.fireParticle.Play();
+        turretFSM.FireMissile();
+
         controller.ChangeState(TurretState.Idle);
     }
 
@@ -26,5 +29,6 @@ public class TurretFireState : TurretStateRoot
     {
         if (!IsServer) return;
 
+        turretFSM.playerTrs = null;
     }
 }
