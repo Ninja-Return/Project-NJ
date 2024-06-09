@@ -13,6 +13,7 @@ public enum LigthMonsterStateType
     Chase,
     Stun,
     Attack,
+    Roar,
 
 }
 
@@ -206,10 +207,18 @@ public class LightMonsterStunState : LightMonsterBaseState
 
 }
 
-public class LightMonsterJumpAttackState : LightMonsterBaseState
+public class LightMonsterRoarState : LightMonsterBaseState
 {
-    public LightMonsterJumpAttackState(FSM_Controller_Netcode<LigthMonsterStateType> controller) : base(controller)
+    public LightMonsterRoarState(FSM_Controller_Netcode<LigthMonsterStateType> controller) : base(controller)
     {
+    }
+
+    protected override void EnterState()
+    {
+
+        controller.MoveController.Stop();
+        controller.ControlAnimator.SetRoar();
+
     }
 
 }
