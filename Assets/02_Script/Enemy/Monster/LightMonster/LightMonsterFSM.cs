@@ -257,7 +257,7 @@ public class LigthMonsterAttackState : LightMonsterBaseState
 
                 var id = controller.Target.GetComponent<PlayerController>().OwnerClientId;
 
-                PlayerManager.Instance.PlayerDie(EnumList.DeadType.Dron, id);
+                PlayerManager.Instance.PlayerDie(EnumList.DeadType.Light, id);
 
             }
 
