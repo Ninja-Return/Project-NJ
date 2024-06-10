@@ -16,7 +16,8 @@ public class TurretRaderState : TurretStateRoot
     {
         if (!IsServer) return;
 
-        turretFSM.lightObj.SetActive(true);
+        NetworkSoundManager.Play3DSound("TurretAlarm", turretFSM.transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
+
         turretFSM.lineRenderer.enabled = true;
     }
 
@@ -44,7 +45,6 @@ public class TurretRaderState : TurretStateRoot
     {
         if (!IsServer) return;
 
-        turretFSM.lightObj.SetActive(false);
         turretFSM.lineRenderer.enabled = false; 
         currentTime = 0f;
     }

@@ -19,6 +19,8 @@ public class Missile : NetworkBehaviour
 
     private void Awake()
     {
+        NetworkSoundManager.Play3DSound("MissileFly", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
+
         rb = GetComponent<Rigidbody>();
     }
 
@@ -51,6 +53,8 @@ public class Missile : NetworkBehaviour
 
     private void BombEffect()
     {
+        NetworkSoundManager.Play3DSound("MissileBomb", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
+
         rb.velocity = Vector3.zero;
         meshRenderer.enabled = false;
 
