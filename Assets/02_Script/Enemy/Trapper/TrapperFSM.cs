@@ -68,7 +68,14 @@ public class TrapperFSM : FSM_Controller_Netcode<TrapperState>, IEnemyInterface
 
     protected override void Update()
     {
-        namePlate.transform.LookAt(PlayerManager.Instance.localController.transform);
+
+        if(PlayerManager.Instance.localController != null)
+        {
+
+            namePlate.transform.LookAt(PlayerManager.Instance.localController.transform);
+
+        }
+
 
         if (!IsServer) return;
 

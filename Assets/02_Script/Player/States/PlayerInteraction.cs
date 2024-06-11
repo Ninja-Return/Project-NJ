@@ -83,7 +83,7 @@ public class PlayerInteraction : PlayerStateRoot
         {
 
 
-            var dest = Vector3.Distance(cameraTrm.position, info.transform.position);
+            var dest = Vector3.Distance(cameraTrm.position, info.point);
             if (Physics.Raycast(cameraTrm.position, cameraTrm.forward, dest - 0.3f, ~data.InteractionLayer | ~LayerMask.GetMask("Player")))
             {
 

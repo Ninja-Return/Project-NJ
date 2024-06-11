@@ -24,7 +24,7 @@ public class TurretFSM : FSM_Controller_Netcode<TurretState>
     [SerializeField] private float range;
     [SerializeField] private float angle;
     [SerializeField] private float raderTime;
-    [SerializeField] private LayerMask playerMask;
+    [SerializeField] private LayerMask playerMask, obstacle;
 
     [HideInInspector] public Transform playerTrs;
 
@@ -75,6 +75,15 @@ public class TurretFSM : FSM_Controller_Netcode<TurretState>
         if (Physics.Raycast(ray, out hit, range, playerMask))
         {
             Collider targetPlayer = hit.collider;
+            var dest = Vector3.Distance(hit.point, pos);
+
+            if(Physics.Raycast(pos, lookDir, dest, obstacle))
+            {
+
+                return null;
+
+            }
+
             return targetPlayer;
         }
 
@@ -89,7 +98,7 @@ public class TurretFSM : FSM_Controller_Netcode<TurretState>
 
     public void FireMissile() //미사일 발사함수
     {
-        Missile missile = Instantiate(missileObj, fireTrs.position, Quaternion.identity);
+        Missile missile = Instantiate(missileObj, fireTrs.position, Quaternion.Euler(90, 0, 0));
         missile.NetworkObject.Spawn(true);
 
         Vector3 dir = (playerTrs.position - fireTrs.position).normalized;
