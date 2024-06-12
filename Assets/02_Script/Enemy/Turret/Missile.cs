@@ -12,6 +12,7 @@ public class Missile : NetworkBehaviour
     [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] private ParticleSystem fireParticle;
     [SerializeField] private ParticleSystem bombParticle;
+    [SerializeField] private NetworkAudioSource audioSource;
     //[SerializeField] private ParticleSystem frameParticle;
 
     private Rigidbody rb;
@@ -60,12 +61,14 @@ public class Missile : NetworkBehaviour
 
         fireParticle.Stop();
         bombParticle.Play();
-
+        NetworkSoundManager.Play3DSound("Explosion", transform.position, 1, 60);
+        audioSource.Stop();
         Invoke("MissileDestory", bombParticle.main.duration);
     }
 
     private void MissileDestory()
     {
+
         NetworkObject.Despawn();
     }
 
