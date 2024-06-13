@@ -30,7 +30,7 @@ public class DronZoomState : DronStateRoot
         
         if (!IsServer) return;
 
-        if (zoomtime >= 5f)
+        if (zoomtime >= 3f)
         {
             nav.isStopped = false;
 
@@ -39,8 +39,8 @@ public class DronZoomState : DronStateRoot
         else
         {
             zoomtime += Time.deltaTime;
-            droneLight.innerSpotAngle = Mathf.Lerp(0, zoomRange, zoomtime / 5f);
-            Collider targetPlayer = dronFSM.ViewingPlayer(Mathf.Lerp(5f, 10f, zoomtime / 5f), 0);
+            droneLight.innerSpotAngle = Mathf.Lerp(0, zoomRange, zoomtime / 3f);
+            Collider targetPlayer = dronFSM.ViewingPlayer(Mathf.Lerp(5f, 10f, zoomtime / 3f), 0);
             if(targetPlayer != null)
             {
                 dronFSM.targetPlayer = targetPlayer.GetComponent<PlayerController>();
@@ -56,7 +56,7 @@ public class DronZoomState : DronStateRoot
         if (!IsServer) return;
         nav.isStopped = false;
 
-        droneLight.innerSpotAngle = Mathf.Lerp(zoomRange, 0, zoomtime / 5f);
+        droneLight.innerSpotAngle = Mathf.Lerp(zoomRange, 0, zoomtime / 3f);
         dronFSM.ViewingPlayer(Mathf.Lerp(10f, 5f, 0.5f), 20);
         zoomtime = 0;
         dronFSM.zoom = false;

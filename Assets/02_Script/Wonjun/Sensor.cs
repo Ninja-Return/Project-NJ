@@ -13,18 +13,17 @@ public class Sensor : HandItemRoot
     [SerializeField] private NetworkObject SensorPrefab;
     [SerializeField] private float firePower;
     [SerializeField] private float spawnDistance = .5f; // 앞으로 스폰할 거리
-    [SerializeField] private bool OnSensor; 
+
+    private bool enemyDetectedPreviously;
 
     public override void DoUse()
     {
-
-        //페기
+        //폐기
         //Vector3 forwardDirection = Camera.main.transform.forward;
 
         //Vector3 spawnPosition = transform.position + forwardDirection * spawnDistance;
         //NetworkObject newSensor = Instantiate(SensorPrefab, spawnPosition, Quaternion.identity);
         //newSensor.Spawn(true);
-
 
         //Rigidbody seosorRigid = newSensor.GetComponent<Rigidbody>();
         //seosorRigid.AddForce(forwardDirection * firePower, ForceMode.Impulse);
@@ -34,32 +33,35 @@ public class Sensor : HandItemRoot
     {
         sensorlight = gameObject.GetComponent<Light>();
         sensorlight.color = Color.green;
-        OnSensor = false;
+        enemyDetectedPreviously = false;
     }
 
     private void Update()
     {
-
         Collider[] detectedColliders = Physics.OverlapSphere(transform.position, sensorRange, EnemyLayer);
 
-        if (detectedColliders.Length > 0 && !OnSensor)
+        if (detectedColliders.Length > 0)
         {
-            NetworkSoundManager.Play3DSound("Sensor", transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
-            Debug.Log("소리");
-            StartCoroutine(renderCH());
-            OnSensor = true;
+            if (!enemyDetectedPreviously)
+            {
+                NetworkSoundManager.Play3DSound("Sensor", transform.position, 0.1f, 30f, SoundType.SFX, AudioRolloffMode.Linear);
+                Debug.Log("소리");
+                StartCoroutine(renderCH());
+            }
+            enemyDetectedPreviously = true;
         }
-
-
+        else
+        {
+            enemyDetectedPreviously = false;
+        }
+                Debug.Log(enemyDetectedPreviously); 
     }
-
 
     IEnumerator renderCH()
     {
         sensorlight.color = Color.red;
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(4f);
         sensorlight.color = Color.green;
-        OnSensor = false;
     }
 
     void OnDrawGizmosSelected()
