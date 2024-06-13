@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FSM_System.Netcode;
 using Cinemachine;
+using UnityEngine.AI;
 
 public class ChaseState : MonsterStateRoot
 {
@@ -48,6 +49,19 @@ public class ChaseState : MonsterStateRoot
             monsterFSM.targetPlayer = player.GetComponent<PlayerController>();
 
             Vector3 playerPos = player.transform.position;
+            NavMeshHit hit;
+            float range = 1.0f;
+
+            while (true)
+            {
+                if (NavMesh.SamplePosition(playerPos, out hit, range, NavMesh.AllAreas))
+                {
+                    playerPos = hit.position;
+                    break;
+                }
+                range += 0.5f;
+            }
+
             nav.SetDestination(playerPos);
         }
         else

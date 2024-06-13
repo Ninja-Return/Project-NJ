@@ -872,11 +872,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.15
-  far clip plane: 30
-  field of view: 60.000004
+  near clip plane: 0.1
+  far clip plane: 5000
+  field of view: 40
   orthographic: 0
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -986,8 +986,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619981845}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.648, z: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -8.071355, y: 1.454, z: 7.7836833}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3802,13 +3802,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75196f8c070a4344e8d31115f4f06a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterMaxSpawn: 8
-  minSpawnTime: 60
-  maxSpawnTime: 120
-  monsterPrefabs:
-  - {fileID: 414673305194451298, guid: 37d8bb7b4e9b42844b71a0ae9477d107, type: 3}
-  - {fileID: 8731334441768544532, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
-  - {fileID: 3197877189507246895, guid: eda2dc040b6593440bd4e53a83fc35bc, type: 3}
+  monsterMaxSpawn: 12
+  minSpawnTime: 1
+  maxSpawnTime: 2
+  monsterDatas:
+  - monster: {fileID: 414673305194451298, guid: 37d8bb7b4e9b42844b71a0ae9477d107, type: 3}
+    spawnRatio: 0
+  - monster: {fileID: 8731334441768544532, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
+    spawnRatio: 0
+  - monster: {fileID: 3720445057992388078, guid: 5c06fc5c9479e97459bf75e6efe7d9f0, type: 3}
+    spawnRatio: 100
+  - monster: {fileID: 5947693558657279517, guid: e1fdd6285e11a2645b1feabeb78ba95d, type: 3}
+    spawnRatio: 0
   statuePrefab: {fileID: 3552912527455403678, guid: 3005967c96c11d84893ce30c4153da23, type: 3}
 --- !u!114 &1985564214
 MonoBehaviour:
@@ -3906,14 +3911,17 @@ MonoBehaviour:
   - deadType: 2
     deadStr: "\uC54C\uD130\uB860\uC5D0\uAC8C \uAC78\uB838\uC2B5\uB2C8\uB2E4."
     signStr: "\uC54C\uD130\uB860\uC758 \uB808\uC774\uB354\uB294 \uD56D\uC0C1 \uBC14\uB2E5\uC744
-      \uBC14\uB77C\uBD05\uB2C8\uB2E4."
+      \uBD05\uB2C8\uB2E4."
   - deadType: 3
-    deadStr: "\uCD1D\uC5D0 \uB9DE\uC558\uC2B5\uB2C8\uB2E4."
-    signStr: "\uC11D\uC591\uC774 \uC9C4\uB2E4."
+    deadStr: "???\uC5D0\uAC8C \uBD99\uC7A1\uD614\uC2B5\uB2C8\uB2E4."
+    signStr: "???\uC740 \uBE5B\uC744 \uC2EB\uC5B4\uD569\uB2C8\uB2E4."
   - deadType: 4
+    deadStr: "\uD130\uB81B\uC5D0 \uC0AC\uC0B4\uB42C\uC2B5\uB2C8\uB2E4."
+    signStr: "\uB9C8\uC8FC\uCE58\uBA74 \uADF8\uB0E5 \uC606\uC73C\uB85C \uB3CC\uC544\uAC00\uC138\uC694."
+  - deadType: 6
     deadStr: "\uCE7C\uC5D0 \uCC14\uB838\uC2B5\uB2C8\uB2E4."
     signStr: "\uCE5C\uAD6C\uB4E4\uC744 \uD568\uBD80\uB85C \uBBFF\uC9C0 \uB9C8\uC138\uC694"
-  - deadType: 5
+  - deadType: 7
     deadStr: "\uD0C8\uCD9C\uD558\uC168\uC2B5\uB2C8\uB2E4."
     signStr: '  '
   panelObj: {fileID: 506320500}

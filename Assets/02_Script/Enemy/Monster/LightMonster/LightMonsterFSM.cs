@@ -13,6 +13,7 @@ public enum LigthMonsterStateType
     Chase,
     Stun,
     Attack,
+    Roar,
 
 }
 
@@ -206,10 +207,18 @@ public class LightMonsterStunState : LightMonsterBaseState
 
 }
 
-public class LightMonsterJumpAttackState : LightMonsterBaseState
+public class LightMonsterRoarState : LightMonsterBaseState
 {
-    public LightMonsterJumpAttackState(FSM_Controller_Netcode<LigthMonsterStateType> controller) : base(controller)
+    public LightMonsterRoarState(FSM_Controller_Netcode<LigthMonsterStateType> controller) : base(controller)
     {
+    }
+
+    protected override void EnterState()
+    {
+
+        controller.MoveController.Stop();
+        controller.ControlAnimator.SetRoar();
+
     }
 
 }
@@ -248,7 +257,7 @@ public class LigthMonsterAttackState : LightMonsterBaseState
 
                 var id = controller.Target.GetComponent<PlayerController>().OwnerClientId;
 
-                PlayerManager.Instance.PlayerDie(EnumList.DeadType.Dron, id);
+                PlayerManager.Instance.PlayerDie(EnumList.DeadType.Light, id);
 
             }
 
@@ -380,7 +389,7 @@ public class LightMonsterRangeTransition : LightMonsterTransitionBase
 
 [RequireComponent(typeof(MonsterController))]
 [RequireComponent(typeof(LightMonsterAnimater))]
-public class LightMonsterFSM : FSM_Controller_Netcode<LigthMonsterStateType>, ILightCastable
+public class LightMonsterFSM : FSM_Controller_Netcode<LigthMonsterStateType>, ILightCastable, ICatchTrapInterface
 {
 
     [SerializeField] private LayerMask targetMask;
@@ -507,6 +516,21 @@ public class LightMonsterFSM : FSM_Controller_Netcode<LigthMonsterStateType>, IL
 
         Target = null;
 
+    }
+
+    public void CaughtTrap(float time)
+    {
+        StartCoroutine(MonsterStopCor(time));
+    }
+
+    private IEnumerator MonsterStopCor(float time)
+    {
+        float defaultSpeed = MoveController.MonsterAgnet.speed;
+        MoveController.MonsterAgnet.speed = defaultSpeed / 3f;
+
+        yield return new WaitForSeconds(time);
+
+        MoveController.MonsterAgnet.speed = defaultSpeed;
     }
 
 }

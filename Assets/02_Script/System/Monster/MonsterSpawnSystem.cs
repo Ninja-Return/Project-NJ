@@ -4,6 +4,12 @@ using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
 
+[System.Serializable]
+public struct MonsterSpawnData
+{
+    public NetworkObject monster;
+    public int spawnRatio;
+}
 
 public class MonsterSpawnSystem : NetworkBehaviour
 {
@@ -11,10 +17,12 @@ public class MonsterSpawnSystem : NetworkBehaviour
     [SerializeField] private int monsterMaxSpawn = 5;
     [SerializeField] private float minSpawnTime;
     [SerializeField] private float maxSpawnTime;
-    [SerializeField] private List<NetworkObject> monsterPrefabs;
+    [SerializeField] private List<MonsterSpawnData> monsterDatas;
     [SerializeField] private NetworkObject statuePrefab;
 
+    private List<NetworkObject> monsterPrefabs = new List<NetworkObject>();
     private List<Transform> spawnTrms = new List<Transform>();
+
     public static MonsterSpawnSystem Instance { get; private set; } 
 
     private void Awake()
@@ -29,6 +37,14 @@ public class MonsterSpawnSystem : NetworkBehaviour
         if (!IsServer) return;
 
         New_GameManager.Instance.OnHardEvent += HandleStatueSpawn;
+
+        foreach (MonsterSpawnData data in monsterDatas)
+        {
+            for (int i = 0; i < data.spawnRatio; i++)
+            {
+                monsterPrefabs.Add(data.monster);
+            }
+        }
 
     }
 
@@ -88,7 +104,7 @@ public class MonsterSpawnSystem : NetworkBehaviour
     {
 
         yield return new WaitForSeconds(time);
-        Instantiate(monsterPrefabs[2], spawnPos + new Vector3(2,0,0), Quaternion.identity).Spawn(true);
+        Instantiate(monsterPrefabs[0], spawnPos + new Vector3(2,0,0), Quaternion.identity).Spawn(true);
 
     }
 

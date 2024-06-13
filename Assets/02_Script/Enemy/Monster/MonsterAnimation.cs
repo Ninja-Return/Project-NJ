@@ -13,6 +13,12 @@ public class MonsterAnimation : NetworkBehaviour
         SetAnimationClientRpc(name);
     }
 
+    public void SetAnimation(string name, float value)
+    {
+        anim.SetFloat(name, value);
+        SetAnimationClientRpc(name, value);
+    }
+
     public void SetAnimation(string name, bool value)
     {
         anim.SetBool(name, value);
@@ -23,6 +29,12 @@ public class MonsterAnimation : NetworkBehaviour
     private void SetAnimationClientRpc(string name)
     {
         anim.SetTrigger(name);
+    }
+
+    [ClientRpc]
+    private void SetAnimationClientRpc(string name, float value)
+    {
+        anim.SetFloat(name, value);
     }
 
     [ClientRpc]

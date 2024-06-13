@@ -50,12 +50,11 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
 
         source = GetComponent<CinemachineImpulseSource>();
 
-        if (!IsHost)
+        if (!IsServer)
         {
             nav.enabled = false;
+            return;
         }
-
-        if (!IsServer) return;
 
         base.Awake();
 
@@ -101,6 +100,17 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
         AddState(chaseState, MonsterState.Chase);
         AddState(killState, MonsterState.Kill);
         AddState(deathState, MonsterState.Dead);
+    }
+
+    protected override void Update()
+    {
+
+        if (!IsServer) return;
+
+        nowState = currentState;
+
+        base.Update();
+
     }
 
     private void FixedUpdate()
@@ -266,7 +276,8 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
 
     public bool IsPlayerMoving(PlayerController player)
     {
-        Vector2 moveVec = PlayerManager.Instance.FindPlayerControllerToID(player.OwnerClientId).moveVector.Value;
+        //Vector2 moveVec = PlayerManager.Instance.FindPlayerControllerToID(player.OwnerClientId).moveVector.Value;
+        Vector2 moveVec = PlayerManager.Instance.FindPlayerControllerToID(player.OwnerClientId).playerRigidbody.velocity;
 
         if (moveVec != Vector2.zero)
         {
@@ -352,23 +363,12 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
 
     private IEnumerator MonsterStopCor(float time)
     {
-        nav.isStopped = true;
+        float defaultSpeed = nowState == MonsterState.Chase ? runSpeed : workSpeed;
+        nav.speed = defaultSpeed / 3f;
 
         yield return new WaitForSeconds(time);
 
-        nav.isStopped = false;
-    }
-
-    protected override void Update()
-    {
-
-        if (!IsServer) return;
-
-        nowState = currentState;
-
-        base.Update();
-
-
+        nav.speed = defaultSpeed;
     }
 
 #if UNITY_EDITOR

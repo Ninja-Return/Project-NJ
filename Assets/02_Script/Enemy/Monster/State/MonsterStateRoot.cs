@@ -13,7 +13,7 @@ public class MonsterStateRoot : FSM_State_Netcode<MonsterState>
 
     public MonsterStateRoot(MonsterFSM controller) : base(controller)
     {
-        this.monsterFSM = controller;
+        monsterFSM = controller;
         monsterAnim = monsterFSM.monsterAnim;
         nav = monsterFSM.nav;
         playerMask = monsterFSM.playerMask;

@@ -65,5 +65,8 @@ public class LightMonsterAnimater : MonoBehaviour
 
     }
 
-
+    internal void SetRoar()
+    {
+        throw new NotImplementedException();
+    }
 }

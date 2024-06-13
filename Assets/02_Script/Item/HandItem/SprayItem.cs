@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using Unity.Netcode;
 
 public class SprayItem : HandItemRoot
 {
     [SerializeField] private Transform sprayTrs;
     [SerializeField] private ParticleSystem sprayParticle;
-    [SerializeField] private GameObject decal;
+    [SerializeField] private NetworkObject decal;
     [SerializeField] private float sprayRange;
     [SerializeField] private float sprayTime;
 
@@ -52,7 +53,8 @@ public class SprayItem : HandItemRoot
                 Vector3 decalDirection = -hit.normal;
                 Quaternion decalRotation = Quaternion.LookRotation(decalDirection);
 
-                Instantiate(decal, hit.point, decalRotation);
+                NetworkObject decalObj = Instantiate(decal, hit.point, decalRotation);
+                decalObj.Spawn();
             }
 
             currentTime += frameTime;

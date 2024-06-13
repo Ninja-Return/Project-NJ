@@ -35,7 +35,7 @@ public class ItemPanel : MonoBehaviour
         Item = itemRoot;
 
         itemText.text = itemRoot.data.itemName;
-        usingText.text = $"사용 여부 : {isUsing}";
+        usingText.text = $"사용 가능 여부 : {isUsing}";
         priceText.text = $"가격 : {itemRoot.data.price}";
     }
 }
