@@ -6,12 +6,7 @@ using UnityEngine;
 public class DronChaseState : DronStateRoot
 {
     private float radius;
-    private LineRenderer lazerLine;
     private float speed;
-    private float lazerTime;
-    private float stopTime;
-    private bool lazer;
-    private bool razerCheck;
 
     public DronChaseState(DronFSM controller, float radius, float speed) : base(controller)
     {
