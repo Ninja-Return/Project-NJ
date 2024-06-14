@@ -39,7 +39,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
 
     public NetworkVariable<float> psychosisValue { get; private set; }
     = new(writePerm: NetworkVariableWritePermission.Owner);
-    public NetworkVariable<Vector2> moveVector { get; private set; }
+    public NetworkVariable<Vector2> Velocity { get; private set; }
     = new(writePerm: NetworkVariableWritePermission.Owner);
 
     //사용되지 않음
@@ -144,7 +144,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
         if (!IsOwner && !debug) return;
 
         //Data.LookSensitive.SetValue(SensitivitySlider.value);
-        moveVector.Value = Input.MoveVecter;
+        Velocity.Value = playerRigidbody.velocity;
 
         base.Update();
 
