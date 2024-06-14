@@ -24,7 +24,6 @@ public class TrapperMoveState : TrapperStateRoot
         if (!IsServer) return;
 
         RoadPath();
-
         idleDuration = Random.Range(minTrapTime, maxTrapTime);
     }
 

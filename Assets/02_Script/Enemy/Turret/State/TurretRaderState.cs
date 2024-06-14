@@ -33,11 +33,17 @@ public class TurretRaderState : TurretStateRoot
         {
             currentTime += Time.deltaTime;
 
-            Vector3 dir = (turretFSM.playerTrs.position - turretFSM.headTrs.position).normalized;
-            turretFSM.headTrs.rotation = Quaternion.LookRotation(dir);
+            if(turretFSM.playerTrs != null)
+            {
 
-            turretFSM.lineRenderer.SetPosition(0, turretFSM.fireTrs.position);
-            turretFSM.lineRenderer.SetPosition(1, turretFSM.playerTrs.position);
+                Vector3 dir = (turretFSM.playerTrs.position - turretFSM.headTrs.position).normalized;
+                turretFSM.headTrs.rotation = Quaternion.LookRotation(dir);
+
+                turretFSM.lineRenderer.SetPosition(0, turretFSM.fireTrs.position);
+                turretFSM.lineRenderer.SetPosition(1, turretFSM.playerTrs.position);
+
+            }
+
         }
     }
 
