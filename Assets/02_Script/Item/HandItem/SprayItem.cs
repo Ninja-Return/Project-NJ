@@ -34,6 +34,13 @@ public class SprayItem : HandItemRoot
         }
     }
 
+    [ServerRPC]
+    private void StampSpawnServerRpc(Vecter3 pos, Quaternion rot)
+    {
+        NetworkObject decalObj = Instantiate(decal, pos, rot);
+        decalObj.Spawn();
+    }
+
     private IEnumerator DecalStamp()
     {
         float currentTime = 0f;
@@ -53,8 +60,7 @@ public class SprayItem : HandItemRoot
                 Vector3 decalDirection = -hit.normal;
                 Quaternion decalRotation = Quaternion.LookRotation(decalDirection);
 
-                NetworkObject decalObj = Instantiate(decal, hit.point, decalRotation);
-                decalObj.Spawn();
+                StampSpawnServerRpc(hit.point, decalRotation);
             }
 
             currentTime += frameTime;
