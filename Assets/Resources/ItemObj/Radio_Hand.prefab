@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3756971561257707350}
   - component: {fileID: 8780932155384596437}
   - component: {fileID: 3566880724439085679}
-  - component: {fileID: 9091050664199661611}
+  - component: {fileID: 7584191731933344686}
   m_Layer: 3
   m_Name: Radio_Hand
   m_TagString: Untagged
@@ -99,9 +99,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <handRotation>k__BackingField: {x: 0, y: 0, z: 100}
   <handPivot>k__BackingField: {x: 0, y: 0.1, z: 0.07}
-  <isLocalUse>k__BackingField: 1
+  <isLocalUse>k__BackingField: 0
   <is1Use>k__BackingField: 0
---- !u!82 &9091050664199661611
+--- !u!82 &7584191731933344686
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,10 +112,10 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 16fe806b4308d3d42b7740958f4de445, type: 3}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

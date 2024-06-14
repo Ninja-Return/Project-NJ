@@ -276,9 +276,10 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
 
     public bool IsPlayerMoving(PlayerController player)
     {
-        Vector2 moveVec = PlayerManager.Instance.FindPlayerControllerToID(player.OwnerClientId).Velocity.Value;
-        //Vector2 moveVec = PlayerManager.Instance.FindPlayerControllerToID(player.OwnerClientId).playerRigidbody.velocity;
-        if (moveVec.magnitude > 0.1f)
+        var playerData = PlayerManager.Instance.FindPlayerControllerToID(player.OwnerClientId);
+        Vector2 moveVec = playerData.Velocity.Value;
+        
+        if (moveVec.magnitude > 0.3f)
         {
             return true;
         }
