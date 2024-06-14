@@ -34,8 +34,8 @@ public class SprayItem : HandItemRoot
         }
     }
 
-    [ServerRPC]
-    private void StampSpawnServerRpc(Vecter3 pos, Quaternion rot)
+    [ServerRpc]
+    private void StampSpawnServerRpc(Vector3 pos, Quaternion rot)
     {
         NetworkObject decalObj = Instantiate(decal, pos, rot);
         decalObj.Spawn();
