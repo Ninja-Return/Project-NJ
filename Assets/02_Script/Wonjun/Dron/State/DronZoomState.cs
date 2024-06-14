@@ -6,19 +6,20 @@ using UnityEngine;
 public class DronZoomState : DronStateRoot
 {
     float zoomRange;
-    float zoomtime = 0;
-     Light droneLight;
+    float zoomTime;
+    Light droneLight;
 
-    public DronZoomState(DronFSM controller, float zoomRange, Light dronLt) : base(controller)
+    public DronZoomState(DronFSM controller, float zoomRange, Light dronLt, float zoomTime) : base(controller)
     {
         this.zoomRange = zoomRange;
         this.droneLight = dronLt;
+        this.zoomTime = zoomTime;
     }
 
     protected override void EnterState()
     {
         if (!IsServer) return;
-        zoomtime = 0;
+        zoomTime = 3f;
         dronFSM.zoom = false;
         nav.isStopped = true;
 
@@ -27,10 +28,9 @@ public class DronZoomState : DronStateRoot
 
     protected override void UpdateState()
     {
-        
         if (!IsServer) return;
 
-        if (zoomtime >= 3f)
+        if (zoomTime <= 0f)
         {
             nav.isStopped = false;
 
@@ -38,10 +38,10 @@ public class DronZoomState : DronStateRoot
         }
         else
         {
-            zoomtime += Time.deltaTime;
-            droneLight.innerSpotAngle = Mathf.Lerp(0, zoomRange, zoomtime / 3f);
-            Collider targetPlayer = dronFSM.ViewingPlayer(Mathf.Lerp(5f, 10f, zoomtime / 3f), 0);
-            if(targetPlayer != null)
+            zoomTime -= Time.deltaTime;
+            droneLight.innerSpotAngle = Mathf.Lerp(zoomRange, 0, zoomTime / 3f);
+            Collider targetPlayer = dronFSM.ViewingPlayer(Mathf.Lerp(10f, 5f, zoomTime / 3f), 0);
+            if (targetPlayer != null)
             {
                 dronFSM.targetPlayer = targetPlayer.GetComponent<PlayerController>();
                 Vector3 playerPos = targetPlayer.transform.position;
@@ -56,9 +56,9 @@ public class DronZoomState : DronStateRoot
         if (!IsServer) return;
         nav.isStopped = false;
 
-        droneLight.innerSpotAngle = Mathf.Lerp(zoomRange, 0, zoomtime / 3f);
-        dronFSM.ViewingPlayer(Mathf.Lerp(10f, 5f, 0.5f), 20);
-        zoomtime = 0;
+        droneLight.innerSpotAngle = Mathf.Lerp(0, zoomRange, zoomTime / 3f);
+        dronFSM.ViewingPlayer(Mathf.Lerp(5f, 10f, 0.5f), 20);
+        zoomTime = 3f; 
         dronFSM.zoom = false;
     }
 }

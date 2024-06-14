@@ -75,7 +75,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         DronPatrolState dronPatrolState = new DronPatrolState(this, moveRadius, workSpeed, Spark);
         DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed);
         DronKillState dronKillState = new DronKillState(this);
-        DronZoomState dronZoomState = new DronZoomState(this, zoomRange, dronLight);
+        DronZoomState dronZoomState = new DronZoomState(this, zoomRange, dronLight, 3f);
         DronDeathState dronDeathState = new DronDeathState(this);
 
         DronMoveTransition dronMoveTransition = new DronMoveTransition(this, DronState.Zoom);
