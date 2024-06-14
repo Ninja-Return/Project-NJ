@@ -35,6 +35,8 @@ public class Missile : NetworkBehaviour
         {
             isBomb = true;
 
+            BombEffect();
+
             Transform target = cols[0].transform;
 
             if (target.transform.TryGetComponent(out IEnemyInterface enemy))
@@ -47,8 +49,6 @@ public class Missile : NetworkBehaviour
                 ulong playerId = player.OwnerClientId;
                 PlayerManager.Instance.PlayerDie(EnumList.DeadType.Turret, playerId);
             }
-
-            BombEffect();
         }
     }
 
@@ -61,14 +61,15 @@ public class Missile : NetworkBehaviour
 
         fireParticle.Stop();
         bombParticle.Play();
+
         NetworkSoundManager.Play3DSound("Explosion", transform.position, 1, 60);
         audioSource.Stop();
+
         Invoke("MissileDestory", bombParticle.main.duration);
     }
 
     private void MissileDestory()
     {
-
         NetworkObject.Despawn();
     }
 
