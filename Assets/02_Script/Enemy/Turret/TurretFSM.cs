@@ -100,7 +100,8 @@ public class TurretFSM : FSM_Controller_Netcode<TurretState>
     {
         Vector3 dir = (playerTrs.position - fireTrs.position).normalized;
 
-        Missile missile = Instantiate(missileObj, fireTrs.position, -Quaternion.LookRotation(dir));
+        Missile missile = Instantiate(missileObj, fireTrs.position, Quaternion.identity);
+        missile.transform.forward = fireTrs.forward;
         missile.NetworkObject.Spawn(true);
         missile.FireMove(dir);
     }

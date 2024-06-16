@@ -233,7 +233,7 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.gray;
+        Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, chaseRadius);
         Gizmos.DrawWireSphere(transform.position, killRadius);
 
