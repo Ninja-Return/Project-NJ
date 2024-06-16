@@ -72,7 +72,7 @@ public class SculptureChaseState : SculptureStateRoot
             NavMeshHit hit;
             float range = 1.0f;
 
-            while (true)
+            while (true) //가장 가까운 바닥
             {
                 if (NavMesh.SamplePosition(playerPos, out hit, range, NavMesh.AllAreas))
                 {
