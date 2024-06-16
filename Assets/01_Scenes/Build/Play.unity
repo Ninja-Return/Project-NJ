@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.000017033932, g: 0.000000025772884, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.000017033939, g: 0.000000025772884, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3594,6 +3594,7 @@ GameObject:
   - component: {fileID: 1985564218}
   - component: {fileID: 1985564219}
   - component: {fileID: 1985564220}
+  - component: {fileID: 1985564221}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -3930,6 +3931,21 @@ MonoBehaviour:
   fadeImage: {fileID: 506320499}
   deadText: {fileID: 506320502}
   signText: {fileID: 506320501}
+--- !u!114 &1985564221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985564200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e6695447b631e045b91235ac78d6906, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectContainer:
+  - key: Spray
+    obj: {fileID: 5535319608133675103, guid: 393c276848295874badc658331ad692c, type: 3}
 --- !u!1 &2047427413
 GameObject:
   m_ObjectHideFlags: 0
