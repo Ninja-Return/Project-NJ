@@ -40,6 +40,18 @@ public class New_GameManager : NetworkBehaviour
 
     }
 
+    private void Update()
+    {
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+
+            OnHardEvent?.Invoke();
+
+        }
+
+    }
+
     public override void OnNetworkSpawn()
     {
 
