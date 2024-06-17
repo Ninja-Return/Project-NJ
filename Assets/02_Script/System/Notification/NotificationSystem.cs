@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class NotificationSystem : NetworkBehaviour
@@ -9,12 +10,28 @@ public class NotificationSystem : NetworkBehaviour
 
     [SerializeField] private NotificationUIController notificationUIController;
 
-    public static NotificationSystem Instance { get; private set; }
-
-    private void Awake()
+    public static NotificationSystem Instance 
     {
-        
-        Instance = this;
+        get
+        {
+
+            if(instance == null)
+            {
+
+                instance = Object.FindObjectOfType<NotificationSystem>();
+
+            }
+
+            return instance;
+
+        }
+    }
+    private static NotificationSystem instance;
+
+    public override void OnNetworkSpawn()
+    {
+
+        instance = this;
 
     }
 
