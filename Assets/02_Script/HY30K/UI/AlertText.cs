@@ -11,7 +11,7 @@ public class AlertText : MonoBehaviour
     public MainPanelManager mainPanelManager;
     public static AlertText Instance;
 
-    private void Awake()
+    private void Start()
     {
         Instance = this;
     }
