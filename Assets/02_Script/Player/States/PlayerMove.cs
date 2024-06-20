@@ -25,31 +25,17 @@ public class PlayerMove : PlayerStateRoot
 
     private void Move()
     {
-        if (controller.isSittingDown)
-        {
-            var rigidVec = rigid.velocity;
-            var inputVec = input.MoveVecter * data.SitSpeed.Value;
 
-            rigidVec.x = inputVec.x;
-            rigidVec.z = inputVec.y;
+        var rigidVec = rigid.velocity;
+        var speed = controller.isSittingDown ? data.SitSpeed.Value : data.MoveSpeed.Value;
+        var inputVec = input.MoveVecter * speed;
 
-            rigidVec = transform.rotation * rigidVec;
+        rigidVec.x = inputVec.x;
+        rigidVec.z = inputVec.y;
 
-            rigid.velocity = rigidVec;
-        }
-        else
-        {
-            var rigidVec = rigid.velocity;
-            var inputVec = input.MoveVecter * data.MoveSpeed.Value;
+        rigidVec = transform.rotation * rigidVec;
 
-            rigidVec.x = inputVec.x;
-            rigidVec.z = inputVec.y;
-
-            rigidVec = transform.rotation * rigidVec;
-
-            rigid.velocity = rigidVec;
-        }
-        
+        rigid.velocity = rigidVec;
 
     }
 
