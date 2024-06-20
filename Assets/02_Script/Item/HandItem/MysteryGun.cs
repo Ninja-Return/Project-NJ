@@ -42,7 +42,9 @@ public class MysteryGun : HandItemRoot
             if (CheakObstacle(ray, hit.transform.position)) return;
 
             if (hit.transform.TryGetComponent(out IEnemyInterface enemy))
+            {
                 enemy.Death();
+            }
         }
     }
 
@@ -54,8 +56,11 @@ public class MysteryGun : HandItemRoot
         {
             if (CheakObstacle(ray, hit.transform.position)) return;
 
-            ulong playerId = hit.transform.GetComponent<PlayerController>().OwnerClientId;
+            var playerId = hit.transform.GetComponent<PlayerController>().OwnerClientId;
             PlayerManager.Instance.PlayerDie(EnumList.DeadType.Gun, playerId);
+
+            var credit = PlayerManager.Instance.localController.GetComponent<CreditSystem>();
+            credit.Credit += 300;
         }
     }
 
