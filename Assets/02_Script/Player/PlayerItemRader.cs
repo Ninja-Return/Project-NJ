@@ -78,7 +78,6 @@ public class PlayerItemRader : NetworkBehaviour
             if (!existingItems.Contains(itemRoot))
             {
                 Vector3 itemScreenPos = cam.WorldToScreenPoint(itemRoot.transform.position);
-                Debug.Log(itemScreenPos);
 
                 if (IsItemBehindCamera(itemRoot))
                 {
