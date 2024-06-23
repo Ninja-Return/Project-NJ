@@ -60,7 +60,7 @@ public class MysteryGun : HandItemRoot
             PlayerManager.Instance.PlayerDie(EnumList.DeadType.Gun, playerId);
 
             var credit = PlayerManager.Instance.localController.GetComponent<CreditSystem>();
-            credit.Credit += 300;
+            credit.Credit += 150;
         }
     }
 
