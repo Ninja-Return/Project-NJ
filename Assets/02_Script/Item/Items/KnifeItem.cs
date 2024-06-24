@@ -43,7 +43,9 @@ public class KnifeItem : HandItemRoot
 
                 var credit = PlayerManager.Instance.localController.GetComponent<CreditSystem>();
                 credit.Credit += 150;
+
                 PlayerManager.Instance.PlayerDie(EnumList.DeadType.Knife, compo.OwnerClientId);
+                Inventory.Instance.Deleteltem();
 
                 break;
 
