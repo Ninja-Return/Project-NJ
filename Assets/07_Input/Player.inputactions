@@ -78,6 +78,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "Drop",
+                    "type": "Button",
+                    "id": "9abe6bd4-66b5-4386-8a5c-ac590335227c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "InventoryKey",
                     "type": "Value",
                     "id": "a469360b-e186-4625-a77f-72413e45bcc7",
@@ -347,6 +356,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "EmotionKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3cc545c6-9b3a-4f7c-8789-5941e10b3aea",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drop",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

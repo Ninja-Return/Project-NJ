@@ -12,7 +12,7 @@ public enum TurretState
     Fire
 };
 
-public class TurretFSM : FSM_Controller_Netcode<TurretState>
+public class TurretFSM : FSM_Controller_Netcode<TurretState>, IMachineInterface
 {
     public Transform headTrs;
     public Transform fireTrs;
@@ -27,6 +27,7 @@ public class TurretFSM : FSM_Controller_Netcode<TurretState>
     [SerializeField] private LayerMask playerMask, obstacle;
 
     [HideInInspector] public Transform playerTrs;
+    [HideInInspector] public bool IsStun;
 
     public TurretState nowState;
 
@@ -104,5 +105,23 @@ public class TurretFSM : FSM_Controller_Netcode<TurretState>
         Missile missile = Instantiate(missileObj, fireTrs.position, Quaternion.LookRotation(-dir));
         missile.NetworkObject.Spawn(true);
         missile.FireMove(dir);
+    }
+
+    public void Stun(float time)
+    {
+        if (IsStun) return;
+
+        StartCoroutine(StunDelayCor(time));
+    }
+
+    private IEnumerator StunDelayCor(float time)
+    {
+        IsStun = true;
+        lightObj.SetActive(false);
+
+        yield return new WaitForSeconds(time);
+
+        IsStun = false;
+        lightObj.SetActive(true);
     }
 }

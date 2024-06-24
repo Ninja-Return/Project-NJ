@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class Smoke : NetworkBehaviour
 {
-
+    [SerializeField] private float range;
     [SerializeField] private float destroyTime = 10f;
 
     private void Start()
@@ -19,6 +19,21 @@ public class Smoke : NetworkBehaviour
         NetworkSoundManager.Play3DSound("Smoke", transform.position, 0.1f, 20f);
         StartCoroutine(DestoryCo());
 
+        StunMachine();
+
+    }
+
+    private void StunMachine()
+    {
+        var col = Physics.OverlapSphere(transform.position, range);
+
+        foreach (var obj in col)
+        {
+            if (obj.TryGetComponent(out IMachineInterface machine))
+            {
+                machine.Stun(destroyTime);
+            }
+        }
     }
 
     private IEnumerator DestoryCo()
@@ -30,4 +45,11 @@ public class Smoke : NetworkBehaviour
 
     }
 
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, range);
+    }
+#endif
 }

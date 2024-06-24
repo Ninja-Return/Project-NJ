@@ -25,6 +25,16 @@ public class TurretRaderState : TurretStateRoot
     {
         if (!IsServer) return;
 
+        if (turretFSM.IsStun)
+        {
+            controller.ChangeState(TurretState.Idle);
+        }
+
+        TargettingPlayer();
+    }
+
+    private void TargettingPlayer()
+    {
         if (currentTime >= delay)
         {
             controller.ChangeState(TurretState.Fire);
@@ -33,7 +43,7 @@ public class TurretRaderState : TurretStateRoot
         {
             currentTime += Time.deltaTime;
 
-            if(turretFSM.playerTrs != null)
+            if (turretFSM.playerTrs != null)
             {
 
                 Vector3 dir = (turretFSM.playerTrs.position - turretFSM.headTrs.position).normalized;

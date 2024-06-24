@@ -17,6 +17,7 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
     public event Action OnUseObjectKeyUp;
     public event Action OnSitDownKeyPress;
     public event Action OnSitDownKeyUp;
+    public event Action OnDropPress;
     public event Action<int> OnInventoryKeyPress;
     public event Action<int> OnEmotionkeyPress;
 
@@ -161,6 +162,11 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
 
     }
 
+    public void OnDrop(InputAction.CallbackContext context)
+    {
+        OnDropPress?.Invoke();
+    }
+
     public void OnInventoryKey(InputAction.CallbackContext context)
     {
         var key = int.Parse(context.control.name);
@@ -188,4 +194,5 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
         MoveVecter = Vector3.zero;
 
     }
+
 }

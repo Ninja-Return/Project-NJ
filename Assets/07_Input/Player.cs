@@ -100,6 +100,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""Drop"",
+                    ""type"": ""Button"",
+                    ""id"": ""9abe6bd4-66b5-4386-8a5c-ac590335227c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""InventoryKey"",
                     ""type"": ""Value"",
                     ""id"": ""a469360b-e186-4625-a77f-72413e45bcc7"",
@@ -371,6 +380,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""EmotionKey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3cc545c6-9b3a-4f7c-8789-5941e10b3aea"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -404,6 +424,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_PlayerMovement_InventoryActive = m_PlayerMovement.FindAction("InventoryActive", throwIfNotFound: true);
         m_PlayerMovement_UseHandObject = m_PlayerMovement.FindAction("UseHandObject", throwIfNotFound: true);
         m_PlayerMovement_SitDown = m_PlayerMovement.FindAction("SitDown", throwIfNotFound: true);
+        m_PlayerMovement_Drop = m_PlayerMovement.FindAction("Drop", throwIfNotFound: true);
         m_PlayerMovement_InventoryKey = m_PlayerMovement.FindAction("InventoryKey", throwIfNotFound: true);
         m_PlayerMovement_EmotionKey = m_PlayerMovement.FindAction("EmotionKey", throwIfNotFound: true);
     }
@@ -475,6 +496,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerMovement_InventoryActive;
     private readonly InputAction m_PlayerMovement_UseHandObject;
     private readonly InputAction m_PlayerMovement_SitDown;
+    private readonly InputAction m_PlayerMovement_Drop;
     private readonly InputAction m_PlayerMovement_InventoryKey;
     private readonly InputAction m_PlayerMovement_EmotionKey;
     public struct PlayerMovementActions
@@ -489,6 +511,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @InventoryActive => m_Wrapper.m_PlayerMovement_InventoryActive;
         public InputAction @UseHandObject => m_Wrapper.m_PlayerMovement_UseHandObject;
         public InputAction @SitDown => m_Wrapper.m_PlayerMovement_SitDown;
+        public InputAction @Drop => m_Wrapper.m_PlayerMovement_Drop;
         public InputAction @InventoryKey => m_Wrapper.m_PlayerMovement_InventoryKey;
         public InputAction @EmotionKey => m_Wrapper.m_PlayerMovement_EmotionKey;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
@@ -524,6 +547,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @SitDown.started += instance.OnSitDown;
             @SitDown.performed += instance.OnSitDown;
             @SitDown.canceled += instance.OnSitDown;
+            @Drop.started += instance.OnDrop;
+            @Drop.performed += instance.OnDrop;
+            @Drop.canceled += instance.OnDrop;
             @InventoryKey.started += instance.OnInventoryKey;
             @InventoryKey.performed += instance.OnInventoryKey;
             @InventoryKey.canceled += instance.OnInventoryKey;
@@ -558,6 +584,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @SitDown.started -= instance.OnSitDown;
             @SitDown.performed -= instance.OnSitDown;
             @SitDown.canceled -= instance.OnSitDown;
+            @Drop.started -= instance.OnDrop;
+            @Drop.performed -= instance.OnDrop;
+            @Drop.canceled -= instance.OnDrop;
             @InventoryKey.started -= instance.OnInventoryKey;
             @InventoryKey.performed -= instance.OnInventoryKey;
             @InventoryKey.canceled -= instance.OnInventoryKey;
@@ -600,6 +629,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnInventoryActive(InputAction.CallbackContext context);
         void OnUseHandObject(InputAction.CallbackContext context);
         void OnSitDown(InputAction.CallbackContext context);
+        void OnDrop(InputAction.CallbackContext context);
         void OnInventoryKey(InputAction.CallbackContext context);
         void OnEmotionKey(InputAction.CallbackContext context);
     }
