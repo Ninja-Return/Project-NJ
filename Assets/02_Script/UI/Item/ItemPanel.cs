@@ -31,7 +31,7 @@ public class ItemPanel : MonoBehaviour
 
     public void SetItem(ItemRoot itemRoot)
     {
-        string isUsing = itemRoot.data.itemType == EnumList.ItemType.Possible ? "0" : "X";
+        string isUsing = itemRoot.data.itemType == EnumList.ItemUseType.Possible ? "0" : "X";
         Item = itemRoot;
 
         itemText.text = itemRoot.data.itemName;

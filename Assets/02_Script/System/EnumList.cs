@@ -4,11 +4,17 @@ using UnityEngine;
 
 namespace EnumList
 {
-    public enum ItemType
+    public enum ItemUseType
     {
         Null,
         Possible,
         ImPossible
+    }
+
+    public enum ItemLanguageType
+    {
+        English,
+        Korea
     }
 
     public enum DeadType

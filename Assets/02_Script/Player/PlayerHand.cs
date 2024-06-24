@@ -5,6 +5,7 @@ using Unity.Collections;
 using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
+using EnumList;
 
 public class PlayerHand : NetworkBehaviour
 {
@@ -234,7 +235,7 @@ public class PlayerHand : NetworkBehaviour
     public bool CheckHandItem(string targetName)
     {
 
-        return Inventory.Instance.GetItemName(currentIdx) == targetName;
+        return Inventory.Instance.GetItemName(currentIdx, ItemLanguageType.Korea) == targetName;
 
     }
 

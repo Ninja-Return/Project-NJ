@@ -49,12 +49,13 @@ public class Inventory : NetworkBehaviour
         if (IsOwner)
         {
 
-            Instance = this; //ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½Ì±ï¿½ï¿½ï¿½ ï¿½Ö°ï¿½ï¿½ï¿½?
+            Instance = this;
 
             playerController = GetComponent<PlayerController>();
             slots = GetComponentsInChildren<SlotUI>();
 
             playerController.Input.OnInventoryKeyPress += HoldItemToKey;
+            playerController.Input.OnDropPress += DropItemToKey;
 
             inventoryPanel.transform.localScale = Vector3.zero;
 
@@ -172,7 +173,7 @@ public class Inventory : NetworkBehaviour
         SlotColor(slots[oldIdx]); //Àü¿¡ ÁýÀº ½½·Ô
         SlotColor(slots[slotIdx]); //»õ·Î Áý´Â ½½·Ô
 
-        if (slots[slotIdx].data.itemType == ItemType.Possible)
+        if (slots[slotIdx].data.itemType == ItemUseType.Possible)
         {
             slotUsingText.text = $"ÁÂÅ¬¸¯À¸·Î {slots[slotIdx].data.itemName} »ç¿ë";
         }
@@ -238,6 +239,15 @@ public class Inventory : NetworkBehaviour
         slots[value - 1].UseSlot();
     }
 
+    private void DropItemToKey()
+    {
+        if (!isHold) return;
+
+        string na = GetItemName(slotIdx);
+        Debug.Log(na);
+        DropItem(na, slotIdx, "");
+    }
+
     private void HandClear()
     {
         isHold = false;
@@ -262,7 +272,7 @@ public class Inventory : NetworkBehaviour
         if (slot == slots[slotIdx] && isHold)
             slot.SetColor(greenColor);
         else
-            slot.SetColor(slot.data.itemType == ItemType.Possible ? orangeColor : whiteColor);
+            slot.SetColor(slot.data.itemType == ItemUseType.Possible ? orangeColor : whiteColor);
     }
 
     #endregion
@@ -307,12 +317,13 @@ public class Inventory : NetworkBehaviour
         return false;
     }
 
-    public string GetItemName(int idx)
+    public string GetItemName(int idx, ItemLanguageType languageType = ItemLanguageType.English)
     {
 
         if (idx == -1) return "";
 
-        return slots[idx].data.itemName;
+        return languageType == ItemLanguageType.English ? 
+            slots[idx].slotData.poolingName : slots[idx].data.itemName;
 
     }
 
