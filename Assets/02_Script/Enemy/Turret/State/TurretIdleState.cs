@@ -27,6 +27,7 @@ public class TurretIdleState : TurretStateRoot
     protected override void UpdateState()
     {
         if (!IsServer) return;
+        if (turretFSM.IsStun) return;
 
         Collider targetPlayer = turretFSM.ViewingPlayer();
         if (targetPlayer != null)

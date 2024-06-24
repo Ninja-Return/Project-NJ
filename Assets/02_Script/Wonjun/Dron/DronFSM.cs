@@ -19,7 +19,7 @@ public enum DronState
 }
 
 
-public class DronFSM : FSM_Controller_Netcode<DronState>
+public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
 {
     public UnityEngine.AI.NavMeshAgent nav;
     public Transform headTrs;
@@ -251,8 +251,10 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         return new Vector3(Mathf.Sin(radian1), y, Mathf.Cos(radian1)) + angleVec;
     }
 
+    public void Stun(float time)
+    {
 
-
+    }
 
     public void JumpScare() //��ǻ�?�ִϸ��̼��� �Ǿ� �־ �÷��̾ �� �����̰� ������ �ٶ󺸰� ������ �ϸ� �� ��?
     {
@@ -323,7 +325,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>
         nowState = currentState;
 
         base.Update();
-
 
     }
 
