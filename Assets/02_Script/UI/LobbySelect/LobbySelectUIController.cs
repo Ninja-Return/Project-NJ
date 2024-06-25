@@ -94,6 +94,7 @@ public class LobbySelectUIController : MonoBehaviour
 
 #if UNITY_EDITOR
 
+
         if (Input.GetKeyDown(KeyCode.L))
         {
 
@@ -102,6 +103,7 @@ public class LobbySelectUIController : MonoBehaviour
         }
 
 #endif
+
 
     }
 
@@ -115,6 +117,7 @@ public class LobbySelectUIController : MonoBehaviour
         NetworkManager.Singleton.SceneManager.LoadScene(SceneList.TestScene, LoadSceneMode.Single);
 
     }
+
 
     public async void StartTutorial()
     {

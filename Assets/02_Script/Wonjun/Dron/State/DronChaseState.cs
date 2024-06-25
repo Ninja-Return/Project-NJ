@@ -17,7 +17,7 @@ public class DronChaseState : DronStateRoot
     protected override void EnterState()
     {
         if (!IsServer) return;
-        NetworkSoundManager.Play3DSound("DronKill", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
+        NetworkSoundManager.Play3DSound("DronBite", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
         Debug.Log("chaseµé¾î¿È");
         nav.speed = speed;
 

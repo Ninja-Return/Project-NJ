@@ -214,29 +214,35 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         return new Vector3(Mathf.Sin(radian1), y, Mathf.Cos(radian1)) + angleVec;
     }
 
-    //드론이 플레이어를 감지하면 멈추게 함
+    // 드론이 플레이어를 감지하면 멈추게 함
     public void Stun(float time)
     {
         if (targetPlayer != null)
         {
             Debug.Log("스턴 들어옴");
-            StunPlayerClientRPC(targetPlayer.OwnerClientId, time);
+            StunPlayerClientRPC(targetPlayer.OwnerClientId, time, targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
         }
     }
 
     [ClientRpc]
-    private void StunPlayerClientRPC(ulong clientId, float stunTime)
+    private void StunPlayerClientRPC(ulong clientId, float stunTime, ulong targetPlayerId)
     {
         if (clientId != NetworkManager.LocalClientId) return;
 
         // 현재 플레이어의 움직임을 비활성화합니다.
-        var player = targetPlayer.GetComponent<PlayerController>();
+        NetworkObject targetNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[targetPlayerId];
+        var player = targetNetworkObject.GetComponent<PlayerController>();
         if (player != null)
         {
             player.DisableMovement(stunTime);
             Debug.Log("플레이어 감지해서 보냄");
         }
+        else
+        {
+            Debug.LogError("플레이어 컨트롤러를 찾을 수 없습니다.");
+        }
     }
+
 
     public void JumpScare()
     {
