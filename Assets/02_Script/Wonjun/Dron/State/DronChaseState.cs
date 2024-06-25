@@ -24,7 +24,7 @@ public class DronChaseState : DronStateRoot
         // 플레이어를 스턴시키기 위한 코드 추가
         if (dronFSM.targetPlayer != null)
         {
-            dronFSM.Stun(3f); // 5초 동안 스턴 (시간은 원하는 대로 조절)
+            dronFSM.Stun(2.5f); // 5초 동안 스턴 (시간은 원하는 대로 조절)
         }
     }
 
