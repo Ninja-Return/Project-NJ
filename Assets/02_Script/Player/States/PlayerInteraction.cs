@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerInteraction : PlayerStateRoot
 {
 
     private TMP_Text interactionText;
+    private Image itemCircle;
     private Transform cameraTrm;
     private InteractionObject interactionObject;
     private PlayerHand hand;
@@ -15,10 +17,13 @@ public class PlayerInteraction : PlayerStateRoot
     private int originLayer;
     private bool isObjectMove;
 
+    private Coroutine circleCor;
+
     public PlayerInteraction(PlayerController controller) : base(controller)
     {
 
         interactionText = transform.Find("InteractionCanvas").Find("InteractionText").GetComponent<TMP_Text>();
+        itemCircle = transform.Find("InteractionCanvas").Find("ItemCircle").GetComponent<Image>();
         cameraTrm = transform.Find("PlayerCamera");
         interactionText.text = string.Empty;
         hand = GetComponent<PlayerHand>();
@@ -28,7 +33,8 @@ public class PlayerInteraction : PlayerStateRoot
     protected override void EnterState()
     {
 
-        input.OnInteractionKeyPress += HandleInteractionKeyPress;
+        input.OnInteractionKeyDown += HandleInteractionKeyDown;
+        input.OnInteractionKeyUp += HandleInteractionKeyUp;
 
     }
 
@@ -37,32 +43,38 @@ public class PlayerInteraction : PlayerStateRoot
     protected override void ExitState()
     {
 
-        input.OnInteractionKeyPress -= HandleInteractionKeyPress;
+        input.OnInteractionKeyDown -= HandleInteractionKeyDown;
+        input.OnInteractionKeyUp -= HandleInteractionKeyUp;
 
     }
 
 
-    private void HandleInteractionKeyPress()
+    private void HandleInteractionKeyDown()
     {
 
-        if(interactionObject != null && interactionObject.interactionAble)
+        circleCor = StartCoroutine(GetInteractionCor());
+
+    }
+
+    private void HandleInteractionKeyUp()
+    {
+        if (circleCor != null)
         {
-
-            if(interactionObject.interactionAbleItemName == string.Empty)
-            {
-
-                interactionObject.Interaction();
-
-            }
-            else if(hand.CheckHandItem(interactionObject.interactionAbleItemName))
-            {
-
-                interactionObject.Interaction();
-
-            }
-
+            StopCoroutine(circleCor);
+            itemCircle.fillAmount = 0f;
         }
+    }
 
+    private bool CheckItemCircle()
+    {
+        itemCircle.fillAmount += Time.deltaTime;
+
+        if (itemCircle.fillAmount >= 1f)
+        {
+            itemCircle.fillAmount = 0f;
+            return true;
+        }
+        return false;
     }
 
     protected override void UpdateState()
@@ -147,6 +159,37 @@ public class PlayerInteraction : PlayerStateRoot
 
         }
 
+    }
+
+    private IEnumerator GetInteractionCor()
+    {
+        Debug.Log("시작작");
+        while (true)
+        {
+            Debug.Log("들어왔어");
+            if (interactionObject != null && interactionObject.interactionAble)
+            {
+                Debug.Log("아이템 감지");
+                if (interactionObject.interactionAbleItemName == string.Empty || hand.CheckHandItem(interactionObject.interactionAbleItemName))
+                {
+                    Debug.Log("이제 돌려");
+                    if (!CheckItemCircle())
+                    {
+                        yield return new WaitForSeconds(0.01f);
+                        continue;
+                    }
+                    Debug.Log("아이템 획득, 이제 나가자_1");
+                    interactionObject.Interaction();
+                    break;
+
+                }
+            }
+            Debug.Log("아이템 없음, 나감");
+            break;
+        }
+        itemCircle.fillAmount = 0f;
+
+        yield return null;
     }
 
 }

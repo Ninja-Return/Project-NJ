@@ -27,7 +27,7 @@ public class PlayerKillState : PlayerStateRoot
     protected override void EnterState()
     {
 
-        input.OnInteractionKeyPress += HandleInteractionKeyPress;
+        input.OnInteractionKeyDown += HandleInteractionKeyPress;
 
     }
 
@@ -36,7 +36,7 @@ public class PlayerKillState : PlayerStateRoot
     protected override void ExitState()
     {
 
-        input.OnInteractionKeyPress -= HandleInteractionKeyPress;
+        input.OnInteractionKeyDown -= HandleInteractionKeyPress;
 
     }
 
