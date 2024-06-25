@@ -80,10 +80,10 @@ public class AppController : MonoBehaviour
 
     }
 
-    public async Task StartClientAsync(string username, string joinCode)
+    public async Task<bool> StartClientAsync(string username, string joinCode)
     {
 
-        await ClientSingle.Instance.GameManager.StartClientAsync(joinCode, GetUserData(username));
+        return await ClientSingle.Instance.GameManager.StartClientAsync(joinCode, GetUserData(username));
 
     }
 
