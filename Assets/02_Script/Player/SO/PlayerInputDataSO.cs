@@ -9,7 +9,8 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
 {
 
     public event Action OnJumpKeyPress;
-    public event Action OnInteractionKeyPress;
+    public event Action OnInteractionKeyDown;
+    public event Action OnInteractionKeyUp;
     public event Action OnObjectMoveKeyPress;
     public event Action OnObjectMoveKeyUp;
     public event Action OnInventoryActivePress;
@@ -20,6 +21,8 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
     public event Action OnDropPress;
     public event Action<int> OnInventoryKeyPress;
     public event Action<int> OnEmotionkeyPress;
+
+    public bool IsHolding { get; private set; }
 
     private PlayerInput playerInput;
 
@@ -94,7 +97,13 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
         if (context.performed)
         {
 
-            OnInteractionKeyPress?.Invoke();
+            OnInteractionKeyDown?.Invoke();
+
+        }
+        else if(context.canceled)
+        {
+
+            OnInteractionKeyUp?.Invoke();
 
         }
 
@@ -164,14 +173,19 @@ public class PlayerInputDataSO : ScriptableObject, PlayerInput.IPlayerMovementAc
 
     public void OnDrop(InputAction.CallbackContext context)
     {
-        OnDropPress?.Invoke();
+        if (context.performed)
+        {
+            OnDropPress?.Invoke();
+        }
     }
 
     public void OnInventoryKey(InputAction.CallbackContext context)
     {
-        var key = int.Parse(context.control.name);
-
-        OnInventoryKeyPress?.Invoke(key);
+        if (context.performed)
+        {
+            var key = int.Parse(context.control.name);
+            OnInventoryKeyPress?.Invoke(key);
+        }
     }
 
     public void OnEmotionKey(InputAction.CallbackContext context)
