@@ -18,7 +18,6 @@ public enum DronState
     Zoom,
 }
 
-
 public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
 {
     public UnityEngine.AI.NavMeshAgent nav;
@@ -28,7 +27,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
     public Vector3 lookVec;
     public LayerMask playerMask;
     private CinemachineBasicMultiChannelPerlin noise;
-
 
     public DronState nowState;
 
@@ -52,8 +50,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
     [SerializeField] float shakeTime = 1.0f;
     [SerializeField] private LayerMask obstacleMask;
 
-
-
     private void Start()
     {
         if (!IsHost)
@@ -69,6 +65,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         InitializeStates();
         ChangeState(DronState.Idle);
     }
+
     private void InitializeStates()
     {
         DronIdleState dronIdleState = new DronIdleState(this);
@@ -111,38 +108,10 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         if (!IsServer) return;
         if (targetPlayer == null) return;
 
-
         Vector3 targetPlayerPos = targetPlayer.transform.position;
         Vector3 playerVec = (targetPlayerPos - transform.position).normalized;
         lookVec = playerVec;
     }
-
-
-
-
-    /* public Collider RayPlayer(float radius)
-     {
-         Vector3 pos = headTrs.position;
-
-         RaycastHit[] allPlayers = Physics.RaycastAll(pos, lookVec, radius, playerMask);
-         if (allPlayers.Length == 0) return null;
-
-         float minDistance = float.MaxValue;
-         Collider targetPlayer = null;
-         foreach (RaycastHit player in allPlayers)
-         {
-             if (Vector3.Distance(player.transform.position, pos) < minDistance)
-             {
-                 targetPlayer = player.collider;
-             }
-         }
-
-         Vector3 targetPos = targetPlayer.transform.position;
-         Debug.DrawLine(pos, targetPos, Color.black);
-
-         return targetPlayer;
-     }
- */
 
     private bool RayObstacle(Vector3 pos, Vector3 lookVec, float destance)
     {
@@ -166,9 +135,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
             }
         }
 
-        //if (IsObstacle && RayObstacle(pos, lookVec, minDistance))
-        //    return null;
-
         Vector3 targetPos = targetPlayer.transform.position;
         Debug.DrawLine(pos, targetPos, Color.red);
 
@@ -182,7 +148,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         Vector3 pos = headTrs.position;
         Vector3 eulerAngles = headTrs.eulerAngles;
 
-        float lookingAngle = eulerAngles.y;  //Ä³¸¯ÅÍ°¡ ¹Ù¶óº¸´Â ¹æÇâÀÇ °¢µµ
+        float lookingAngle = eulerAngles.y;
         Vector3 rightDir = AngleToDirX(lookingAngle + angle * 0.5f, angles);
         Vector3 leftDir = AngleToDirX(lookingAngle - angle * 0.5f, angles);
         Vector3 upDir = AngleToDirY(lookingAngle, true, angles);
@@ -198,12 +164,10 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
 #endif
 
         Collider[] allPlayers = Physics.OverlapSphere(pos, radius, playerMask);
-
-        if (allPlayers.Length == 0 )
+        if (allPlayers.Length == 0)
         {
-                return null;
+            return null;
         }
-        
 
         foreach (Collider player in allPlayers)
         {
@@ -214,11 +178,11 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
 
             if (targetAngle <= angle * 0.5f && !RayObstacle(pos, targetDir, playerDistance))
             {
-                //player °¨ÁöµÊ
                 players.Add(player);
                 Debug.DrawLine(pos, targetPos, Color.red);
             }
         }
+
         if (players.Count == 0) return null;
 
         float minDistance = float.MaxValue;
@@ -234,11 +198,10 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         return targetPlayer;
     }
 
-
     private Vector3 AngleToDirX(float angle, float xRotation)
     {
         float radian = angle * Mathf.Deg2Rad;
-        float y = -Mathf.Sin(xRotation * Mathf.Deg2Rad); // Y ÃàÀ¸·Î ³»·Á°¥ °Å¸®¸¦ °è»ê
+        float y = -Mathf.Sin(xRotation * Mathf.Deg2Rad);
         return new Vector3(Mathf.Sin(radian), y, Mathf.Cos(radian));
     }
 
@@ -246,47 +209,57 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
     {
         float radian1 = angle1 * Mathf.Deg2Rad;
         float radian2 = (angle * 0.5f) * Mathf.Deg2Rad;
-        float y = -Mathf.Sin(xRotation * Mathf.Deg2Rad); // Y ÃàÀ¸·Î ³»·Á°¥ °Å¸®¸¦ °è»ê
+        float y = -Mathf.Sin(xRotation * Mathf.Deg2Rad);
         Vector3 angleVec = isUp == true ? new Vector3(0f, Mathf.Sin(radian2), 0f) : new Vector3(0f, -Mathf.Sin(radian2), 0f);
         return new Vector3(Mathf.Sin(radian1), y, Mathf.Cos(radian1)) + angleVec;
     }
 
+    //µå·ÐÀÌ ÇÃ·¹ÀÌ¾î¸¦ °¨ÁöÇÏ¸é ¸ØÃß°Ô ÇÔ
     public void Stun(float time)
     {
-
+        if (targetPlayer != null)
+        {
+            Debug.Log("½ºÅÏ µé¾î¿È");
+            StunPlayerClientRPC(targetPlayer.OwnerClientId, time);
+        }
     }
 
-    public void JumpScare() //ï¿½ï¿½Ç»ï¿?ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½Ç¾ï¿½ ï¿½Ö¾î¼­ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶óº¸°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¸ï¿½ ï¿½ï¿½ ï¿½ï¿½?
+    [ClientRpc]
+    private void StunPlayerClientRPC(ulong clientId, float stunTime)
+    {
+        if (clientId != NetworkManager.LocalClientId) return;
+
+        // ÇöÀç ÇÃ·¹ÀÌ¾îÀÇ ¿òÁ÷ÀÓÀ» ºñÈ°¼ºÈ­ÇÕ´Ï´Ù.
+        var player = targetPlayer.GetComponent<PlayerController>();
+        if (player != null)
+        {
+            player.DisableMovement(stunTime);
+            Debug.Log("ÇÃ·¹ÀÌ¾î °¨ÁöÇØ¼­ º¸³¿");
+        }
+    }
+
+    public void JumpScare()
     {
         var player = targetPlayer.GetComponent<PlayerController>();
         JumpScareClientRPC(player.OwnerClientId);
-
     }
 
     [ClientRpc]
     private void JumpScareClientRPC(ulong clientId)
     {
         if (clientId != NetworkManager.LocalClientId) return;
-        //PlayerController player = PlayerManager.Instance.FindPlayerControllerToID(playerId);
-        //player == null ï¿½Ì°ï¿½ ï¿½Â´Âµï¿½
         jsVcamTrs.Priority = 500;
         headTrs.localRotation = Quaternion.Euler(30f, 0f, 0f);
         StartCoroutine(Shake(shakeAmount, shakeTime));
-        //player.Input.Disable();
-        //player.enabled = false;
     }
 
     IEnumerator Shake(float ShakeAmount, float ShakeTime)
     {
-
-        // Èçµé¸²ÀÇ ¼¼±â¸¦ ¼³Á¤
         noise.m_AmplitudeGain = ShakeAmount;
         noise.m_FrequencyGain = ShakeAmount;
 
-        // ÀÏÁ¤ ½Ã°£ µ¿¾È ´ë±â
         yield return new WaitForSeconds(ShakeTime);
 
-        // Èçµé¸² ÇØÁ¦
         noise.m_FrequencyGain = 0f;
         noise.m_AmplitudeGain = 0f;
 
@@ -306,26 +279,19 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         IsKill = true;
     }
 
-    
-
     [ServerRpc(RequireOwnership = false)]
     public void DeathServerRpc()
     {
         IsDead = true;
-
-        
     }
-
 
     protected override void Update()
     {
-
         if (!IsServer) return;
 
         nowState = currentState;
 
         base.Update();
-
     }
 
 #if UNITY_EDITOR

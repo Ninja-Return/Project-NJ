@@ -9,10 +9,8 @@ using UnityEngine.UI;
 
 public enum EnumPlayerState
 {
-
-    Idle, //시스템적으로 이동 불가 상태일때
-    Move, //이동 가능 상태일때
-   
+    Idle, // 시스템적으로 이동 불가 상태일 때
+    Move, // 이동 가능 상태일 때
 }
 
 public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchTrapInterface
@@ -42,14 +40,15 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
     public NetworkVariable<Vector2> Velocity { get; private set; }
     = new(writePerm: NetworkVariableWritePermission.Owner);
 
-    //사용되지 않음
+    // 사용되지 않음
     public bool IsMeeting { get; set; }
 
     public CinemachineVirtualCamera watchCam { get; private set; }
 
+    private bool isMovementDisabled = false; // 움직임 비활성화 여부
+
     protected override void Awake()
     {
-        
         base.Awake();
 
         cvcam = transform.Find("PlayerCamera").GetComponent<CinemachineVirtualCamera>();
@@ -60,20 +59,15 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
 
         Impulse = GetComponent<PlayerImpulse>();
         playerRigidbody = GetComponent<Rigidbody>();
-
     }
-
 
     private void Start()
     {
-
         cvcam.Priority = IsOwner || debug ? 10 : 0;
 
         if (!IsOwner)
         {
-
             Destroy(cvcam);
-
         }
 
         interactionCanvas.gameObject.SetActive(IsOwner || debug);
@@ -82,9 +76,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
 
         if (!debug)
         {
-
             JoinChannel();
-
         }
 
         Input = Input.Init();
@@ -92,9 +84,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
 
         if (PlayerManager.Instance != null)
         {
-
             PlayerManager.Instance.SetLocalPlayer(this);
-
         }
 
         Camera.main.fieldOfView = PlayerPrefs.GetFloat("FOV");
@@ -120,182 +110,131 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
         ChangeState(startState);
 
         Input.OnInventoryActivePress += HandleInvenActive;
-
     }
 
     private void HandleInvenActive()
     {
-
         Inventory.Instance.SetActiveInventoryUI();
-
     }
 
     private async void JoinChannel()
     {
-
         //await NetworkController.Instance.vivox.Join3DChannel();
         StartCoroutine(Update3DPosCo());
-
     }
 
     protected override void Update()
     {
-
         if (!IsOwner && !debug) return;
 
-        //Data.LookSensitive.SetValue(SensitivitySlider.value);
+        if (isMovementDisabled)
+        {
+            playerRigidbody.velocity = Vector3.zero; // 플레이어를 완전히 멈추게 함
+            return;
+        }
+
+        // 기존 이동 관련 코드
         Velocity.Value = playerRigidbody.velocity;
 
         base.Update();
-
     }
 
     public async void Stop()
     {
-
         await HostSingle.Instance.GameManager.ShutdownAsync();
-
         SceneManager.LoadScene(SceneList.LobbySelectScene);
-
     }
-
-    //public void CaughtTrap(float time) //Server에서 호출
-    //{
-    //    //점프도 안되게
-    //    //ClientRPC 호출(메게인자 Parma 추가(오너만)) => 움직임 멈춰!
-    //    CaughtTrapClientRpc(OwnerClientId.GetRPCParams(), time);
-    //}
-
-    //[ClientRpc]
-    //private void CaughtTrapClientRpc(ClientRpcParams param, float time)
-    //{
-    //    StartCoroutine(PlayerStopCor(time));
-    //}
 
     private IEnumerator Update3DPosCo()
     {
-
         var sec = new WaitForSecondsRealtime(0.05f);
 
         while (true)
         {
-
-            if(gameObject == null) yield break;
+            if (gameObject == null) yield break;
 
             if (IsMeeting)
             {
-
                 NetworkController.Instance.vivox.UpdateChannelPos(meetingObject);
-
             }
             else
             {
-
                 NetworkController.Instance.vivox.UpdateChannelPos(gameObject);
-
             }
 
-
             yield return sec;
-
         }
-
     }
 
     public override void OnDestroy()
     {
-
         base.OnDestroy();
 
-        if(IsOwner && Inventory.Instance != null)
+        if (IsOwner && Inventory.Instance != null)
         {
-
             Input.OnInventoryActivePress -= HandleInvenActive;
-
         }
 
-        if(IsOwner && Input != null)
+        if (IsOwner && Input != null)
         {
-
             Input.Dispose();
             Destroy(Input);
-
         }
 
-        if(IsServer && PlayerManager.Instance != null)
+        if (IsServer && PlayerManager.Instance != null)
         {
-
             PlayerManager.Instance.PlayerExit(OwnerClientId);
-
         }
-
     }
 
     [ClientRpc]
     public void SetMafiaClientRPC(ClientRpcParams param)
     {
-
         var state = new PlayerKillState(this);
         AddState(state, EnumPlayerState.Move);
         ChangeState(EnumPlayerState.Move);
-
     }
 
     public void Active(bool active, bool disAbleInven = false)
     {
-
         playerRigidbody.velocity = new Vector3(0f, playerRigidbody.velocity.y, 0f);
 
         if (active)
         {
-
             ChangeState(EnumPlayerState.Move);
-
         }
         else
         {
-
             ChangeState(EnumPlayerState.Idle);
             Input.InitMoveVector();
 
-            if(disAbleInven && Inventory.Instance.isShow)
+            if (disAbleInven && Inventory.Instance.isShow)
             {
-
                 Inventory.Instance.SetActiveInventoryUI(true);
-
             }
-
         }
     }
 
     public void PlayImpulse(string name)
     {
-
         PlayImpulseClientRPC(name);
-
     }
 
     [ClientRpc]
     private void PlayImpulseClientRPC(string name)
     {
-
         Impulse.PlayImpulse(name);
-
     }
 
     public void AddSpeed(float value, float time)
     {
-
         StartCoroutine(SpeedCo(value, time));
-
     }
 
     [ClientRpc]
     public void AddSpeedClientRPC(float value, float time)
     {
-
         AddSpeed(value, time);
-
     }
 
     public void CaughtTrap(float time)
@@ -306,18 +245,14 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
     [ClientRpc]
     private void CaughtTrapClientRpc(float time, ClientRpcParams param)
     {
-        StartCoroutine(PlayerStopCor(time));
+        DisableMovement(time); // 플레이어 움직임 비활성화
     }
 
-    private IEnumerator SpeedCo(float speed, float time) 
+    private IEnumerator SpeedCo(float speed, float time)
     {
-
         Data.MoveSpeed.AddMod(speed);
-
         yield return new WaitForSeconds(time);
-
         Data.MoveSpeed.RemoveMod(speed);
-
     }
 
     private IEnumerator PlayerStopCor(float time)
@@ -333,6 +268,19 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
 
         Data.MoveSpeed.SetValue(moveSpeed);
         Data.JumpPower.SetValue(jumpSpeed);
+    }
 
+    public void DisableMovement(float duration)
+    {
+        Debug.Log("플레이어 멈추기 시작");
+        StartCoroutine(DisableMovementCoroutine(duration));
+    }
+
+    private IEnumerator DisableMovementCoroutine(float duration)
+    {
+        isMovementDisabled = true;
+        playerRigidbody.velocity = Vector3.zero; // 플레이어를 완전히 멈추게 함
+        yield return new WaitForSeconds(duration);
+        isMovementDisabled = false;
     }
 }

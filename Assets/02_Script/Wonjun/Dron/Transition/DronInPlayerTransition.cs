@@ -25,7 +25,7 @@ public class DronInPlayerTransition : DronTransitionRoot
             }
         }
 
-        Collider targetPlayer = dronFSM.ViewingPlayer(radius, 20);
+        Collider targetPlayer = dronFSM.ViewingPlayer(radius, 5);
         if (targetPlayer != null)
         {
             dronFSM.targetPlayer = targetPlayer.GetComponent<PlayerController>(); ;

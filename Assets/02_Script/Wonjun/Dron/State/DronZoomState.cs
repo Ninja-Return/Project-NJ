@@ -57,7 +57,7 @@ public class DronZoomState : DronStateRoot
         nav.isStopped = false;
 
         droneLight.innerSpotAngle = Mathf.Lerp(0, zoomRange, zoomTime / 3f);
-        dronFSM.ViewingPlayer(Mathf.Lerp(5f, 10f, 0.5f), 20);
+        dronFSM.ViewingPlayer(Mathf.Lerp(5f, 10f, 0.5f), 5);
         zoomTime = 3f; 
         dronFSM.zoom = false;
     }
