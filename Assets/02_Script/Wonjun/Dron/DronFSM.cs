@@ -7,6 +7,7 @@ using UnityEngine;
 using DG.Tweening;
 using Unity.Services.Lobbies.Models;
 using Unity.Mathematics;
+using System;
 
 public enum DronState
 {
@@ -46,6 +47,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
     [SerializeField] private Light dronLight;
     [SerializeField] private float zoomRange;
     [SerializeField] private ParticleSystem Spark;
+    [SerializeField] private LineRenderer laserLine;
     [SerializeField] float shakeAmount;
     [SerializeField] float shakeTime = 1.0f;
     [SerializeField] private LayerMask obstacleMask;
@@ -235,6 +237,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         if (player != null)
         {
             player.DisableMovement(stunTime);
+            StartCoroutine(LaserBeam(headTrs, stunTime, player.transform));
             Debug.Log("플레이어 감지해서 보냄");
         }
         else
@@ -242,6 +245,30 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
             Debug.LogError("플레이어 컨트롤러를 찾을 수 없습니다.");
         }
     }
+
+    private IEnumerator LaserBeam(Transform headTrs, float time, Transform playerTrs)
+    {
+        if (playerTrs != null)
+        {
+            laserLine.enabled = true; // 레이저 활성화
+            Debug.Log(headTrs.position);
+            Debug.Log(playerTrs.position);
+            laserLine.SetPosition(0, headTrs.position); // 레이저 시작 위치
+            laserLine.SetPosition(1, playerTrs.localPosition); // 레이저 끝 위치
+        }
+        else
+        {
+            Debug.LogError("타겟 플레이어의 트랜스폼을 찾을 수 없습니다.");
+            yield break;
+        }
+
+        // 일정 시간 동안 레이저를 유지합니다.
+        yield return new WaitForSeconds(2.5f);
+
+        // 레이저를 비활성화합니다.
+        laserLine.enabled = false; // 레이저 비활성화
+    }
+
 
 
     public void JumpScare()
