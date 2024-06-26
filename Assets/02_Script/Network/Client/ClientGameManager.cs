@@ -54,7 +54,7 @@ public class ClientGameManager
 
     }
 
-    public async Task StartClientAsync(string joinCode, UserData data)
+    public async Task<bool> StartClientAsync(string joinCode, UserData data)
     {
 
         try
@@ -67,7 +67,7 @@ public class ClientGameManager
         {
 
             Debug.LogException(ex);
-            return;
+            return false;
 
         }
 
@@ -84,6 +84,8 @@ public class ClientGameManager
         NetworkManager.Singleton.OnClientStopped += HandleClientDisconnect;
 
         NetworkController.Init(joinCode);
+
+        return true;
 
     }
 
