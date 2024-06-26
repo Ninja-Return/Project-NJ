@@ -17,14 +17,14 @@ public class DronChaseState : DronStateRoot
     protected override void EnterState()
     {
         if (!IsServer) return;
-        NetworkSoundManager.Play3DSound("DronKill", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
+        NetworkSoundManager.Play3DSound("DronBite", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
         Debug.Log("chase들어옴");
         nav.speed = speed;
 
         // 플레이어를 스턴시키기 위한 코드 추가
         if (dronFSM.targetPlayer != null)
         {
-            dronFSM.Stun(3f); // 5초 동안 스턴 (시간은 원하는 대로 조절)
+            dronFSM.Stun(2.5f); // 5초 동안 스턴 (시간은 원하는 대로 조절)
         }
     }
 
