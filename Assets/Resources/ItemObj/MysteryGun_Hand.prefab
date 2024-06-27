@@ -98,8 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a1dc9c54d7e478428725e6af692ea02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <handRotation>k__BackingField: {x: -66.6, y: -12, z: 100}
-  <handPivot>k__BackingField: {x: 0.03, y: 0.13, z: 0.03}
+  <handRotation>k__BackingField: {x: -50, y: 65, z: -235}
+  <handPivot>k__BackingField: {x: 0.043, y: 0.13, z: -0.024}
   <isLocalUse>k__BackingField: 1
   <is1Use>k__BackingField: 0
   distance: 30
@@ -112,7 +112,7 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 512
-  muzzle: {fileID: 3898277315199075881}
+  muzzle: {fileID: 0}
 --- !u!1 &4509883028722845076
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,11 +409,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0a227fc2e558f241b1c747820ccc361, type: 3}
---- !u!198 &3898277315199075881 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 19800004, guid: b0a227fc2e558f241b1c747820ccc361, type: 3}
-  m_PrefabInstance: {fileID: 3898277315213892077}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3898277315214279531 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400006, guid: b0a227fc2e558f241b1c747820ccc361, type: 3}
