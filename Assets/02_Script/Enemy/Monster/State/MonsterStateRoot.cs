@@ -4,7 +4,7 @@ using UnityEngine;
 using FSM_System.Netcode;
 using UnityEngine.AI;
 
-public class MonsterStateRoot : FSM_State_Netcode<MonsterState>
+public class MonsterStateRoot: FSM_State_Netcode<MonsterState>
 {
     protected MonsterFSM monsterFSM;
     protected MonsterAnimation monsterAnim;
@@ -18,4 +18,5 @@ public class MonsterStateRoot : FSM_State_Netcode<MonsterState>
         nav = monsterFSM.nav;
         playerMask = monsterFSM.playerMask;
     }
+
 }

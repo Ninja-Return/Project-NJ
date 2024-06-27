@@ -24,7 +24,7 @@ public class TrapperFSM : FSM_Controller_Netcode<TrapperState>, IEnemyInterface
     [SerializeField] private float radius;
     [SerializeField] private float minTrapTime, maxTrapTime;
 
-    public TrapperState nowState;
+    public TrapperState nowState => currentState;
 
     [HideInInspector] public bool IsDead { get; private set; }
 
@@ -76,12 +76,6 @@ public class TrapperFSM : FSM_Controller_Netcode<TrapperState>, IEnemyInterface
 
         }
 
-
-        if (!IsServer) return;
-
-        nowState = currentState;
-
-        base.Update();
     }
 
     public void SpawnTrap()
@@ -98,6 +92,11 @@ public class TrapperFSM : FSM_Controller_Netcode<TrapperState>, IEnemyInterface
     {
         float radian = angle * Mathf.Deg2Rad;
         return new Vector3(Mathf.Sin(radian), 0, Mathf.Cos(radian));
+    }
+
+    public void Ping(Vector3 pos)
+    {
+
     }
 
     public void Death()
