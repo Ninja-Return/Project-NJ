@@ -231,18 +231,17 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
     {
         if (clientId != NetworkManager.LocalClientId) return;
 
-        // 현재 플레이어의 움직임을 비활성화합니다.
         NetworkObject targetNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[targetPlayerId];
         var player = targetNetworkObject.GetComponent<PlayerController>();
         if (player != null)
         {
             player.DisableMovement(stunTime);
             StartCoroutine(LaserBeam(headTrs, stunTime, player.transform));
-            Debug.Log("플레이어 감지해서 보냄");
+            Debug.Log("플레이어 컨트롤러 찾았고 스턴으로 넘김");
         }
         else
         {
-            Debug.LogError("플레이어 컨트롤러를 찾을 수 없습니다.");
+            Debug.LogError("스턴을 하려는데 플레이어 컨트롤러 컴포넌트 못찾음");
         }
     }
 
@@ -272,7 +271,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
 
                 laserLine.SetPosition(1, currentEndPosition );
 
-                yield return null; // 다음 프레임까지 대기
+                yield return null; 
             }
 
             // 레이저 끝 위치가 목표 위치에 도달한 후, 시작 위치를 이동
@@ -288,22 +287,20 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
                 laserLine.SetPosition(0, currentStartPosition);
                 laserLine.SetPosition(1, targetPosition );
 
-                yield return null; // 다음 프레임까지 대기
+                yield return null; 
             }
 
             // 최종 위치 설정
             laserLine.SetPosition(0, targetPosition);
             laserLine.SetPosition(1, targetPosition);
 
-            // 일정 시간 동안 레이저를 유지합니다.
             yield return new WaitForSeconds(time);
 
-            // 레이저를 비활성화합니다.
             laserLine.enabled = false; // 레이저 비활성화
         }
         else
         {
-            Debug.LogError("타겟 플레이어의 트랜스폼을 찾을 수 없습니다.");
+            Debug.LogError("플레이어를 찾을 수 없음요.");
             yield break;
         }
     }
