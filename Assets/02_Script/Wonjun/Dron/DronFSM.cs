@@ -253,21 +253,61 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
             laserLine.enabled = true; // 레이저 활성화
             Debug.Log(headTrs.position);
             Debug.Log(playerTrs.position);
-            laserLine.SetPosition(0, headTrs.position); // 레이저 시작 위치
-            laserLine.SetPosition(1, playerTrs.localPosition); // 레이저 끝 위치
+
+            Vector3 initialStartPosition = headTrs.position + new Vector3(0, 0.5f, 0); // 레이저 초기 시작 위치
+            Vector3 targetPosition = playerTrs.position + new Vector3(0, 0.5f, 0); // 레이저 목표 위치
+
+            laserLine.SetPosition(0, initialStartPosition);
+
+            float elapsedTime = 0f;
+            float duration = 0.5f; // 레이저 시작 위치가 목표 위치로 이동하는 시간
+            float speed = Vector3.Distance(initialStartPosition, targetPosition) / 10; // 레이저의 이동 속도
+
+            // 레이저 끝 위치를 목표 위치로 이동
+            while (elapsedTime < duration)
+            {
+                elapsedTime += Time.deltaTime;
+                float fraction = elapsedTime / duration;
+                Vector3 currentEndPosition = Vector3.Lerp(initialStartPosition, targetPosition , fraction);
+
+                laserLine.SetPosition(1, currentEndPosition );
+
+                yield return null; // 다음 프레임까지 대기
+            }
+
+            // 레이저 끝 위치가 목표 위치에 도달한 후, 시작 위치를 이동
+            elapsedTime = 0f;
+            Vector3 currentStartPosition = initialStartPosition;
+
+            while (elapsedTime < speed)
+            {
+                elapsedTime += Time.deltaTime;
+                float fraction = elapsedTime / speed;
+                currentStartPosition = Vector3.Lerp(initialStartPosition, targetPosition, fraction);
+
+                laserLine.SetPosition(0, currentStartPosition);
+                laserLine.SetPosition(1, targetPosition );
+
+                yield return null; // 다음 프레임까지 대기
+            }
+
+            // 최종 위치 설정
+            laserLine.SetPosition(0, targetPosition);
+            laserLine.SetPosition(1, targetPosition);
+
+            // 일정 시간 동안 레이저를 유지합니다.
+            yield return new WaitForSeconds(time);
+
+            // 레이저를 비활성화합니다.
+            laserLine.enabled = false; // 레이저 비활성화
         }
         else
         {
             Debug.LogError("타겟 플레이어의 트랜스폼을 찾을 수 없습니다.");
             yield break;
         }
-
-        // 일정 시간 동안 레이저를 유지합니다.
-        yield return new WaitForSeconds(2.5f);
-
-        // 레이저를 비활성화합니다.
-        laserLine.enabled = false; // 레이저 비활성화
     }
+
 
 
 
