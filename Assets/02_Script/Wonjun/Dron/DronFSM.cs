@@ -17,6 +17,7 @@ public enum DronState
     Kill,
     Dead,
     Zoom,
+    Stun,
 }
 
 public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
@@ -66,6 +67,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
 
         InitializeStates();
         ChangeState(DronState.Idle);
+
     }
 
     private void InitializeStates()
@@ -76,6 +78,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         DronKillState dronKillState = new DronKillState(this);
         DronZoomState dronZoomState = new DronZoomState(this, zoomRange, dronLight, 3f);
         DronDeathState dronDeathState = new DronDeathState(this);
+        DronStunState dronStunState = new DronStunState(this, 10f); // 10초 동안 스턴 상태 유지
 
         DronMoveTransition dronMoveTransition = new DronMoveTransition(this, DronState.Zoom);
         DronInPlayerTransition dronChasePlayerTransition = new DronInPlayerTransition(this, DronState.Chase, chaseInRadius);
@@ -97,12 +100,14 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         dronKillState.AddTransition(dronDieTransition);
         dronZoomState.AddTransition(dronDieTransition);
 
+
         AddState(dronIdleState, DronState.Idle);
         AddState(dronPatrolState, DronState.Patrol);
         AddState(dronChaseState, DronState.Chase);
         AddState(dronKillState, DronState.Kill);
         AddState(dronDeathState, DronState.Dead);
         AddState(dronZoomState, DronState.Zoom);
+        AddState(dronStunState, DronState.Stun); // 스턴 상태 추가
     }
 
     private void FixedUpdate()
@@ -215,6 +220,15 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         Vector3 angleVec = isUp == true ? new Vector3(0f, Mathf.Sin(radian2), 0f) : new Vector3(0f, -Mathf.Sin(radian2), 0f);
         return new Vector3(Mathf.Sin(radian1), y, Mathf.Cos(radian1)) + angleVec;
     }
+
+    // 드론 정지
+    public void DronStun()
+    {
+        if (!IsServer || IsDead) return;
+
+        ChangeState(DronState.Stun); // 스턴 상태로 전이
+    }
+
 
     // 드론이 플레이어를 감지하면 멈추게 함
     public void Stun(float time)
