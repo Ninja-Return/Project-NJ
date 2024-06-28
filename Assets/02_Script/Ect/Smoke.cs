@@ -38,7 +38,6 @@ public class Smoke : NetworkBehaviour
 
     private IEnumerator DestoryCo()
     {
-
         yield return new WaitForSeconds(destroyTime);
 
         NetworkObject.Despawn();

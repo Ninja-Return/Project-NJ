@@ -17,6 +17,7 @@ public enum DronState
     Kill,
     Dead,
     Zoom,
+    Stun,
 }
 
 public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
@@ -66,6 +67,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
 
         InitializeStates();
         ChangeState(DronState.Idle);
+
     }
 
     private void InitializeStates()
@@ -76,6 +78,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         DronKillState dronKillState = new DronKillState(this);
         DronZoomState dronZoomState = new DronZoomState(this, zoomRange, dronLight, 3f);
         DronDeathState dronDeathState = new DronDeathState(this);
+        DronStunState dronStunState = new DronStunState(this, 10f); // 10초 동안 스턴 상태 유지
 
         DronMoveTransition dronMoveTransition = new DronMoveTransition(this, DronState.Zoom);
         DronInPlayerTransition dronChasePlayerTransition = new DronInPlayerTransition(this, DronState.Chase, chaseInRadius);
@@ -97,12 +100,14 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         dronKillState.AddTransition(dronDieTransition);
         dronZoomState.AddTransition(dronDieTransition);
 
+
         AddState(dronIdleState, DronState.Idle);
         AddState(dronPatrolState, DronState.Patrol);
         AddState(dronChaseState, DronState.Chase);
         AddState(dronKillState, DronState.Kill);
         AddState(dronDeathState, DronState.Dead);
         AddState(dronZoomState, DronState.Zoom);
+        AddState(dronStunState, DronState.Stun); // 스턴 상태 추가
     }
 
     private void FixedUpdate()
@@ -216,6 +221,15 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         return new Vector3(Mathf.Sin(radian1), y, Mathf.Cos(radian1)) + angleVec;
     }
 
+    // 드론 정지
+    public void DronStun()
+    {
+        if (!IsServer || IsDead) return;
+
+        ChangeState(DronState.Stun); // 스턴 상태로 전이
+    }
+
+
     // 드론이 플레이어를 감지하면 멈추게 함
     public void Stun(float time)
     {
@@ -231,18 +245,17 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
     {
         if (clientId != NetworkManager.LocalClientId) return;
 
-        // 현재 플레이어의 움직임을 비활성화합니다.
         NetworkObject targetNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[targetPlayerId];
         var player = targetNetworkObject.GetComponent<PlayerController>();
         if (player != null)
         {
             player.DisableMovement(stunTime);
             StartCoroutine(LaserBeam(headTrs, stunTime, player.transform));
-            Debug.Log("플레이어 감지해서 보냄");
+            Debug.Log("플레이어 컨트롤러 찾았고 스턴으로 넘김");
         }
         else
         {
-            Debug.LogError("플레이어 컨트롤러를 찾을 수 없습니다.");
+            Debug.LogError("스턴을 하려는데 플레이어 컨트롤러 컴포넌트 못찾음");
         }
     }
 
@@ -272,7 +285,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
 
                 laserLine.SetPosition(1, currentEndPosition );
 
-                yield return null; // 다음 프레임까지 대기
+                yield return null; 
             }
 
             // 레이저 끝 위치가 목표 위치에 도달한 후, 시작 위치를 이동
@@ -288,22 +301,20 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
                 laserLine.SetPosition(0, currentStartPosition);
                 laserLine.SetPosition(1, targetPosition );
 
-                yield return null; // 다음 프레임까지 대기
+                yield return null; 
             }
 
             // 최종 위치 설정
             laserLine.SetPosition(0, targetPosition);
             laserLine.SetPosition(1, targetPosition);
 
-            // 일정 시간 동안 레이저를 유지합니다.
             yield return new WaitForSeconds(time);
 
-            // 레이저를 비활성화합니다.
             laserLine.enabled = false; // 레이저 비활성화
         }
         else
         {
-            Debug.LogError("타겟 플레이어의 트랜스폼을 찾을 수 없습니다.");
+            Debug.LogError("플레이어를 찾을 수 없음요.");
             yield break;
         }
     }
