@@ -67,6 +67,8 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
 
         InitializeStates();
         ChangeState(DronState.Idle);
+        laserLine.SetPosition(0, Vector3.zero);
+        laserLine.SetPosition(1, Vector3.zero);
 
     }
 
@@ -311,6 +313,9 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
             yield return new WaitForSeconds(time);
 
             laserLine.enabled = false; // 레이저 비활성화
+
+            laserLine.SetPosition(0, Vector3.zero);
+            laserLine.SetPosition(1, Vector3.zero);
         }
         else
         {
