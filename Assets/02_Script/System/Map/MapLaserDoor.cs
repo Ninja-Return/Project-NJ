@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using DG.Tweening;
 
 public class MapLaserDoor : NetworkBehaviour
 {
@@ -9,7 +10,7 @@ public class MapLaserDoor : NetworkBehaviour
     [SerializeField] private Transform overlapTrs;
     [SerializeField] private TMP_Text personnalText;
     [SerializeField] private new Light light;
-    [SerializeField] private GameObject laserObj;
+    [SerializeField] private GameObject doorObj;
 
     [Header("Value")]
     [SerializeField] private float overlapRange;
@@ -64,22 +65,7 @@ public class MapLaserDoor : NetworkBehaviour
         light.color = Color.green;
         personnalText.text = "0";
 
-        StartCoroutine(BlinkCo(false));
-    }
-
-    private IEnumerator BlinkCo(bool value)
-    {
-
-        for (int i = 1; i < 10; i++)
-        {
-
-            yield return new WaitForSeconds(0.5f / i);
-            laserObj.SetActive(!laserObj.activeSelf);
-
-        }
-
-        laserObj.SetActive(value);
-
+        doorObj.transform.DOLocalMoveZ(1.4f, 0.6f).OnComplete(() => { doorObj.SetActive(false); });
     }
 
 #if UNITY_EDITOR
