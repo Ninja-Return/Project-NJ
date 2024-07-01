@@ -72,9 +72,9 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
 
     private void InitializeStates()
     {
-        DronIdleState dronIdleState = new DronIdleState(this);
-        DronPatrolState dronPatrolState = new DronPatrolState(this, moveRadius, workSpeed, Spark);
-        DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed);
+        DronIdleState dronIdleState = new DronIdleState(this, dronLight);
+        DronPatrolState dronPatrolState = new DronPatrolState(this, moveRadius, workSpeed, Spark, dronLight);
+        DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed, dronLight);
         DronKillState dronKillState = new DronKillState(this);
         DronZoomState dronZoomState = new DronZoomState(this, zoomRange, dronLight, 3f);
         DronDeathState dronDeathState = new DronDeathState(this);

@@ -9,12 +9,14 @@ public class DronPatrolState : DronStateRoot
     private float range;
     private float speed;
     private ParticleSystem spark;
+    private Light dronLight;
 
-    public DronPatrolState(DronFSM controller, float radius, float speed, ParticleSystem sparks) : base(controller)
+    public DronPatrolState(DronFSM controller, float radius, float speed, ParticleSystem sparks, Light dronLight) : base(controller)
     {
         range = radius;
         this.speed = speed;
         this.spark = sparks;
+        this.dronLight = dronLight;
     }
 
     protected override void EnterState()
@@ -40,7 +42,7 @@ public class DronPatrolState : DronStateRoot
 
     protected override void UpdateState()
     {
-        
+        dronLight.color = Color.yellow;
     }
 
     protected override void ExitState()
