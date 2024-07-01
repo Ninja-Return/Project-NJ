@@ -45,6 +45,7 @@ public class SculpturePingState : SculptureStateRoot
         if (!IsServer) return;
 
         points.Clear();
+        sculptureFSM.IsPing = false;
     }
 
     private void GeneratePath()

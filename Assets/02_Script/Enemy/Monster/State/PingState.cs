@@ -36,6 +36,7 @@ public class PingState : MonsterStateRoot
         if (!IsServer) return;
 
         monsterAnim.SetAnimation("Work", false);
+        monsterFSM.IsPing = false;
 
         nav.SetDestination(monsterFSM.transform.position);
     }

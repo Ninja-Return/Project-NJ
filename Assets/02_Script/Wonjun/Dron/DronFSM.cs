@@ -221,23 +221,22 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         return new Vector3(Mathf.Sin(radian1), y, Mathf.Cos(radian1)) + angleVec;
     }
 
-    // 드론 정지
-    public void DronStun()
-    {
-        if (!IsServer || IsDead) return;
-
-        ChangeState(DronState.Stun); // 스턴 상태로 전이
-    }
-
-
     // 드론이 플레이어를 감지하면 멈추게 함
-    public void Stun(float time)
+    public void DronStun(float stunTime)
     {
         if (targetPlayer != null)
         {
             Debug.Log("스턴 들어옴");
-            StunPlayerClientRPC(targetPlayer.OwnerClientId, time, targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
+            StunPlayerClientRPC(targetPlayer.OwnerClientId, stunTime, targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
         }
+    }
+
+    // 드론 정지
+    public void Stun(float time)
+    {
+        if (!IsServer || IsDead) return;
+
+        ChangeState(DronState.Stun); // 스턴 상태로 전이
     }
 
     [ClientRpc]

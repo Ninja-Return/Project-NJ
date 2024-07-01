@@ -25,7 +25,7 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
 
     [HideInInspector] public Collider targetPlayer { get; set; }
     [HideInInspector] public Vector3 pingPos { get; set; }
-    [HideInInspector] public bool IsPing { get; private set; }
+    [HideInInspector] public bool IsPing { get; set; }
     [HideInInspector] public bool IsDead { get; private set; }
     [HideInInspector] public bool IsKill { get; set; }
     [HideInInspector] public float currentCoolTime { get; set; }
@@ -203,6 +203,8 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
 
     public void Ping(Vector3 pos)
     {
+        if (IsDead) return;
+
         NavMeshHit hit;
 
         if (NavMesh.SamplePosition(pos, out hit, 1.0f, NavMesh.AllAreas))
