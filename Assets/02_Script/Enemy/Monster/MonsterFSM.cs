@@ -32,7 +32,7 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
 
     [HideInInspector] public PlayerController targetPlayer { get; set; }
     [HideInInspector] public Vector3 pingPos { get; set; }
-    [HideInInspector] public bool IsPing { get; private set; }
+    [HideInInspector] public bool IsPing { get; set; }
     [HideInInspector] public bool IsDead { get; private set; }
     [HideInInspector] public bool IsKill { get; set; }
 
@@ -311,8 +311,10 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
 
     public void Ping(Vector3 pos)
     {
-        NavMeshHit hit;
+        if (IsDead) return;
 
+        NavMeshHit hit;
+        
         if (NavMesh.SamplePosition(pos, out hit, 1.0f, NavMesh.AllAreas))
         {
             pingPos = hit.position;

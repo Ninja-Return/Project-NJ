@@ -24,7 +24,16 @@ public class DronChaseState : DronStateRoot
         // 플레이어를 스턴시키기 위한 코드 추가
         if (dronFSM.targetPlayer != null)
         {
-            dronFSM.PlayerStun(1.5f); // n초 동안 스턴 (시간은 원하는 대로 조절)
+            dronFSM.DronStun(1.5f);  // n초 동안 스턴 (시간은 원하는 대로 조절)
+
+            Collider[] enemys = Physics.OverlapSphere(dronFSM.transform.position, 40f);
+            foreach (Collider enemy in enemys)
+            {
+                if (enemy.TryGetComponent(out IEnemyInterface enemyInterface))
+                {
+                    enemyInterface.Ping(dronFSM.targetPlayer.transform.position);
+                }
+            }
         }
     }
 
@@ -38,7 +47,8 @@ public class DronChaseState : DronStateRoot
         {
             dronFSM.targetPlayer = player.GetComponent<PlayerController>();
             Vector3 playerPos = player.transform.position;
-            nav.SetDestination(playerPos);
+
+            //뭔가 감지했다는 이팩트를 넣어줘(경찰차소리&전등이나 불빛 같은걸로)
         }
         else
         {

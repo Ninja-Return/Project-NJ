@@ -67,8 +67,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
 
         InitializeStates();
         ChangeState(DronState.Idle);
-        laserLine.SetPosition(0, Vector3.zero);
-        laserLine.SetPosition(1, Vector3.zero);
 
     }
 
@@ -224,14 +222,13 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
     }
 
     // 드론이 플레이어를 감지하면 멈추게 함
-    public void PlayerStun(float time)
+    public void DronStun(float stunTime)
     {
         if (targetPlayer != null)
         {
             Debug.Log("스턴 들어옴");
-            StunPlayerClientRPC(targetPlayer.OwnerClientId, time, targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
+            StunPlayerClientRPC(targetPlayer.OwnerClientId, stunTime, targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
         }
-        
     }
 
     // 드론 정지
@@ -313,9 +310,6 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
             yield return new WaitForSeconds(time);
 
             laserLine.enabled = false; // 레이저 비활성화
-
-            laserLine.SetPosition(0, Vector3.zero);
-            laserLine.SetPosition(1, Vector3.zero);
         }
         else
         {

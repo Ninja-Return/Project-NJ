@@ -9,8 +9,6 @@ using UnityEngine.UI;
 
 public class ButtonController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerUpHandler
 {
-    [SerializeField] private float fade;
-
     private Button _button;
     private Image image;
     public UnityEvent OnClick;
@@ -40,10 +38,6 @@ public class ButtonController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public void OnPointerEnter(PointerEventData eventData)
     {
         transform.DOScale(Vector3.one * 1.1f, 0.2f).SetEase(Ease.OutQuad);
-
-        Color color = Color.red;
-        color.a = fade;
-        image.color = color;
 
         SoundManager.Play2DSound("MousePoint");
 
