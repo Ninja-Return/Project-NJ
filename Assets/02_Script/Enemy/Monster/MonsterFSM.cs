@@ -28,13 +28,13 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
     public Vector3 lookVec;
     public LayerMask playerMask;
 
-    public MonsterState nowState;
+    public MonsterState nowState => currentState;
 
-
-    [HideInInspector] public Vector3 pingPos;
     [HideInInspector] public PlayerController targetPlayer { get; set; }
+    [HideInInspector] public Vector3 pingPos { get; set; }
+    [HideInInspector] public bool IsPing { get; private set; }
     [HideInInspector] public bool IsDead { get; private set; }
-    [HideInInspector] public bool IsKill;
+    [HideInInspector] public bool IsKill { get; set; }
 
     [Header("Values")]
     [SerializeField] private float moveRadius;
@@ -73,12 +73,17 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
         DeathState deathState = new DeathState(this);
 
         MoveTransition moveTransition = new MoveTransition(this, MonsterState.Idle);
+        PingTransition pingTransition = new PingTransition(this, MonsterState.Ping);
         InPlayerTransition chasePlayerTransition = new InPlayerTransition(this, MonsterState.Rader, chaseRadius);
         CatchPlayerTransition catchPlayerTransition = new CatchPlayerTransition(this, MonsterState.Kill, killRadius);
         DieTransition dieTransition = new DieTransition(this, MonsterState.Dead);
 
         patrolState.AddTransition(moveTransition);
         pingState.AddTransition(moveTransition);
+
+        idleState.AddTransition(pingTransition);
+        patrolState.AddTransition(pingTransition);
+        raderState.AddTransition(pingTransition);
 
         idleState.AddTransition(chasePlayerTransition);
         patrolState.AddTransition(chasePlayerTransition);
@@ -100,17 +105,6 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
         AddState(chaseState, MonsterState.Chase);
         AddState(killState, MonsterState.Kill);
         AddState(deathState, MonsterState.Dead);
-    }
-
-    protected override void Update()
-    {
-
-        if (!IsServer) return;
-
-        nowState = currentState;
-
-        base.Update();
-
     }
 
     private void FixedUpdate()
@@ -286,23 +280,6 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
         return false;
     }
 
-    public void SetPingPos(Vector3 pos)
-    {
-        if (!IsServer) return;
-
-        NavMeshHit hit;
-
-        if (NavMesh.SamplePosition(pos, out hit, 1.0f, NavMesh.AllAreas))
-        {
-            pingPos = hit.position;
-
-            if (currentState == MonsterState.Idle || currentState == MonsterState.Patrol)
-            {
-                ChangeState(MonsterState.Ping);
-            }
-        }
-    }
-
     public void KillPlayerAnimationEvent() //애니메이션은 동기화 되니까 코드는 신경 안써도 될듯?
     {
         if (!IsServer) return;
@@ -332,6 +309,17 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
         jsVcamTrs.Priority = -2;
     }
 
+    public void Ping(Vector3 pos)
+    {
+        NavMeshHit hit;
+
+        if (NavMesh.SamplePosition(pos, out hit, 1.0f, NavMesh.AllAreas))
+        {
+            pingPos = hit.position;
+            IsPing = true;
+        }
+    }
+
     public void Death()
     {
         DeathServerRpc();
@@ -351,14 +339,6 @@ public class MonsterFSM : FSM_Controller_Netcode<MonsterState>, IEnemyInterface,
         {
             StopJumpScareClientRPC(targetPlayer.OwnerClientId.GetRPCParams());
         }
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    public void PingServerRPC(Vector3 pos)
-    {
-
-        SetPingPos(pos);
-
     }
 
     private IEnumerator MonsterStopCor(float time)

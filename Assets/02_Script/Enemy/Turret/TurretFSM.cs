@@ -29,7 +29,7 @@ public class TurretFSM : FSM_Controller_Netcode<TurretState>, IMachineInterface
     [HideInInspector] public Transform playerTrs;
     [HideInInspector] public bool IsStun;
 
-    public TurretState nowState;
+    public TurretState nowState => currentState;
 
     private void Start()
     {
@@ -53,15 +53,6 @@ public class TurretFSM : FSM_Controller_Netcode<TurretState>, IMachineInterface
         AddState(turretIdleState, TurretState.Idle);
         AddState(turretRaderState, TurretState.Rader);
         AddState(turretFireState, TurretState.Fire);
-    }
-
-    protected override void Update()
-    {
-        if (!IsServer) return;
-
-        nowState = currentState;
-
-        base.Update();
     }
 
     public Collider ViewingPlayer()

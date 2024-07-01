@@ -7,6 +7,7 @@ using UnityEngine;
 using DG.Tweening;
 using Unity.Services.Lobbies.Models;
 using Unity.Mathematics;
+using System;
 
 public enum DronState
 {
@@ -16,6 +17,7 @@ public enum DronState
     Kill,
     Dead,
     Zoom,
+    Stun,
 }
 
 public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
@@ -46,6 +48,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
     [SerializeField] private Light dronLight;
     [SerializeField] private float zoomRange;
     [SerializeField] private ParticleSystem Spark;
+    [SerializeField] private LineRenderer laserLine;
     [SerializeField] float shakeAmount;
     [SerializeField] float shakeTime = 1.0f;
     [SerializeField] private LayerMask obstacleMask;
@@ -64,6 +67,9 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
 
         InitializeStates();
         ChangeState(DronState.Idle);
+        laserLine.SetPosition(0, Vector3.zero);
+        laserLine.SetPosition(1, Vector3.zero);
+
     }
 
     private void InitializeStates()
@@ -74,6 +80,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         DronKillState dronKillState = new DronKillState(this);
         DronZoomState dronZoomState = new DronZoomState(this, zoomRange, dronLight, 3f);
         DronDeathState dronDeathState = new DronDeathState(this);
+        DronStunState dronStunState = new DronStunState(this, 10f); // 10초 동안 스턴 상태 유지
 
         DronMoveTransition dronMoveTransition = new DronMoveTransition(this, DronState.Zoom);
         DronInPlayerTransition dronChasePlayerTransition = new DronInPlayerTransition(this, DronState.Chase, chaseInRadius);
@@ -95,12 +102,14 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         dronKillState.AddTransition(dronDieTransition);
         dronZoomState.AddTransition(dronDieTransition);
 
+
         AddState(dronIdleState, DronState.Idle);
         AddState(dronPatrolState, DronState.Patrol);
         AddState(dronChaseState, DronState.Chase);
         AddState(dronKillState, DronState.Kill);
         AddState(dronDeathState, DronState.Dead);
         AddState(dronZoomState, DronState.Zoom);
+        AddState(dronStunState, DronState.Stun); // 스턴 상태 추가
     }
 
     private void FixedUpdate()
@@ -214,29 +223,109 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         return new Vector3(Mathf.Sin(radian1), y, Mathf.Cos(radian1)) + angleVec;
     }
 
-    //드론이 플레이어를 감지하면 멈추게 함
-    public void Stun(float time)
+    // 드론이 플레이어를 감지하면 멈추게 함
+    public void PlayerStun(float time)
     {
         if (targetPlayer != null)
         {
             Debug.Log("스턴 들어옴");
-            StunPlayerClientRPC(targetPlayer.OwnerClientId, time);
+            StunPlayerClientRPC(targetPlayer.OwnerClientId, time, targetPlayer.GetComponent<NetworkObject>().NetworkObjectId);
         }
+        
+    }
+
+    // 드론 정지
+    public void Stun(float time)
+    {
+        if (!IsServer || IsDead) return;
+
+        ChangeState(DronState.Stun); // 스턴 상태로 전이
     }
 
     [ClientRpc]
-    private void StunPlayerClientRPC(ulong clientId, float stunTime)
+    private void StunPlayerClientRPC(ulong clientId, float stunTime, ulong targetPlayerId)
     {
         if (clientId != NetworkManager.LocalClientId) return;
 
-        // 현재 플레이어의 움직임을 비활성화합니다.
-        var player = targetPlayer.GetComponent<PlayerController>();
+        NetworkObject targetNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[targetPlayerId];
+        var player = targetNetworkObject.GetComponent<PlayerController>();
         if (player != null)
         {
             player.DisableMovement(stunTime);
-            Debug.Log("플레이어 감지해서 보냄");
+            StartCoroutine(LaserBeam(headTrs, stunTime, player.transform));
+            Debug.Log("플레이어 컨트롤러 찾았고 스턴으로 넘김");
+        }
+        else
+        {
+            Debug.LogError("스턴을 하려는데 플레이어 컨트롤러 컴포넌트 못찾음");
         }
     }
+
+    private IEnumerator LaserBeam(Transform headTrs, float time, Transform playerTrs)
+    {
+        if (playerTrs != null)
+        {
+            laserLine.enabled = true; // 레이저 활성화
+            Debug.Log(headTrs.position);
+            Debug.Log(playerTrs.position);
+
+            Vector3 initialStartPosition = headTrs.position + new Vector3(0, 0.5f, 0); // 레이저 초기 시작 위치
+            Vector3 targetPosition = playerTrs.position + new Vector3(0, 0.5f, 0); // 레이저 목표 위치
+
+            laserLine.SetPosition(0, initialStartPosition);
+
+            float elapsedTime = 0f;
+            float duration = 0.5f; // 레이저 시작 위치가 목표 위치로 이동하는 시간
+            float speed = Vector3.Distance(initialStartPosition, targetPosition) / 10; // 레이저의 이동 속도
+
+            // 레이저 끝 위치를 목표 위치로 이동
+            while (elapsedTime < duration)
+            {
+                elapsedTime += Time.deltaTime;
+                float fraction = elapsedTime / duration;
+                Vector3 currentEndPosition = Vector3.Lerp(initialStartPosition, targetPosition , fraction);
+
+                laserLine.SetPosition(1, currentEndPosition );
+
+                yield return null; 
+            }
+
+            // 레이저 끝 위치가 목표 위치에 도달한 후, 시작 위치를 이동
+            elapsedTime = 0f;
+            Vector3 currentStartPosition = initialStartPosition;
+
+            while (elapsedTime < speed)
+            {
+                elapsedTime += Time.deltaTime;
+                float fraction = elapsedTime / speed;
+                currentStartPosition = Vector3.Lerp(initialStartPosition, targetPosition, fraction);
+
+                laserLine.SetPosition(0, currentStartPosition);
+                laserLine.SetPosition(1, targetPosition );
+
+                yield return null; 
+            }
+
+            // 최종 위치 설정
+            laserLine.SetPosition(0, targetPosition);
+            laserLine.SetPosition(1, targetPosition);
+
+            yield return new WaitForSeconds(time);
+
+            laserLine.enabled = false; // 레이저 비활성화
+
+            laserLine.SetPosition(0, Vector3.zero);
+            laserLine.SetPosition(1, Vector3.zero);
+        }
+        else
+        {
+            Debug.LogError("플레이어를 찾을 수 없음요.");
+            yield break;
+        }
+    }
+
+
+
 
     public void JumpScare()
     {

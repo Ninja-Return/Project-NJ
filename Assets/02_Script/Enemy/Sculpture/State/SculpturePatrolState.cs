@@ -46,6 +46,8 @@ public class SculpturePatrolState : SculptureStateRoot
 
     protected override void ExitState() 
     {
+        if (!IsServer) return;
+
         points.Clear();
     }
 

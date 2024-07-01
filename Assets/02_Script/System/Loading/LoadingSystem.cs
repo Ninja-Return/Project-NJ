@@ -4,9 +4,12 @@ using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class LoadingSystem : NetworkBehaviour
 {
+    [SerializeField] private List<string> adviceExtrs;
+    [SerializeField] private TMP_Text adviceText;
 
     private int completeCount;
     private int joinCurrentScene;
@@ -22,6 +25,8 @@ public class LoadingSystem : NetworkBehaviour
         }
 
         CompleteSceneJoinServerRPC();
+
+        adviceText.text = adviceExtrs.GetRandomListObject();
 
     }
 

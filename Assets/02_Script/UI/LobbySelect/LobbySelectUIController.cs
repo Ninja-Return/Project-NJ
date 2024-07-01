@@ -17,6 +17,8 @@ public class LobbySelectUIController : MonoBehaviour
     [SerializeField] private Transform lobbyPanelRoot;
     [SerializeField] private LobbyPanel lobbyPrefab;
     [SerializeField] private GameObject checkIcon;
+    [SerializeField] private GameObject loadingPanel;
+    [SerializeField] private TMP_Text loadingText;
 
     public bool roomPrivate { get; set; }
     private bool isCoolDown;
@@ -46,8 +48,13 @@ public class LobbySelectUIController : MonoBehaviour
 
             }
 
+            PopLoadingPanel("规 积己 吝...");
 
-            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), str, roomPrivate);
+            bool isConnected = await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), str, roomPrivate);
+            if (!isConnected)
+            {
+                ShutDownLoadingPanel();
+            }
 
             HostSingle.Instance.GameManager.gameMode = GameMode.Mutli;
             NetworkManager.Singleton.SceneManager.LoadScene(SceneList.LobbyScene, LoadSceneMode.Single);
@@ -71,7 +78,13 @@ public class LobbySelectUIController : MonoBehaviour
         try
         {
 
-            await AppController.Instance.StartClientAsync(PlayerPrefs.GetString("PlayerName"), joinCodeInputField.text);
+            PopLoadingPanel("规 曼啊 吝...");
+
+            bool isConnected = await AppController.Instance.StartClientAsync(PlayerPrefs.GetString("PlayerName"), joinCodeInputField.text);
+            if (!isConnected)
+            {
+                ShutDownLoadingPanel();
+            }
 
         }
         catch (Exception ex)
@@ -94,6 +107,7 @@ public class LobbySelectUIController : MonoBehaviour
 
 #if UNITY_EDITOR
 
+
         if (Input.GetKeyDown(KeyCode.L))
         {
 
@@ -102,6 +116,7 @@ public class LobbySelectUIController : MonoBehaviour
         }
 
 #endif
+
 
     }
 
@@ -115,6 +130,7 @@ public class LobbySelectUIController : MonoBehaviour
         NetworkManager.Singleton.SceneManager.LoadScene(SceneList.TestScene, LoadSceneMode.Single);
 
     }
+
 
     public async void StartTutorial()
     {
@@ -181,10 +197,21 @@ public class LobbySelectUIController : MonoBehaviour
         foreach (var lobby in lobbys)
         {
 
-            Instantiate(lobbyPrefab, lobbyPanelRoot).SetPanel(lobby);
+            Instantiate(lobbyPrefab, lobbyPanelRoot).SetPanel(lobby, this);
 
         }
 
+    }
+
+    public void PopLoadingPanel(string extra)
+    {
+        loadingPanel.SetActive(true);
+        loadingText.text = extra;
+    }
+
+    public void ShutDownLoadingPanel()
+    {
+        loadingPanel.SetActive(false);
     }
 
     private IEnumerator CoolDownCo()

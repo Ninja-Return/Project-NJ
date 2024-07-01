@@ -20,6 +20,9 @@ public class LobbyUIController : NetworkBehaviour
 
     [SerializeField] private RectTransform joinCodePanel;
 
+    [SerializeField] private GameObject loadingPanel;
+    [SerializeField] private TMP_Text loadingText;
+
     private void Start()
     {
 
@@ -102,9 +105,16 @@ public class LobbyUIController : NetworkBehaviour
 
     }
 
+    [ClientRpc]
+    private void PopStartPanelClientRpc()
+    {
+        PopLoadingPanel("곧 게임이 시작됩니다...");
+    }
+
     public void StartGame()
     {
 
+        PopStartPanelClientRpc();
         HostSingle.Instance.GameManager.ChangeLobbyState(true);
         NetworkManager.SceneManager.LoadScene(SceneList.LoadingScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
 
@@ -116,14 +126,27 @@ public class LobbyUIController : NetworkBehaviour
         if (IsHost)
         {
             Debug.Log("hostclick");
+            PopLoadingPanel("방 터트리는 중...");
             HostSingle.Instance.GameManager.ShutdownAsync();
             SceneManager.LoadScene(SceneList.LobbySelectScene);
         }
         else
         {
             Debug.Log("clientclick");
+            PopLoadingPanel("방 나가는 중...");
             ClientSingle.Instance.GameManager.Disconnect();
         }
+    }
+
+    private void PopLoadingPanel(string extra)
+    {
+        loadingPanel.SetActive(true);
+        loadingText.text = extra;
+    }
+
+    private void ShutDownLoadingPanel()
+    {
+        loadingPanel.SetActive(false);
     }
 
     public override void OnDestroy()

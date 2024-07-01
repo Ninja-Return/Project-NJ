@@ -95,6 +95,9 @@ public class ResultUIController : NetworkBehaviour
         var panel = Instantiate(playerPrefab, players);
         panel.Setting(clientId, data.nickName, isOwner, false);
 
+        Color panelColor = data.isBreak ? Color.blue : Color.red;
+        panel.ColorChange(panelColor);
+
         if (!isOwner) return;
 
         Timer(data.clearTime, data.isBreak);
@@ -103,13 +106,11 @@ public class ResultUIController : NetworkBehaviour
         {
             PlayerCountServerRpc(1f, 0f);
             EscapeClear();
-            panel.ColorChange(Color.blue);
         }
         else
         {
             PlayerCountServerRpc(0f, 1f);
             EscapeFail();
-            panel.ColorChange(Color.red);
         }
     }
 

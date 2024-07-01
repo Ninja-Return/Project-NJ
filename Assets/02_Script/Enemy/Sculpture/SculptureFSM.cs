@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 public enum SculptureState
 {
     Patrol,
+    Ping,
     Chase,
     Kill,
     Dead
@@ -20,16 +21,17 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
     public Transform headTrs;
     public LayerMask playerMask;
 
-    public SculptureState nowState;
+    public SculptureState nowState => currentState;
+
+    [HideInInspector] public Collider targetPlayer { get; set; }
+    [HideInInspector] public Vector3 pingPos { get; set; }
+    [HideInInspector] public bool IsPing { get; private set; }
+    [HideInInspector] public bool IsDead { get; private set; }
+    [HideInInspector] public bool IsKill { get; set; }
+    [HideInInspector] public float currentCoolTime { get; set; }
 
     [Header("Prefab")]
     [SerializeField] private NetworkObject deadBody;
-
-
-    [HideInInspector] public Collider targetPlayer;
-    [HideInInspector] public bool IsDead { get; private set; }
-    [HideInInspector] public bool IsKill;
-    [HideInInspector] public float currentCoolTime;
 
     [Header("Values")]
     [SerializeField] private float moveRadius;
@@ -64,13 +66,17 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
     private void InitializeStates()
     {
         SculpturePatrolState sculpturePatrolState = new SculpturePatrolState(this, moveRadius, moveFrame);
+        SculpturePingState sculpturePingState = new SculpturePingState(this, moveFrame);
         SculptureChaseState sculptureChaseState = new SculptureChaseState(this, chaseRadius, killRadius, chaseFrame);
         SculptureKillState sculptureKillState = new SculptureKillState(this);
         SculptureDeathState sculptureDeathState = new SculptureDeathState(this);
 
+        SculpturePingTransition sculpturePingTransition = new SculpturePingTransition(this, SculptureState.Ping);
         SculptureFindPlayerTransition sculptureFindPlayerTransition = new SculptureFindPlayerTransition(this, SculptureState.Chase, chaseRadius);
         SculptureDieTransition sculptureDieTransition = new SculptureDieTransition(this, SculptureState.Dead);
         //SculptureFindPlayerTransition sculptureCatchPlayerTransition = new SculptureFindPlayerTransition(this, SculptureState.Kill, killRadius);
+
+        sculpturePatrolState.AddTransition(sculpturePingTransition);
 
         sculpturePatrolState.AddTransition(sculptureFindPlayerTransition);
         //sculptureChaseState.AddTransition(sculptureCatchPlayerTransition);
@@ -80,6 +86,7 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
         sculptureKillState.AddTransition(sculptureDieTransition);
 
         AddState(sculpturePatrolState, SculptureState.Patrol);
+        AddState(sculpturePingState, SculptureState.Ping);
         AddState(sculptureChaseState, SculptureState.Chase);
         AddState(sculptureKillState, SculptureState.Kill);
         AddState(sculptureDeathState, SculptureState.Dead);
@@ -194,12 +201,15 @@ public class SculptureFSM : FSM_Controller_Netcode<SculptureState>, IEnemyInterf
         return sampledPath;
     }
 
-    protected override void Update()
+    public void Ping(Vector3 pos)
     {
-        if (!IsServer) return;
+        NavMeshHit hit;
 
-        nowState = currentState;
-        base.Update();
+        if (NavMesh.SamplePosition(pos, out hit, 1.0f, NavMesh.AllAreas))
+        {
+            pingPos = hit.position;
+            IsPing = true;
+        }
     }
 
     public void Death()
