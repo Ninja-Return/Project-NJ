@@ -7,13 +7,11 @@ public class DronChaseState : DronStateRoot
 {
     private float radius;
     private float speed;
-    private Light dronLight;
 
-    public DronChaseState(DronFSM controller, float radius, float speed, Light dronLight) : base(controller)
+    public DronChaseState(DronFSM controller, float radius, float speed ) : base(controller)
     {
         this.radius = radius;
         this.speed = speed;
-        this.dronLight = dronLight;
     }
 
     protected override void EnterState()
@@ -37,7 +35,7 @@ public class DronChaseState : DronStateRoot
                 }
             }
 
-            NetworkSoundManager.Play3DSound("DronAlert", dronFSM.transform.position, 0.1f, 40f);
+            //NetworkSoundManager.Play3DSound("DronAlert", dronFSM.transform.position, 0.1f, 40f);
             //DronAlert
         }
     }
@@ -52,9 +50,7 @@ public class DronChaseState : DronStateRoot
         {
             dronFSM.targetPlayer = player.GetComponent<PlayerController>();
             Vector3 playerPos = player.transform.position;
-
-            //뭔가 감지했다는 이팩트를 넣어줘(경찰차소리&전등이나 불빛 같은걸로)
-            dronLight.color = Color.red;
+            nav.SetDestination(playerPos);
         }
         else
         {
@@ -68,6 +64,5 @@ public class DronChaseState : DronStateRoot
 
         nav.SetDestination(dronFSM.transform.position);
 
-        dronLight.color = Color.green;
     }
 }

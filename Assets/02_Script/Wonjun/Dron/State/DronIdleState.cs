@@ -6,11 +6,9 @@ public class DronIdleState : DronStateRoot
 {
     private float idleDuration = 3f;
     private float currentTime = 0;
-    private Light dronLight;
 
-    public DronIdleState(DronFSM controller, Light dronLight) : base(controller)
+    public DronIdleState(DronFSM controller) : base(controller)
     {
-        this.dronLight = dronLight;
 
     }
     protected override void EnterState()
@@ -25,7 +23,6 @@ public class DronIdleState : DronStateRoot
     {
         if (!IsServer) return;
 
-        dronLight.color = Color.green;
 
         if (currentTime >= idleDuration)
         {
