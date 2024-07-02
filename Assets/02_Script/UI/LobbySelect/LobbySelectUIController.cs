@@ -78,7 +78,7 @@ public class LobbySelectUIController : MonoBehaviour
         try
         {
 
-            PopLoadingPanel("방 참가 중...");
+            PopLoadingPanel("코드로 참가 중...");
 
             bool isConnected = await AppController.Instance.StartClientAsync(PlayerPrefs.GetString("PlayerName"), joinCodeInputField.text);
             if (!isConnected)
