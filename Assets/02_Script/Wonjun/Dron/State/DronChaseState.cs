@@ -36,6 +36,9 @@ public class DronChaseState : DronStateRoot
                     enemyInterface.Ping(dronFSM.targetPlayer.transform.position);
                 }
             }
+
+            NetworkSoundManager.Play3DSound("DronAlert", dronFSM.transform.position, 0.1f, 40f);
+            //DronAlert
         }
     }
 
