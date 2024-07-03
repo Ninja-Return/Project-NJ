@@ -49,6 +49,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
     [SerializeField] private float zoomRange;
     [SerializeField] private ParticleSystem Spark;
     [SerializeField] private LineRenderer laserLine;
+    [SerializeField] private GameObject warningSign;
     [SerializeField] float shakeAmount;
     [SerializeField] float shakeTime = 1.0f;
     [SerializeField] private LayerMask obstacleMask;
@@ -74,7 +75,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
     {
         DronIdleState dronIdleState = new DronIdleState(this);
         DronPatrolState dronPatrolState = new DronPatrolState(this, moveRadius, workSpeed, Spark);
-        DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed);
+        DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed, dronLight, warningSign);
         DronKillState dronKillState = new DronKillState(this);
         DronZoomState dronZoomState = new DronZoomState(this, zoomRange, dronLight, 3f);
         DronDeathState dronDeathState = new DronDeathState(this);
