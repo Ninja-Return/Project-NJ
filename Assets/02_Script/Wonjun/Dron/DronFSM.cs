@@ -222,7 +222,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
     }
 
     // 드론이 플레이어를 감지하면 멈추게 함
-    public void DronStun(float stunTime)
+    public void PlayerStun(float stunTime)
     {
         if (targetPlayer != null)
         {
