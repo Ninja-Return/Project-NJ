@@ -68,7 +68,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
 
         InitializeStates();
         ChangeState(DronState.Idle);
-
+        warningSign.SetActive(false);
     }
 
     private void InitializeStates()
@@ -168,7 +168,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
         Debug.DrawRay(pos, leftDir * radius, Color.blue);
         Debug.DrawRay(pos, upDir * radius, Color.blue);
         Debug.DrawRay(pos, downDir * radius, Color.blue);
-        Debug.DrawRay(pos, lookDir * radius, Color.cyan);
+        Debug.DrawRay(pos, lookDir * radius, Color.green);
 #endif
 
         Collider[] allPlayers = Physics.OverlapSphere(pos, radius, playerMask);
@@ -381,7 +381,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.gray;
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, moveRadius);
         Gizmos.DrawWireSphere(transform.position, killRadius);
     }

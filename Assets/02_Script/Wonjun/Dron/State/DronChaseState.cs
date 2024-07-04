@@ -55,6 +55,7 @@ public class DronChaseState : DronStateRoot
         {
             dronFSM.targetPlayer = player.GetComponent<PlayerController>();
             Vector3 playerPos = player.transform.position;
+            warningSign.transform.Rotate(new Vector3(0f, 20f, 0f) * Time.deltaTime * 10f);
             nav.SetDestination(playerPos);
         }
         else
@@ -67,6 +68,7 @@ public class DronChaseState : DronStateRoot
     {
         if (!IsServer) return;
         warningSign.SetActive(false);
+        dronLight.color = new Color(255,151,0,255);
         nav.SetDestination(dronFSM.transform.position);
 
     }
