@@ -31,7 +31,7 @@ public class TrapperMoveState : TrapperStateRoot
     {
         if (!IsServer) return;
 
-        if (Vector3.Distance(nav.destination, controller.transform.position) <= 2f)
+        if (Vector3.Distance(nav.destination, controller.transform.position) <= 3f)
         {
             RoadPath();
         }
@@ -42,6 +42,7 @@ public class TrapperMoveState : TrapperStateRoot
             idleDuration = Random.Range(minTrapTime, maxTrapTime);
 
             trapperFSM.SpawnTrap();
+            RoadPath();
         }
         else
             currentTime += Time.deltaTime;
@@ -75,7 +76,7 @@ public class TrapperMoveState : TrapperStateRoot
             //Vector3.Distance(monsterFSM.targetPlayer.transform.position, hit.position) <= range / 4f
             //해당 위치 근처에 플레이어가 잇어야 한다(최대 이동범위의 1/5정도)
 
-            if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas) &&
+            if (NavMesh.SamplePosition(randomPoint, out hit, 10.0f, NavMesh.AllAreas) &&
                 Vector3.Distance(trapperFSM.transform.position, hit.position) >= range / 2f)
             {
                 result = hit.position;
