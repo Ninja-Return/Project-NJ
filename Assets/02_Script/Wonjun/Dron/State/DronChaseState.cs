@@ -7,11 +7,15 @@ public class DronChaseState : DronStateRoot
 {
     private float radius;
     private float speed;
+    private Light dronLight;
+    private GameObject warningSign;
 
-    public DronChaseState(DronFSM controller, float radius, float speed ) : base(controller)
+    public DronChaseState(DronFSM controller, float radius, float speed, Light dronLight, GameObject warningSign) : base(controller)
     {
         this.radius = radius;
         this.speed = speed;
+        this.dronLight = dronLight;
+        this.warningSign = warningSign;
     }
 
     protected override void EnterState()
@@ -20,7 +24,8 @@ public class DronChaseState : DronStateRoot
         NetworkSoundManager.Play3DSound("DronBite", transform.position, 0.1f, 40f, SoundType.SFX, AudioRolloffMode.Linear);
         Debug.Log("chase들어옴");
         nav.speed = speed;
-
+        dronLight.color = Color.red;
+        warningSign.SetActive(true);
         // 플레이어를 스턴시키기 위한 코드 추가
         if (dronFSM.targetPlayer != null)
         {
@@ -61,7 +66,7 @@ public class DronChaseState : DronStateRoot
     protected override void ExitState()
     {
         if (!IsServer) return;
-
+        warningSign.SetActive(false);
         nav.SetDestination(dronFSM.transform.position);
 
     }
