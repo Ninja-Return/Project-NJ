@@ -14,6 +14,7 @@ public class PlayerAnimationController : NetworkBehaviour
     private readonly int HASH_SITDOWN = Animator.StringToHash("Sit");
     private readonly int HASH_X = Animator.StringToHash("X");
     private readonly int HASH_Y = Animator.StringToHash("Y");
+    private readonly int HASH_EMOTION = Animator.StringToHash("Emotion");
 
     [SerializeField] private bool debug;
     [SerializeField] private List<GameObject> tweenAnimationClient = new();
@@ -41,6 +42,11 @@ public class PlayerAnimationController : NetworkBehaviour
 
     private NetworkVariable<bool> sitDownStateValue =
         new NetworkVariable<bool>(default,
+            NetworkVariableReadPermission.Everyone,
+            NetworkVariableWritePermission.Owner);
+
+    private NetworkVariable<int> emotionStateValue =
+        new NetworkVariable<int>(default,
             NetworkVariableReadPermission.Everyone,
             NetworkVariableWritePermission.Owner);
 
@@ -109,6 +115,7 @@ public class PlayerAnimationController : NetworkBehaviour
             isGroundStateValue.OnValueChanged += HandleIsGroundChanged;
             rigValue.OnValueChanged += HandleRigValueChanged;
             sitDownStateValue.OnValueChanged += HandleSitDownChanged;
+            emotionStateValue.OnValueChanged += HandleSocialAction;
 
             foreach (var item in tweenAnimationServer)
             {
@@ -175,6 +182,8 @@ public class PlayerAnimationController : NetworkBehaviour
         sitDownStateValue.Value = playerController.isSittingDown;
         HandleSitDownChanged(true, playerController.isSittingDown);
 
+        emotionStateValue.Value = playerController.onEmotionkeyNumber;
+
     }
 
     private void HandleSitDownChanged(bool previousValue, bool newValue)
@@ -202,6 +211,13 @@ public class PlayerAnimationController : NetworkBehaviour
     {
 
         controlAnimator.SetBool(HASH_IS_GROUND, newValue);
+
+    }
+
+    private void HandleSocialAction(int previousValue, int newValue)
+    {
+
+        controlAnimator.SetFloat(HASH_EMOTION, newValue);
 
     }
 

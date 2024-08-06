@@ -29,6 +29,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
 
     public bool isInsideSafetyRoom { get; set; } = true;
     public bool isSittingDown = false; // 현재 앉아 있는지 여부
+    public int onEmotionkeyNumber;
     public Vector3 targetCameraPosition;
     public float changeTime = 1f;
     public Vector3 originalCameraPosition;
