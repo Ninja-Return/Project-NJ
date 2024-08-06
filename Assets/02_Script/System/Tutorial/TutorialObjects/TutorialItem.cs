@@ -23,7 +23,7 @@ public class TutorialItem : TutorialObject
 
     private void ClickLeft()
     {
-        Soda handItem = FindObjectOfType<Soda>();
+        Antihypnotic handItem = FindObjectOfType<Antihypnotic>();
         if (handItem == null) return;
 
         playerController.Input.OnUseObjectKeyPress -= ClickLeft;
