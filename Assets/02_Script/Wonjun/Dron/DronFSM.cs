@@ -36,6 +36,7 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
     [HideInInspector] public PlayerController targetPlayer;
     [HideInInspector] public bool IsDead { get; private set; }
     [HideInInspector] public bool IsKill;
+    
 
     [Header("Values")]
     [SerializeField] private float moveRadius;
