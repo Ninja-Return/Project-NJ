@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Rigidbody))]
-public class Item : ItemRoot
+public class Item : ItemRoot , 
 {
 
     private void Start()

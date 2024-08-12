@@ -22,7 +22,10 @@ public class MapLightSystem : NetworkBehaviour
     private void Start()
     {
 
-        New_GameManager.Instance.OnHardEvent += HandleHardLight;
+        if(New_GameManager.Instance != null)
+        {
+            New_GameManager.Instance.OnHardEvent += HandleHardLight;
+        }
 
     }
 
@@ -83,6 +86,26 @@ public class MapLightSystem : NetworkBehaviour
         }
 
     }
+
+    public void SetLightEnable(bool value)
+    {
+
+        foreach (var item in lights)
+        {
+
+            item.Enable(value);
+
+        }
+
+    }
+
+    public void SetLightColor(Color color)
+    {
+
+
+
+    }
+
 
 
     public override void OnDestroy()

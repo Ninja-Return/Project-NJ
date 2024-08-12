@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 505109090019368419}
   - component: {fileID: 1437309151499853061}
   - component: {fileID: 5517127449264953755}
-  - component: {fileID: 2325421480049628859}
   - component: {fileID: 4431779284782658477}
   - component: {fileID: 7267149210903762330}
   - component: {fileID: 8514069422003401396}
@@ -89,27 +88,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2325421480049628859
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7520460607559240092}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.01, y: 0.15, z: 0.02}
-  m_Center: {x: 0, y: -0.03, z: 0}
 --- !u!136 &4431779284782658477
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -172,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2690501266
+  GlobalObjectIdHash: 1843885762
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 0
   ActiveSceneSynchronization: 0

@@ -17,7 +17,7 @@ public class MapLight : NetworkBehaviour
             return MapLightSystem.Instance != null;
         });
 
-        curLight = GetComponent<Light>();
+        curLight = GetComponentInChildren<Light>();
 
         MapLightSystem.Instance.AddLight(this);
 
@@ -46,5 +46,18 @@ public class MapLight : NetworkBehaviour
 
     }
 
+    public void Enable(bool value)
+    {
+
+        curLight.enabled = value;
+
+    }
+
+    public void SetColor(Color color)
+    {
+
+
+
+    }
 
 }
