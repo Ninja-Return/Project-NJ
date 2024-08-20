@@ -20,7 +20,7 @@ public class DronCatchPlayerTransition : DronTransitionRoot
 
         if (player != null)
         {
-            dronFSM.targetPlayer = player.GetComponent<PlayerController>(); 
+            dronFSM.targetPlayer = player.GetComponent<PlayerController>();
             Debug.Log("플레이어가 들어와서 죽음");
             return true;
         }

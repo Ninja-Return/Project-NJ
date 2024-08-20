@@ -872,9 +872,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.15
-  far clip plane: 30
-  field of view: 60.000004
+  near clip plane: 0.1
+  far clip plane: 1000
+  field of view: 40
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -986,8 +986,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619981845}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -101.60526, y: -7.409256, z: -61.17951}
+  m_LocalRotation: {x: 0, y: 0.9659259, z: 0.258819, w: 0}
+  m_LocalPosition: {x: 0, y: 2.1690001, z: 1.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3803,20 +3803,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75196f8c070a4344e8d31115f4f06a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterMaxSpawn: 6
-  minSpawnTime: 30
-  maxSpawnTime: 40
+  monsterMaxSpawn: 2
+  minSpawnTime: 3
+  maxSpawnTime: 4
   monsterDatas:
   - monster: {fileID: 414673305194451298, guid: 37d8bb7b4e9b42844b71a0ae9477d107, type: 3}
-    spawnRatio: 150
+    spawnRatio: 0
   - monster: {fileID: 8731334441768544532, guid: c545cb543b3319d40a880d165d6a320c, type: 3}
     spawnRatio: 75
   - monster: {fileID: 5947693558657279517, guid: e1fdd6285e11a2645b1feabeb78ba95d, type: 3}
-    spawnRatio: 30
+    spawnRatio: 0
   - monster: {fileID: 3720445057992388078, guid: 5c06fc5c9479e97459bf75e6efe7d9f0, type: 3}
-    spawnRatio: 50
+    spawnRatio: 0
   - monster: {fileID: 3552912527455403678, guid: 3005967c96c11d84893ce30c4153da23, type: 3}
-    spawnRatio: 1
+    spawnRatio: 0
   statuePrefab: {fileID: 3552912527455403678, guid: 3005967c96c11d84893ce30c4153da23, type: 3}
 --- !u!114 &1985564214
 MonoBehaviour:
@@ -3922,8 +3922,11 @@ MonoBehaviour:
     deadStr: "\uD130\uB81B\uC5D0 \uC0AC\uC0B4\uB42C\uC2B5\uB2C8\uB2E4."
     signStr: "\uB9C8\uC8FC\uCE58\uBA74 \uADF8\uB0E5 \uC606\uC73C\uB85C \uB3CC\uC544\uAC00\uC138\uC694."
   - deadType: 6
-    deadStr: "\uCE7C\uC5D0 \uCC14\uB838\uC2B5\uB2C8\uB2E4."
-    signStr: "\uCE5C\uAD6C\uB4E4\uC744 \uD568\uBD80\uB85C \uBBFF\uC9C0 \uB9C8\uC138\uC694"
+    deadStr: "\uC804\uAE30 \uCDA9\uACA9\uAE30\uC5D0 \uB2F9\uD588\uC2B5\uB2C8\uB2E4!"
+    signStr: "\uCE5C\uAD6C\uB4E4\uC744 \uD568\uBD80\uB85C \uBBFF\uC9C0 \uB9C8\uC138\uC694."
+  - deadType: 5
+    deadStr: "\uCD1D\uC5D0 \uB9DE\uC73C\uC168\uC2B5\uB2C8\uB2E4."
+    signStr: "\"\uC11D\uC591\uC774 \uC9C4\uB2E4\""
   - deadType: 7
     deadStr: "\uD0C8\uCD9C\uD558\uC168\uC2B5\uB2C8\uB2E4."
     signStr: '  '

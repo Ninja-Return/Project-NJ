@@ -10,7 +10,7 @@ public class DronMoveTransition : DronTransitionRoot
     {
         if (nav.pathPending) return false;
 
-        if (Vector3.Distance(nav.destination, controller.transform.position) <= 2f)
+        if (Vector3.Distance(nav.destination, controller.transform.position) <= 3f)
         {
             return true;
         }

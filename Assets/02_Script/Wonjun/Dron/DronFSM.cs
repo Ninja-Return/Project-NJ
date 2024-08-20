@@ -4,10 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
-using DG.Tweening;
-using Unity.Services.Lobbies.Models;
-using Unity.Mathematics;
-using System;
+using TMPro;
 
 public enum DronState
 {
@@ -44,13 +41,19 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
     [SerializeField] private float chaseRadius;
     [SerializeField] private float killRadius;
     [SerializeField] private float workSpeed;
-    [SerializeField] public bool zoom = false;
     [SerializeField] private float runSpeed;
-    [SerializeField] private Light dronLight;
+    [SerializeField] private float raderTime;
+    [SerializeField] private float chaseTime;
     [SerializeField] private float zoomRange;
+    [SerializeField] public bool zoom = false;
+
+    [Header("Obj")]
+    [SerializeField] private Light dronLight;
+    [SerializeField] private TMP_Text timeText;
     [SerializeField] private ParticleSystem Spark;
     [SerializeField] private LineRenderer laserLine;
-    [SerializeField] private GameObject warningSign;
+
+    [Header("Other")]
     [SerializeField] float shakeAmount;
     [SerializeField] float shakeTime = 1.0f;
     [SerializeField] private LayerMask obstacleMask;
@@ -69,14 +72,13 @@ public class DronFSM : FSM_Controller_Netcode<DronState>, IMachineInterface
 
         InitializeStates();
         ChangeState(DronState.Idle);
-        warningSign.SetActive(false);
     }
 
     private void InitializeStates()
     {
         DronIdleState dronIdleState = new DronIdleState(this);
         DronPatrolState dronPatrolState = new DronPatrolState(this, moveRadius, workSpeed, Spark);
-        DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed, dronLight, warningSign);
+        DronChaseState dronChaseState = new DronChaseState(this, chaseRadius, runSpeed, raderTime, chaseTime, dronLight, timeText);
         DronKillState dronKillState = new DronKillState(this);
         DronZoomState dronZoomState = new DronZoomState(this, zoomRange, dronLight, 3f);
         DronDeathState dronDeathState = new DronDeathState(this);
