@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class MapLightSystem : NetworkBehaviour
 {
@@ -22,7 +23,10 @@ public class MapLightSystem : NetworkBehaviour
     private void Start()
     {
 
-        New_GameManager.Instance.OnHardEvent += HandleHardLight;
+        if(New_GameManager.Instance != null)
+        {
+            New_GameManager.Instance.OnHardEvent += HandleHardLight;
+        }
 
     }
 
@@ -83,6 +87,31 @@ public class MapLightSystem : NetworkBehaviour
         }
 
     }
+
+    public void SetLightEnable(bool value)
+    {
+
+        foreach (var item in lights)
+        {
+
+            item.Enable(value);
+
+        }
+
+    }
+
+    public void SetLightColor(Color color)
+    {
+
+        foreach (var item in lights)
+        {
+
+            item.SetColor(color);
+
+        }
+
+    }
+
 
 
     public override void OnDestroy()

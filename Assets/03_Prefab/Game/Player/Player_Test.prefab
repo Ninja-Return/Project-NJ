@@ -3552,7 +3552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2168250770
+  GlobalObjectIdHash: 4019847023
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -3730,7 +3730,6 @@ MonoBehaviour:
   getItemCount: 0
   firstItem:
   - {fileID: 11400000, guid: d456a4dcd8ed86143a8100f8d686706f, type: 2}
-  - {fileID: 11400000, guid: d8d2bb98ed0bc624192e4aa7efd9b404, type: 2}
 --- !u!114 &410517943735878845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8936,6 +8935,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 4c2aa6336bbed4e44a0778872704ea1b, type: 3}
       propertyPath: m_Name
       value: VisualServer
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4c2aa6336bbed4e44a0778872704ea1b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1280402904917067034, guid: 4c2aa6336bbed4e44a0778872704ea1b, type: 3}
       propertyPath: m_LocalPosition.y

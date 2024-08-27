@@ -9,7 +9,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Services.Vivox;
 using Unity.Netcode;
-    
+using Unity.Services.Relay;
+
 public class AppController : MonoBehaviour
 {
 
@@ -44,6 +45,7 @@ public class AppController : MonoBehaviour
         }
 
         await VivoxService.Instance.InitializeAsync();
+
 
         HostSingle host = Instantiate(hostPrefab, transform);
         host.CreateHost();

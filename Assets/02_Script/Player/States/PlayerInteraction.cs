@@ -67,7 +67,7 @@ public class PlayerInteraction : PlayerStateRoot
 
     private bool CheckItemCircle()
     {
-        itemCircle.fillAmount += Time.deltaTime;
+        itemCircle.fillAmount += Time.deltaTime * 3f;
 
         if (itemCircle.fillAmount >= 1f)
         {
@@ -163,28 +163,22 @@ public class PlayerInteraction : PlayerStateRoot
 
     private IEnumerator GetInteractionCor()
     {
-        Debug.Log("시작작");
         while (true)
         {
-            Debug.Log("들어왔어");
             if (interactionObject != null && interactionObject.interactionAble)
             {
-                Debug.Log("아이템 감지");
                 if (interactionObject.interactionAbleItemName == string.Empty || hand.CheckHandItem(interactionObject.interactionAbleItemName))
                 {
-                    Debug.Log("이제 돌려");
                     if (!CheckItemCircle())
                     {
                         yield return new WaitForSeconds(0.01f);
                         continue;
                     }
-                    Debug.Log("아이템 획득, 이제 나가자_1");
                     interactionObject.Interaction();
                     break;
 
                 }
             }
-            Debug.Log("아이템 없음, 나감");
             break;
         }
         itemCircle.fillAmount = 0f;

@@ -78,7 +78,7 @@ public class PlayerManager : NetworkBehaviour
 
     }
 
-    private void SpawnPlayer(ulong id)
+    public void SpawnPlayer(ulong id)
     {
 
         var vec = UnityEngine.Random.insideUnitSphere * 2.5f;
@@ -96,6 +96,7 @@ public class PlayerManager : NetworkBehaviour
 
 
     }
+
 
     public void PlayerDie(EnumList.DeadType type, ulong clientId)
     {

@@ -29,7 +29,6 @@ public class PlayerNamePlate : NetworkBehaviour
         }
         else
         {
-            //PlayerManager.Instance.localController.watchCam.transform
             if (PlayerManager.Instance.localController != null)
             {
                 namePlate.transform.LookAt(PlayerManager.Instance.localController.transform);
