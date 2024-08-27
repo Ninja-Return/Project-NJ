@@ -56,7 +56,7 @@ public class MapLight : NetworkBehaviour
     public void SetColor(Color color)
     {
 
-
+        curLight.color = color;
 
     }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class MapLightSystem : NetworkBehaviour
 {
@@ -102,7 +103,12 @@ public class MapLightSystem : NetworkBehaviour
     public void SetLightColor(Color color)
     {
 
+        foreach (var item in lights)
+        {
 
+            item.SetColor(color);
+
+        }
 
     }
 

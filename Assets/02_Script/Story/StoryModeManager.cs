@@ -1,20 +1,28 @@
 using Cinemachine;
+using DG.Tweening;
 using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
 public class StoryModeManager : MonoBehaviour
 {
 
+    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private GameObject door;
     [SerializeField] private AudioSource startSource;
     [SerializeField] private GameObject[] decals;
     [SerializeField] private CinemachineImpulseSource sheckSource;
     [Header("ºñ¸í&ÃÑ ºÎºÐ")]
     [SerializeField] private AudioSource screamSound, gunShootSound, turnOffSound;
     [SerializeField] private GameObject gunlightObj;
+    [SerializeField] private TV tv;
+    [SerializeField] private NetworkObject monster;
+    [SerializeField] private Transform mosterSpawnPos;
 
     private void Start()
     {
 
+        PlayerManager.Instance.SpawnPlayer(0);
         StartCoroutine(LogicCo());
 
     }
@@ -36,8 +44,22 @@ public class StoryModeManager : MonoBehaviour
         yield return StartCoroutine(ScreamCo());
         yield return new WaitForSeconds(1);
         yield return StartCoroutine(GunShootCo());
+        yield return StartCoroutine(DecalsEnableCo());
+        yield return new WaitForSeconds(1);
+        yield return StartCoroutine(RedLightCo());
+        yield return new WaitForSeconds(1);
+        tv.On();
+        door.transform.DOMoveY(-3, 0.5f);
+        var obj = Instantiate(monster, mosterSpawnPos.position, Quaternion.identity);
+        obj.Spawn(true);
 
-        StartCoroutine(DecalsEnableCo());
+    }
+
+    private IEnumerator RedLightCo()
+    {
+
+        MapLightSystem.Instance.SetLightColor(Color.red);
+        yield return StartCoroutine(BlinkLight(true));
 
     }
 

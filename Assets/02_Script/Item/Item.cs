@@ -5,7 +5,7 @@ using System;
 
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Rigidbody))]
-public class Item : ItemRoot , 
+public class Item : ItemRoot
 {
 
     private void Start()
