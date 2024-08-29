@@ -10,5 +10,6 @@ public class SceneList
     public const string LoadingScene = "Loading";
     public const string IntroScene = "Intro";
     public const string TestScene = "StoryModePlay";
+    public const string StoryVidoeScene = "IntroVideo";
 
 }

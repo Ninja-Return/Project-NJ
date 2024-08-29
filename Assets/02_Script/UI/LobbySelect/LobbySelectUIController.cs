@@ -96,6 +96,13 @@ public class LobbySelectUIController : MonoBehaviour
 
     }
 
+    public void StartStoryMode()
+    {
+        PopLoadingPanel("스토리 시작중...");
+
+        StartCoroutine(StoryDelay());
+    }
+
     public void CheckSeleteRoom()
     {
         isRoomLook = !isRoomLook;
@@ -131,50 +138,9 @@ public class LobbySelectUIController : MonoBehaviour
 
     }
 
-
-    public async void StartTutorial()
-    {
-        try
-        {
-
-            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text, true);
-
-            NetworkManager.Singleton.SceneManager.LoadScene(SceneList.TutorialScene, LoadSceneMode.Single);
-
-        }
-        catch (Exception ex)
-        {
-
-            Debug.LogException(ex);
-
-        }
-    }
-
-    public async void StartSinglePlay()
-    {
-        try
-        {
-
-            await AppController.Instance.StartHostAsync(PlayerPrefs.GetString("PlayerName"), roomInputField.text);
-
-            isRoomLook = true;
-            HostSingle.Instance.GameManager.gameMode = GameMode.Single;
-            NetworkManager.Singleton.SceneManager.LoadScene(SceneList.LobbyScene, LoadSceneMode.Single);
-
-        }
-        catch (Exception ex)
-        {
-
-            Debug.LogException(ex);
-
-        }
-        //SceneManager.LoadScene(SceneList.SingleGameScene);
-    }
-
     public void BackBtn()
     {
         SceneManager.LoadScene(SceneList.IntroScene);
-
     }
 
     public async void Refresh()
@@ -221,6 +187,13 @@ public class LobbySelectUIController : MonoBehaviour
         isCoolDown = true;
         yield return new WaitForSeconds(refecshCoolDown);
         isCoolDown = false;
+    }
+
+    private IEnumerator StoryDelay()
+    {
+        yield return new WaitForSeconds(1f);
+
+        SceneManager.LoadScene(SceneList.StoryVidoeScene);
     }
 
 }
