@@ -46,6 +46,8 @@ public class PlayerInteraction : PlayerStateRoot
         input.OnInteractionKeyDown -= HandleInteractionKeyDown;
         input.OnInteractionKeyUp -= HandleInteractionKeyUp;
 
+        circleCor = null;
+
     }
 
 

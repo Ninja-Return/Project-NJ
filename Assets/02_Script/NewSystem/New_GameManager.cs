@@ -77,6 +77,9 @@ public class New_GameManager : NetworkBehaviour
         if (playerCount == 0)
         {
 
+            if (WinSystem.Instance == null)
+                return;
+
             //FadeManager.Instance.FadeOn();
             OnGameFinishedClientRPC();
             WinSystem.Instance.WinServerRPC();
