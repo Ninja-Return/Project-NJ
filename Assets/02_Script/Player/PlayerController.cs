@@ -171,6 +171,8 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
     {
         base.OnDestroy();
 
+        ChangeState(EnumPlayerState.Idle);
+
         if (IsOwner && Inventory.Instance != null)
         {
             Input.OnInventoryActivePress -= HandleInvenActive;
@@ -182,7 +184,7 @@ public class PlayerController : FSM_Controller_Netcode<EnumPlayerState>, ICatchT
             Destroy(Input);
         }
 
-        if (IsServer && PlayerManager.Instance != null)
+        if (IsServer && PlayerManager.Instance != null && WinSystem.Instance != null)
         {
             PlayerManager.Instance.PlayerExit(OwnerClientId);
         }

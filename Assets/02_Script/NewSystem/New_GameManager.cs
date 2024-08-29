@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class New_GameManager : NetworkBehaviour
 {
@@ -77,8 +78,16 @@ public class New_GameManager : NetworkBehaviour
         if (playerCount == 0)
         {
 
-            if (WinSystem.Instance == null)
+            if (WinSystem.Instance == null) {
+
+                HostSingle.Instance.GameManager.ShutdownAsync();
+                SceneManager.LoadScene(SceneList.IntroScene);
+
+                Support.SettingCursorVisable(true);
+
                 return;
+            
+            }
 
             //FadeManager.Instance.FadeOn();
             OnGameFinishedClientRPC();
