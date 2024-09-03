@@ -19,7 +19,7 @@ public abstract class ItemRoot : InteractionObject
 
     [field:SerializeField] public ItemDataSO data { get; private set; }
 
-    public string extraData { get; set; }
+    public virtual string extraData { get; set; }
     public ItemCategory itemCategory { get; protected set; }
 
     public event Action DestroyCallback;
