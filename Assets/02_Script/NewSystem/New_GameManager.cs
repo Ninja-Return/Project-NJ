@@ -81,7 +81,7 @@ public class New_GameManager : NetworkBehaviour
             if (WinSystem.Instance == null) {
 
                 HostSingle.Instance.GameManager.ShutdownAsync();
-                SceneManager.LoadScene(SceneList.IntroScene);
+                SceneManager.LoadScene(SceneList.StoryGameoverScene);
 
                 Support.SettingCursorVisable(true);
 
